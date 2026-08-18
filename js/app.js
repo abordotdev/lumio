@@ -29,15 +29,26 @@ function refreshModules() {
   if (MODULE) store.setModuleId(MODULE.id);
 }
 
+function navIsDrawer() {
+  return window.matchMedia('(max-width: 64rem)').matches;
+}
+
 function setNavOpen(open) {
-  document.body.classList.toggle('nav-open', open);
+  const drawer = navIsDrawer();
+  const show = drawer && open;
+  document.body.classList.toggle('nav-open', show);
   const toggle = document.getElementById('nav-toggle');
   const scrim = document.getElementById('nav-scrim');
+  const nav = document.getElementById('sidenav');
   if (toggle) {
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    toggle.textContent = open ? 'Zamknij' : 'Menu';
+    toggle.setAttribute('aria-expanded', show ? 'true' : 'false');
+    toggle.textContent = show ? 'Zamknij' : 'Menu';
   }
-  if (scrim) scrim.hidden = !open;
+  if (scrim) scrim.hidden = !show;
+  if (nav) {
+    nav.toggleAttribute('inert', drawer && !show);
+    nav.setAttribute('aria-hidden', drawer && !show ? 'true' : 'false');
+  }
 }
 
 function bindChrome() {
@@ -48,6 +59,7 @@ function bindChrome() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setNavOpen(false);
   });
+  window.matchMedia('(max-width: 64rem)').addEventListener('change', () => setNavOpen(false));
 }
 
 export function boot({ modules, route }) {

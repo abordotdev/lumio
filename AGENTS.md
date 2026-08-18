@@ -30,3 +30,15 @@ Mów krótko i prosto (skill caveman, poziom lite). Zero żargonu. Jedna myśl n
 Przy `git commit` sam odpala się haczyk: Prettier + ESLint **tylko na plikach w tym commicie**. Nie formatuj całego repo ręcznie.
 
 Jeśli haczyk padnie na kodzie, którego nie ruszałaś — pytaj, czy naprawiać, zamiast przeczesywać całość.
+
+## Dobre praktyki — zawsze
+
+Pracuj jak w porządnym repo. Nie skracaj drogi.
+
+- **Review przed wrzutką.** Po większej zmianie: przegląd kodu, błędów i bezpieczeństwa. Krytyczne i ważne popraw przed „gotowe”. Potem dopiero strona.
+- **Gałąź, nie prosto na `main`.** Zmiana na osobnej gałęzi. Na `main` idzie dopiero po review. Wrzutka na stronę = merge na `main`.
+- **Haczyka nie omijaj.** Bez `--no-verify`. Haczyk ma się odpalić.
+- **Małe zapisy.** Jedna myśl na commit. Wiadomość mówi po co, nie co kliknęłam.
+- **Bez sekretów.** Nie commituj haseł, kluczy, `.env`, kopii postępu.
+- **Nie zostawiaj dziury.** Wiesz, że coś psuje grę — nie mów że skończone.
+- **Lint na GitHubie musi przejść**, zanim odświeży się strona.
