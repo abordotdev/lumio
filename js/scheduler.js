@@ -10,6 +10,56 @@ function due(id, now) {
   return st.introduced && st.due <= now;
 }
 
+function weak(id, now) {
+  const st = itemState(id);
+  if (!st.introduced) return false;
+  if (due(id, now)) return true;
+  return st.wrong > 0 && st.streak === 0;
+}
+
+export function reviewQueue(module, now = Date.now()) {
+  const pool = [...(module.translations || []), ...(module.dictation || [])].filter((item) =>
+    weak(item.id, now)
+  );
+  pool.sort((a, b) => {
+    const wa = itemState(b.id).wrong - itemState(a.id).wrong;
+    if (wa !== 0) return wa;
+    return itemState(a.id).due - itemState(b.id).due;
+  });
+  return pool;
+}
+
+function reviewKind(item, i) {
+  const canTiles = Boolean(item.pl && item.en && item.chunks);
+  const cycle = i % 3;
+  if (cycle === 0 && canTiles) return 'tiles';
+  if (cycle === 2) return 'dictate';
+  return item.pl ? 'translate' : 'dictate';
+}
+
+export function buildReview(module) {
+  const now = Date.now();
+  const used = new Set();
+  let picked = take(reviewQueue(module, now), 8, used);
+  if (picked.length < 8) {
+    const learned = [...(module.translations || []), ...(module.dictation || [])]
+      .filter((item) => itemState(item.id).introduced)
+      .sort(overdueSort);
+    picked = [...picked, ...take(learned, 8 - picked.length, used)];
+  }
+  return {
+    steps: picked.map((item, i) => ({
+      kind: reviewKind(item, i),
+      item,
+      pattern: item.pattern,
+      isNew: false,
+      review: true,
+    })),
+    focus: null,
+    review: true,
+  };
+}
+
 function overdueSort(a, b) {
   return itemState(a.id).due - itemState(b.id).due;
 }
@@ -29,14 +79,14 @@ function take(list, n, seen) {
   return out;
 }
 
-export function nextPattern(module, state) {
-  const prefix = `${module.id}::`;
+export function nextPattern(module) {
   for (const p of module.patternOrder) {
-    if (state.patternsIntroduced.includes(`${prefix}${p}`)) continue;
-    if (module.translations.some((t) => t.pattern === p)) return p;
+    if (module.translations.some((t) => t.pattern === p && !itemState(t.id).introduced)) return p;
   }
   return null;
 }
+
+export const NEW_PER_LESSON = 3;
 
 /**
  * Lekcja: 7 kafelków, 4 tłumaczenia, 4 dyktanda — przeplatane.
@@ -50,7 +100,7 @@ export function buildLesson(module, state) {
   const newOnes = focus
     ? take(
         translations.filter((t) => t.pattern === focus && !itemState(t.id).introduced),
-        3,
+        NEW_PER_LESSON,
         used
       )
     : [];
@@ -84,7 +134,11 @@ export function buildLesson(module, state) {
       )
     : [];
 
-  const reviews = take(translations.filter((t) => due(t.id, now)).sort(overdueSort), 2, used);
+  const reviews = take(
+    translations.filter((t) => weak(t.id, now)).sort(overdueSort),
+    4,
+    used
+  );
 
   const filler = take(
     translations.filter((t) => !itemState(t.id).introduced).sort(unseenFirst),
@@ -92,8 +146,8 @@ export function buildLesson(module, state) {
     used
   );
 
-  const typed = [...contrast, ...reviews, ...filler].map((item) => ({
-    kind: 'translate',
+  const typed = [...contrast, ...reviews, ...filler].map((item, i) => ({
+    kind: i % 3 === 2 ? 'dictate' : 'translate',
     item,
     pattern: item.pattern,
     isNew: !itemState(item.id).introduced,
@@ -136,6 +190,33 @@ export function buildLesson(module, state) {
 
 export function focusLabel(module, pattern) {
   return (module.patterns && module.patterns[pattern]) || '';
+}
+
+export function moduleOutline(module) {
+  const now = Date.now();
+  const lessons = [];
+  for (const pattern of module.patternOrder || []) {
+    const items = (module.translations || []).filter((t) => t.pattern === pattern);
+    for (let i = 0; i < items.length; i += NEW_PER_LESSON) {
+      const chunk = items.slice(i, i + NEW_PER_LESSON);
+      lessons.push({
+        n: lessons.length + 1,
+        pattern,
+        title: (module.patterns && module.patterns[pattern]) || pattern,
+        done: chunk.every((t) => itemState(t.id).introduced),
+        sentences: chunk.length,
+      });
+    }
+  }
+  const current = lessons.find((l) => !l.done) || null;
+  const dueCount = reviewQueue(module, now).length;
+  return {
+    total: lessons.length,
+    lessons,
+    current,
+    dueCount,
+    reviewOnly: !current,
+  };
 }
 
 export function nextStop(route, km) {

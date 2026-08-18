@@ -1,43 +1,70 @@
 // Ekrany: wybór głosu, mapa, podsumowanie lekcji, skrzynka, przystanki, sklep, szafa, ustawienia.
-import { esc, h, mount, refreshCounters, plural, toast } from './ui.js';
+import { esc, h, mount, refreshCounters, plural, toast, applyPalette, markNav } from './ui.js';
 import * as store from './store.js';
 import * as speech from './speech.js';
-import { renderAvatar, withItem, HAIR_COLORS, EYE_COLORS, HAIR_STYLES } from './avatar.js';
+import {
+  renderAvatar,
+  renderItemIcon,
+  renderOutfitIcon,
+  withItem,
+  HAIR_COLORS,
+  EYE_COLORS,
+  HAIR_STYLES,
+} from './avatar.js';
 import { startLesson } from './lesson.js';
-import { nextPattern, LESSON_KM, nextStop, formatMinutes } from './scheduler.js';
+import { LESSON_KM, nextStop, moduleOutline } from './scheduler.js';
+import * as disk from './disk.js';
+import { plToEn, chunkEnglish, buildMineModule } from './mine.js';
 
+let BASE_MODULES = [];
 let MODULES = [];
 let MODULE = null;
 let ROUTE = null;
 
-export function boot({ modules, route }) {
-  MODULES = modules || [];
-  ROUTE = route;
+function refreshModules() {
+  MODULES = [...BASE_MODULES, buildMineModule(store.get().customPhrases || [])];
   const saved = store.get().moduleId;
   MODULE = MODULES.find((m) => m.id === saved) || MODULES[0] || null;
   if (MODULE) store.setModuleId(MODULE.id);
-  document.getElementById('btn-home').addEventListener('click', () => go('map'));
-  document.getElementById('btn-settings').addEventListener('click', () => go('settings'));
+}
+
+export function boot({ modules, route }) {
+  BASE_MODULES = modules || [];
+  ROUTE = route;
+  refreshModules();
+  applyPalette(store.get().palette);
+  for (const btn of document.querySelectorAll('[data-go]')) {
+    btn.addEventListener('click', () => go(btn.getAttribute('data-go')));
+  }
   const brand = document.getElementById('btn-brand');
   if (brand) brand.addEventListener('click', () => go('home'));
   const state = store.get();
   refreshCounters(state);
-  if (!state.voiceName) go('onboarding');
-  else if (!state.look?.done) go('look');
-  else go('home');
+  if (!state.voiceName) {
+    const rec = speech.currentVoice() || speech.recommended();
+    if (rec) {
+      speech.setVoiceByName(rec.name);
+      store.setVoice(rec.name);
+    }
+  }
+  go('home');
+  disk.writePairQuiet();
 }
 
 export function go(screen, params = {}) {
   speech.cancel();
   refreshCounters(store.get());
+  markNav(screen);
   const screens = {
     onboarding,
     look,
     home,
+    modules,
     map: fullMap,
     settings,
     shop,
     wardrobe,
+    phrases,
     summary,
     arrival,
   };
@@ -47,31 +74,50 @@ export function go(screen, params = {}) {
 const itemById = (id) => (ROUTE.items || []).find((i) => i.id === id);
 const stopById = (id) => (ROUTE.stops || []).find((s) => s.id === id);
 
+const OUTFIT_SETS = [
+  { name: 'Błękitny komplet', top: 'top-navy', bottom: 'bottom-navy' },
+  { name: 'Różowy komplet', top: 'top-red', bottom: 'bottom-red' },
+  { name: 'Komplet z Berlina', top: 'top-lilac', bottom: 'bottom-lilac' },
+  { name: 'Czarny komplet', top: 'top-sun', bottom: 'bottom-sun' },
+  { name: 'Sweter i jeansy', top: 'top-denim', bottom: 'bottom-jeans' },
+  { name: 'Komplet w paski', top: 'top-mint', bottom: 'bottom-mint' },
+  { name: 'Komplet w grochy', top: 'top-coral', bottom: 'bottom-coral' },
+  { name: 'Płaszcz i krata', top: 'top-coat', bottom: 'bottom-skirt' },
+];
+
+function runLesson({ review = false } = {}) {
+  refreshModules();
+  if (!MODULE) return toast('Wybierz moduł.');
+  if (MODULE.id === 'moje' && !(MODULE.translations || []).length) {
+    toast('Najpierw dodaj zdanie po polsku.');
+    return go('phrases');
+  }
+  startLesson({
+    module: MODULE,
+    review,
+    onFinish: (res) => {
+      disk.writePairQuiet();
+      if (res.aborted) return go('home');
+      go('summary', res);
+    },
+  });
+}
+
 function doll(equipped, size) {
   return renderAvatar(equipped, { size, look: store.get().look });
 }
 
-function backHome() {
-  const nav = h(`<div class="row"><button class="link" type="button">← Strona główna</button></div>`);
-  nav.querySelector('button').addEventListener('click', () => go('home'));
-  return nav;
-}
-
-function raceCard() {
-  const card = h(`<div class="card">
-    <span class="label">Ściganie</span>
-    <h2>Kod dla koleżanki</h2>
-    <p class="muted">Kopiujesz, wysyłasz na Messenger. Ona wkleja u siebie — widzi Twojego ludzika na mapie.
-      Jej kilometry zostają.</p>
-    <p class="tiny" style="font-family:var(--mono);word-break:break-all">${esc(store.encodeRace())}</p>
-    <div class="row">
-      <button class="primary" type="button" data-a="cp">Kopiuj kod</button>
-    </div>
-    <p class="tiny" style="margin-top:.8rem">Wklej jej kod:</p>
-    <textarea data-a="in" rows="2" placeholder="LUM1.…"></textarea>
-    <div class="row end" style="margin-top:.6rem"><button type="button" data-a="go">Pokaż na mapie</button></div>
-  </div>`);
-  card.querySelector('[data-a="cp"]').addEventListener('click', async () => {
+function bindRaceFields(card, { reload } = {}) {
+  const nickIn = card.querySelector('[data-a="nick"]');
+  const codeEl = card.querySelector('[data-a="code"]');
+  card.querySelector('[data-a="nick-save"]')?.addEventListener('click', () => {
+    store.setNick(nickIn?.value || '');
+    const nick = store.get().nick;
+    toast(nick ? 'Nick zapisany. Jest w Twoim kodzie.' : 'Nick skasowany.');
+    if (codeEl) codeEl.textContent = store.encodeRace();
+    if (reload) go('map');
+  });
+  card.querySelector('[data-a="cp"]')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(store.encodeRace());
       toast('Kod skopiowany. Wyślij na Messenger.');
@@ -79,7 +125,7 @@ function raceCard() {
       toast('Schowek zablokowany — zaznacz kod i skopiuj ręcznie.');
     }
   });
-  card.querySelector('[data-a="go"]').addEventListener('click', () => {
+  card.querySelector('[data-a="go"]')?.addEventListener('click', () => {
     try {
       store.saveRival(store.decodeRace(card.querySelector('[data-a="in"]').value));
       toast('Jest na mapie.');
@@ -88,7 +134,26 @@ function raceCard() {
       toast(err.message || 'Nie udało się wczytać kodu.');
     }
   });
-  return card;
+}
+
+function mapRaceForm() {
+  const state = store.get();
+  const box = h(`<div class="map-race">
+    <p class="tiny">Twój nick — koleżanka zobaczy go na mapie, jak wklei Twój kod.</p>
+    <input type="text" data-a="nick" maxlength="16" placeholder="np. Ania" value="${esc(state.nick || '')}" aria-label="Twój nick">
+    <div class="row" style="margin-top:.45rem">
+      <button type="button" data-a="nick-save">Zapisz nick</button>
+    </div>
+    <p class="tiny" data-a="code" style="font-family:var(--mono);word-break:break-all;margin-top:.8rem">${esc(store.encodeRace())}</p>
+    <div class="row" style="margin-top:.45rem">
+      <button class="primary" type="button" data-a="cp">Kopiuj mój kod</button>
+    </div>
+    <p class="tiny" style="margin-top:.85rem">Kod koleżanki</p>
+    <textarea data-a="in" rows="2" placeholder="wklej kod" aria-label="Kod koleżanki"></textarea>
+    <div class="row end" style="margin-top:.55rem"><button type="button" data-a="go">Pokaż na mapie</button></div>
+  </div>`);
+  bindRaceFields(box, { reload: true });
+  return box;
 }
 
 const LANDMARKS = {
@@ -131,6 +196,27 @@ const LANDMARKS = {
     <rect x="22" y="8" width="4" height="44" fill="#8FA0B0"/>
     <polygon points="24,0 28,10 20,10" fill="#2C6753"/>
     <rect x="16" y="40" width="16" height="12" fill="#C9D2DC"/>
+  </svg>`,
+  mill: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
+    <rect x="20" y="28" width="8" height="24" fill="#C4B089"/>
+    <circle cx="24" cy="26" r="4" fill="#6B3E24"/>
+    <rect x="22" y="8" width="4" height="18" fill="#F4E8CE" transform="rotate(25 24 26)"/>
+    <rect x="22" y="8" width="4" height="18" fill="#E8C56B" transform="rotate(70 24 26)"/>
+    <rect x="22" y="8" width="4" height="18" fill="#F4E8CE" transform="rotate(115 24 26)"/>
+    <rect x="22" y="8" width="4" height="18" fill="#E8C56B" transform="rotate(160 24 26)"/>
+  </svg>`,
+  gaudi: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
+    <path d="M10,52 Q14,20 24,8 Q34,20 38,52 Z" fill="#C4B089"/>
+    <path d="M18,52 Q20,28 24,18 Q28,28 30,52 Z" fill="#E8C56B"/>
+    <circle cx="24" cy="22" r="3" fill="#5B7A9A"/>
+  </svg>`,
+  castle: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
+    <rect x="8" y="22" width="32" height="30" fill="#8FA0B0"/>
+    <rect x="6" y="18" width="8" height="34" fill="#C9D2DC"/>
+    <rect x="34" y="18" width="8" height="34" fill="#C9D2DC"/>
+    <polygon points="10,18 14,8 18,18" fill="#2C6753"/>
+    <polygon points="38,18 34,8 30,18" fill="#2C6753"/>
+    <rect x="20" y="34" width="8" height="18" fill="#6B3E24"/>
   </svg>`,
 };
 
@@ -294,59 +380,67 @@ function look() {
 
 // ---------- mapa ----------
 
-function sliceRange(state, full) {
-  const stops = ROUTE.stops;
-  if (full || stops.length <= 2) {
-    return { stops, fromKm: 0, toKm: Math.max(...stops.map((s) => s.km), 1) };
-  }
+function stopIndexForKm(km, stops) {
   let i = 0;
-  while (i < stops.length - 1 && state.km >= stops[i + 1].km) i += 1;
-  const from = i >= stops.length - 1 ? Math.max(0, stops.length - 2) : i;
-  const to = Math.min(stops.length - 1, from + 1);
-  const slice = stops.slice(from, to + 1);
-  const fromKm = slice[0].km;
-  const toKm = Math.max(slice[slice.length - 1].km, fromKm + 1);
-  return { stops: slice, fromKm, toKm };
+  while (i < stops.length - 1 && km >= stops[i + 1].km) i += 1;
+  return i;
 }
 
-function trackHtml(state, { full = false } = {}) {
-  const { stops, fromKm, toKm } = sliceRange(state, full);
-  const span = toKm - fromKm || 1;
-  const pos = Math.min(Math.max(state.km, fromKm), toKm);
-  const pct = (km) => `${((km - fromKm) / span) * 100}%`;
+function routeListHtml(state) {
+  const stops = ROUTE.stops;
+  const youIdx = stopIndexForKm(state.km, stops);
+  const youName = state.nick || 'ty';
+  const rows = stops
+    .map((s, i) => {
+      const here = i === youIdx;
+      const them = (state.rivals || []).filter((r) => stopIndexForKm(r.km, stops) === i);
+      const dolls = [
+        here
+          ? `<div class="route-doll">${renderAvatar(state.equipped, { size: 52, look: state.look || {} })}<span>${esc(youName)}</span></div>`
+          : '',
+        ...them.map(
+          (r) =>
+            `<div class="route-doll them">${renderAvatar(r.eq || {}, { size: 52, look: r.look || {} })}<span>${esc(r.nick || 'ona')}</span></div>`
+        ),
+      ].join('');
+      return `<li class="route-stop ${state.km >= s.km ? 'reached' : ''} ${here ? 'here' : ''}">
+        ${landmark(s)}
+        <div class="route-copy">
+          <div class="name">${esc(s.short || s.name)}</div>
+          <div class="km">${s.km} km</div>
+        </div>
+        <div class="route-people">${dolls}</div>
+      </li>`;
+    })
+    .join('');
+  return `<ol class="route-list">${rows}</ol>`;
+}
 
-  const dots = stops
+function peopleRow(state, { prompt = false } = {}) {
+  const youName = state.nick || 'Ty';
+  const you = `<div class="map-person">
+    ${renderAvatar(state.equipped, { size: 72, look: state.look || {} })}
+    <b>${esc(youName)}</b>
+    <span>${state.km} km</span>
+  </div>`;
+  const them = (state.rivals || [])
     .map(
-      (s) => `
-    <div class="stop ${state.km >= s.km ? 'reached' : ''}" style="left:${pct(s.km)}">
-      ${landmark(s)}
-      <div class="name">${esc(full ? s.name : s.short || s.name)}</div>
-      <div class="km">${s.km} km</div>
+      (r) => `<div class="map-person them">
+      ${renderAvatar(r.eq || {}, { size: 72, look: r.look || {} })}
+      <b>${esc(r.nick || 'Koleżanka')}</b>
+      <span>${Math.round(r.km)} km</span>
     </div>`
     )
     .join('');
-
-  return `
-    <div class="track ${full ? 'full' : 'slice'}">
-      <div class="track-inner">
-        <div class="track-line"></div>
-        <div class="track-fill" style="width:${pct(pos)}"></div>
-        <div class="track-label" style="left:${pct(pos)}">${state.km} km</div>
-        <div class="track-dot" style="left:${pct(pos)}" aria-hidden="true"></div>
-        ${(state.rivals || [])
-          .map((r) => {
-            const km = Math.min(Math.max(r.km, fromKm), toKm);
-            return `<div class="rival" style="left:${pct(km)}" title="koleżanka — ${Math.round(r.km)} km">${renderAvatar(r.eq || {}, { size: 46, look: r.look || {} })}</div>`;
-          })
-          .join('')}
-        <div class="stops">${dots}</div>
-      </div>
-    </div>`;
+  const empty =
+    prompt && !them ? `<p class="tiny">Wklej kod niżej, a jej ludzik stanie tu obok.</p>` : '';
+  return `<div class="map-people">${you}${them}${empty}</div>`;
 }
 
 function nextStopInfo(state) {
   const next = nextStop(ROUTE, state.km);
-  if (!next) return `<p class="muted">Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.</p>`;
+  if (!next)
+    return `<p class="muted">Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.</p>`;
   const left = next.km - state.km;
   const lessons = Math.ceil(left / LESSON_KM);
   return `<p class="muted">Zostało <b>${left} km</b> do ${esc(next.name)}
@@ -354,13 +448,14 @@ function nextStopInfo(state) {
 }
 
 function home() {
+  refreshModules();
   const state = store.get();
-  const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
+  const wrap = h(`<div class="home-stack"></div>`);
 
   if (store.backupIsStale()) {
     const b = h(`<div class="banner warn">
-      <span class="grow"><b>Zrób kopię postępu.</b> Wyczyszczenie danych przeglądarki skasuje całą trasę i szafę.</span>
-      <button class="small" type="button">Ustawienia</button>
+      <span class="grow"><b>Dawno nie było kopii.</b> Zapisz postęp, zanim przeglądarka go skasuje.</span>
+      <button class="small primary" type="button">Zapisz kopię</button>
     </div>`);
     b.querySelector('button').addEventListener('click', () => go('settings'));
     wrap.appendChild(b);
@@ -369,93 +464,178 @@ function home() {
   const d = speech.diagnosis();
   if (d.level === 'blocked') wrap.appendChild(h(voiceBanner()));
 
-  const maxKm = Math.max(...ROUTE.stops.map((s) => s.km));
+  const who = state.nick || 'Ty';
+  const outline = MODULE ? moduleOutline(MODULE, state) : null;
+  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
+  const startLabel = emptyMine
+    ? 'Dodaj zdanie'
+    : !outline
+      ? 'Zaczynamy'
+      : outline.reviewOnly
+        ? 'Zaczynamy powtórkę'
+        : 'Zaczynamy';
+  const next = nextStop(ROUTE, state.km);
+  const missionHint = emptyMine
+    ? 'Wpisz zdanie po polsku. Apka przetłumaczy i przeczyta.'
+    : outline?.dueCount
+      ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
+      : next
+        ? `Zostało ${next.km - state.km} km do ${next.name}.`
+        : 'Koniec narysowanej trasy.';
+  const lessonTitle = outline?.current
+    ? `Lekcja ${outline.current.n}: ${outline.current.title}`
+    : MODULE?.title || 'Lekcja';
+
   wrap.appendChild(
-    h(`<div class="map">
-    <div>
-      <div class="row between" style="align-items:baseline">
-        <span class="label">Trasa</span>
-        <span class="label">${state.km} / ${maxKm} km</span>
-      </div>
-      ${trackHtml(state)}
-      ${nextStopInfo(state)}
-    </div>
-    <div class="doll-frame">${doll(state.equipped, 106)}</div>
+    h(`<div class="hello">
+    <h1>Cześć, ${esc(who)}!</h1>
+    <p class="muted">Gotowa na angielski?</p>
   </div>`)
   );
 
-  const focus = MODULE ? nextPattern(MODULE, state) : null;
-  const focusText = !MODULE
-    ? 'Brak modułu.'
-    : focus
-      ? `Nowy wzorzec w tej lekcji: <b>${esc(MODULE.patterns[focus])}</b>.`
-      : 'Nowych wzorców nie ma — to będzie lekcja powtórkowa.';
-
-  const moduleBtns = MODULES.map((m) => {
-    const on = MODULE && m.id === MODULE.id;
-    return `<button class="small ${on ? 'primary' : ''}" type="button" data-mod="${esc(m.id)}">${esc(m.title)}</button>`;
-  }).join('');
-
-  const startCard = h(`<div class="card">
-    <span class="label">Moduł</span>
-    <div class="row" id="mod-row" style="margin-bottom:.4rem">${moduleBtns}</div>
-    <h1>Lekcja: 15 zdań</h1>
-    <p class="muted">${focusText}</p>
-    <div class="row">
-      <button class="primary" type="button" id="start">Zacznij lekcję</button>
-      <button type="button" id="to-wardrobe">Szafa</button>
-      <button type="button" id="to-shop">Sklep</button>
+  const mission = h(`<div class="mission">
+    <div class="mission-copy">
+      <span class="label">Dzisiejsza lekcja</span>
+      <h2>${esc(lessonTitle)}</h2>
+      <p>${esc(missionHint)}</p>
+      <div class="row">
+        <button class="primary" type="button" id="start">${esc(startLabel)}</button>
+        ${
+          outline && outline.dueCount && !outline.reviewOnly
+            ? `<button type="button" id="review">Powtórka (${outline.dueCount})</button>`
+            : ''
+        }
+      </div>
     </div>
+    <div class="mission-doll">${doll(state.equipped, 132)}</div>
   </div>`);
-  startCard.querySelector('#mod-row')?.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-mod]');
-    if (!btn) return;
-    const next = MODULES.find((m) => m.id === btn.getAttribute('data-mod'));
-    if (!next) return;
-    MODULE = next;
-    store.setModuleId(next.id);
-    go('home');
+  mission.querySelector('#start').addEventListener('click', () => {
+    if (emptyMine) return go('phrases');
+    runLesson({ review: Boolean(outline?.reviewOnly) });
   });
-  startCard.querySelector('#start').addEventListener('click', () => {
-    if (!MODULE) return toast('Wybierz moduł.');
-    startLesson({
-      module: MODULE,
-      onFinish: (res) => (res.aborted ? go('home') : go('summary', res)),
-    });
-  });
-  startCard.querySelector('#to-wardrobe').addEventListener('click', () => go('wardrobe'));
-  startCard.querySelector('#to-shop').addEventListener('click', () => go('shop'));
-  wrap.appendChild(startCard);
-  wrap.appendChild(raceCard());
+  mission.querySelector('#review')?.addEventListener('click', () => runLesson({ review: true }));
+  wrap.appendChild(mission);
 
-  const next = nextStop(ROUTE, state.km);
-  const left = next ? `${next.km - state.km} km do ${next.name}` : 'koniec trasy';
   wrap.appendChild(
-    h(`<div class="card flat">
-    <span class="label">Co umiesz już powiedzieć</span>
-    <div class="facts">
-      <div class="fact"><span>zrobione lekcje</span><b>${state.lessons.length}</b></div>
-      <div class="fact"><span>czas łącznie</span><b>${esc(formatMinutes(state.learnedSeconds))}</b></div>
-      <div class="fact"><span>do następnej stacji</span><b>${esc(left)}</b></div>
-    </div>
+    h(`<div class="stat-row">
+    <div class="stat"><b>${state.km}</b><span>kilometrów</span></div>
+    <div class="stat"><b>${state.lessons.length}</b><span>lekcji</span></div>
+    <div class="stat"><b>${state.coins}</b><span>monet</span></div>
   </div>`)
   );
 
   mount(wrap);
 }
 
-function fullMap() {
-  const state = store.get();
-  const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
-  wrap.appendChild(backHome());
+function lessonRowsHtml(outline) {
+  return outline.lessons
+    .map((l) => {
+      const kind = l.done ? 'done' : outline.current && l.n === outline.current.n ? 'now' : '';
+      const mark = l.done ? '✓' : outline.current && l.n === outline.current.n ? '→' : '';
+      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(l.title)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
+    })
+    .join('');
+}
+
+function moduleDetail(module) {
+  const outline = moduleOutline(module);
+  const emptyMine = module.id === 'moje' && !(module.translations || []).length;
+  const startLabel = emptyMine
+    ? 'Dodaj zdanie'
+    : !outline
+      ? 'Zaczynamy'
+      : outline.reviewOnly
+        ? 'Zaczynamy powtórkę'
+        : 'Zaczynamy';
+  const reviewLine = emptyMine
+    ? 'Wpisz zdanie po polsku. Apka przetłumaczy i przeczyta.'
+    : outline?.dueCount
+      ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
+      : outline?.reviewOnly
+        ? 'Wszystkie lekcje zrobione. Zostaje powtórka.'
+        : '';
+  const list =
+    outline && outline.lessons.length && !emptyMine
+      ? `<ol class="lesson-list">${lessonRowsHtml(outline)}</ol>`
+      : '';
+  const reviewBtn =
+    outline && outline.dueCount && !outline.reviewOnly && !emptyMine
+      ? `<button type="button" data-review>Powtórka (${outline.dueCount})</button>`
+      : '';
+  const panel = h(`<div class="mod-panel">
+    ${list}
+    ${reviewLine ? `<p class="muted review-line">${esc(reviewLine)}</p>` : ''}
+    <div class="row">
+      <button class="primary" type="button" data-start>${esc(startLabel)}</button>
+      ${reviewBtn}
+    </div>
+  </div>`);
+  panel.querySelector('[data-start]')?.addEventListener('click', () => {
+    if (emptyMine) return go('phrases');
+    runLesson({ review: Boolean(outline?.reviewOnly) });
+  });
+  panel.querySelector('[data-review]')?.addEventListener('click', () => runLesson({ review: true }));
+  return panel;
+}
+
+function pickModule(id) {
+  refreshModules();
+  const nextMod = MODULES.find((m) => m.id === id);
+  if (!nextMod) return;
+  MODULE = nextMod;
+  store.setModuleId(nextMod.id);
+  go('modules');
+}
+
+function modules() {
+  refreshModules();
+  const wrap = h(`<div class="home-stack"></div>`);
   wrap.appendChild(
-    h(`<div class="card">
-    <span class="label">Cała trasa</span>
-    <h1>Mapa</h1>
-    ${trackHtml(state, { full: true })}
-    ${nextStopInfo(state)}
+    h(`<div>
+    <span class="label">Nauka</span>
+    <h1>Moduły</h1>
+    <p class="muted">Kliknij moduł — rozwinie się lista lekcji. Potem Zaczynamy.</p>
   </div>`)
   );
+  const list = h(`<div class="mod-list"></div>`);
+  for (const m of MODULES) {
+    const on = MODULE && m.id === MODULE.id;
+    const n = (m.translations || []).length;
+    const count =
+      m.id === 'moje'
+        ? n
+          ? `${n} ${plural(n, 'zdanie', 'zdania', 'zdań')}`
+          : 'jeszcze pusto'
+        : m.subtitle || '';
+    const block = h(`<div class="mod-block ${on ? 'open' : ''}"></div>`);
+    const btn = h(`<button class="mod-card ${on ? 'on' : ''}" type="button">
+      <b>${esc(m.title)}</b>
+      <span>${esc(count)}</span>
+    </button>`);
+    btn.addEventListener('click', () => {
+      if (on) return;
+      pickModule(m.id);
+    });
+    block.appendChild(btn);
+    if (on) block.appendChild(moduleDetail(m));
+    list.appendChild(block);
+  }
+  wrap.appendChild(list);
+  mount(wrap);
+}
+
+function fullMap() {
+  const state = store.get();
+  const wrap = h(`<div class="home-stack"></div>`);
+  const card = h(`<div class="card">
+    <span class="label">Trasa</span>
+    <h1>Mapa</h1>
+    ${peopleRow(state, { prompt: true })}
+  </div>`);
+  card.appendChild(mapRaceForm());
+  card.appendChild(h(routeListHtml(state)));
+  card.appendChild(h(nextStopInfo(state)));
+  wrap.appendChild(card);
   mount(wrap);
 }
 
@@ -506,8 +686,10 @@ function openBox(card) {
   const wrap = card.querySelector('.box-wrap');
   let prizeText;
 
-  if (pool.length && Math.random() < 0.3) {
-    const id = pool[Math.floor(Math.random() * pool.length)];
+  if (pool.length && Math.random() < 0.55) {
+    const exclusive = pool.filter((id) => itemById(id)?.source === 'box');
+    const pickFrom = exclusive.length ? exclusive : pool;
+    const id = pickFrom[Math.floor(Math.random() * pickFrom.length)];
     store.grant(id);
     prizeText = `${itemById(id)?.name || id} — Twoje, za darmo`;
   } else {
@@ -531,6 +713,7 @@ function pendingStops() {
 }
 
 function afterLesson() {
+  disk.writePairQuiet();
   const pending = pendingStops();
   if (pending.length) return go('arrival', { stopId: pending[0].id });
   go('home');
@@ -552,6 +735,33 @@ function arrival({ stopId }) {
     <p class="muted">${esc(stop.flavor || '')}</p>
   </div>`)
   );
+
+  if (stop.kind === 'stall') {
+    const stall = h(`<div class="card">
+      <span class="label">Budka</span>
+      <h2>Krótka powtórka</h2>
+      <p class="muted">Sama dobieram zdania, które poszły źle albo są już do wałkowania.
+        Dostaniesz je w innym rodzaju ćwiczenia niż w lekcji.</p>
+      <div class="row">
+        <button class="primary" type="button" id="stall-rev">Powtórz 8 zdań</button>
+        <button type="button" id="stall-shop">Stragan</button>
+        <button type="button" id="stall-skip">Później</button>
+      </div>
+    </div>`);
+    stall.querySelector('#stall-rev').addEventListener('click', () => {
+      store.markVisited(stop.id);
+      runLesson({ review: true });
+    });
+    stall.querySelector('#stall-shop').addEventListener('click', () => {
+      store.markVisited(stop.id);
+      go('shop', { stopId: stop.id });
+    });
+    stall.querySelector('#stall-skip').addEventListener('click', () => {
+      store.markVisited(stop.id);
+      afterLesson();
+    });
+    wrap.appendChild(stall);
+  }
 
   if (needsChoice) {
     const card = h(`<div class="card">
@@ -579,7 +789,7 @@ function arrival({ stopId }) {
       grid.appendChild(btn);
     }
     wrap.appendChild(card);
-  } else {
+  } else if (stop.kind !== 'stall') {
     const card = h(`<div class="card">
       <div class="doll-frame" style="width:auto;justify-content:center">${doll(state.equipped, 120)}</div>
       <div class="row end">
@@ -612,15 +822,13 @@ function stockOf(stop) {
 function shop() {
   const state = store.get();
   const reached = ROUTE.stops.filter((s) => state.km >= s.km && stockOf(s).length);
-  const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
+  const wrap = h(`<div class="home-stack"></div>`);
 
-  wrap.appendChild(backHome());
   wrap.appendChild(
     h(`<div class="card flat">
     <span class="label">Masz ${state.coins} ${plural(state.coins, 'monetę', 'monety', 'monet')}</span>
     <h1>Sklep</h1>
-    <p class="muted">Kupujesz tylko tam, gdzie już dotarłaś. Monety nie ruszają Twoich kilometrów —
-      to dwa osobne liczniki.</p>
+    <p class="muted">Stroje kupujesz w komplecie: góra i dół razem. W szafie możesz je rozdzielić.</p>
   </div>`)
   );
 
@@ -632,6 +840,8 @@ function shop() {
   }
 
   for (const stop of reached) {
+    const ids = stockOf(stop);
+    const used = new Set();
     const card = h(`<div class="card">
       <span class="label">${stop.km} km</span>
       <h2>${esc(stop.name)}</h2>
@@ -639,13 +849,52 @@ function shop() {
     </div>`);
     const grid = card.querySelector('.grid');
 
-    for (const id of stockOf(stop)) {
+    for (const set of OUTFIT_SETS) {
+      if (!ids.includes(set.top) && !ids.includes(set.bottom)) continue;
+      used.add(set.top);
+      used.add(set.bottom);
+      const topItem = itemById(set.top);
+      const bottomItem = itemById(set.bottom);
+      if (!topItem || !bottomItem) continue;
+      const haveTop = store.owns(set.top);
+      const haveBottom = store.owns(set.bottom);
+      const missing = [];
+      if (!haveTop) missing.push(topItem);
+      if (!haveBottom) missing.push(bottomItem);
+      const price = missing.reduce((sum, it) => sum + it.price, 0);
+      const owned = !missing.length;
+      const afford = state.coins >= price;
+      const thing = h(`<div class="thing ${owned ? 'on' : ''}">
+        <div class="thing-art">${renderOutfitIcon(set.top, set.bottom, { size: 88 })}</div>
+        <span class="n">${esc(set.name)}</span>
+        <span class="price">${owned ? 'masz komplet' : missing.length === 1 ? `dokończ · ${price} monet` : `${price} monet`}</span>
+      </div>`);
+      if (!owned) {
+        const buy =
+          h(`<button class="small ${afford ? 'primary' : ''}" type="button" ${afford ? '' : 'disabled'}>
+          ${afford ? (missing.length === 1 ? 'Dokończ' : 'Kup komplet') : 'za mało monet'}
+        </button>`);
+        buy.addEventListener('click', () => {
+          if (!store.spend(price)) return toast('Za mało monet.');
+          store.grantMany(missing.map((it) => it.id));
+          store.equip(topItem);
+          store.equip(bottomItem);
+          toast(`${set.name} — kupione i założone.`);
+          go('shop');
+        });
+        thing.appendChild(buy);
+      }
+      grid.appendChild(thing);
+    }
+
+    for (const id of ids) {
+      if (used.has(id)) continue;
       const item = itemById(id);
       if (!item) continue;
       const owned = store.owns(id);
       const afford = state.coins >= item.price;
       const thing = h(`<div class="thing ${owned ? 'on' : ''}">
-        <div style="display:flex;justify-content:center">${doll(withItem(state.equipped, item), 76)}</div>
+        <div class="thing-art">${renderItemIcon(item, { size: 72, look: state.look })}</div>
         <span class="n">${esc(item.name)}</span>
         <span class="price">${owned ? 'masz to' : `${item.price} monet`}</span>
       </div>`);
@@ -671,21 +920,116 @@ function shop() {
   mount(wrap);
 }
 
+function phrases() {
+  const wrap = h(`<div class="home-stack"></div>`);
+  wrap.appendChild(
+    h(`<div class="card">
+    <span class="label">Moje zdania</span>
+    <h1>Wpisz po polsku</h1>
+    <p class="muted">Apka tłumaczy na angielski i czyta to głosem, którego używasz w lekcjach.</p>
+    <label class="tiny" for="pl-in">Polski</label>
+    <textarea id="pl-in" rows="3" placeholder="np. Nie mam jeszcze komercyjnego Selenium"></textarea>
+    <div class="row" style="margin-top:.6rem">
+      <button class="primary" type="button" id="do-tr">Przetłumacz i odczytaj</button>
+    </div>
+    <p class="tiny" id="tr-status" style="margin-top:.5rem"></p>
+    <label class="tiny" for="en-out">Angielski</label>
+    <textarea id="en-out" rows="3" placeholder="tu wpadnie tłumaczenie" readonly></textarea>
+    <div class="row end" style="margin-top:.6rem">
+      <button type="button" id="hear" disabled>▶ Posłuchaj jeszcze raz</button>
+      <button class="primary" type="button" id="save-ph" disabled>Dodaj do lekcji</button>
+    </div>
+  </div>`)
+  );
+
+  const list = store.get().customPhrases || [];
+  if (list.length) {
+    const card = h(
+      `<div class="card"><span class="label">Już dodane</span><div id="ph-list"></div></div>`
+    );
+    const box = card.querySelector('#ph-list');
+    for (const p of list.slice().reverse()) {
+      const row = h(`<div class="phrase-row">
+        <div>
+          <p class="muted" style="margin:0">${esc(p.pl)}</p>
+          <p style="margin:.2rem 0 0">${esc(p.en)}</p>
+        </div>
+        <button class="small ghost" type="button" data-del="${esc(p.id)}">Usuń</button>
+      </div>`);
+      box.appendChild(row);
+    }
+    card.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-del]');
+      if (!btn) return;
+      store.removeCustomPhrase(btn.getAttribute('data-del'));
+      toast('Usunięte.');
+      go('phrases');
+    });
+    wrap.appendChild(card);
+  }
+
+  const pl = wrap.querySelector('#pl-in');
+  const en = wrap.querySelector('#en-out');
+  const status = wrap.querySelector('#tr-status');
+  const saveBtn = wrap.querySelector('#save-ph');
+  const hearBtn = wrap.querySelector('#hear');
+  const trBtn = wrap.querySelector('#do-tr');
+
+  const playEn = () => {
+    if (en.value.trim()) speech.speakOnce(en.value.trim(), { rate: 1 });
+  };
+
+  trBtn.addEventListener('click', async () => {
+    const text = pl.value.trim();
+    if (!text) return toast('Najpierw wpisz zdanie po polsku.');
+    trBtn.disabled = true;
+    status.textContent = 'Tłumaczę…';
+    try {
+      const translated = await plToEn(text);
+      en.value = translated;
+      en.readOnly = false;
+      saveBtn.disabled = false;
+      hearBtn.disabled = false;
+      status.textContent = 'Gotowe. Jeśli źle trafiło, popraw angielski i dodaj.';
+      playEn();
+    } catch {
+      status.textContent = 'Nie udało się przetłumaczyć. Sprawdź internet i spróbuj jeszcze raz.';
+    }
+    trBtn.disabled = false;
+  });
+
+  hearBtn.addEventListener('click', playEn);
+
+  saveBtn.addEventListener('click', () => {
+    try {
+      store.addCustomPhrase({
+        pl: pl.value.trim(),
+        en: en.value.trim(),
+        chunks: chunkEnglish(en.value.trim()),
+      });
+      toast('Zdanie w lekcjach.');
+      store.setModuleId('moje');
+      go('home');
+    } catch (err) {
+      toast(err.message || 'Nie dało się dodać.');
+    }
+  });
+
+  mount(wrap);
+  pl.focus();
+}
+
 // ---------- szafa ----------
 
 function wardrobe() {
   const state = store.get();
-  const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
+  const wrap = h(`<div class="home-stack"></div>`);
 
-  wrap.appendChild(backHome());
   wrap.appendChild(
-    h(`<div class="map">
-    <div>
-      <span class="label">Szafa</span>
-      <h1 style="margin-top:.3rem">Ubierz się</h1>
-      <p class="muted">Sukienka zdejmuje górę i dół. Kliknij coś założonego, żeby to zdjąć.</p>
-    </div>
-    <div class="doll-frame">${doll(state.equipped, 118)}</div>
+    h(`<div class="card flat">
+    <span class="label">Szafa</span>
+    <h1>Ubierz się</h1>
+    <p class="muted">Górę i dół zakładasz osobno. Kliknij coś założonego, żeby to zdjąć.</p>
   </div>`)
   );
 
@@ -701,9 +1045,8 @@ function wardrobe() {
   for (const [, items] of bySlot) {
     for (const item of items) {
       const on = state.equipped[item.slot] === item.id;
-      const btn =
-        h(`<button class="thing ${on ? 'on' : ''}" type="button" style="align-items:center;text-align:center">
-        ${doll(withItem(state.equipped, item), 76)}
+      const btn = h(`<button class="thing ${on ? 'on' : ''}" type="button">
+        <div class="thing-art">${renderItemIcon(item, { size: 72, look: state.look })}</div>
         <span class="n">${esc(item.name)}</span>
         <span class="s">${on ? 'na sobie — kliknij, by zdjąć' : 'założ'}</span>
       </button>`);
@@ -724,8 +1067,25 @@ function wardrobe() {
 
 function settings() {
   const state = store.get();
-  const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
-  wrap.appendChild(backHome());
+  const wrap = h(`<div class="home-stack"></div>`);
+
+  const paletteCard = h(`<div class="card">
+    <span class="label">Wygląd strony</span>
+    <h2>Kolor</h2>
+    <p class="muted">Zielony jak dotąd, albo liliowy — jaśniejszy, nowszy.</p>
+    <div class="row">
+      <button type="button" data-pal="forest" class="${state.palette !== 'lilac' ? 'primary' : ''}">Zielony</button>
+      <button type="button" data-pal="lilac" class="${state.palette === 'lilac' ? 'primary' : ''}">Liliowy</button>
+    </div>
+  </div>`);
+  paletteCard.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-pal]');
+    if (!btn) return;
+    const next = store.setPalette(btn.getAttribute('data-pal'));
+    applyPalette(next);
+    go('settings');
+  });
+  wrap.appendChild(paletteCard);
 
   // Głos
   const voiceCard = h(`<div class="card">
@@ -768,8 +1128,6 @@ function settings() {
   lookCard.querySelector('#edit-look').addEventListener('click', () => go('look'));
   wrap.appendChild(lookCard);
 
-  wrap.appendChild(raceCard());
-
   // Kopia zapasowa
   const last = state.lastBackupAt ? new Date(state.lastBackupAt).toLocaleString('pl-PL') : 'nigdy';
   const backupCard = h(`<div class="card">
@@ -777,9 +1135,13 @@ function settings() {
     <h2>To jedyne miejsce, gdzie żyje Twój postęp</h2>
     <p class="muted">Kilometry, monety i szafa siedzą w tej przeglądarce. Wyczyszczenie danych
       przeglądarki albo tryb prywatny skasuje wszystko. Ostatnia kopia: <b>${esc(last)}</b>.</p>
+    <p class="tiny">Automatyczny zapis trzyma tylko dwa pliki: <b>lumio-biezaca.json</b> i
+      <b>lumio-poprzednia.json</b>. Nie robi dwustu kopii.</p>
     <div class="row">
       <button class="primary" type="button" id="dl">Zapisz kopię do pliku</button>
-      <button type="button" id="cp">Skopiuj do schowka</button>
+      <button type="button" id="folder">Wybierz folder na automatyczny zapis</button>
+      <button type="button" id="cp">Kopiuj do schowka</button>
+      ${store.hasPrevBackup() ? `<button type="button" id="prev">Wczytaj poprzednią kopię</button>` : ''}
     </div>
     <details>
       <summary style="cursor:pointer;color:var(--primary)">Wczytaj kopię</summary>
@@ -792,11 +1154,33 @@ function settings() {
     const blob = new Blob([store.exportText()], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `lumio-postep-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = 'lumio-biezaca.json';
     a.click();
     URL.revokeObjectURL(a.href);
     store.markBackedUp();
     toast('Kopia zapisana.');
+  });
+  backupCard.querySelector('#folder')?.addEventListener('click', async () => {
+    if (!disk.supported()) {
+      toast('Ta przeglądarka nie umie sama pisać na dysk. Zostaje zapis do pliku.');
+      return;
+    }
+    try {
+      await disk.pickFolder();
+      toast('Folder zapisany. Od teraz tylko dwa pliki: bieżąca i poprzednia.');
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;
+      toast('Nie udało się wybrać folderu.');
+    }
+  });
+  backupCard.querySelector('#prev')?.addEventListener('click', () => {
+    try {
+      store.importPrevBackup();
+      toast('Wczytałam poprzednią kopię.');
+      go('home');
+    } catch (err) {
+      toast(err.message || 'Nie ma poprzedniej kopii.');
+    }
   });
   backupCard.querySelector('#cp').addEventListener('click', async () => {
     try {

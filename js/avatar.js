@@ -71,6 +71,52 @@ function hairFront(id, c) {
     <path d="M64,26 Q80,16 96,34" fill="none" stroke="${c.shine}" stroke-width="2.4" opacity=".5"/>`;
 }
 
+function uid(prefix) {
+  return `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+// Krój z pierwszej niebieskiej sukienki: wąskie ramiona, małe rękawy.
+function fittedTop(fill) {
+  return `
+    <path d="M58,100 L70,96 Q80,108 90,96 L102,100
+             L98,148 Q80,154 62,148 Z" fill="${fill}"/>
+    <path d="M58,100 Q49,107 48,118 L62,122 Q64,108 67,103 Z" fill="${fill}"/>
+    <path d="M102,100 Q111,107 112,118 L98,122 Q96,108 93,103 Z" fill="${fill}"/>`;
+}
+
+function fittedSkirt(fill, hem = '') {
+  return `
+    <path d="M62,148 Q80,156 98,148 L108,200 Q80,210 52,200 Z" fill="${fill}"/>
+    ${hem}`;
+}
+
+function fittedHem(deep) {
+  return `<path d="M52,200 Q80,210 108,200 L106,194 Q80,202 54,194 Z" fill="${deep}"/>`;
+}
+
+export const DRESS_PARTS = {
+  'dress-navy': { top: 'top-navy', bottom: 'bottom-navy' },
+  'dress-red': { top: 'top-red', bottom: 'bottom-red' },
+  'dress-lilac': { top: 'top-lilac', bottom: 'bottom-lilac' },
+  'dress-sun': { top: 'top-sun', bottom: 'bottom-sun' },
+  'dress-mint': { top: 'top-mint', bottom: 'bottom-mint' },
+  'dress-coral': { top: 'top-coral', bottom: 'bottom-coral' },
+  'dress-ball': { top: 'top-ball', bottom: 'bottom-ball' },
+};
+
+function clothesOf(equipped = {}) {
+  if (equipped.dress && DRESS_PARTS[equipped.dress]) return DRESS_PARTS[equipped.dress];
+  return {
+    top: equipped.top || 'top-tshirt',
+    bottom: equipped.bottom || 'bottom-shorts',
+  };
+}
+
+const TOP_SHAPE = `M58,100 L70,96 Q80,108 90,96 L102,100 L98,148 Q80,154 62,148 Z
+M58,100 Q49,107 48,118 L62,122 Q64,108 67,103 Z
+M102,100 Q111,107 112,118 L98,122 Q96,108 93,103 Z`;
+const SKIRT_SHAPE = `M62,148 Q80,156 98,148 L108,200 Q80,210 52,200 Z`;
+
 const TOPS = {
   'top-tshirt': (col = '#FFF8F4') => `
     <path d="M58,98 Q80,91 102,98 L98,156 Q80,164 62,156 Z" fill="${col}"/>
@@ -79,12 +125,53 @@ const TOPS = {
     <path d="M68,96 Q80,108 92,96" fill="none" stroke="${SKIN_DARK}" stroke-width="2"/>
     <path d="M80,118 L80,150" fill="none" stroke="${SKIN_DARK}" stroke-width="1" opacity=".25"/>`,
   'top-denim': () => `
-    <path d="M56,98 Q80,90 104,98 L100,168 Q80,176 60,168 Z" fill="#4A6FA5"/>
-    <path d="M56,98 Q44,108 42,128 L60,132 Q62,112 66,104 Z" fill="#3E5E8C"/>
-    <path d="M104,98 Q116,108 118,128 L100,132 Q98,112 94,104 Z" fill="#3E5E8C"/>
-    <path d="M68,96 Q80,110 92,96" fill="none" stroke="${SKIN_DARK}" stroke-width="2"/>
-    <path d="M62,128 L98,128" fill="none" stroke="#C9A24B" stroke-width="1.4"/>
-    <path d="M80,110 L80,168" fill="none" stroke="#3A587E" stroke-width="1.2"/>`,
+    ${fittedTop('#F3E6C8')}
+    <path d="M68,96 Q80,108 92,96" fill="none" stroke="${SKIN_DARK}" stroke-width="2"/>
+    <path d="M72,118 Q80,128 88,118 Q80,124 72,118" fill="none" stroke="#C9B48A" stroke-width="1.2"/>
+    <path d="M74,132 Q80,142 86,132 Q80,138 74,132" fill="none" stroke="#C9B48A" stroke-width="1.2"/>
+    <path d="M80,108 L80,148" fill="none" stroke="#C9B48A" stroke-width="1"/>
+    <path d="M58,118 Q49,122 48,128" fill="none" stroke="#2C6753" stroke-width="2.4"/>
+    <path d="M102,118 Q111,122 112,128" fill="none" stroke="#2C6753" stroke-width="2.4"/>`,
+  'top-coat': () => `
+    ${fittedTop('#3A3344')}
+    <path d="M70,98 L66,122 L80,114 L94,122 L90,98" fill="none" stroke="#C9A24B" stroke-width="1"/>
+    <circle cx="74" cy="124" r="1.8" fill="#C9A24B"/>
+    <circle cx="74" cy="136" r="1.8" fill="#C9A24B"/>`,
+  'top-navy': () => `
+    ${fittedTop('#7EC8E8')}
+    <path d="M70,96 Q80,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>
+    <rect x="64" y="147" width="32" height="5" rx="1.2" fill="#F7F3EC"/>`,
+  'top-red': () => `
+    ${fittedTop('#F48FB1')}
+    <path d="M70,96 Q76,108 80,104 Q84,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>`,
+  'top-lilac': () => `
+    ${fittedTop('#9B7BB8')}
+    <path d="M70,96 Q80,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>
+    <path d="M80,108 L80,148" fill="none" stroke="#7A5898" stroke-width="1"/>`,
+  'top-sun': () => `
+    ${fittedTop('#2A2826')}
+    <path d="M70,96 Q80,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>
+    <path d="M80,108 L74,116 L80,114 L86,116 Z" fill="#C42A45"/>`,
+  'top-mint': () => {
+    const cid = uid('breton-top');
+    return `
+    <defs><clipPath id="${cid}"><path d="${TOP_SHAPE}"/></clipPath></defs>
+    ${fittedTop('#F7F3EC')}
+    <g clip-path="url(#${cid})">
+      <path d="M40,112 H120" stroke="#1F3A5C" stroke-width="4"/>
+      <path d="M40,124 H120" stroke="#1F3A5C" stroke-width="4"/>
+      <path d="M40,136 H120" stroke="#1F3A5C" stroke-width="4"/>
+    </g>`;
+  },
+  'top-coral': () => `
+    ${fittedTop('#E86B5A')}
+    <circle cx="72" cy="122" r="2.1" fill="#FFF8F4"/>
+    <circle cx="88" cy="120" r="2.1" fill="#FFF8F4"/>
+    <circle cx="80" cy="136" r="2.2" fill="#FFF8F4"/>`,
+  'top-ball': () => `
+    ${fittedTop('#6B2A4A')}
+    <path d="M70,96 Q76,108 80,104 Q84,108 90,96" fill="none" stroke="#E8C56B" stroke-width="1.8"/>
+    <circle cx="80" cy="118" r="2.2" fill="#E8C56B"/>`,
 };
 
 const BOTTOMS = {
@@ -92,38 +179,56 @@ const BOTTOMS = {
     <path d="M62,154 Q80,162 98,154 L104,198 Q94,202 84,198 L80,172 L76,198 Q66,202 56,198 Z" fill="${col}"/>
     <path d="M80,162 L80,172" fill="none" stroke="#5A6775" stroke-width="1.4"/>`,
   'bottom-jeans': () => `
-    <path d="M62,154 Q80,162 98,154 L104,248 L88,248 L84,188 L80,176 L76,188 L72,248 L56,248 Z" fill="#3D5A80"/>
-    <path d="M80,162 L80,176" fill="none" stroke="#2E4664" stroke-width="1.4"/>`,
+    <path d="M62,154 Q80,162 98,154 L104,248 L88,248 L84,190 L80,176 L76,190 L72,248 L56,248 Z" fill="#2F4A6E"/>
+    <path d="M80,162 L80,176" fill="none" stroke="#1E334E" stroke-width="1.4"/>
+    <path d="M64,176 Q68,172 74,176" fill="none" stroke="#C9A24B" stroke-width="1"/>
+    <path d="M96,176 Q92,172 86,176" fill="none" stroke="#C9A24B" stroke-width="1"/>`,
+  'bottom-skirt': () => {
+    const pid = uid('tartan');
+    return `
+    <defs>
+      <pattern id="${pid}" width="10" height="10" patternUnits="userSpaceOnUse">
+        <rect width="10" height="10" fill="#1F3A4C"/>
+        <rect x="0" y="0" width="10" height="3" fill="#2C6753"/>
+        <rect x="0" y="0" width="3" height="10" fill="#6B2A3A"/>
+        <rect x="0" y="0" width="10" height="1" fill="#E8C56B" opacity=".7"/>
+        <rect x="0" y="0" width="1" height="10" fill="#E8C56B" opacity=".7"/>
+      </pattern>
+    </defs>
+    ${fittedSkirt(`url(#${pid})`)}`;
+  },
+  'bottom-navy': () => fittedSkirt('#7EC8E8', fittedHem('#4FA8CE')),
+  'bottom-red': () => `
+    ${fittedSkirt('#F48FB1', fittedHem('#E56B94'))}
+    <rect x="64" y="147" width="32" height="5" rx="1.2" fill="#FFF"/>
+    <path d="M80,150 L72,147 L72,155 Z" fill="#FFF"/>
+    <path d="M80,150 L88,147 L88,155 Z" fill="#FFF"/>
+    <circle cx="80" cy="150.5" r="2" fill="#E56B94"/>`,
+  'bottom-lilac': () => `
+    <path d="M62,148 Q80,156 98,148 L102,208 Q80,214 58,208 Z" fill="#9B7BB8"/>
+    <rect x="64" y="147" width="32" height="5" rx="1.2" fill="#1A1210"/>`,
+  'bottom-sun': () => fittedSkirt('#2A2826', fittedHem('#1A1816')),
+  'bottom-mint': () => {
+    const cid = uid('breton-skirt');
+    return `
+    <defs><clipPath id="${cid}"><path d="${SKIRT_SHAPE}"/></clipPath></defs>
+    ${fittedSkirt('#F7F3EC', fittedHem('#1F3A5C'))}
+    <g clip-path="url(#${cid})">
+      <path d="M40,164 H120" stroke="#1F3A5C" stroke-width="4"/>
+      <path d="M40,176 H120" stroke="#1F3A5C" stroke-width="4"/>
+      <path d="M40,188 H120" stroke="#1F3A5C" stroke-width="4"/>
+    </g>`;
+  },
+  'bottom-coral': () => `
+    ${fittedSkirt('#E86B5A', fittedHem('#F4A090'))}
+    <circle cx="70" cy="172" r="2.1" fill="#FFF8F4"/>
+    <circle cx="90" cy="176" r="2.1" fill="#FFF8F4"/>
+    <circle cx="80" cy="188" r="2.2" fill="#FFF8F4"/>`,
+  'bottom-ball': () => `
+    <path d="M62,148 Q80,156 98,148 L120,236 Q80,248 40,236 Z" fill="#6B2A4A"/>
+    <path d="M40,236 Q80,248 120,236 L118,228 Q80,238 42,228 Z" fill="#8A3A62"/>
+    <rect x="64" y="147" width="32" height="5" rx="1.2" fill="#E8C56B"/>`,
 };
-
-const DRESSES = {
-  'dress-navy': () => miniDress('#7EC8E8', '#4FA8CE', { neck: 'round', belt: '#F7F3EC' }),
-  'dress-red': () => miniDress('#F48FB1', '#E56B94', { neck: 'heart', belt: '#FFF', bow: true }),
-  'dress-lilac': () => miniDress('#C5A3E0', '#A57BC8', { neck: 'round', belt: '#F7F3EC' }),
-  'dress-sun': () => miniDress('#F5C84C', '#E0A82E', { neck: 'heart', belt: '#FFF', bow: true }),
-};
-
-function miniDress(main, deep, { neck, belt, bow }) {
-  const neckline =
-    neck === 'heart'
-      ? `<path d="M70,96 Q76,108 80,104 Q84,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>`
-      : `<path d="M70,96 Q80,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>`;
-  const waistBow = bow
-    ? `<path d="M80,150 L72,147 L72,155 Z" fill="#FFF"/>
-       <path d="M80,150 L88,147 L88,155 Z" fill="#FFF"/>
-       <circle cx="80" cy="150.5" r="2" fill="${deep}"/>`
-    : '';
-  return `
-    <path d="M58,100 L70,96 Q80,108 90,96 L102,100
-             L98,148 Q80,154 62,148 Z" fill="${main}"/>
-    <path d="M58,100 Q49,107 48,118 L62,122 Q64,108 67,103 Z" fill="${main}"/>
-    <path d="M102,100 Q111,107 112,118 L98,122 Q96,108 93,103 Z" fill="${main}"/>
-    <path d="M62,148 Q80,156 98,148 L108,200 Q80,210 52,200 Z" fill="${main}"/>
-    <path d="M52,200 Q80,210 108,200 L106,194 Q80,202 54,194 Z" fill="${deep}"/>
-    <rect x="64" y="147" width="32" height="5" rx="1.2" fill="${belt}"/>
-    ${waistBow}
-    ${neckline}`;
-}
 
 function sneakers(upper = '#F4EFE6', sole = '#2A2826') {
   const shine = 'rgba(255,255,255,.45)';
@@ -138,11 +243,17 @@ function sneakers(upper = '#F4EFE6', sole = '#2A2826') {
     </g>`;
 }
 
-function shoesFor(dressId) {
-  if (dressId === 'dress-red') return sneakers('#F48FB1', '#FFFFFF');
-  if (dressId === 'dress-navy') return sneakers('#7EC8E8', '#FFFFFF');
-  if (dressId === 'dress-lilac') return sneakers('#C5A3E0', '#FFFFFF');
-  if (dressId === 'dress-sun') return sneakers('#F5C84C', '#2A2826');
+function shoesFor(parts) {
+  const { top, bottom } = parts;
+  if (top === 'top-red' || bottom === 'bottom-red') return sneakers('#F48FB1', '#FFFFFF');
+  if (top === 'top-navy' || bottom === 'bottom-navy') return sneakers('#7EC8E8', '#FFFFFF');
+  if (top === 'top-lilac' || bottom === 'bottom-lilac') return sneakers('#1A1210', '#C9A24B');
+  if (top === 'top-sun' || bottom === 'bottom-sun') return sneakers('#2A2826', '#C42A45');
+  if (top === 'top-mint' || bottom === 'bottom-mint') return sneakers('#1F3A5C', '#F7F3EC');
+  if (top === 'top-coral' || bottom === 'bottom-coral') return sneakers('#E86B5A', '#FFFFFF');
+  if (top === 'top-denim') return sneakers('#F3E6C8', '#6B3E24');
+  if (top === 'top-coat' || bottom === 'bottom-skirt') return sneakers('#3A3344', '#C9A24B');
+  if (top === 'top-ball' || bottom === 'bottom-ball') return sneakers('#E8C56B', '#6B2A4A');
   return sneakers();
 }
 
@@ -165,14 +276,54 @@ const EXTRAS = {
       <circle cx="0" cy="0" r="4.2" fill="#C44868"/>
     </g>`,
   beanie: `
-    <path d="M54,48 Q80,18 106,48 Q100,38 80,36 Q60,38 54,48 Z" fill="#3A6B5A"/>
-    <ellipse cx="80" cy="36" rx="7" ry="4" fill="#C44868"/>`,
+    <path d="M52,40 Q80,6 108,40 Q102,32 80,30 Q58,32 52,40 Z" fill="#3A6B5A"/>
+    <ellipse cx="80" cy="28" rx="7" ry="4" fill="#C44868"/>`,
   scarf: `
-    <path d="M66,88 Q80,98 94,88 L92,118 Q80,112 70,124 Z" fill="#C43B4C"/>
-    <path d="M70,88 Q80,94 90,88" fill="none" stroke="#8E2A38" stroke-width="1.4"/>`,
+    <path d="M64,98 Q80,112 96,98 L94,138 Q80,128 70,146 Z" fill="#C43B4C"/>
+    <path d="M68,98 Q80,108 92,98" fill="none" stroke="#8E2A38" stroke-width="1.4"/>`,
   necklace: `
-    <path d="M68,88 Q80,102 92,88" fill="none" stroke="#E8C56B" stroke-width="2"/>
-    <circle cx="80" cy="102" r="3.2" fill="#E8C56B"/>`,
+    <path d="M68,108 Q80,124 92,108" fill="none" stroke="#E8C56B" stroke-width="2"/>
+    <circle cx="80" cy="124" r="3" fill="#E8C56B"/>`,
+  clips: `
+    <rect x="56" y="28" width="10" height="5" rx="2" fill="#E8C56B" transform="rotate(-18 61 30)"/>
+    <rect x="94" y="28" width="10" height="5" rx="2" fill="#E8C56B" transform="rotate(18 99 30)"/>`,
+  headband: `
+    <path d="M54,34 Q80,18 106,34" fill="none" stroke="#C44868" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M54,34 Q80,18 106,34" fill="none" stroke="#F4E8CE" stroke-width="1.8" stroke-linecap="round"/>`,
+  beret: `
+    <ellipse cx="88" cy="30" rx="24" ry="11" fill="#C23A52"/>
+    <ellipse cx="86" cy="26" rx="16" ry="7" fill="#A32F44"/>
+    <circle cx="106" cy="22" r="3" fill="#F4E8CE"/>`,
+  choker: `
+    <rect x="67" y="100" width="26" height="6" rx="2" fill="#2A2220"/>
+    <circle cx="80" cy="103" r="2.3" fill="#E8C56B"/>`,
+  studs: `
+    <circle cx="50" cy="74" r="2.4" fill="#C9D2DC"/>
+    <circle cx="110" cy="74" r="2.4" fill="#C9D2DC"/>`,
+  hoops: `
+    <circle cx="50" cy="78" r="5.2" fill="none" stroke="#E8C56B" stroke-width="1.8"/>
+    <circle cx="110" cy="78" r="5.2" fill="none" stroke="#E8C56B" stroke-width="1.8"/>`,
+  pearls: `
+    <circle cx="70" cy="108" r="2.1" fill="#F4EFE6"/>
+    <circle cx="75" cy="114" r="2.1" fill="#F4EFE6"/>
+    <circle cx="80" cy="118" r="2.3" fill="#F4EFE6"/>
+    <circle cx="85" cy="114" r="2.1" fill="#F4EFE6"/>
+    <circle cx="90" cy="108" r="2.1" fill="#F4EFE6"/>`,
+  tiara: `
+    <path d="M58,28 Q80,12 102,28" fill="none" stroke="#E8C56B" stroke-width="2.2"/>
+    <path d="M80,12 L80,20" stroke="#E8C56B" stroke-width="1.6"/>
+    <circle cx="80" cy="12" r="3" fill="#E8C56B"/>
+    <circle cx="68" cy="22" r="2" fill="#F4EFE6"/>
+    <circle cx="92" cy="22" r="2" fill="#F4EFE6"/>`,
+  flower: `
+    <g transform="translate(104 36)">
+      <circle cx="0" cy="0" r="3.2" fill="#E35A7A"/>
+      <circle cx="-4" cy="-2" r="2.6" fill="#F48FB1"/>
+      <circle cx="4" cy="-2" r="2.6" fill="#F48FB1"/>
+      <circle cx="-3" cy="3" r="2.6" fill="#F48FB1"/>
+      <circle cx="3" cy="3" r="2.6" fill="#F48FB1"/>
+      <circle cx="0" cy="0" r="1.6" fill="#E8C56B"/>
+    </g>`,
 };
 
 const LIPS = {
@@ -180,6 +331,9 @@ const LIPS = {
   lipstick: `
     <path d="M73,78 Q76.8,76 80,77.4 Q83.2,76 87,78 Q80,88 73,78 Z" fill="#C42A45"/>
     <path d="M75,79.4 Q80,86.2 85,79.4" fill="none" stroke="#9A1F36" stroke-width="1" opacity=".5"/>`,
+  gloss: `
+    <path d="M73,78 Q76.8,76.4 80,77.6 Q83.2,76.4 87,78 Q80,86 73,78 Z" fill="#E56B94"/>
+    <ellipse cx="82" cy="80" rx="3" ry="1.4" fill="#FFF" opacity=".45"/>`,
 };
 
 const SLOT_OF = {
@@ -232,14 +386,15 @@ export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
   const hairId = equipped.hair || 'hair-bob';
   const palette = HAIR_COLORS[look.hairColor] || HAIR_COLORS.brunette;
   const eyeColor = look.eyeColor || 'brown';
+  const parts = clothesOf(equipped);
 
-  const clothes = equipped.dress
-    ? (DRESSES[equipped.dress] || DRESSES['dress-navy'])()
-    : `${(BOTTOMS[equipped.bottom] || BOTTOMS['bottom-shorts'])()}${(TOPS[equipped.top] || TOPS['top-tshirt'])()}`;
+  const clothes = `${(BOTTOMS[parts.bottom] || BOTTOMS['bottom-shorts'])()}${(TOPS[parts.top] || TOPS['top-tshirt'])()}`;
 
-  const lips = equipped.lips === 'lipstick' ? LIPS.lipstick : LIPS.none;
-  const extras = ['eyes', 'ears', 'head', 'neck'].map((slot) => EXTRAS[equipped[slot]] || '').join('');
-  const footwear = shoesFor(equipped.dress);
+  const lips = LIPS[equipped.lips] || LIPS.none;
+  const neck = EXTRAS[equipped.neck] || '';
+  const head = EXTRAS[equipped.head] || '';
+  const faceBits = ['eyes', 'ears'].map((slot) => EXTRAS[equipped[slot]] || '').join('');
+  const footwear = shoesFor(parts);
 
   return `
 <svg viewBox="0 0 160 320" width="${size}" height="${(size * 320) / 160}" role="img"
@@ -266,18 +421,81 @@ export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
   ${face(eyeColor, palette.brow)}
   ${lips}
   ${hairFront(hairId, palette)}
+  ${neck}
   ${lashes()}
-  ${extras}
+  ${faceBits}
+  ${head}
 </svg>`;
+}
+
+const ICON_BOX = {
+  top: [46, 94, 68, 62],
+  bottom: [40, 144, 80, 108],
+  hair: [42, 6, 76, 110],
+  head: [52, 4, 56, 44],
+  eyes: [50, 48, 60, 28],
+  ears: [45, 70, 10, 10],
+  lips: [70, 74, 20, 16],
+  neck: [60, 96, 40, 52],
+  'hair-long': [40, 4, 80, 160],
+  'hair-ponytail': [40, 6, 96, 140],
+  'bottom-jeans': [48, 152, 64, 100],
+  'bottom-ball': [36, 146, 88, 106],
+  earrings: [45, 70, 10, 10],
+  studs: [46, 70, 8, 8],
+  hoops: [44, 72, 12, 12],
+  glasses: [50, 48, 60, 28],
+  bow: [62, 10, 36, 24],
+  beanie: [50, 4, 60, 40],
+  beret: [64, 14, 48, 28],
+  clips: [54, 24, 52, 16],
+  tiara: [56, 8, 48, 24],
+  headband: [50, 14, 60, 24],
+  flower: [96, 28, 16, 16],
+  scarf: [62, 96, 36, 52],
+  necklace: [64, 104, 32, 28],
+  pearls: [66, 104, 28, 20],
+  choker: [64, 96, 32, 16],
+};
+
+function iconSvg(inner, box, size) {
+  const [x, y, w, h] = box;
+  const pad = Math.max(w, h) * 0.14;
+  const side = Math.max(w, h) + pad * 2;
+  const vx = x - (side - w) / 2;
+  const vy = y - (side - h) / 2;
+  return `<svg class="item-icon" viewBox="${vx.toFixed(1)} ${vy.toFixed(1)} ${side.toFixed(1)} ${side.toFixed(1)}" width="${size}" height="${size}" aria-hidden="true">${inner}</svg>`;
+}
+
+function pieceOf(item, look = {}) {
+  if (TOPS[item.id]) return TOPS[item.id]();
+  if (BOTTOMS[item.id]) return BOTTOMS[item.id]();
+  if (item.slot === 'hair') {
+    const c = HAIR_COLORS[look.hairColor] || HAIR_COLORS.brunette;
+    return `${hairBack(item.id, c)}${hairFront(item.id, c)}`;
+  }
+  if (LIPS[item.id]) return LIPS[item.id];
+  if (EXTRAS[item.id]) return EXTRAS[item.id];
+  return '';
+}
+
+export function renderItemIcon(item, { size = 72, look = {} } = {}) {
+  if (!item) return '';
+  const box = ICON_BOX[item.id] || ICON_BOX[item.slot] || [40, 80, 80, 80];
+  return iconSvg(pieceOf(item, look), box, size);
+}
+
+export function renderOutfitIcon(topId, bottomId, { size = 88 } = {}) {
+  const inner = `${(BOTTOMS[bottomId] || BOTTOMS['bottom-shorts'])()}${(TOPS[topId] || TOPS['top-tshirt'])()}`;
+  return iconSvg(inner, [40, 92, 80, 164], size);
 }
 
 export function withItem(equipped, item) {
   const next = { ...equipped };
-  if (item.slot === 'dress') {
-    delete next.top;
-    delete next.bottom;
+  delete next.dress;
+  if (item.slot === 'dress' && DRESS_PARTS[item.id]) {
+    return { ...next, ...DRESS_PARTS[item.id] };
   }
-  if (item.slot === 'top' || item.slot === 'bottom') delete next.dress;
   next[item.slot] = item.id;
   return next;
 }

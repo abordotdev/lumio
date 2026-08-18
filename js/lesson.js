@@ -3,8 +3,8 @@ import { esc, h, mount, shuffle, seedFrom, toast } from './ui.js';
 import { grade } from './grade.js';
 import * as speech from './speech.js';
 import * as store from './store.js';
-import { buildLesson, LESSON_MAX_ITEMS, LESSON_KM, LESSON_COINS } from './scheduler.js';
-import { formHint, tileBank } from './forms.js';
+import { buildLesson, buildReview, LESSON_MAX_ITEMS, LESSON_KM, LESSON_COINS } from './scheduler.js';
+import { formHint, tileBank, usesTenseTiles } from './forms.js';
 
 const KIND_LABEL = {
   tiles: 'Ułóż z kafelków',
@@ -13,24 +13,22 @@ const KIND_LABEL = {
 };
 
 const MAX_STEPS = 15;
-const MAX_REQUEUE = 3;
+const MAX_REQUEUE = 5;
 
-export function startLesson({ module, onFinish }) {
+export function startLesson({ module, onFinish, review = false }) {
   const state = store.get();
-  const { steps, focus } = buildLesson(module, state);
+  const built = review ? buildReview(module) : buildLesson(module, state);
+  const { steps, focus } = built;
 
   if (!steps.length) {
-    mount(
-      h(`<div class="card">
-      <h2>Na dziś nie ma nic nowego</h2>
-      <p class="muted">Cały materiał w tym module jest przerobiony, a powtórki jeszcze nie dojrzały.
-      Wróć później — albo powiedz mi, że pora wygenerować więcej zdań.</p>
-    </div>`)
+    toast(
+      built.review
+        ? 'Nie ma jeszcze zdań do powtórki. Najpierw zrób lekcję.'
+        : 'Na dziś nie ma nic nowego.'
     );
+    onFinish({ aborted: true });
     return;
   }
-
-  if (focus) store.markPatternIntroduced(module.id, focus);
 
   const session = {
     steps,
@@ -40,6 +38,8 @@ export function startLesson({ module, onFinish }) {
     answered: 0,
     startedAt: Date.now(),
     log: [],
+    focus,
+    review: Boolean(built.review),
   };
 
   renderStep(session, module, onFinish);
@@ -197,10 +197,11 @@ function renderTiles(step, card, session, module, onFinish) {
 
   card.appendChild(h(`<p class="prompt-pl">${esc(item.pl)}</p>`));
   if (item.hint) card.appendChild(h(`<span class="prompt-hint">${esc(item.hint)}</span>`));
-  card.appendChild(
-    h(`<p class="tiny">Wybierz właściwą formę czasownika — w banku są też złe czasy
-    (tested / testing / have been testing). Złóż zdanie.</p>`)
-  );
+  const bankHint = usesTenseTiles(item)
+    ? `Wybierz właściwą formę czasownika — w banku są też złe czasy
+    (tested / testing / have been testing). Złóż zdanie.`
+    : `W banku są też zbędne kawałki. Złóż właściwe zdanie.`;
+  card.appendChild(h(`<p class="tiny">${bankHint}</p>`));
 
   const slot = h(`<div class="tile-slot" aria-label="Twoje zdanie"></div>`);
   const bank = h(`<div class="tile-bank"></div>`);
@@ -383,16 +384,13 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   if (correct) session.correct += 1;
   store.recordAnswer(item.id, correct);
 
-  // Nowy wzorzec, na którym się potknęłaś, wraca jeszcze raz w tej lekcji.
-  if (
-    !correct &&
-    step.isNew &&
-    session.requeued < MAX_REQUEUE &&
-    session.steps.length < MAX_STEPS
-  ) {
+  // Źle → to samo zdanie wraca w innym rodzaju ćwiczenia.
+  if (!correct && session.requeued < MAX_REQUEUE && session.steps.length < MAX_STEPS + 4) {
+    const kinds = ['tiles', 'translate', 'dictate'];
+    const nextKind = kinds[(kinds.indexOf(step.kind) + 1) % kinds.length];
     session.steps.push({
       ...step,
-      kind: step.kind === 'tiles' ? 'translate' : step.kind,
+      kind: nextKind === 'tiles' && !item.pl ? 'translate' : nextKind,
       isNew: false,
     });
     session.requeued += 1;
@@ -532,12 +530,20 @@ function finish(session, module, onFinish, reason) {
   if (count === 0) return onFinish({ aborted: true });
 
   const seconds = Math.round(elapsed(session) / 1000);
-  store.addLesson({ count, correct: session.correct, km: LESSON_KM, coins: LESSON_COINS, seconds });
+  const km = session.review ? 10 : LESSON_KM;
+  const coins = session.review ? 10 : LESSON_COINS;
+  store.addLesson({ count, correct: session.correct, km, coins, seconds });
+  if (session.focus) {
+    const left = module.translations.filter(
+      (t) => t.pattern === session.focus && !store.itemState(t.id).introduced
+    );
+    if (!left.length) store.markPatternIntroduced(module.id, session.focus);
+  }
   onFinish({
     count,
     correct: session.correct,
-    km: LESSON_KM,
-    coins: LESSON_COINS,
+    km,
+    coins,
     reason,
     seconds,
   });

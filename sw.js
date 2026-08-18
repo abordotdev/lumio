@@ -1,5 +1,5 @@
 // Offline: wszystko do cache przy instalacji, potem cache-first.
-const VERSION = 'lumio-v2-2026-08-18';
+const VERSION = 'lumio-v17-2026-08-18';
 const SHELL = [
   './',
   'index.html',
@@ -15,53 +15,65 @@ const SHELL = [
   'js/ui.js',
   'js/gate.js',
   'js/grade.js',
+  'js/disk.js',
+  'js/mine.js',
   'data/catalog.json',
   'data/module-czasy-it.json',
   'data/module-small-talk.json',
   'data/module-rekrutacja.json',
+  'data/module-praca.json',
+  'data/module-zadania.json',
   'data/route.json',
   'manifest.webmanifest',
   'icons/icon-192.svg',
-  'icons/icon-512.svg'
+  'icons/icon-512.svg',
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(VERSION);
-    await cache.addAll(SHELL);
-    self.skipWaiting();
-  })());
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(VERSION);
+      await cache.addAll(SHELL);
+      self.skipWaiting();
+    })()
+  );
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => {
-    const names = await caches.keys();
-    await Promise.all(names.filter((n) => n !== VERSION).map((n) => caches.delete(n)));
-    await self.clients.claim();
-  })());
+  event.waitUntil(
+    (async () => {
+      const names = await caches.keys();
+      await Promise.all(names.filter((n) => n !== VERSION).map((n) => caches.delete(n)));
+      await self.clients.claim();
+    })()
+  );
 });
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET' || new URL(request.url).origin !== location.origin) return;
 
-  event.respondWith((async () => {
-    const cached = await caches.match(request, { ignoreSearch: true });
-    if (cached) {
-      // Odśwież w tle, ale nie każ na to czekać.
-      fetch(request).then(async (res) => {
+  event.respondWith(
+    (async () => {
+      const cached = await caches.match(request, { ignoreSearch: true });
+      if (cached) {
+        // Odśwież w tle, ale nie każ na to czekać.
+        fetch(request)
+          .then(async (res) => {
+            if (res && res.ok) (await caches.open(VERSION)).put(request, res.clone());
+          })
+          .catch(() => {});
+        return cached;
+      }
+      try {
+        const res = await fetch(request);
         if (res && res.ok) (await caches.open(VERSION)).put(request, res.clone());
-      }).catch(() => {});
-      return cached;
-    }
-    try {
-      const res = await fetch(request);
-      if (res && res.ok) (await caches.open(VERSION)).put(request, res.clone());
-      return res;
-    } catch (err) {
-      const shell = await caches.match('index.html');
-      if (shell && request.mode === 'navigate') return shell;
-      throw err;
-    }
-  })());
+        return res;
+      } catch (err) {
+        const shell = await caches.match('index.html');
+        if (shell && request.mode === 'navigate') return shell;
+        throw err;
+      }
+    })()
+  );
 });

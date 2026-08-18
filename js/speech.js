@@ -156,6 +156,15 @@ export function waitCancellable(ms) {
   });
 }
 
+function kick(u) {
+  try {
+    synth.resume();
+  } catch {
+    /* Edge czasem pluje */
+  }
+  synth.speak(u);
+}
+
 function utter(text, { rate = 1, volume = 1, pitch = 1 } = {}) {
   return new Promise((resolve) => {
     if (!supported() || !text) return resolve();
@@ -171,25 +180,44 @@ function utter(text, { rate = 1, volume = 1, pitch = 1 } = {}) {
     u.pitch = pitch;
 
     let settled = false;
+    let heard = false;
+    let quietFor = 0;
+    let iv = 0;
     const done = () => {
       if (settled) return;
       settled = true;
       clearTimeout(guard);
+      clearTimeout(retry);
+      clearInterval(iv);
       resolve();
     };
     u.onend = done;
     u.onerror = done;
 
-    // Bezpiecznik: w Chrome zdarza się, że onend nigdy nie przychodzi.
-    const guard = setTimeout(done, Math.max(2500, text.length * 130));
-    synth.speak(u);
+    const words = Math.max(1, text.trim().split(/\s+/).length);
+    const maxMs = Math.max(16000, Math.ceil((words / 1.6) * (1000 / Math.max(0.5, rate))) + 4000);
+    iv = setInterval(() => {
+      if (settled) return;
+      if (synth.speaking || synth.pending) {
+        heard = true;
+        quietFor = 0;
+        return;
+      }
+      if (!heard) return;
+      quietFor += 80;
+      if (quietFor >= 280) done();
+    }, 80);
+    const guard = setTimeout(done, maxMs);
+    kick(u);
+    const retry = setTimeout(() => {
+      if (!settled && !heard && !synth.speaking && !synth.pending) kick(u);
+    }, 180);
   });
 }
 
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
-export function speakOnce(text, opts) {
+export async function speakOnce(text, opts) {
   cancel();
+  if (!(await waitCancellable(80))) return;
   return utter(text, opts);
 }
 
@@ -201,13 +229,14 @@ export async function speakChunks(
 ) {
   cancel();
   const mine = sequenceToken;
+  if (!(await waitCancellable(80))) return;
   for (let i = 0; i < chunks.length; i += 1) {
     if (mine !== sequenceToken) return;
     if (onChunk) onChunk(i);
     const volume = volumes ? (volumes[i] ?? volumes[volumes.length - 1]) : 1;
     await utter(chunks[i], { rate, volume });
     if (mine !== sequenceToken) return;
-    if (i < chunks.length - 1) await wait(gapMs);
+    if (i < chunks.length - 1 && !(await waitCancellable(gapMs))) return;
   }
   if (onChunk && mine === sequenceToken) onChunk(-1);
 }

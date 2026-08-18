@@ -1,35 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lumio</title>
-  <meta name="description" content="Trening angielskiego: byłam / jestem / będę, na zdaniach z pracy.">
-  <meta name="theme-color" content="#2C6753">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232C6753'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
-</head>
-<body>
-  <header class="topbar">
-    <button class="brand" id="btn-brand" type="button">Lumio <small>prototyp</small></button>
-    <span class="counter km" id="c-km">0 km</span>
-    <span class="counter coin" id="c-coins">0 monet</span>
-    <button class="small ghost" id="btn-home" type="button">Mapa</button>
-    <button class="small ghost" id="btn-settings" type="button">Ustawienia</button>
-  </header>
-
-  <main id="app">
-    <div class="card"><p class="muted">Wczytuję…</p></div>
-  </main>
-
-  <noscript>
-    <div class="card" style="margin:2rem auto;max-width:34rem">
-      <h2>Trzeba włączyć JavaScript</h2>
-      <p class="muted">Bez niego Lumio nie ma jak mówić ani liczyć postępu.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumio</title>
+    <meta
+      name="description"
+      content="Trening angielskiego: byłam / jestem / będę, na zdaniach z pracy."
+    />
+    <meta name="theme-color" content="#2C6753" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232C6753'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidenav" id="sidenav">
+        <button class="brand" id="btn-brand" type="button">Lumio <small>prototyp</small></button>
+        <p class="nav-who" id="nav-who">Ty</p>
+        <nav class="nav-links" aria-label="Menu">
+          <button type="button" data-go="home">Start</button>
+          <button type="button" data-go="modules">Moduły</button>
+          <button type="button" data-go="map">Mapa</button>
+          <button type="button" data-go="wardrobe">Szafa</button>
+          <button type="button" data-go="shop">Sklep</button>
+          <button type="button" data-go="settings">Ustawienia</button>
+        </nav>
+      </aside>
+      <div class="stage">
+        <header class="topbar">
+          <span class="counter km" id="c-km">0 km</span>
+          <span class="counter coin" id="c-coins">0 monet</span>
+        </header>
+        <main id="app">
+          <div class="card"><p class="muted">Wczytuję…</p></div>
+        </main>
+      </div>
     </div>
-  </noscript>
 
-  <script type="module" src="js/main.js"></script>
-</body>
+    <noscript>
+      <div class="card" style="margin: 2rem auto; max-width: 34rem">
+        <h2>Trzeba włączyć JavaScript</h2>
+        <p class="muted">Bez niego Lumio nie ma jak mówić ani liczyć postępu.</p>
+      </div>
+    </noscript>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
 </html>

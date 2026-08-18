@@ -106,16 +106,39 @@ export function verbDistractors(item, module) {
     .slice(0, 4);
 }
 
+export function usesTenseTiles(item) {
+  return Boolean(item?.lemma || LEMMA[item?.id]);
+}
+
+function phraseDistractors(item, module) {
+  const taken = new Set((item.chunks || []).map(tileKey));
+  const same = [];
+  const other = [];
+  for (const t of module?.translations || []) {
+    if (t.id === item.id) continue;
+    const bucket = item.pattern && t.pattern === item.pattern ? same : other;
+    for (const c of t.chunks || []) {
+      if (!taken.has(tileKey(c))) bucket.push(c);
+    }
+  }
+  return unique([...same, ...other]);
+}
+
 export function tileBank(item, module) {
   const chunks = item.chunks && item.chunks.length ? [...item.chunks] : [item.en];
   const seen = new Set(chunks.map(tileKey));
   const extras = [];
-  for (const r of verbDistractors(item, module)) {
-    const k = tileKey(r);
-    if (!k || seen.has(k)) continue;
-    seen.add(k);
-    extras.push(r);
-  }
+  const add = (list) => {
+    for (const r of list) {
+      if (extras.length >= 4) return;
+      const k = tileKey(r);
+      if (!k || seen.has(k)) continue;
+      seen.add(k);
+      extras.push(r);
+    }
+  };
+  add(verbDistractors(item, module));
+  add(phraseDistractors(item, module));
   return [...chunks, ...extras];
 }
 

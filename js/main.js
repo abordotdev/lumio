@@ -30,25 +30,28 @@ function fail(message, detail) {
   }
 
   if (gateRequired() && !(await isUnlocked())) {
-    const box = h(`<div class="card">
-      <span class="label">Lumio</span>
-      <h1>Hasło</h1>
-      <p class="muted">To prywatna apka. Wpisz hasło, które dostałaś razem z linkiem.</p>
-      <input type="password" id="gate" autocomplete="current-password" aria-label="Hasło">
-      <div class="row end"><button class="primary" type="button" id="gate-ok">Wejdź</button></div>
-    </div>`);
-    const input = box.querySelector('#gate');
-    const goIn = async () => {
-      if (await tryUnlock(input.value)) location.reload();
-      else toast('Złe hasło.');
-    };
-    box.querySelector('#gate-ok').addEventListener('click', goIn);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') goIn();
+    const unlocked = await new Promise((resolve) => {
+      const box = h(`<div class="card">
+        <span class="label">Lumio</span>
+        <h1>Hasło</h1>
+        <p class="muted">To prywatna apka. Wpisz hasło, które dostałaś razem z linkiem.</p>
+        <input type="password" id="gate" autocomplete="current-password" aria-label="Hasło">
+        <div class="row end"><button class="primary" type="button" id="gate-ok">Wejdź</button></div>
+      </div>`);
+      const input = box.querySelector('#gate');
+      const goIn = async () => {
+        if (await tryUnlock(input.value)) resolve(true);
+        else toast('Złe hasło.');
+      };
+      box.querySelector('#gate-ok').addEventListener('click', goIn);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') goIn();
+      });
+      mount(box);
+      input.focus();
     });
-    mount(box);
-    input.focus();
-    return;
+    if (!unlocked) return;
+    mount(h(`<div class="card"><p class="muted">Wczytuję…</p></div>`));
   }
 
   let catalog;

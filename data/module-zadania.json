@@ -1,0 +1,344 @@
+{
+  "id": "zadania",
+  "title": "Praca z zadaniami",
+  "subtitle": "ficzer, bug, deweloperzy, baza, zgłoszenie",
+  "patterns": {
+    "feature": "ficzery",
+    "bug": "bug",
+    "devs": "rozmowa z deweloperami",
+    "db": "sprawdzenie w bazie",
+    "report": "zgłoszenie błędu"
+  },
+  "patternOrder": ["feature", "bug", "devs", "db", "report"],
+  "translations": [
+    {
+      "id": "zt01",
+      "pattern": "feature",
+      "pl": "Biorę ten ficzer do testów",
+      "en": "I'm taking this feature for testing",
+      "accept": [
+        "I am taking this feature for testing",
+        "I'm picking up this feature for testing"
+      ],
+      "chunks": ["I'm taking", "this feature", "for testing"]
+    },
+    {
+      "id": "zt02",
+      "pattern": "feature",
+      "pl": "Kryteria akceptacji są w zgłoszeniu",
+      "en": "The acceptance criteria are in the ticket",
+      "accept": [
+        "Acceptance criteria are in the ticket",
+        "The acceptance criteria are in the ticket"
+      ],
+      "chunks": ["The acceptance criteria", "are in the ticket"]
+    },
+    {
+      "id": "zt03",
+      "pattern": "feature",
+      "pl": "Ten ficzer jest już na stagingu",
+      "en": "This feature is already on staging",
+      "accept": ["This feature is already on staging", "The feature is already on staging"],
+      "chunks": ["This feature", "is already", "on staging"]
+    },
+    {
+      "id": "zt04",
+      "pattern": "feature",
+      "pl": "Sprawdzam happy path",
+      "en": "I'm checking the happy path",
+      "accept": ["I am checking the happy path", "I'm testing the happy path"],
+      "chunks": ["I'm checking", "the happy path"]
+    },
+    {
+      "id": "zt05",
+      "pattern": "feature",
+      "pl": "Brakuje mi danych testowych do tego ficzera",
+      "en": "I'm missing test data for this feature",
+      "accept": [
+        "I am missing test data for this feature",
+        "I don't have test data for this feature"
+      ],
+      "chunks": ["I'm missing", "test data", "for this feature"]
+    },
+    {
+      "id": "zt06",
+      "pattern": "feature",
+      "pl": "Na Chrome działa, na Safari jeszcze nie",
+      "en": "It works on Chrome, not on Safari yet",
+      "accept": [
+        "It works on Chrome, but not on Safari yet",
+        "It works in Chrome, not in Safari yet"
+      ],
+      "chunks": ["It works on Chrome", "not on Safari yet"]
+    },
+    {
+      "id": "zt07",
+      "pattern": "bug",
+      "pl": "Znalazłam buga na produkcji",
+      "en": "I found a bug in production",
+      "accept": ["I found a bug on production", "I've found a bug in production"],
+      "chunks": ["I found", "a bug", "in production"]
+    },
+    {
+      "id": "zt08",
+      "pattern": "bug",
+      "pl": "Da się to odtworzyć za każdym razem",
+      "en": "It can be reproduced every time",
+      "accept": ["It is reproducible every time", "I can reproduce it every time"],
+      "chunks": ["It can be reproduced", "every time"]
+    },
+    {
+      "id": "zt09",
+      "pattern": "bug",
+      "pl": "To wygląda na regresję",
+      "en": "This looks like a regression",
+      "accept": ["It looks like a regression", "This looks like a regression"],
+      "chunks": ["This looks like", "a regression"]
+    },
+    {
+      "id": "zt10",
+      "pattern": "bug",
+      "pl": "Bug znika po odświeżeniu",
+      "en": "The bug disappears after a refresh",
+      "accept": [
+        "The bug disappears after refresh",
+        "The bug goes away after a refresh"
+      ],
+      "chunks": ["The bug disappears", "after a refresh"]
+    },
+    {
+      "id": "zt11",
+      "pattern": "bug",
+      "pl": "Priorytet tego buga jest wysoki",
+      "en": "The priority of this bug is high",
+      "accept": ["This bug has high priority", "The priority of this bug is high"],
+      "chunks": ["The priority", "of this bug", "is high"]
+    },
+    {
+      "id": "zt12",
+      "pattern": "bug",
+      "pl": "Czekam na poprawkę",
+      "en": "I'm waiting for a fix",
+      "accept": ["I am waiting for a fix", "I'm waiting for the fix"],
+      "chunks": ["I'm waiting", "for a fix"]
+    },
+    {
+      "id": "zt13",
+      "pattern": "devs",
+      "pl": "Możemy to przejść razem",
+      "en": "Can we walk through this together",
+      "accept": [
+        "Can we go through this together",
+        "Can we walk through this together?"
+      ],
+      "chunks": ["Can we walk through", "this together"]
+    },
+    {
+      "id": "zt14",
+      "pattern": "devs",
+      "pl": "Gdzie w kodzie to siedzi",
+      "en": "Where in the code does this live",
+      "accept": [
+        "Where in the code does this live?",
+        "Where does this live in the code"
+      ],
+      "chunks": ["Where in the code", "does this live"]
+    },
+    {
+      "id": "zt15",
+      "pattern": "devs",
+      "pl": "Wrzuć logi do zgłoszenia",
+      "en": "Drop the logs into the ticket",
+      "accept": ["Put the logs in the ticket", "Please drop the logs into the ticket"],
+      "chunks": ["Drop the logs", "into the ticket"]
+    },
+    {
+      "id": "zt16",
+      "pattern": "devs",
+      "pl": "Na którym commicie to wyszło",
+      "en": "Which commit did this come from",
+      "accept": [
+        "Which commit did this come from?",
+        "Which commit caused this"
+      ],
+      "chunks": ["Which commit", "did this come from"]
+    },
+    {
+      "id": "zt17",
+      "pattern": "devs",
+      "pl": "Potrzebuję Twojej pomocy przy tym case",
+      "en": "I need your help with this case",
+      "accept": ["I need your help on this case", "I need help with this case"],
+      "chunks": ["I need your help", "with this case"]
+    },
+    {
+      "id": "zt18",
+      "pattern": "devs",
+      "pl": "Daj znać, jak poprawka wyleci na testy",
+      "en": "Let me know when the fix lands on test",
+      "accept": [
+        "Let me know when the fix is on test",
+        "Let me know when the fix lands on testing"
+      ],
+      "chunks": ["Let me know", "when the fix", "lands on test"]
+    },
+    {
+      "id": "zt19",
+      "pattern": "db",
+      "pl": "Sprawdzę to w bazie",
+      "en": "I'll check this in the database",
+      "accept": ["I will check this in the database", "I'll check it in the database"],
+      "chunks": ["I'll check this", "in the database"]
+    },
+    {
+      "id": "zt20",
+      "pattern": "db",
+      "pl": "Rekord nie zapisuje się w tabeli",
+      "en": "The record isn't saving in the table",
+      "accept": [
+        "The record is not saving in the table",
+        "The record doesn't save in the table"
+      ],
+      "chunks": ["The record isn't saving", "in the table"]
+    },
+    {
+      "id": "zt21",
+      "pattern": "db",
+      "pl": "Status w bazie jest inny niż na ekranie",
+      "en": "The status in the database is different from the screen",
+      "accept": [
+        "The status in the database is different than on the screen",
+        "The DB status is different from the screen"
+      ],
+      "chunks": ["The status in the database", "is different from", "the screen"]
+    },
+    {
+      "id": "zt22",
+      "pattern": "db",
+      "pl": "Potrzebuję zapytania do tego użytkownika",
+      "en": "I need a query for this user",
+      "accept": ["I need a query for that user", "I need a SELECT for this user"],
+      "chunks": ["I need a query", "for this user"]
+    },
+    {
+      "id": "zt23",
+      "pattern": "db",
+      "pl": "W bazie testowej brakuje danych",
+      "en": "The test database is missing data",
+      "accept": [
+        "The test DB is missing data",
+        "We're missing data in the test database"
+      ],
+      "chunks": ["The test database", "is missing data"]
+    },
+    {
+      "id": "zt24",
+      "pattern": "db",
+      "pl": "Mogę odpalić SELECT na produkcji",
+      "en": "Can I run a SELECT on production",
+      "accept": [
+        "Can I run a SELECT on production?",
+        "Can I run a query on production"
+      ],
+      "chunks": ["Can I run", "a SELECT", "on production"]
+    },
+    {
+      "id": "zt25",
+      "pattern": "report",
+      "pl": "Zgłaszam to jako błąd",
+      "en": "I'm logging this as a bug",
+      "accept": ["I am logging this as a bug", "I'm reporting this as a bug"],
+      "chunks": ["I'm logging this", "as a bug"]
+    },
+    {
+      "id": "zt26",
+      "pattern": "report",
+      "pl": "Dopisuję kroki do odtworzenia",
+      "en": "I'm adding the steps to reproduce",
+      "accept": [
+        "I am adding the steps to reproduce",
+        "I'm adding steps to reproduce"
+      ],
+      "chunks": ["I'm adding", "the steps to reproduce"]
+    },
+    {
+      "id": "zt27",
+      "pattern": "report",
+      "pl": "Załączam zrzut ekranu i logi",
+      "en": "I'm attaching a screenshot and logs",
+      "accept": [
+        "I am attaching a screenshot and logs",
+        "I'm attaching a screenshot and the logs"
+      ],
+      "chunks": ["I'm attaching", "a screenshot and logs"]
+    },
+    {
+      "id": "zt28",
+      "pattern": "report",
+      "pl": "Oczekiwany wynik jest inny",
+      "en": "The expected result is different",
+      "accept": [
+        "The expected result is different",
+        "Expected result is different"
+      ],
+      "chunks": ["The expected result", "is different"]
+    },
+    {
+      "id": "zt29",
+      "pattern": "report",
+      "pl": "Środowisko to staging",
+      "en": "The environment is staging",
+      "accept": ["The environment is staging", "Environment is staging"],
+      "chunks": ["The environment", "is staging"]
+    },
+    {
+      "id": "zt30",
+      "pattern": "report",
+      "pl": "Ustawiam priorytet na blocker",
+      "en": "I'm setting the priority to blocker",
+      "accept": [
+        "I am setting the priority to blocker",
+        "I'm setting priority to blocker"
+      ],
+      "chunks": ["I'm setting", "the priority", "to blocker"]
+    }
+  ],
+  "dictation": [
+    {
+      "id": "ztd01",
+      "en": "I'm taking this feature for testing",
+      "pl": "Biorę ten ficzer do testów",
+      "chunks": ["I'm taking", "this feature", "for testing"]
+    },
+    {
+      "id": "ztd02",
+      "en": "I found a bug in production",
+      "pl": "Znalazłam buga na produkcji",
+      "chunks": ["I found", "a bug", "in production"]
+    },
+    {
+      "id": "ztd03",
+      "en": "Can we walk through this together",
+      "pl": "Możemy to przejść razem",
+      "chunks": ["Can we walk through", "this together"]
+    },
+    {
+      "id": "ztd04",
+      "en": "I'll check this in the database",
+      "pl": "Sprawdzę to w bazie",
+      "chunks": ["I'll check this", "in the database"]
+    },
+    {
+      "id": "ztd05",
+      "en": "I'm logging this as a bug",
+      "pl": "Zgłaszam to jako błąd",
+      "chunks": ["I'm logging this", "as a bug"]
+    },
+    {
+      "id": "ztd06",
+      "en": "I'm attaching a screenshot and logs",
+      "pl": "Załączam zrzut ekranu i logi",
+      "chunks": ["I'm attaching", "a screenshot and logs"]
+    }
+  ]
+}

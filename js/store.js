@@ -1,4 +1,6 @@
 // Cały stan nauki. Nic nie wychodzi poza tę przeglądarkę.
+import { DRESS_PARTS } from './avatar.js';
+
 const KEY = 'lumio.v1';
 const STARTER = ['hair-bob', 'hair-long', 'hair-ponytail', 'top-tshirt', 'bottom-shorts'];
 
@@ -32,6 +34,9 @@ function fresh() {
     reports: [],
     lastBackupAt: null,
     rivals: [],
+    customPhrases: [],
+    nick: '',
+    palette: 'forest',
   };
 }
 
@@ -49,20 +54,33 @@ export function load() {
   return state;
 }
 
-// Sukienka wyklucza górę i dół. Bez tego po wczytaniu stanu można nosić
-// jednocześnie sukienkę i koszulkę — ludzik wygląda dobrze, ale dane kłamią.
-function normalizeEquipped(equipped, owned) {
+function grantDressParts(owned) {
+  const next = [...owned];
+  for (const [dress, parts] of Object.entries(DRESS_PARTS)) {
+    if (!next.includes(dress)) continue;
+    if (!next.includes(parts.top)) next.push(parts.top);
+    if (!next.includes(parts.bottom)) next.push(parts.bottom);
+  }
+  return next.filter((id) => !DRESS_PARTS[id]);
+}
+
+function splitLegacyDress(equipped) {
   const eq = { ...(equipped || {}) };
+  if (eq.dress && DRESS_PARTS[eq.dress]) {
+    Object.assign(eq, DRESS_PARTS[eq.dress]);
+    delete eq.dress;
+  }
+  return eq;
+}
+
+// Góra i dół są osobno. Stara sukienka rozpada się na dwie części.
+function normalizeEquipped(equipped, owned) {
+  const eq = splitLegacyDress(equipped);
   for (const [slot, id] of Object.entries(eq)) {
     if (!owned.includes(id)) delete eq[slot];
   }
-  if (eq.dress) {
-    delete eq.top;
-    delete eq.bottom;
-  } else {
-    if (!eq.top) eq.top = 'top-tshirt';
-    if (!eq.bottom) eq.bottom = 'bottom-shorts';
-  }
+  if (!eq.top) eq.top = 'top-tshirt';
+  if (!eq.bottom) eq.bottom = 'bottom-shorts';
   if (!eq.hair) eq.hair = 'hair-bob';
   return eq;
 }
@@ -71,7 +89,7 @@ function migrate(loaded) {
   const base = fresh();
   const merged = { ...base, ...loaded };
   merged.items = loaded.items || {};
-  merged.owned = Array.isArray(loaded.owned) ? [...loaded.owned] : [...STARTER];
+  merged.owned = grantDressParts(Array.isArray(loaded.owned) ? [...loaded.owned] : [...STARTER]);
   for (const id of STARTER) if (!merged.owned.includes(id)) merged.owned.push(id);
   // Uwaga: NIE scalamy domyślnego stroju na wczytany — usunięte slotów nie ma
   // w zapisie, więc scalenie przywróciłoby je z powrotem.
@@ -84,6 +102,9 @@ function migrate(loaded) {
   merged.learnedSeconds = Number(loaded.learnedSeconds) || 0;
   merged.moduleId = loaded.moduleId || 'czasy-it';
   merged.rivals = Array.isArray(loaded.rivals) ? loaded.rivals.slice(0, 3) : [];
+  merged.customPhrases = Array.isArray(loaded.customPhrases) ? loaded.customPhrases : [];
+  merged.nick = sanitizeNick(loaded.nick);
+  merged.palette = loaded.palette === 'lilac' ? 'lilac' : 'forest';
   if (
     Array.isArray(merged.patternsIntroduced) &&
     merged.patternsIntroduced.length &&
@@ -134,12 +155,14 @@ export function recordAnswer(id, correct) {
   if (correct) {
     it.streak += 1;
     it.box = Math.min(INTERVALS_MS.length - 1, it.box + 1);
+    it.due = Date.now() + INTERVALS_MS[it.box];
   } else {
     it.wrong += 1;
     it.streak = 0;
-    it.box = Math.max(0, it.box - 2);
+    it.box = 0;
+    // Źle = wraca od razu, nie za 10 minut.
+    it.due = Date.now();
   }
-  it.due = Date.now() + INTERVALS_MS[it.box];
   save();
   return it;
 }
@@ -158,9 +181,37 @@ export function setModuleId(id) {
   save();
 }
 
+export function addCustomPhrase(phrase) {
+  const pl = String(phrase.pl || '').trim();
+  const en = String(phrase.en || '').trim();
+  if (!pl || !en) throw new Error('Brak polskiego albo angielskiego.');
+  const id = phrase.id || `mine-${Date.now().toString(36)}`;
+  state.customPhrases = state.customPhrases || [];
+  state.customPhrases.push({
+    id,
+    pl,
+    en,
+    chunks: Array.isArray(phrase.chunks) ? phrase.chunks : [],
+    at: new Date().toISOString(),
+  });
+  save();
+  return id;
+}
+
+export function removeCustomPhrase(id) {
+  state.customPhrases = (state.customPhrases || []).filter((p) => p.id !== id);
+  save();
+}
+
 // ---------- ekonomia ----------
 
 export function addLesson({ count, correct, km, coins, seconds = 0 }) {
+  try {
+    const cur = localStorage.getItem(KEY);
+    if (cur) localStorage.setItem(`${KEY}.prev`, cur);
+  } catch {
+    /* schowek przeglądarki pełny */
+  }
   state.km += km;
   state.coins += coins;
   state.learnedSeconds = (state.learnedSeconds || 0) + seconds;
@@ -191,12 +242,12 @@ export function owns(itemId) {
 
 export function equip(item) {
   const eq = state.equipped;
-  if (item.slot === 'dress') {
-    delete eq.top;
-    delete eq.bottom;
+  delete eq.dress;
+  if (item.slot === 'dress' && DRESS_PARTS[item.id]) {
+    Object.assign(eq, DRESS_PARTS[item.id]);
+  } else {
+    eq[item.slot] = item.id;
   }
-  if (item.slot === 'top' || item.slot === 'bottom') delete eq.dress;
-  eq[item.slot] = item.id;
   save();
 }
 
@@ -208,6 +259,10 @@ export function unequip(slot) {
     eq.bottom = 'bottom-shorts';
   } else if (slot === 'hair') {
     eq.hair = 'hair-bob';
+  } else if (slot === 'top') {
+    eq.top = 'top-tshirt';
+  } else if (slot === 'bottom') {
+    eq.bottom = 'bottom-shorts';
   } else {
     delete eq[slot];
   }
@@ -227,6 +282,11 @@ export function markVisited(stopId) {
   }
 }
 
+export function setVoice(name) {
+  state.voiceName = name || null;
+  saveNow();
+}
+
 export function setLook(look) {
   state.look = {
     hairColor: look.hairColor,
@@ -236,6 +296,33 @@ export function setLook(look) {
   if (look.hair) {
     state.equipped.hair = look.hair;
     if (!state.owned.includes(look.hair)) state.owned.push(look.hair);
+  }
+  save();
+}
+
+export function sanitizeNick(raw) {
+  return String(raw || '')
+    .trim()
+    .replace(/~/g, '')
+    .replace(/\s+/g, ' ')
+    .slice(0, 16);
+}
+
+export function setNick(raw) {
+  state.nick = sanitizeNick(raw);
+  save();
+  return state.nick;
+}
+
+export function setPalette(id) {
+  state.palette = id === 'lilac' ? 'lilac' : 'forest';
+  save();
+  return state.palette;
+}
+
+export function grantMany(ids) {
+  for (const id of ids) {
+    if (id && !state.owned.includes(id)) state.owned.push(id);
   }
   save();
 }
@@ -251,6 +338,16 @@ export function report(itemId, kind, answer) {
 
 export function exportText() {
   return JSON.stringify(state, null, 2);
+}
+
+export function importPrevBackup() {
+  const raw = localStorage.getItem(`${KEY}.prev`);
+  if (!raw) throw new Error('Nie ma poprzedniej kopii w tej przeglądarce.');
+  return importText(raw);
+}
+
+export function hasPrevBackup() {
+  return Boolean(localStorage.getItem(`${KEY}.prev`));
 }
 
 export function importText(text) {
@@ -275,34 +372,124 @@ export function backupIsStale() {
   return Date.now() - new Date(state.lastBackupAt).getTime() > 7 * 24 * 3600 * 1000;
 }
 
-export function encodeRace() {
-  const s = state;
-  const raw = JSON.stringify({
-    v: 1,
-    km: s.km,
-    look: { hairColor: s.look?.hairColor || 'brunette', eyeColor: s.look?.eyeColor || 'brown' },
-    eq: s.equipped || {},
-  });
-  const b64 = btoa(unescape(encodeURIComponent(raw)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/g, '');
-  return `LUM1.${b64}`;
+const RACE_HAIR_COLOR = ['blonde', 'brunette', 'black', 'auburn'];
+const RACE_EYE_COLOR = ['blue', 'brown', 'green'];
+const RACE_HAIR = ['hair-bob', 'hair-long', 'hair-ponytail'];
+const RACE_DRESS = [
+  '',
+  'dress-navy',
+  'dress-red',
+  'dress-lilac',
+  'dress-sun',
+  'dress-mint',
+  'dress-coral',
+];
+const RACE_TOP = ['', 'top-tshirt', 'top-denim', 'top-coat', 'top-navy', 'top-red', 'top-lilac'];
+const RACE_BOTTOM = ['', 'bottom-shorts', 'bottom-jeans', 'bottom-skirt'];
+const RACE_HEAD = ['', 'bow', 'beanie', 'clips', 'headband', 'beret'];
+const RACE_NECK = ['', 'scarf', 'necklace', 'choker', 'pearls'];
+const RACE_LIPS = ['', 'lipstick', 'gloss'];
+const RACE_EARS = ['', 'earrings', 'studs', 'hoops'];
+const RACE_GLASSES = ['', 'glasses'];
+
+function raceIdx(list, id) {
+  const i = list.indexOf(id || '');
+  return i < 0 ? 0 : i;
 }
 
-export function decodeRace(text) {
-  const m = String(text || '')
-    .trim()
-    .match(/LUM1\.([A-Za-z0-9_-]+)/);
-  if (!m) throw new Error('To nie jest kod Lumio. Szukaj kawałka zaczynającego się od LUM1.');
-  let json = m[1].replace(/-/g, '+').replace(/_/g, '/');
-  while (json.length % 4) json += '=';
-  let parsed;
-  try {
-    parsed = JSON.parse(decodeURIComponent(escape(atob(json))));
-  } catch {
-    throw new Error('Ten kod jest uszkodzony.');
+function racePick(list, i) {
+  return list[i] || list[0] || '';
+}
+
+function bytesToCode(bytes) {
+  const bin = String.fromCharCode(...bytes);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function codeToBytes(code) {
+  let b64 = String(code).replace(/-/g, '+').replace(/_/g, '/');
+  while (b64.length % 4) b64 += '=';
+  const bin = atob(b64);
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+
+function matchingDress(eq) {
+  for (const [dress, parts] of Object.entries(DRESS_PARTS)) {
+    if (eq.top === parts.top && eq.bottom === parts.bottom) return dress;
   }
+  return '';
+}
+
+export function encodeRace() {
+  const s = state;
+  const eq = s.equipped || {};
+  const look = s.look || {};
+  const km = Math.min(65535, Math.max(0, Math.round(Number(s.km) || 0)));
+  const dress = matchingDress(eq) || eq.dress || '';
+  const b = new Uint8Array(6);
+  b[0] = (km >> 8) & 255;
+  b[1] = km & 255;
+  b[2] =
+    (raceIdx(RACE_HAIR_COLOR, look.hairColor || 'brunette') << 6) |
+    (raceIdx(RACE_EYE_COLOR, look.eyeColor || 'brown') << 4) |
+    (raceIdx(RACE_HAIR, eq.hair || 'hair-bob') << 2) |
+    raceIdx(RACE_EARS, eq.ears);
+  b[3] =
+    (raceIdx(RACE_DRESS, dress) << 5) |
+    (raceIdx(RACE_TOP, dress ? '' : eq.top) << 2) |
+    raceIdx(RACE_BOTTOM, dress ? '' : eq.bottom);
+  b[4] =
+    (raceIdx(RACE_HEAD, eq.head) << 5) |
+    (raceIdx(RACE_NECK, eq.neck) << 2) |
+    raceIdx(RACE_LIPS, eq.lips);
+  b[5] = (raceIdx(RACE_GLASSES, eq.eyes) << 6) | ((b[0] ^ b[1] ^ b[2] ^ b[3] ^ b[4]) & 63);
+  const code = bytesToCode(b);
+  const nick = sanitizeNick(s.nick);
+  return nick ? `${code}~${encodeURIComponent(nick)}` : code;
+}
+
+function decodeRaceShort(code) {
+  const bytes = codeToBytes(code);
+  if (bytes.length !== 6) throw new Error('zły rozmiar');
+  const check = (bytes[0] ^ bytes[1] ^ bytes[2] ^ bytes[3] ^ bytes[4]) & 63;
+  if (check !== (bytes[5] & 63)) throw new Error('suma');
+  const km = (bytes[0] << 8) | bytes[1];
+  const dress = racePick(RACE_DRESS, (bytes[3] >> 5) & 7);
+  const top = racePick(RACE_TOP, (bytes[3] >> 2) & 7);
+  const bottom = racePick(RACE_BOTTOM, bytes[3] & 3);
+  const eq = {
+    hair: racePick(RACE_HAIR, (bytes[2] >> 2) & 3) || 'hair-bob',
+  };
+  if (dress && DRESS_PARTS[dress]) {
+    Object.assign(eq, DRESS_PARTS[dress]);
+  } else {
+    if (top) eq.top = top;
+    if (bottom) eq.bottom = bottom;
+  }
+  const head = racePick(RACE_HEAD, (bytes[4] >> 5) & 7);
+  const neck = racePick(RACE_NECK, (bytes[4] >> 2) & 7);
+  const lips = racePick(RACE_LIPS, bytes[4] & 3);
+  const ears = racePick(RACE_EARS, bytes[2] & 3);
+  const glasses = racePick(RACE_GLASSES, (bytes[5] >> 6) & 3);
+  if (head) eq.head = head;
+  if (neck) eq.neck = neck;
+  if (lips) eq.lips = lips;
+  if (ears) eq.ears = ears;
+  if (glasses) eq.eyes = glasses;
+  return {
+    km: Math.max(0, km),
+    look: {
+      hairColor: racePick(RACE_HAIR_COLOR, (bytes[2] >> 6) & 3) || 'brunette',
+      eyeColor: racePick(RACE_EYE_COLOR, (bytes[2] >> 4) & 3) || 'brown',
+    },
+    eq,
+  };
+}
+
+function decodeRaceLong(payload) {
+  let json = payload.replace(/-/g, '+').replace(/_/g, '/');
+  while (json.length % 4) json += '=';
+  const parsed = JSON.parse(decodeURIComponent(escape(atob(json))));
   if (!parsed || typeof parsed.km !== 'number') throw new Error('Ten kod nie ma kilometrów.');
   return {
     km: Math.max(0, parsed.km),
@@ -311,7 +498,40 @@ export function decodeRace(text) {
       eyeColor: parsed.look?.eyeColor || 'brown',
     },
     eq: parsed.eq && typeof parsed.eq === 'object' ? parsed.eq : {},
+    nick: sanitizeNick(parsed.nick),
   };
+}
+
+function decodeNickToken(token) {
+  if (!token) return '';
+  try {
+    return decodeURIComponent(token);
+  } catch {
+    return token;
+  }
+}
+
+export function decodeRace(text) {
+  const raw = String(text || '').trim();
+  const long = raw.match(/LUM1\.([A-Za-z0-9_-]+)/);
+  if (long) {
+    try {
+      return decodeRaceLong(long[1]);
+    } catch {
+      throw new Error('Ten kod jest uszkodzony.');
+    }
+  }
+  const short = raw.match(/([A-Za-z0-9_-]{8})(?:~([^\s~]{1,48}))?/);
+  if (short) {
+    try {
+      const snap = decodeRaceShort(short[1]);
+      snap.nick = sanitizeNick(decodeNickToken(short[2]));
+      return snap;
+    } catch {
+      throw new Error('Ten kod jest uszkodzony.');
+    }
+  }
+  throw new Error('To nie jest kod Lumio. Szukaj ośmiu znaków, albo starego LUM1.');
 }
 
 export function saveRival(snap) {
@@ -319,14 +539,17 @@ export function saveRival(snap) {
     km: snap.km,
     look: snap.look,
     eq: snap.eq,
+    nick: sanitizeNick(snap.nick),
     at: new Date().toISOString(),
   };
   const list = Array.isArray(state.rivals) ? [...state.rivals] : [];
-  const sig = JSON.stringify({ km: next.km, eq: next.eq, look: next.look });
-  state.rivals = [next, ...list.filter((r) => JSON.stringify({ km: r.km, eq: r.eq, look: r.look }) !== sig)].slice(
-    0,
-    3
-  );
+  const sig = JSON.stringify({ km: next.km, eq: next.eq, look: next.look, nick: next.nick });
+  state.rivals = [
+    next,
+    ...list.filter(
+      (r) => JSON.stringify({ km: r.km, eq: r.eq, look: r.look, nick: r.nick || '' }) !== sig
+    ),
+  ].slice(0, 3);
   save();
   return state.rivals;
 }
