@@ -30,7 +30,7 @@ export function startLesson({ module, onFinish }) {
     return;
   }
 
-  if (focus) store.markPatternIntroduced(focus);
+  if (focus) store.markPatternIntroduced(module.id, focus);
 
   const session = {
     steps,

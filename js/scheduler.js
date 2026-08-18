@@ -30,8 +30,9 @@ function take(list, n, seen) {
 }
 
 export function nextPattern(module, state) {
+  const prefix = `${module.id}::`;
   for (const p of module.patternOrder) {
-    if (state.patternsIntroduced.includes(p)) continue;
+    if (state.patternsIntroduced.includes(`${prefix}${p}`)) continue;
     if (module.translations.some((t) => t.pattern === p)) return p;
   }
   return null;

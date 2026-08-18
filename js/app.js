@@ -6,12 +6,16 @@ import { renderAvatar, withItem, HAIR_COLORS, EYE_COLORS, HAIR_STYLES } from './
 import { startLesson } from './lesson.js';
 import { nextPattern, LESSON_KM, nextStop, formatMinutes } from './scheduler.js';
 
+let MODULES = [];
 let MODULE = null;
 let ROUTE = null;
 
-export function boot({ module, route }) {
-  MODULE = module;
+export function boot({ modules, route }) {
+  MODULES = modules || [];
   ROUTE = route;
+  const saved = store.get().moduleId;
+  MODULE = MODULES.find((m) => m.id === saved) || MODULES[0] || null;
+  if (MODULE) store.setModuleId(MODULE.id);
   document.getElementById('btn-home').addEventListener('click', () => go('map'));
   document.getElementById('btn-settings').addEventListener('click', () => go('settings'));
   const brand = document.getElementById('btn-brand');
@@ -53,6 +57,40 @@ function backHome() {
   return nav;
 }
 
+function raceCard() {
+  const card = h(`<div class="card">
+    <span class="label">Ściganie</span>
+    <h2>Kod dla koleżanki</h2>
+    <p class="muted">Kopiujesz, wysyłasz na Messenger. Ona wkleja u siebie — widzi Twojego ludzika na mapie.
+      Jej kilometry zostają.</p>
+    <p class="tiny" style="font-family:var(--mono);word-break:break-all">${esc(store.encodeRace())}</p>
+    <div class="row">
+      <button class="primary" type="button" data-a="cp">Kopiuj kod</button>
+    </div>
+    <p class="tiny" style="margin-top:.8rem">Wklej jej kod:</p>
+    <textarea data-a="in" rows="2" placeholder="LUM1.…"></textarea>
+    <div class="row end" style="margin-top:.6rem"><button type="button" data-a="go">Pokaż na mapie</button></div>
+  </div>`);
+  card.querySelector('[data-a="cp"]').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(store.encodeRace());
+      toast('Kod skopiowany. Wyślij na Messenger.');
+    } catch {
+      toast('Schowek zablokowany — zaznacz kod i skopiuj ręcznie.');
+    }
+  });
+  card.querySelector('[data-a="go"]').addEventListener('click', () => {
+    try {
+      store.saveRival(store.decodeRace(card.querySelector('[data-a="in"]').value));
+      toast('Jest na mapie.');
+      go('map');
+    } catch (err) {
+      toast(err.message || 'Nie udało się wczytać kodu.');
+    }
+  });
+  return card;
+}
+
 const LANDMARKS = {
   palace: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
     <rect x="14" y="18" width="20" height="34" fill="#C9D2DC"/>
@@ -76,6 +114,23 @@ const LANDMARKS = {
     <circle cx="24" cy="22" r="5.5" fill="#F4E8CE"/>
     <circle cx="24" cy="22" r="1" fill="#191F1C"/>
     <rect x="22" y="36" width="4" height="8" fill="#5B7A9A"/>
+  </svg>`,
+  gate: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
+    <rect x="6" y="18" width="8" height="34" fill="#C9D2DC"/>
+    <rect x="34" y="18" width="8" height="34" fill="#C9D2DC"/>
+    <rect x="10" y="22" width="28" height="6" fill="#B4C0CC"/>
+    <rect x="10" y="32" width="28" height="6" fill="#B4C0CC"/>
+    <rect x="22" y="18" width="4" height="34" fill="#8FA0B0"/>
+  </svg>`,
+  tower: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
+    <polygon points="24,2 28,22 20,22" fill="#8A8F7A"/>
+    <rect x="21" y="22" width="6" height="30" fill="#9AA184"/>
+    <polygon points="14,52 24,28 34,52" fill="#C4B089"/>
+  </svg>`,
+  spire: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
+    <rect x="22" y="8" width="4" height="44" fill="#8FA0B0"/>
+    <polygon points="24,0 28,10 20,10" fill="#2C6753"/>
+    <rect x="16" y="40" width="16" height="12" fill="#C9D2DC"/>
   </svg>`,
 };
 
@@ -278,6 +333,12 @@ function trackHtml(state, { full = false } = {}) {
         <div class="track-fill" style="width:${pct(pos)}"></div>
         <div class="track-label" style="left:${pct(pos)}">${state.km} km</div>
         <div class="track-dot" style="left:${pct(pos)}" aria-hidden="true"></div>
+        ${(state.rivals || [])
+          .map((r) => {
+            const km = Math.min(Math.max(r.km, fromKm), toKm);
+            return `<div class="rival" style="left:${pct(km)}" title="koleżanka — ${Math.round(r.km)} km">${renderAvatar(r.eq || {}, { size: 46, look: r.look || {} })}</div>`;
+          })
+          .join('')}
         <div class="stops">${dots}</div>
       </div>
     </div>`;
@@ -285,8 +346,7 @@ function trackHtml(state, { full = false } = {}) {
 
 function nextStopInfo(state) {
   const next = nextStop(ROUTE, state.km);
-  if (!next)
-    return `<p class="muted">Cała trasa prototypu zaliczona. Kolejne miasta dosypię z treścią.</p>`;
+  if (!next) return `<p class="muted">Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.</p>`;
   const left = next.km - state.km;
   const lessons = Math.ceil(left / LESSON_KM);
   return `<p class="muted">Zostało <b>${left} km</b> do ${esc(next.name)}
@@ -324,13 +384,21 @@ function home() {
   </div>`)
   );
 
-  const focus = nextPattern(MODULE, state);
-  const focusText = focus
-    ? `Nowy wzorzec w tej lekcji: <b>${esc(MODULE.patterns[focus])}</b>.`
-    : 'Nowych wzorców nie ma — to będzie lekcja powtórkowa.';
+  const focus = MODULE ? nextPattern(MODULE, state) : null;
+  const focusText = !MODULE
+    ? 'Brak modułu.'
+    : focus
+      ? `Nowy wzorzec w tej lekcji: <b>${esc(MODULE.patterns[focus])}</b>.`
+      : 'Nowych wzorców nie ma — to będzie lekcja powtórkowa.';
+
+  const moduleBtns = MODULES.map((m) => {
+    const on = MODULE && m.id === MODULE.id;
+    return `<button class="small ${on ? 'primary' : ''}" type="button" data-mod="${esc(m.id)}">${esc(m.title)}</button>`;
+  }).join('');
 
   const startCard = h(`<div class="card">
-    <span class="label">${esc(MODULE.title)}</span>
+    <span class="label">Moduł</span>
+    <div class="row" id="mod-row" style="margin-bottom:.4rem">${moduleBtns}</div>
     <h1>Lekcja: 15 zdań</h1>
     <p class="muted">${focusText}</p>
     <div class="row">
@@ -339,7 +407,17 @@ function home() {
       <button type="button" id="to-shop">Sklep</button>
     </div>
   </div>`);
+  startCard.querySelector('#mod-row')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-mod]');
+    if (!btn) return;
+    const next = MODULES.find((m) => m.id === btn.getAttribute('data-mod'));
+    if (!next) return;
+    MODULE = next;
+    store.setModuleId(next.id);
+    go('home');
+  });
   startCard.querySelector('#start').addEventListener('click', () => {
+    if (!MODULE) return toast('Wybierz moduł.');
     startLesson({
       module: MODULE,
       onFinish: (res) => (res.aborted ? go('home') : go('summary', res)),
@@ -348,6 +426,7 @@ function home() {
   startCard.querySelector('#to-wardrobe').addEventListener('click', () => go('wardrobe'));
   startCard.querySelector('#to-shop').addEventListener('click', () => go('shop'));
   wrap.appendChild(startCard);
+  wrap.appendChild(raceCard());
 
   const next = nextStop(ROUTE, state.km);
   const left = next ? `${next.km - state.km} km do ${next.name}` : 'koniec trasy';
@@ -688,6 +767,8 @@ function settings() {
   </div>`);
   lookCard.querySelector('#edit-look').addEventListener('click', () => go('look'));
   wrap.appendChild(lookCard);
+
+  wrap.appendChild(raceCard());
 
   // Kopia zapasowa
   const last = state.lastBackupAt ? new Date(state.lastBackupAt).toLocaleString('pl-PL') : 'nigdy';

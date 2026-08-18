@@ -27,9 +27,11 @@ function fresh() {
     learnedSeconds: 0,
     items: {},
     patternsIntroduced: [],
+    moduleId: 'czasy-it',
     lessons: [],
     reports: [],
     lastBackupAt: null,
+    rivals: [],
   };
 }
 
@@ -80,6 +82,15 @@ function migrate(loaded) {
     done: Boolean(loaded.look?.done),
   };
   merged.learnedSeconds = Number(loaded.learnedSeconds) || 0;
+  merged.moduleId = loaded.moduleId || 'czasy-it';
+  merged.rivals = Array.isArray(loaded.rivals) ? loaded.rivals.slice(0, 3) : [];
+  if (
+    Array.isArray(merged.patternsIntroduced) &&
+    merged.patternsIntroduced.length &&
+    !String(merged.patternsIntroduced[0]).includes('::')
+  ) {
+    merged.patternsIntroduced = merged.patternsIntroduced.map((p) => `czasy-it::${p}`);
+  }
   return merged;
 }
 
@@ -133,11 +144,18 @@ export function recordAnswer(id, correct) {
   return it;
 }
 
-export function markPatternIntroduced(pattern) {
-  if (pattern && !state.patternsIntroduced.includes(pattern)) {
-    state.patternsIntroduced.push(pattern);
+export function markPatternIntroduced(moduleId, pattern) {
+  const key = moduleId && pattern ? `${moduleId}::${pattern}` : pattern;
+  if (key && !state.patternsIntroduced.includes(key)) {
+    state.patternsIntroduced.push(key);
     save();
   }
+}
+
+export function setModuleId(id) {
+  if (!id || state.moduleId === id) return;
+  state.moduleId = id;
+  save();
 }
 
 // ---------- ekonomia ----------
@@ -255,6 +273,62 @@ export function backupIsStale() {
   if (lessons < 3) return false;
   if (!state.lastBackupAt) return true;
   return Date.now() - new Date(state.lastBackupAt).getTime() > 7 * 24 * 3600 * 1000;
+}
+
+export function encodeRace() {
+  const s = state;
+  const raw = JSON.stringify({
+    v: 1,
+    km: s.km,
+    look: { hairColor: s.look?.hairColor || 'brunette', eyeColor: s.look?.eyeColor || 'brown' },
+    eq: s.equipped || {},
+  });
+  const b64 = btoa(unescape(encodeURIComponent(raw)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '');
+  return `LUM1.${b64}`;
+}
+
+export function decodeRace(text) {
+  const m = String(text || '')
+    .trim()
+    .match(/LUM1\.([A-Za-z0-9_-]+)/);
+  if (!m) throw new Error('To nie jest kod Lumio. Szukaj kawałka zaczynającego się od LUM1.');
+  let json = m[1].replace(/-/g, '+').replace(/_/g, '/');
+  while (json.length % 4) json += '=';
+  let parsed;
+  try {
+    parsed = JSON.parse(decodeURIComponent(escape(atob(json))));
+  } catch {
+    throw new Error('Ten kod jest uszkodzony.');
+  }
+  if (!parsed || typeof parsed.km !== 'number') throw new Error('Ten kod nie ma kilometrów.');
+  return {
+    km: Math.max(0, parsed.km),
+    look: {
+      hairColor: parsed.look?.hairColor || 'brunette',
+      eyeColor: parsed.look?.eyeColor || 'brown',
+    },
+    eq: parsed.eq && typeof parsed.eq === 'object' ? parsed.eq : {},
+  };
+}
+
+export function saveRival(snap) {
+  const next = {
+    km: snap.km,
+    look: snap.look,
+    eq: snap.eq,
+    at: new Date().toISOString(),
+  };
+  const list = Array.isArray(state.rivals) ? [...state.rivals] : [];
+  const sig = JSON.stringify({ km: next.km, eq: next.eq, look: next.look });
+  state.rivals = [next, ...list.filter((r) => JSON.stringify({ km: r.km, eq: r.eq, look: r.look }) !== sig)].slice(
+    0,
+    3
+  );
+  save();
+  return state.rivals;
 }
 
 export function wipe() {

@@ -78,17 +78,29 @@ const TOPS = {
     <path d="M102,98 Q111,106 113,120 L99,124 Q97,108 94,102 Z" fill="${col}"/>
     <path d="M68,96 Q80,108 92,96" fill="none" stroke="${SKIN_DARK}" stroke-width="2"/>
     <path d="M80,118 L80,150" fill="none" stroke="${SKIN_DARK}" stroke-width="1" opacity=".25"/>`,
+  'top-denim': () => `
+    <path d="M56,98 Q80,90 104,98 L100,168 Q80,176 60,168 Z" fill="#4A6FA5"/>
+    <path d="M56,98 Q44,108 42,128 L60,132 Q62,112 66,104 Z" fill="#3E5E8C"/>
+    <path d="M104,98 Q116,108 118,128 L100,132 Q98,112 94,104 Z" fill="#3E5E8C"/>
+    <path d="M68,96 Q80,110 92,96" fill="none" stroke="${SKIN_DARK}" stroke-width="2"/>
+    <path d="M62,128 L98,128" fill="none" stroke="#C9A24B" stroke-width="1.4"/>
+    <path d="M80,110 L80,168" fill="none" stroke="#3A587E" stroke-width="1.2"/>`,
 };
 
 const BOTTOMS = {
   'bottom-shorts': (col = '#6E7C8C') => `
     <path d="M62,154 Q80,162 98,154 L104,198 Q94,202 84,198 L80,172 L76,198 Q66,202 56,198 Z" fill="${col}"/>
     <path d="M80,162 L80,172" fill="none" stroke="#5A6775" stroke-width="1.4"/>`,
+  'bottom-jeans': () => `
+    <path d="M62,154 Q80,162 98,154 L104,248 L88,248 L84,188 L80,176 L76,188 L72,248 L56,248 Z" fill="#3D5A80"/>
+    <path d="M80,162 L80,176" fill="none" stroke="#2E4664" stroke-width="1.4"/>`,
 };
 
 const DRESSES = {
   'dress-navy': () => miniDress('#7EC8E8', '#4FA8CE', { neck: 'round', belt: '#F7F3EC' }),
   'dress-red': () => miniDress('#F48FB1', '#E56B94', { neck: 'heart', belt: '#FFF', bow: true }),
+  'dress-lilac': () => miniDress('#C5A3E0', '#A57BC8', { neck: 'round', belt: '#F7F3EC' }),
+  'dress-sun': () => miniDress('#F5C84C', '#E0A82E', { neck: 'heart', belt: '#FFF', bow: true }),
 };
 
 function miniDress(main, deep, { neck, belt, bow }) {
@@ -129,6 +141,8 @@ function sneakers(upper = '#F4EFE6', sole = '#2A2826') {
 function shoesFor(dressId) {
   if (dressId === 'dress-red') return sneakers('#F48FB1', '#FFFFFF');
   if (dressId === 'dress-navy') return sneakers('#7EC8E8', '#FFFFFF');
+  if (dressId === 'dress-lilac') return sneakers('#C5A3E0', '#FFFFFF');
+  if (dressId === 'dress-sun') return sneakers('#F5C84C', '#2A2826');
   return sneakers();
 }
 
@@ -150,6 +164,15 @@ const EXTRAS = {
       <path d="M0,0 L14,-8 L14,8 Z" fill="#E35A7A"/>
       <circle cx="0" cy="0" r="4.2" fill="#C44868"/>
     </g>`,
+  beanie: `
+    <path d="M54,48 Q80,18 106,48 Q100,38 80,36 Q60,38 54,48 Z" fill="#3A6B5A"/>
+    <ellipse cx="80" cy="36" rx="7" ry="4" fill="#C44868"/>`,
+  scarf: `
+    <path d="M66,88 Q80,98 94,88 L92,118 Q80,112 70,124 Z" fill="#C43B4C"/>
+    <path d="M70,88 Q80,94 90,88" fill="none" stroke="#8E2A38" stroke-width="1.4"/>`,
+  necklace: `
+    <path d="M68,88 Q80,102 92,88" fill="none" stroke="#E8C56B" stroke-width="2"/>
+    <circle cx="80" cy="102" r="3.2" fill="#E8C56B"/>`,
 };
 
 const LIPS = {
@@ -168,6 +191,7 @@ const SLOT_OF = {
   ears: 'ears',
   lips: 'lips',
   head: 'head',
+  neck: 'neck',
 };
 
 function face(color, brow) {
@@ -214,7 +238,7 @@ export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
     : `${(BOTTOMS[equipped.bottom] || BOTTOMS['bottom-shorts'])()}${(TOPS[equipped.top] || TOPS['top-tshirt'])()}`;
 
   const lips = equipped.lips === 'lipstick' ? LIPS.lipstick : LIPS.none;
-  const extras = ['eyes', 'ears', 'head'].map((slot) => EXTRAS[equipped[slot]] || '').join('');
+  const extras = ['eyes', 'ears', 'head', 'neck'].map((slot) => EXTRAS[equipped[slot]] || '').join('');
   const footwear = shoesFor(equipped.dress);
 
   return `
@@ -269,6 +293,7 @@ export function slotName(slot) {
       ears: 'kolczyki',
       lips: 'usta',
       head: 'na głowę',
+      neck: 'szyja',
     }[SLOT_OF[slot] || slot] || slot
   );
 }

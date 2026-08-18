@@ -29,6 +29,39 @@
       "flavor": "Dotarłaś. Wybierz jedną sukienkę za darmo — druga zostaje w sklepie za monety.",
       "freeChoice": ["dress-navy", "dress-red"],
       "stock": ["earrings"]
+    },
+    {
+      "id": "berlin",
+      "name": "Berlin",
+      "short": "Berlin",
+      "km": 110,
+      "kind": "city",
+      "icon": "gate",
+      "flavor": "On-site u klienta. Wybierz sukienkę albo czapkę — reszta czeka w sklepie.",
+      "freeChoice": ["dress-lilac", "beanie"],
+      "stock": ["scarf"]
+    },
+    {
+      "id": "paryz",
+      "name": "Paryż",
+      "short": "Paryż",
+      "km": 180,
+      "kind": "city",
+      "icon": "tower",
+      "flavor": "Release party. Jedna rzecz za darmo.",
+      "freeChoice": ["dress-sun", "necklace"],
+      "stock": []
+    },
+    {
+      "id": "dublin",
+      "name": "Dublin",
+      "short": "Dublin",
+      "km": 250,
+      "kind": "city",
+      "icon": "spire",
+      "flavor": "Konferencja testerek. Kurtka albo jeansy — druga para w sklepie.",
+      "freeChoice": ["top-denim", "bottom-jeans"],
+      "stock": []
     }
   ],
   "items": [
@@ -44,7 +77,17 @@
 
     { "id": "glasses",        "name": "Okulary",            "slot": "eyes",   "price": 60,  "source": "budka" },
     { "id": "lipstick",       "name": "Czerwona szminka",   "slot": "lips",   "price": 35,  "source": "budka" },
-    { "id": "bow",            "name": "Kokarda",            "slot": "head",   "price": 25,  "source": "budka" }
+    { "id": "bow",            "name": "Kokarda",            "slot": "head",   "price": 25,  "source": "budka" },
+
+    { "id": "dress-lilac",    "name": "Liliowa sukienka",  "slot": "dress",  "price": 180, "source": "berlin" },
+    { "id": "beanie",         "name": "Czapka",             "slot": "head",   "price": 50,  "source": "berlin" },
+    { "id": "scarf",          "name": "Szalik",             "slot": "neck",   "price": 55,  "source": "berlin" },
+
+    { "id": "dress-sun",      "name": "Żółta sukienka",    "slot": "dress",  "price": 190, "source": "paryz" },
+    { "id": "necklace",       "name": "Naszyjnik",          "slot": "neck",   "price": 70,  "source": "paryz" },
+
+    { "id": "top-denim",      "name": "Jeansowa kurtka",   "slot": "top",    "price": 160, "source": "dublin" },
+    { "id": "bottom-jeans",   "name": "Jeansy",             "slot": "bottom", "price": 140, "source": "dublin" }
   ],
-  "boxPool": ["bow", "lipstick", "glasses", "earrings"]
+  "boxPool": ["bow", "lipstick", "glasses", "earrings", "beanie", "scarf", "necklace"]
 }

@@ -1,0 +1,236 @@
+{
+  "id": "rekrutacja",
+  "title": "Rozmowa rekrutacyjna",
+  "subtitle": "testerka: small talk + manual, auto, Postman, hotfix, rodzaje testów",
+  "patterns": {
+    "intro": "kim jesteś na rozmowie",
+    "manual": "testy manualne i bugi",
+    "auto": "automatyzacja",
+    "docs": "dokumentacja i kryteria",
+    "api": "Postman i API",
+    "prod": "produkcja i podmiany",
+    "types": "rodzaje testów"
+  },
+  "patternOrder": ["intro", "manual", "auto", "docs", "api", "prod", "types"],
+  "translations": [
+    {
+      "id": "rec01",
+      "pattern": "intro",
+      "pl": "Mam trzy lata doświadczenia w testach manualnych",
+      "en": "I have three years of experience in manual testing",
+      "accept": ["I've got three years of experience in manual testing", "I have 3 years of experience in manual testing"],
+      "note": "have + lata + experience in…",
+      "chunks": ["I have three years", "of experience", "in manual testing"]
+    },
+    {
+      "id": "rec02",
+      "pattern": "intro",
+      "pl": "Szukam roli w automatyzacji testów",
+      "en": "I'm looking for a role in test automation",
+      "accept": ["I am looking for a role in test automation", "I'm looking for a test automation role"],
+      "note": "I'm looking for — dzieje się teraz",
+      "chunks": ["I'm looking for", "a role", "in test automation"]
+    },
+    {
+      "id": "rec03",
+      "pattern": "intro",
+      "pl": "Miło mi, dziękuję za zaproszenie",
+      "en": "Nice to meet you, thanks for having me",
+      "accept": ["Nice to meet you, thank you for having me", "Thanks for having me"],
+      "chunks": ["Nice to meet you", "thanks for having me"]
+    },
+    {
+      "id": "rec04",
+      "pattern": "manual",
+      "pl": "Piszę przypadki testowe i raporty",
+      "en": "I write test cases and test reports",
+      "accept": ["I write test cases and reports", "I write test cases and bug reports"],
+      "chunks": ["I write", "test cases", "and test reports"]
+    },
+    {
+      "id": "rec05",
+      "pattern": "manual",
+      "pl": "Zgłaszam błędy w Jirze",
+      "en": "I log bugs in Jira",
+      "accept": ["I report bugs in Jira", "I file bugs in Jira"],
+      "note": "log bugs = zgłaszać tickety",
+      "chunks": ["I log bugs", "in Jira"]
+    },
+    {
+      "id": "rec06",
+      "pattern": "manual",
+      "pl": "Testowałam to na stagingu przed produkcją",
+      "en": "I tested this on staging before production",
+      "accept": ["I tested it on staging before production", "I tested this on staging before prod"],
+      "note": "skonczone i zamknięte → tested",
+      "chunks": ["I tested this", "on staging", "before production"],
+      "traps": [{ "input": "I have tested this on staging before production yesterday", "why": "gdy jest konkretny moment, zwykle tested, nie have tested" }]
+    },
+    {
+      "id": "rec07",
+      "pattern": "manual",
+      "pl": "Sprawdziłam ścieżkę happy path i przypadki brzegowe",
+      "en": "I tested the happy path and the edge cases",
+      "accept": ["I tested the happy path and edge cases", "I covered the happy path and the edge cases"],
+      "chunks": ["I tested", "the happy path", "and the edge cases"]
+    },
+    {
+      "id": "rec08",
+      "pattern": "auto",
+      "pl": "Zautomatyzowałam testy dymne",
+      "en": "I automated the smoke tests",
+      "accept": ["I automated smoke tests", "I've automated the smoke tests"],
+      "chunks": ["I automated", "the smoke tests"]
+    },
+    {
+      "id": "rec09",
+      "pattern": "auto",
+      "pl": "Nie mam jeszcze komercyjnego Selenium",
+      "en": "I don't have commercial Selenium experience yet",
+      "accept": ["I don't have commercial experience with Selenium yet", "I haven't got commercial Selenium experience yet"],
+      "note": "uczciwie: don't have … yet",
+      "chunks": ["I don't have", "commercial Selenium experience", "yet"]
+    },
+    {
+      "id": "rec10",
+      "pattern": "auto",
+      "pl": "Testy integracyjne pokrywają kontrakty API",
+      "en": "Integration tests cover the API contracts",
+      "accept": ["The integration tests cover the API contracts", "Integration tests cover API contracts"],
+      "chunks": ["Integration tests", "cover", "the API contracts"]
+    },
+    {
+      "id": "rec11",
+      "pattern": "docs",
+      "pl": "Napisałam plan testów na ten release",
+      "en": "I wrote a test plan for this release",
+      "accept": ["I wrote the test plan for this release", "I've written a test plan for this release"],
+      "chunks": ["I wrote", "a test plan", "for this release"]
+    },
+    {
+      "id": "rec12",
+      "pattern": "docs",
+      "pl": "Dokumentacja była nieaktualna",
+      "en": "The documentation was out of date",
+      "accept": ["The documentation was outdated", "Documentation was out of date"],
+      "chunks": ["The documentation", "was out of date"]
+    },
+    {
+      "id": "rec13",
+      "pattern": "docs",
+      "pl": "Poprosiłam o kryteria akceptacji",
+      "en": "I asked for the acceptance criteria",
+      "accept": ["I asked for acceptance criteria", "I asked for the AC"],
+      "chunks": ["I asked for", "the acceptance criteria"]
+    },
+    {
+      "id": "rec14",
+      "pattern": "api",
+      "pl": "Używam Postmana, żeby sprawdzić API",
+      "en": "I use Postman to check the API",
+      "accept": ["I use Postman to test the API", "I use Postman to check APIs"],
+      "note": "nawyk → I use, nie I'm using (chyba że akurat teraz)",
+      "chunks": ["I use Postman", "to check the API"]
+    },
+    {
+      "id": "rec15",
+      "pattern": "api",
+      "pl": "Sprawdziłam logi po deployu",
+      "en": "I checked the logs after the deploy",
+      "accept": ["I checked the logs after deploy", "I checked the logs after the deployment"],
+      "chunks": ["I checked the logs", "after the deploy"]
+    },
+    {
+      "id": "rec16",
+      "pattern": "prod",
+      "pl": "Wczoraj na produkcję poszedł hotfix",
+      "en": "A hotfix went to production yesterday",
+      "accept": ["A hotfix went to prod yesterday", "We shipped a hotfix to production yesterday"],
+      "note": "yesterday → przeszłość prosta",
+      "chunks": ["A hotfix", "went to production", "yesterday"]
+    },
+    {
+      "id": "rec17",
+      "pattern": "prod",
+      "pl": "Przez pomyłkę podmieniliśmy konfigurację na produkcji",
+      "en": "We swapped the production config by mistake",
+      "accept": ["We replaced the production config by mistake", "We changed the prod config by mistake"],
+      "chunks": ["We swapped", "the production config", "by mistake"]
+    },
+    {
+      "id": "rec18",
+      "pattern": "prod",
+      "pl": "Po hotfixie odpaliliśmy smoke test",
+      "en": "We ran a smoke test after the hotfix",
+      "accept": ["We ran smoke tests after the hotfix", "We ran a smoke test after the hotfix."],
+      "chunks": ["We ran", "a smoke test", "after the hotfix"]
+    },
+    {
+      "id": "rec19",
+      "pattern": "types",
+      "pl": "Przed każdym releasem robimy regresję",
+      "en": "We do regression testing before every release",
+      "accept": ["We run regression tests before every release", "We do regression before every release"],
+      "chunks": ["We do regression testing", "before every release"]
+    },
+    {
+      "id": "rec20",
+      "pattern": "types",
+      "pl": "Mam doświadczenie z testami eksploracyjnymi",
+      "en": "I have experience with exploratory testing",
+      "accept": ["I've got experience with exploratory testing", "I have exploratory testing experience"],
+      "chunks": ["I have experience", "with exploratory testing"]
+    },
+    {
+      "id": "rec21",
+      "pattern": "types",
+      "pl": "Zwykle testuję na Chrome i Firefox",
+      "en": "I usually test on Chrome and Firefox",
+      "accept": ["I usually test in Chrome and Firefox", "I usually test on Chrome and on Firefox"],
+      "note": "nawyk → I usually test",
+      "chunks": ["I usually test", "on Chrome and Firefox"],
+      "traps": [{ "input": "I'm usually testing on Chrome and Firefox", "why": "przy nawyku: I usually test, nie I'm testing" }]
+    },
+    {
+      "id": "rec22",
+      "pattern": "types",
+      "pl": "Testowałam to na stagingu od rana",
+      "en": "I've been testing it on staging since this morning",
+      "accept": ["I have been testing it on staging since this morning"],
+      "note": "od rana i trwa → I've been testing",
+      "chunks": ["I've been testing it", "on staging", "since this morning"]
+    }
+  ],
+  "dictation": [
+    {
+      "id": "recd01",
+      "en": "I log bugs in Jira",
+      "pl": "Zgłaszam błędy w Jirze",
+      "chunks": ["I log bugs", "in Jira"]
+    },
+    {
+      "id": "recd02",
+      "en": "I use Postman to check the API",
+      "pl": "Używam Postmana, żeby sprawdzić API",
+      "chunks": ["I use Postman", "to check the API"]
+    },
+    {
+      "id": "recd03",
+      "en": "A hotfix went to production yesterday",
+      "pl": "Wczoraj na produkcję poszedł hotfix",
+      "chunks": ["A hotfix", "went to production", "yesterday"]
+    },
+    {
+      "id": "recd04",
+      "en": "We do regression testing before every release",
+      "pl": "Przed każdym releasem robimy regresję",
+      "chunks": ["We do regression testing", "before every release"]
+    },
+    {
+      "id": "recd05",
+      "en": "I don't have commercial Selenium experience yet",
+      "pl": "Nie mam jeszcze komercyjnego Selenium",
+      "chunks": ["I don't have", "commercial Selenium experience", "yet"]
+    }
+  ]
+}

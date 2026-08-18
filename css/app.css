@@ -352,6 +352,18 @@ button.link {
   transition: left 0.5s ease;
   z-index: 2;
 }
+.rival {
+  position: absolute;
+  top: 0.2rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(20, 40, 32, 0.25));
+}
+.rival .doll {
+  width: 46px;
+  height: auto;
+}
 .track-label {
   position: absolute;
   top: 0.15rem;
@@ -523,7 +535,8 @@ button.link {
 }
 
 textarea,
-input[type='text'] {
+input[type='text'],
+input[type='password'] {
   font-family: var(--mono);
   font-size: 1.02rem;
   line-height: 1.5;
@@ -536,7 +549,8 @@ input[type='text'] {
   resize: vertical;
 }
 textarea:focus,
-input[type='text']:focus {
+input[type='text']:focus,
+input[type='password']:focus {
   outline: 2px solid var(--primary);
   outline-offset: 1px;
   border-color: var(--primary);

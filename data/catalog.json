@@ -1,0 +1,16 @@
+{
+  "modules": [
+    {
+      "id": "czasy-it",
+      "file": "module-czasy-it.json"
+    },
+    {
+      "id": "small-talk",
+      "file": "module-small-talk.json"
+    },
+    {
+      "id": "rekrutacja",
+      "file": "module-rekrutacja.json"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import * as store from './store.js';
 import * as speech from './speech.js';
 import { boot } from './app.js';
 import { h, mount, toast } from './ui.js';
+import { gateRequired, isUnlocked, tryUnlock } from './gate.js';
 
 async function loadJson(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -28,16 +29,52 @@ function fail(message, detail) {
     );
   }
 
-  let module;
+  if (gateRequired() && !(await isUnlocked())) {
+    const box = h(`<div class="card">
+      <span class="label">Lumio</span>
+      <h1>Hasło</h1>
+      <p class="muted">To prywatna apka. Wpisz hasło, które dostałaś razem z linkiem.</p>
+      <input type="password" id="gate" autocomplete="current-password" aria-label="Hasło">
+      <div class="row end"><button class="primary" type="button" id="gate-ok">Wejdź</button></div>
+    </div>`);
+    const input = box.querySelector('#gate');
+    const goIn = async () => {
+      if (await tryUnlock(input.value)) location.reload();
+      else toast('Złe hasło.');
+    };
+    box.querySelector('#gate-ok').addEventListener('click', goIn);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') goIn();
+    });
+    mount(box);
+    input.focus();
+    return;
+  }
+
+  let catalog;
   let route;
   try {
-    [module, route] = await Promise.all([
-      loadJson('data/module-czasy-it.json'),
-      loadJson('data/route.json')
+    [catalog, route] = await Promise.all([
+      loadJson('data/catalog.json'),
+      loadJson('data/route.json'),
     ]);
+  } catch (err) {
+    return fail('Nie udało się wczytać katalogu', String(err.message || err));
+  }
+
+  let modules;
+  try {
+    modules = await Promise.all(
+      (catalog.modules || []).map(async (entry) => {
+        const mod = await loadJson(`data/${entry.file}`);
+        return { ...mod, id: mod.id || entry.id };
+      })
+    );
   } catch (err) {
     return fail('Nie udało się wczytać modułu', String(err.message || err));
   }
+
+  if (!modules.length) return fail('Brak modułów', 'Katalog jest pusty.');
 
   await speech.loadVoices();
 
@@ -54,7 +91,7 @@ function fail(message, detail) {
     if (rec) speech.setVoiceByName(rec.name);
   }
 
-  boot({ module, route });
+  boot({ modules, route });
 
   // Offline włączamy tylko w wersji wdrożonej. Na localhoście service worker
   // podawałby starą, zacachowaną apkę po każdej zmianie w kodzie — i wyrejestrowujemy
