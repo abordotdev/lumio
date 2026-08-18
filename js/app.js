@@ -28,11 +28,33 @@ function refreshModules() {
   if (MODULE) store.setModuleId(MODULE.id);
 }
 
+function setNavOpen(open) {
+  document.body.classList.toggle('nav-open', open);
+  const toggle = document.getElementById('nav-toggle');
+  const scrim = document.getElementById('nav-scrim');
+  if (toggle) {
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.textContent = open ? 'Zamknij' : 'Menu';
+  }
+  if (scrim) scrim.hidden = !open;
+}
+
+function bindChrome() {
+  document.getElementById('nav-toggle')?.addEventListener('click', () => {
+    setNavOpen(!document.body.classList.contains('nav-open'));
+  });
+  document.getElementById('nav-scrim')?.addEventListener('click', () => setNavOpen(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setNavOpen(false);
+  });
+}
+
 export function boot({ modules, route }) {
   BASE_MODULES = modules || [];
   ROUTE = route;
   refreshModules();
   applyPalette(store.get().palette);
+  bindChrome();
   for (const btn of document.querySelectorAll('[data-go]')) {
     btn.addEventListener('click', () => go(btn.getAttribute('data-go')));
   }
@@ -52,6 +74,7 @@ export function boot({ modules, route }) {
 }
 
 export function go(screen, params = {}) {
+  setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
   markNav(screen);
@@ -105,6 +128,22 @@ function runLesson({ review = false } = {}) {
 
 function doll(equipped, size) {
   return renderAvatar(equipped, { size, look: store.get().look });
+}
+
+function dressHead(state, { label, title, hint }) {
+  return h(`<div class="dress-head">
+    <div>
+      <span class="label">${esc(label)}</span>
+      <h1>${esc(title)}</h1>
+      <p class="muted">${esc(hint)}</p>
+    </div>
+    <div class="dress-doll" data-doll>${doll(state.equipped, 148)}</div>
+  </div>`);
+}
+
+function paintDoll(root) {
+  const box = root.querySelector('[data-doll]');
+  if (box) box.innerHTML = doll(store.get().equipped, 148);
 }
 
 function bindRaceFields(card, { reload } = {}) {
@@ -825,11 +864,11 @@ function shop() {
   const wrap = h(`<div class="home-stack"></div>`);
 
   wrap.appendChild(
-    h(`<div class="card flat">
-    <span class="label">Masz ${state.coins} ${plural(state.coins, 'monetę', 'monety', 'monet')}</span>
-    <h1>Sklep</h1>
-    <p class="muted">Stroje kupujesz w komplecie: góra i dół razem. W szafie możesz je rozdzielić.</p>
-  </div>`)
+    dressHead(state, {
+      label: `Masz ${state.coins} ${plural(state.coins, 'monetę', 'monety', 'monet')}`,
+      title: 'Sklep',
+      hint: 'Stroje kupujesz w komplecie: góra i dół razem. W szafie możesz je rozdzielić.',
+    })
   );
 
   if (!reached.length) {
@@ -1026,11 +1065,11 @@ function wardrobe() {
   const wrap = h(`<div class="home-stack"></div>`);
 
   wrap.appendChild(
-    h(`<div class="card flat">
-    <span class="label">Szafa</span>
-    <h1>Ubierz się</h1>
-    <p class="muted">Górę i dół zakładasz osobno. Kliknij coś założonego, żeby to zdjąć.</p>
-  </div>`)
+    dressHead(state, {
+      label: 'Szafa',
+      title: 'Ubierz się',
+      hint: 'Górę i dół zakładasz osobno. Kliknij coś założonego, żeby to zdjąć.',
+    })
   );
 
   const owned = state.owned.map(itemById).filter(Boolean);
@@ -1045,15 +1084,24 @@ function wardrobe() {
   for (const [, items] of bySlot) {
     for (const item of items) {
       const on = state.equipped[item.slot] === item.id;
-      const btn = h(`<button class="thing ${on ? 'on' : ''}" type="button">
+      const btn = h(`<button class="thing ${on ? 'on' : ''}" type="button" data-item="${esc(item.id)}">
         <div class="thing-art">${renderItemIcon(item, { size: 72, look: state.look })}</div>
         <span class="n">${esc(item.name)}</span>
         <span class="s">${on ? 'na sobie — kliknij, by zdjąć' : 'założ'}</span>
       </button>`);
       btn.addEventListener('click', () => {
-        if (on) store.unequip(item.slot);
+        const wornNow = store.get().equipped[item.slot] === item.id;
+        if (wornNow) store.unequip(item.slot);
         else store.equip(item);
-        go('wardrobe');
+        const next = store.get();
+        paintDoll(wrap);
+        for (const b of grid.querySelectorAll('[data-item]')) {
+          const it = itemById(b.getAttribute('data-item'));
+          const worn = next.equipped[it.slot] === it.id;
+          b.classList.toggle('on', worn);
+          const s = b.querySelector('.s');
+          if (s) s.textContent = worn ? 'na sobie — kliknij, by zdjąć' : 'założ';
+        }
       });
       grid.appendChild(btn);
     }

@@ -77,7 +77,7 @@ export function toast(message) {
   let node = document.getElementById('toast');
   if (!node) {
     node = h(`<div id="toast" role="status" style="
-      position:fixed;left:50%;bottom:1.5rem;transform:translateX(-50%);
+      position:fixed;left:50%;bottom:calc(1.5rem + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);
       background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:8px;
       font-size:.92rem;z-index:60;max-width:90vw;text-align:center"></div>`);
     document.body.appendChild(node);

@@ -2,7 +2,9 @@
 <html lang="pl">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>Lumio</title>
     <meta
       name="description"
@@ -17,6 +19,7 @@
     />
   </head>
   <body>
+    <div class="nav-scrim" id="nav-scrim" hidden></div>
     <div class="shell">
       <aside class="sidenav" id="sidenav">
         <button class="brand" id="btn-brand" type="button">Lumio <small>prototyp</small></button>
@@ -32,8 +35,13 @@
       </aside>
       <div class="stage">
         <header class="topbar">
-          <span class="counter km" id="c-km">0 km</span>
-          <span class="counter coin" id="c-coins">0 monet</span>
+          <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="sidenav">
+            Menu
+          </button>
+          <div class="topbar-end">
+            <span class="counter km" id="c-km">0 km</span>
+            <span class="counter coin" id="c-coins">0 monet</span>
+          </div>
         </header>
         <main id="app">
           <div class="card"><p class="muted">Wczytuję…</p></div>
