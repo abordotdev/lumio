@@ -71,11 +71,6 @@ export function buildMineModule(phrases = []) {
     patterns: { mine: 'twoje zdania' },
     patternOrder: ['mine'],
     translations,
-    dictation: translations.map((t) => ({
-      id: `${t.id}-d`,
-      en: t.en,
-      pl: t.pl,
-      chunks: t.chunks,
-    })),
+    dictation: [],
   };
 }

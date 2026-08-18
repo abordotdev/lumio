@@ -1640,6 +1640,10 @@ select:focus-visible {
   button:not(.nav-links button):not(.brand):not(.small):not(.icon-btn):not(.tile):not(.swatch) {
     min-height: 2.7rem;
   }
+  .thing button {
+    min-height: 2.7rem;
+    width: 100%;
+  }
   .tile {
     padding: 0.55rem 0.8rem;
     min-height: 2.6rem;

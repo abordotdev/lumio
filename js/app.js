@@ -20,6 +20,7 @@ let BASE_MODULES = [];
 let MODULES = [];
 let MODULE = null;
 let ROUTE = null;
+let SCREEN = 'home';
 
 function refreshModules() {
   MODULES = [...BASE_MODULES, buildMineModule(store.get().customPhrases || [])];
@@ -77,6 +78,7 @@ export function go(screen, params = {}) {
   setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
+  SCREEN = screen;
   markNav(screen);
   const screens = {
     onboarding,
@@ -115,12 +117,13 @@ function runLesson({ review = false } = {}) {
     toast('Najpierw dodaj zdanie po polsku.');
     return go('phrases');
   }
+  const back = SCREEN === 'modules' ? 'modules' : 'home';
   startLesson({
     module: MODULE,
     review,
     onFinish: (res) => {
       disk.writePairQuiet();
-      if (res.aborted) return go('home');
+      if (res.aborted) return go(back);
       go('summary', res);
     },
   });
@@ -626,6 +629,7 @@ function pickModule(id) {
   MODULE = nextMod;
   store.setModuleId(nextMod.id);
   go('modules');
+  document.querySelector('.mod-block.open')?.scrollIntoView({ block: 'start' });
 }
 
 function modules() {
