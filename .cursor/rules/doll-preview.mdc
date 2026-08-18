@@ -1,0 +1,13 @@
+---
+description: Przed zmianą wyglądu ludzika pokaż podgląd i czekaj na OK.
+alwaysApply: true
+---
+
+# Podgląd ludzika
+
+Gdy ruszasz wygląd (twarz, usta, oczy, ciuchy, buty, fryzura):
+
+1. Trzymaj plik `_doll-preview.html`. Nie kasuj go.
+2. Po zmianie otwórz `http://localhost:4173/_doll-preview.html` i pokaż go użytkowniczce.
+3. Wygląd nie jest skończony, dopóki nie powie że jest OK.
+4. Jeśli dokładsz strój — dopisz go też na tej stronie podglądu.

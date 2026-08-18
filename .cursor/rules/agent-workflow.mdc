@@ -1,0 +1,14 @@
+---
+description: Zasady pracy agenta w Lumio — testy wąsko, pytaj gdy nie wiesz, lint przy commicie
+alwaysApply: true
+---
+
+# Workflow
+
+Źródło prawdy: `AGENTS.md`. Stosuj zawsze.
+
+- Jak czegoś nie wiesz — pytaj. Nie zgaduj.
+- Nie odpalaj testów całej aplikacji. Tylko krótkie testy zmienianej funkcjonalności. Po approve — wyłącznie edytowane komponenty.
+- Przy commicie haczyk sam odpala Prettier i ESLint na ruszonych plikach. Nie formatuj całego repo.
+- Runtime bez zależności. Nie dokładaj bibliotek do działania apki bez pytania.
+- Małe zmiany. Bez refaktorów i bez ruszania `data/`, jeśli zadanie tego nie dotyczy.

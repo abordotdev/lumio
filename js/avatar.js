@@ -1,0 +1,274 @@
+// Ludzik: warstwy SVG, styl lalki. Kolor włosów i oczu to paleta, fryzura to warstwa.
+
+export const HAIR_COLORS = {
+  blonde: { main: '#E8C56B', dark: '#C9A24B', shine: '#FFF4C8', brow: '#B8944A', label: 'blond' },
+  brunette: { main: '#6B3E24', dark: '#3F2416', shine: '#A06A45', brow: '#4A2A18', label: 'brąz' },
+  black: { main: '#2A2220', dark: '#141010', shine: '#5A4E4A', brow: '#1A1414', label: 'czerń' },
+  auburn: { main: '#A0432A', dark: '#6E2C1C', shine: '#D47A5A', brow: '#7A2E1C', label: 'rudy' },
+};
+
+export const EYE_COLORS = {
+  blue: { iris: '#5A8FD4', dark: '#2E5A96', label: 'niebieskie' },
+  brown: { iris: '#6B4A2C', dark: '#3D2918', label: 'brązowe' },
+  green: { iris: '#4F8A62', dark: '#2D5A3C', label: 'zielone' },
+};
+
+export const HAIR_STYLES = [
+  { id: 'hair-bob', name: 'Do ramion' },
+  { id: 'hair-long', name: 'Długie' },
+  { id: 'hair-ponytail', name: 'Kucyk' },
+];
+
+const SKIN = '#F3C4A4';
+const SKIN_DARK = '#E3B08E';
+const SKIN_DEEP = '#D4A07E';
+
+function hairBack(id, c) {
+  if (id === 'hair-ponytail') {
+    return `
+      <path d="M50,70 Q46,86 54,104 Q62,90 60,72 Z" fill="${c.main}"/>
+      <path d="M110,70 Q114,86 106,104 Q98,90 100,72 Z" fill="${c.main}"/>
+      <ellipse cx="80" cy="54" rx="32" ry="30" fill="${c.dark}"/>
+      <path d="M106,58 Q136,70 128,150 Q122,188 104,176 Q118,120 100,70 Z" fill="${c.main}"/>
+      <path d="M118,96 Q126,128 114,168" fill="none" stroke="${c.shine}" stroke-width="2" opacity=".4"/>
+      <ellipse cx="107" cy="62" rx="6" ry="5" fill="#E8C56B"/>`;
+  }
+  if (id === 'hair-long') {
+    return `
+      <path d="M46,62 Q38,120 46,200 Q50,228 62,222 Q54,150 56,88 Z" fill="${c.main}"/>
+      <path d="M114,62 Q122,120 114,200 Q110,228 98,222 Q106,150 104,88 Z" fill="${c.main}"/>
+      <ellipse cx="80" cy="52" rx="36" ry="32" fill="${c.dark}"/>
+      <path d="M50,80 Q44,150 54,210" fill="none" stroke="${c.shine}" stroke-width="2.2" opacity=".35"/>`;
+  }
+  return `
+    <ellipse cx="80" cy="54" rx="34" ry="32" fill="${c.dark}"/>
+    <path d="M46,64 Q42,92 50,118 Q60,96 58,70 Z" fill="${c.main}"/>
+    <path d="M114,64 Q118,92 110,118 Q100,96 102,70 Z" fill="${c.main}"/>`;
+}
+
+function hairFront(id, c) {
+  if (id === 'hair-ponytail') {
+    return `
+      <path d="M50,46 Q80,10 110,46 L108,58 Q96,36 80,38 Q64,36 52,58 Z" fill="${c.main}"/>
+      <path d="M58,40 Q80,28 96,46 Q88,50 80,44 Q70,50 62,46 Z" fill="${c.dark}"/>
+      <path d="M50,58 Q54,78 50,92" fill="${c.main}"/>
+      <path d="M110,58 Q106,78 110,92" fill="${c.main}"/>
+      <path d="M66,28 Q80,18 94,32" fill="none" stroke="${c.shine}" stroke-width="2.4" opacity=".45"/>`;
+  }
+  if (id === 'hair-long') {
+    return `
+      <path d="M46,48 Q80,6 114,48 L112,62 Q100,34 80,32 Q60,34 48,62 Z" fill="${c.main}"/>
+      <path d="M62,36 Q80,22 90,40 Q82,52 74,48 Q68,54 62,44 Z" fill="${c.dark}"/>
+      <path d="M48,60 Q52,92 48,118" fill="${c.main}"/>
+      <path d="M112,60 Q108,92 112,118" fill="${c.main}"/>
+      <path d="M64,26 Q80,14 100,34" fill="none" stroke="${c.shine}" stroke-width="2.6" opacity=".5"/>`;
+  }
+  return `
+    <path d="M47,46 Q80,8 113,46 L111,60 Q98,34 80,34 Q62,34 49,60 Z" fill="${c.main}"/>
+    <path d="M60,36 Q78,24 88,42 Q80,50 72,46 Q64,52 58,42 Z" fill="${c.dark}"/>
+    <path d="M48,58 Q50,82 47,98" fill="${c.main}"/>
+    <path d="M112,58 Q110,82 113,98" fill="${c.main}"/>
+    <path d="M64,26 Q80,16 96,34" fill="none" stroke="${c.shine}" stroke-width="2.4" opacity=".5"/>`;
+}
+
+const TOPS = {
+  'top-tshirt': (col = '#FFF8F4') => `
+    <path d="M58,98 Q80,91 102,98 L98,156 Q80,164 62,156 Z" fill="${col}"/>
+    <path d="M58,98 Q49,106 47,120 L61,124 Q63,108 66,102 Z" fill="${col}"/>
+    <path d="M102,98 Q111,106 113,120 L99,124 Q97,108 94,102 Z" fill="${col}"/>
+    <path d="M68,96 Q80,108 92,96" fill="none" stroke="${SKIN_DARK}" stroke-width="2"/>
+    <path d="M80,118 L80,150" fill="none" stroke="${SKIN_DARK}" stroke-width="1" opacity=".25"/>`,
+};
+
+const BOTTOMS = {
+  'bottom-shorts': (col = '#6E7C8C') => `
+    <path d="M62,154 Q80,162 98,154 L104,198 Q94,202 84,198 L80,172 L76,198 Q66,202 56,198 Z" fill="${col}"/>
+    <path d="M80,162 L80,172" fill="none" stroke="#5A6775" stroke-width="1.4"/>`,
+};
+
+const DRESSES = {
+  'dress-navy': () => miniDress('#7EC8E8', '#4FA8CE', { neck: 'round', belt: '#F7F3EC' }),
+  'dress-red': () => miniDress('#F48FB1', '#E56B94', { neck: 'heart', belt: '#FFF', bow: true }),
+};
+
+function miniDress(main, deep, { neck, belt, bow }) {
+  const neckline =
+    neck === 'heart'
+      ? `<path d="M70,96 Q76,108 80,104 Q84,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>`
+      : `<path d="M70,96 Q80,108 90,96" fill="none" stroke="${SKIN_DARK}" stroke-width="1.8"/>`;
+  const waistBow = bow
+    ? `<path d="M80,150 L72,147 L72,155 Z" fill="#FFF"/>
+       <path d="M80,150 L88,147 L88,155 Z" fill="#FFF"/>
+       <circle cx="80" cy="150.5" r="2" fill="${deep}"/>`
+    : '';
+  return `
+    <path d="M58,100 L70,96 Q80,108 90,96 L102,100
+             L98,148 Q80,154 62,148 Z" fill="${main}"/>
+    <path d="M58,100 Q49,107 48,118 L62,122 Q64,108 67,103 Z" fill="${main}"/>
+    <path d="M102,100 Q111,107 112,118 L98,122 Q96,108 93,103 Z" fill="${main}"/>
+    <path d="M62,148 Q80,156 98,148 L108,200 Q80,210 52,200 Z" fill="${main}"/>
+    <path d="M52,200 Q80,210 108,200 L106,194 Q80,202 54,194 Z" fill="${deep}"/>
+    <rect x="64" y="147" width="32" height="5" rx="1.2" fill="${belt}"/>
+    ${waistBow}
+    ${neckline}`;
+}
+
+function sneakers(upper = '#F4EFE6', sole = '#2A2826') {
+  const shine = 'rgba(255,255,255,.45)';
+  return `
+    <g class="shoes">
+      <path d="M72,246 C76,246 76,252 74,257 C70,263 54,264 45,258 C41,254 44,248 53,246 C61,244 68,244 72,246 Z" fill="${upper}"/>
+      <path d="M45,257 C48,263 58,265 68,263 C74,262 75,258 73,256 C66,261 52,261 45,257 Z" fill="${sole}"/>
+      <ellipse cx="50" cy="251" rx="3.2" ry="2" fill="${shine}"/>
+      <path d="M88,246 C84,246 84,252 86,257 C90,263 106,264 115,258 C119,254 116,248 107,246 C99,244 92,244 88,246 Z" fill="${upper}"/>
+      <path d="M115,257 C112,263 102,265 92,263 C86,262 85,258 87,256 C94,261 108,261 115,257 Z" fill="${sole}"/>
+      <ellipse cx="110" cy="251" rx="3.2" ry="2" fill="${shine}"/>
+    </g>`;
+}
+
+function shoesFor(dressId) {
+  if (dressId === 'dress-red') return sneakers('#F48FB1', '#FFFFFF');
+  if (dressId === 'dress-navy') return sneakers('#7EC8E8', '#FFFFFF');
+  return sneakers();
+}
+
+const EXTRAS = {
+  glasses: `
+    <g fill="none" stroke="#2C2C33" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="68" cy="62" r="11" fill="#FFFFFF" fill-opacity="0.18"/>
+      <circle cx="92" cy="62" r="11" fill="#FFFFFF" fill-opacity="0.18"/>
+      <path d="M79,61 L81,61"/>
+      <path d="M57,60 L52,62"/>
+      <path d="M103,60 L108,62"/>
+    </g>`,
+  earrings: `
+    <circle cx="50" cy="74" r="3.4" fill="#E8C56B"/>
+    <circle cx="110" cy="74" r="3.4" fill="#E8C56B"/>`,
+  bow: `
+    <g transform="translate(80 22)">
+      <path d="M0,0 L-14,-8 L-14,8 Z" fill="#E35A7A"/>
+      <path d="M0,0 L14,-8 L14,8 Z" fill="#E35A7A"/>
+      <circle cx="0" cy="0" r="4.2" fill="#C44868"/>
+    </g>`,
+};
+
+const LIPS = {
+  none: `<path d="M73,80 Q80,86 87,80" fill="none" stroke="#C46B72" stroke-width="2.3" stroke-linecap="round"/>`,
+  lipstick: `
+    <path d="M73,78 Q76.8,76 80,77.4 Q83.2,76 87,78 Q80,88 73,78 Z" fill="#C42A45"/>
+    <path d="M75,79.4 Q80,86.2 85,79.4" fill="none" stroke="#9A1F36" stroke-width="1" opacity=".5"/>`,
+};
+
+const SLOT_OF = {
+  hair: 'hair',
+  top: 'top',
+  bottom: 'bottom',
+  dress: 'dress',
+  eyes: 'eyes',
+  ears: 'ears',
+  lips: 'lips',
+  head: 'head',
+};
+
+function face(color, brow) {
+  const e = EYE_COLORS[color] || EYE_COLORS.brown;
+  return `
+    <g>
+      <path d="M60,52 Q68,46 76,53" fill="none" stroke="${brow}" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M84,53 Q92,46 100,52" fill="none" stroke="${brow}" stroke-width="2.4" stroke-linecap="round"/>
+      <ellipse cx="68" cy="62" rx="7.4" ry="8.6" fill="#FFF"/>
+      <ellipse cx="92" cy="62" rx="7.4" ry="8.6" fill="#FFF"/>
+      <ellipse cx="69" cy="63" rx="4.5" ry="5.4" fill="${e.iris}"/>
+      <ellipse cx="93" cy="63" rx="4.5" ry="5.4" fill="${e.iris}"/>
+      <ellipse cx="69" cy="63" rx="2.2" ry="2.8" fill="${e.dark}"/>
+      <ellipse cx="93" cy="63" rx="2.2" ry="2.8" fill="${e.dark}"/>
+      <circle cx="70.8" cy="60.8" r="1.35" fill="#FFF"/>
+      <circle cx="94.8" cy="60.8" r="1.35" fill="#FFF"/>
+      <path d="M80,66 Q83,71 79,74" fill="none" stroke="${SKIN_DEEP}" stroke-width="1.8" stroke-linecap="round"/>
+    </g>`;
+}
+
+function lashes() {
+  return `
+    <g class="lashes" fill="none" stroke="#1A1210" stroke-linecap="round">
+      <path d="M61,56 Q68,52.6 75.2,56.4" stroke-width="1.7"/>
+      <path d="M84.8,56.4 Q92,52.6 99,56" stroke-width="1.7"/>
+      <path d="M60.6,56 L56.4,49.6" stroke-width="1.4"/>
+      <path d="M63,54.2 L60.2,47.8" stroke-width="1.35"/>
+      <path d="M66.2,53.2 L64.8,47.6" stroke-width="1.25"/>
+      <path d="M69.2,53.4 L69,48.4" stroke-width="1.15"/>
+      <path d="M99.4,56 L103.6,49.6" stroke-width="1.4"/>
+      <path d="M97,54.2 L99.8,47.8" stroke-width="1.35"/>
+      <path d="M93.8,53.2 L95.2,47.6" stroke-width="1.25"/>
+      <path d="M90.8,53.4 L91,48.4" stroke-width="1.15"/>
+    </g>`;
+}
+
+export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
+  const hairId = equipped.hair || 'hair-bob';
+  const palette = HAIR_COLORS[look.hairColor] || HAIR_COLORS.brunette;
+  const eyeColor = look.eyeColor || 'brown';
+
+  const clothes = equipped.dress
+    ? (DRESSES[equipped.dress] || DRESSES['dress-navy'])()
+    : `${(BOTTOMS[equipped.bottom] || BOTTOMS['bottom-shorts'])()}${(TOPS[equipped.top] || TOPS['top-tshirt'])()}`;
+
+  const lips = equipped.lips === 'lipstick' ? LIPS.lipstick : LIPS.none;
+  const extras = ['eyes', 'ears', 'head'].map((slot) => EXTRAS[equipped[slot]] || '').join('');
+  const footwear = shoesFor(equipped.dress);
+
+  return `
+<svg viewBox="0 0 160 320" width="${size}" height="${(size * 320) / 160}" role="img"
+     aria-label="Twój ludzik" class="doll">
+  ${hairBack(hairId, palette)}
+
+  <path d="M61,102 L54,104 Q44,128 40,152 Q38,168 42,174 L50,176 Q54,168 52,154 Q56,128 66,108 Z" fill="${SKIN}"/>
+  <path d="M99,102 L106,104 Q116,128 120,152 Q122,168 118,174 L110,176 Q106,168 108,154 Q104,128 94,108 Z" fill="${SKIN}"/>
+  <path d="M40,172 Q36,178 40,184 Q48,188 54,182 Q56,176 50,172 Z" fill="${SKIN}"/>
+  <path d="M120,172 Q124,178 120,184 Q112,188 106,182 Q104,176 110,172 Z" fill="${SKIN}"/>
+
+  <path d="M66,158 L62,158 Q58,188 56,216 Q54,238 58,248 L70,248 Q72,216 74,188 L76,160 Z" fill="${SKIN}"/>
+  <path d="M94,158 L98,158 Q102,188 104,216 Q106,238 102,248 L90,248 Q88,216 86,188 L84,160 Z" fill="${SKIN}"/>
+  ${footwear}
+
+  <path d="M58,98 Q80,90 102,98 L96,160 Q80,168 64,160 Z" fill="${SKIN}"/>
+  <rect x="73" y="84" width="14" height="18" rx="7" fill="${SKIN_DARK}"/>
+
+  <ellipse cx="80" cy="60" rx="27" ry="29" fill="${SKIN}"/>
+  <ellipse cx="68" cy="70" rx="7" ry="4.2" fill="#F2A8A0" opacity=".35"/>
+  <ellipse cx="92" cy="70" rx="7" ry="4.2" fill="#F2A8A0" opacity=".35"/>
+
+  ${clothes}
+  ${face(eyeColor, palette.brow)}
+  ${lips}
+  ${hairFront(hairId, palette)}
+  ${lashes()}
+  ${extras}
+</svg>`;
+}
+
+export function withItem(equipped, item) {
+  const next = { ...equipped };
+  if (item.slot === 'dress') {
+    delete next.top;
+    delete next.bottom;
+  }
+  if (item.slot === 'top' || item.slot === 'bottom') delete next.dress;
+  next[item.slot] = item.id;
+  return next;
+}
+
+export function slotName(slot) {
+  return (
+    {
+      hair: 'włosy',
+      top: 'góra',
+      bottom: 'dół',
+      dress: 'sukienka',
+      eyes: 'okulary',
+      ears: 'kolczyki',
+      lips: 'usta',
+      head: 'na głowę',
+    }[SLOT_OF[slot] || slot] || slot
+  );
+}

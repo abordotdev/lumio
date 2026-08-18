@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumio — podgląd ludzika</title>
+  <link rel="stylesheet" href="css/app.css">
+  <style>
+    main { max-width: 56rem; margin: 1.5rem auto; padding: 0 1rem 3rem; }
+    .row-dolls { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    figure {
+      margin: 0;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem 1rem;
+      text-align: center;
+      min-width: 10rem;
+    }
+    figcaption { margin-top: 0.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="label">Podgląd</p>
+    <h1>Ludzik</h1>
+    <p class="muted">To nie jest apka — tylko porównanie strojów i twarzy, zanim wejdzie na mapę.</p>
+    <div class="row-dolls" id="row"></div>
+  </main>
+  <script type="module">
+    import { renderAvatar } from './js/avatar.js';
+    const look = { hairColor: 'brunette', eyeColor: 'brown' };
+    const looks = [
+      ['codzienny', { hair: 'hair-bob', top: 'top-tshirt', bottom: 'bottom-shorts' }],
+      ['szminka', { hair: 'hair-bob', top: 'top-tshirt', bottom: 'bottom-shorts', lips: 'lipstick' }],
+      [
+        'jak na zdjęciu',
+        { hair: 'hair-bob', top: 'top-tshirt', bottom: 'bottom-shorts', lips: 'lipstick', head: 'bow' },
+        { hairColor: 'blonde', eyeColor: 'blue' },
+      ],
+      ['błękitna', { hair: 'hair-long', dress: 'dress-navy' }],
+      ['różowa + szminka', { hair: 'hair-ponytail', dress: 'dress-red', lips: 'lipstick' }],
+    ];
+    const row = document.getElementById('row');
+    for (const [name, eq, lookOverride] of looks) {
+      const f = document.createElement('figure');
+      f.innerHTML =
+        renderAvatar(eq, { size: 220, look: lookOverride || look }) + `<figcaption>${name}</figcaption>`;
+      row.appendChild(f);
+    }
+  </script>
+</body>
+</html>

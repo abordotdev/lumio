@@ -1,0 +1,29 @@
+{
+  "name": "lumio",
+  "private": true,
+  "description": "Prototyp treningu angielskiego — byłam / jestem / będę, na zdaniach z pracy.",
+  "scripts": {
+    "start": "node serve.js",
+    "lint": "eslint js serve.js sw.js",
+    "format": "prettier --write \"js/**/*.js\" serve.js sw.js css/app.css index.html",
+    "format:check": "prettier --check \"js/**/*.js\" serve.js sw.js css/app.css index.html",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "*.css": "prettier --write",
+    "index.html": "prettier --write"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.6.2"
+  }
+}

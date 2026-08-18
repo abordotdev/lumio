@@ -1,0 +1,657 @@
+<title>Plan Lumio</title>
+<style>
+  :root {
+    --paper:      #F4F6F8;
+    --surface:    #FFFFFF;
+    --line:       #DCE1E8;
+    --line-soft:  #E8ECF1;
+    --ink:        #171E2B;
+    --ink-soft:   #4A5567;
+    --ink-faint:  #77828F;
+    --gold:       #8E6415;
+    --gold-bg:    #F2E8D2;
+    --rose:       #97435A;
+    --rose-bg:    #F6E4E8;
+    --moss:       #34613F;
+    --moss-bg:    #E1EDE4;
+
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: "Cascadia Mono", Consolas, "SF Mono", "Liberation Mono", ui-monospace, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:     #12161C;
+      --surface:   #1A1F27;
+      --line:      #2E3641;
+      --line-soft: #242B34;
+      --ink:       #E6E9EE;
+      --ink-soft:  #A7B1BF;
+      --ink-faint: #78838F;
+      --gold:      #DDB064;
+      --gold-bg:   #2E2617;
+      --rose:      #E28FA1;
+      --rose-bg:   #331F25;
+      --moss:      #84C398;
+      --moss-bg:   #1A2A20;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:     #12161C;
+    --surface:   #1A1F27;
+    --line:      #2E3641;
+    --line-soft: #242B34;
+    --ink:       #E6E9EE;
+    --ink-soft:  #A7B1BF;
+    --ink-faint: #78838F;
+    --gold:      #DDB064;
+    --gold-bg:   #2E2617;
+    --rose:      #E28FA1;
+    --rose-bg:   #331F25;
+    --moss:      #84C398;
+    --moss-bg:   #1A2A20;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead { display: flex; flex-direction: column; gap: 1rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.1rem, 5.5vw, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 34rem;
+    margin: 0;
+  }
+
+  .masthead-rule {
+    height: 1px;
+    background: var(--line);
+    border: 0;
+    margin: 0.5rem 0 0;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { display: flex; flex-direction: column; gap: 1.15rem; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 1.1rem 0 -0.35rem;
+    font-weight: 600;
+  }
+
+  p { margin: 0; max-width: 40rem; }
+  p + p { margin-top: 0.85rem; }
+
+  a { color: var(--gold); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, .row:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  strong { font-weight: 650; color: var(--ink); }
+
+  em { font-style: italic; color: var(--ink-soft); }
+
+  /* ---------- ledger ---------- */
+
+  .ledger { display: flex; flex-direction: column; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.35rem 1.25rem;
+    padding: 1.05rem 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .row:first-of-type { border-top: 1px solid var(--line); }
+
+  .state {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.16rem 0.42rem;
+    justify-self: start;
+    align-self: start;
+    margin-top: 0.22rem;
+    white-space: nowrap;
+  }
+  .state.ok    { color: var(--moss); background: var(--moss-bg); }
+  .state.risk  { color: var(--gold); background: var(--gold-bg); }
+  .state.open  { color: var(--rose); background: var(--rose-bg); }
+
+  .row-body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+
+  .decision {
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    line-height: 1.4;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .because {
+    font-size: 0.925rem;
+    line-height: 1.58;
+    color: var(--ink-soft);
+  }
+
+  .because code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--line-soft);
+    padding: 0.08em 0.3em;
+  }
+
+  /* ---------- figure block (lesson rhythm) ---------- */
+
+  figure {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  figure .scroller { overflow-x: auto; }
+
+  figure pre {
+    font-family: var(--mono);
+    font-size: 0.83rem;
+    line-height: 1.75;
+    margin: 0;
+    padding: 1.35rem 1.5rem;
+    color: var(--ink);
+  }
+
+  figcaption {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.7rem 1.5rem;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .pre-dim { color: var(--ink-faint); }
+  .pre-gold { color: var(--gold); }
+
+  /* ---------- quote ---------- */
+
+  blockquote {
+    margin: 0;
+    padding: 0 0 0 1.25rem;
+    border-left: 2px solid var(--gold);
+    font-family: var(--serif);
+    font-size: 1.12rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ---------- checklist ---------- */
+
+  ul.checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+
+  ul.checklist li {
+    display: grid;
+    grid-template-columns: 1.4rem 1fr;
+    gap: 0.9rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--line-soft);
+    align-items: baseline;
+  }
+  ul.checklist li:first-child { border-top: 1px solid var(--line); }
+
+  ul.checklist .box {
+    font-family: var(--mono);
+    color: var(--gold);
+    font-size: 0.9rem;
+  }
+
+  ul.checklist .what { font-size: 0.96rem; }
+  ul.checklist .what small {
+    display: block;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* ---------- key / legend ---------- */
+
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    padding: 0.9rem 0 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .key span { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+    font-size: 0.87rem;
+    color: var(--ink-faint);
+    max-width: 40rem;
+  }
+
+  @media (max-width: 34rem) {
+    .row { grid-template-columns: 1fr; gap: 0.5rem; }
+    .state { margin-top: 0; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Rejestr decyzji &middot; 17 sierpnia 2026</div>
+    <h1>Plan Lumio</h1>
+    <p class="standfirst">Apka do nauki angielskiego dla jednej testerki, kt&oacute;rej nigdy nie wesz&#322;o
+      <em>by&#322;am / jestem / b&#281;d&#281;</em> &mdash; i kt&oacute;ra porzuci&#322;a wszystko, co pr&oacute;bowa&#322;a wcze&#347;niej.</p>
+    <hr class="masthead-rule">
+    <div class="key">
+      <span><em class="state ok">zamkni&#281;te</em> decyzja podj&#281;ta</span>
+      <span><em class="state risk">ryzyko</em> podj&#281;ta, z nazwanym kosztem</span>
+      <span><em class="state open">otwarte</em> do rozstrzygni&#281;cia</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Po co to jest</h2>
+    <blockquote>&bdquo;Nigdy nie mog&#322;am si&#281; nauczy&#263; jak p&#322;ynnie m&oacute;wi&#263; o przesz&#322;o&#347;ci,
+      tera&#378;niejszo&#347;ci i przysz&#322;o&#347;ci. Nie potrzebuj&#281; uczenia si&#281; regu&#322;ek&hellip;
+      nie chce mi si&#281; uczy&#263; s&#322;&oacute;wek.&rdquo;</blockquote>
+    <p>Cel to <strong>m&oacute;wi&#263; p&#322;ynnie w podstawowym zakresie</strong>, pisa&#263; pe&#322;ne zdania,
+      mie&#263; dobr&#261; wymow&#281; i radzi&#263; sobie po angielsku w pracy testerki. Duolingo i Prof. Henry
+      nie zawiod&#322;y materia&#322;em &mdash; zawiod&#322;y tym, &#380;e przesta&#322;a&#347; wchodzi&#263;.
+      Dlatego warstwa nagradzania nie jest tu ozdob&#261;: jest r&oacute;wnorz&#281;dn&#261; cz&#281;&#347;ci&#261; projektu.</p>
+  </section>
+
+  <section>
+    <h2>Jedna lekcja</h2>
+    <figure>
+      <div class="scroller"><pre>15 rzeczy <span class="pre-dim">albo</span> 15 minut  <span class="pre-dim">&mdash; co przyjdzie pierwsze, lekcja zawsze si&#281; ko&#324;czy</span>
+
+ 1&times;  <span class="pre-gold">kafelki</span>            nowy wzorzec, pierwsze spotkanie &mdash; rusztowanie
+ 6&times;  <span class="pre-gold">PL&rarr;EN + shadowing</span>  rdze&#324;: wpisujesz, potem m&oacute;wisz razem z nagraniem
+ 3&times;  <span class="pre-gold">sytuacja &rarr; reakcja</span> gotowe klocki, kt&oacute;re trzymaj&#261; rozmow&#281;
+ 2&times;  <span class="pre-gold">dyktando</span>           s&#322;yszysz angielskie, zapisujesz
+
+                     &darr;
+        <span class="pre-gold">+20 km</span>  <span class="pre-gold">+20 monet</span>  <span class="pre-gold">mystery box</span>
+        <span class="pre-dim">(w z&#322;y dzie&#324; te&#380; pe&#322;na wyp&#322;ata &mdash; bez wyrzut&oacute;w)</span></pre></div>
+      <figcaption>Nigdy nie klepiesz w klawiatur&#281; pi&#281;tnastu razy pod rz&#261;d w tym samym trybie</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Metoda</h2>
+
+    <div class="ledger">
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Zero regu&#322;ek. Kontrast sytuacji, nie nazwy czas&oacute;w.</div>
+          <div class="because">Wzorce wchodz&#261; przez powt&oacute;rzenia. S&#322;owa &bdquo;Present Perfect&rdquo;
+            nie pojawi&#261; si&#281; w apce ani raz &mdash; zamiast tego <code>sko&#324;czone &rarr; was</code>
+            obok <code>trwa do teraz &rarr; I've been</code>, dwadzie&#347;cia razy pod rz&#261;d.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Wyja&#347;nienie: jedna linijka, tylko po b&#322;&#281;dzie.</div>
+          <div class="because">Nigdy nie czytasz teorii z g&oacute;ry. Po pomy&#322;ce dostajesz jedno zdanie
+            o sytuacji &mdash; nie o regule. R&oacute;&#380;nica wobec regu&#322;ek, kt&oacute;re Ci&#281; zawiod&#322;y:
+            l&#261;duje dok&#322;adnie w chwili potkni&#281;cia.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Bloki do opanowania, potem powt&oacute;rki z odst&#281;pami.</div>
+          <div class="because">Siedzisz na jednym wzorcu, dop&oacute;ki nie wyjdzie kilka razy z rz&#281;du.
+            Potem wraca: jutro, po trzech dniach, po tygodniu. Zdania, na kt&oacute;rych si&#281; mylisz,
+            wracaj&#261; cz&#281;&#347;ciej. Jednostk&#261; jest zawsze <strong>ca&#322;e zdanie</strong>, nigdy s&#322;&oacute;wko.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state risk">ryzyko</em>
+        <div class="row-body">
+          <div class="decision">Shadowing bez mikrofonu &mdash; m&oacute;wisz razem z nagraniem.</div>
+          <div class="because">Wolno w kawa&#322;kach z prawdziwymi pauzami, potem normalnie, a przy ostatnim
+            powt&oacute;rzeniu nagranie ucicha, wi&#281;c ko&#324;czysz zdanie sama.
+            <strong>Koszt:</strong> nic nie sprawdza, czy w og&oacute;le otworzy&#322;a&#347; usta, i nic nie poprawia
+            wymowy. Przyj&#281;te &#347;wiadomie.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ocena i tre&#347;&#263;</h2>
+
+    <div class="ledger">
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Jeden wzorzec do nauki, szeroka lista do zaakceptowania.</div>
+          <div class="because">Apka uczy <strong>jednego</strong> sposobu &mdash; tego, jak m&oacute;wi si&#281;
+            najcz&#281;&#347;ciej. Ale akceptuje wszystkie sensowne warianty, &#380;eby nigdy nie wyskoczy&#322; fa&#322;szywy
+            b&#322;&#261;d. Warianty poza wzorcem dostaj&#261; etykiet&#281; &bdquo;zrozumiej&#261; Ci&#281;, ale naturalniej powiedz tak&rdquo;.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Pu&#322;apki przewidziane z g&oacute;ry, z celn&#261; diagnoz&#261;.</div>
+          <div class="because">Do ka&#380;dego zdania generowane s&#261; typowo polskie b&#322;&#281;dy z w&#322;asn&#261;
+            jednolinijkow&#261; odpowiedzi&#261;: <code>I tested this from tomorrow</code> &rarr;
+            <em>&bdquo;tomorrow&rdquo; to przysz&#322;o&#347;&#263;, &bdquo;tested&rdquo; to przesz&#322;o&#347;&#263;</em>.
+            Odpowied&#378; z kosmosu &rarr; r&oacute;&#380;nica ze wzorcem plus przycisk <em>to te&#380; jest poprawne</em>.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Czasy &#263;wiczone na zdaniach z Twojej pracy.</div>
+          <div class="because">Nie dwa osobne cele, a jeden: <em>&bdquo;Testowa&#322;am to wczoraj&rdquo;</em>,
+            <em>&bdquo;Testuj&#281; to od rana&rdquo;</em>, <em>&bdquo;B&#281;d&#281; to testowa&#263; jutro&rdquo;</em>.
+            &#379;adnych zda&#324; o kocie na stole, kt&oacute;re nigdy nie wyjd&#261; Ci z ust.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state risk">ryzyko</em>
+        <div class="row-body">
+          <div class="decision">Rejestr: grzeczny small talk, nie trash talk.</div>
+          <div class="because">Wybra&#322;a&#347; wersj&#281; bezpieczn&#261;, mimo &#380;e zacz&#281;&#322;a&#347; od &bdquo;trash talku&rdquo;.
+            <strong>Koszt:</strong> to ten sam rejestr, kt&oacute;ry mia&#322;a&#347; w Duolingo i kt&oacute;ry Ci&#281; nie
+            poci&#261;gn&#261;&#322;. Wymiana rejestru w gotowym module to godzina roboty, nie przebudowa &mdash;
+            wi&#281;c decyzja jest odwracalna.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state risk">ryzyko</em>
+        <div class="row-body">
+          <div class="decision">Kontrola jako&#347;ci: moje niezale&#380;ne przebiegi, bez ludzi i bez koszt&oacute;w.</div>
+          <div class="because">Ka&#380;de zdanie sprawdzaj&#261; osobne kontrole, kt&oacute;re nie widz&#261; moich
+            uzasadnie&#324;: poprawno&#347;&#263;, czy native tak <em>powie</em>, kompletno&#347;&#263; wariant&oacute;w,
+            jednoznaczno&#347;&#263; polskiego zdania. Rozbie&#380;no&#347;&#263; &rarr; zdanie do kosza, nie do naprawy.
+            <strong>Koszt:</strong> to nadal ja sprawdzam siebie &mdash; b&#322;&#281;dy, w kt&oacute;rych myl&#281; si&#281;
+            konsekwentnie, przejd&#261; przez wszystkie kontrole.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>G&#322;os</h2>
+
+    <div class="ledger">
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Ameryka&#324;ski, &#380;e&#324;ski, jeden na ca&#322;&#261; apk&#281;.</div>
+          <div class="because">Ameryka&#324;ski, bo wszystko, co i tak s&#322;yszysz w IT poza apk&#261; &mdash;
+            konferencje, kursy, YouTube &mdash; jest ameryka&#324;skie, wi&#281;c bierne s&#322;uchanie wzmacnia
+            drylowanie zamiast si&#281; z nim rozje&#380;d&#380;a&#263;. &#379;e&#324;ski, bo przy shadowingu &#322;atwiej dopasowa&#263;
+            si&#281; do zbli&#380;onej wysoko&#347;ci g&#322;osu.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state risk">ryzyko</em>
+        <div class="row-body">
+          <div class="decision">Syntezator przegl&#261;darki, zero plik&oacute;w audio.</div>
+          <div class="because">Modu&#322; to plik tekstowy &mdash; kilkadziesi&#261;t kilobajt&oacute;w zamiast megabajt&oacute;w,
+            wi&#281;c dwadzie&#347;cia modu&#322;&oacute;w mie&#347;ci si&#281; w apce od razu i znika ca&#322;y problem &#347;ci&#261;gania.
+            <strong>Koszt:</strong> g&#322;osy s&#261; inne na ka&#380;dym komputerze &mdash; u kole&#380;anki mo&#380;e by&#263;
+            brytyjski albo &#380;aden.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Dwie &#322;atki na ten koszt.</div>
+          <div class="because"><strong>Wyb&oacute;r g&#322;osu przy pierwszym uruchomieniu</strong> &mdash; apka
+            pokazuje, jakie angielskie g&#322;osy s&#261; na komputerze, dajesz pos&#322;ucha&#263;, wybierasz; brak g&#322;osu
+            US mówi wprost, zamiast cicho udawa&#263;, &#380;e wszystko gra.
+            <strong>Zwolnione tempo w kawa&#322;kach</strong> &mdash; <code>I've been &hellip; testing it &hellip;
+            since this morning</code>, ka&#380;dy kawa&#322;ek w naturalnym tempie z prawdziw&#261; pauz&#261;,
+            zamiast rozci&#261;gania ca&#322;o&#347;ci na 0,6&times;.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trasa, sklep, ludzik</h2>
+
+    <div class="ledger">
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Dwa liczniki, nie jeden.</div>
+          <div class="because"><strong>Kilometry</strong> nie da si&#281; wyda&#263; &mdash; tylko przesuwaj&#261; ludzika
+            i otwieraj&#261; miasta. <strong>Monety</strong> s&#261; do wydania w sklepie. Lekcja daje 20 i 20.
+            Bez tego rozdzielenia kupienie drobiazgu cofa&#322;oby Ci&#281; w drodze do Pary&#380;a.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Miasto to wydarzenie: jedna z dwóch rzeczy za darmo.</div>
+          <div class="because">Dojście do Londynu &rarr; wybierasz jedn&#261; z dw&oacute;ch sukienek gratis.
+            <strong>Druga nie znika</strong> &mdash; zostaje w sklepie za monety, wi&#281;c wyb&oacute;r coś kosztuje,
+            ale nie jest ostateczny i od razu masz na co zbiera&#263;. Mi&#281;dzy miastami budka z drobiazgami.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Mystery box po ka&#380;dej lekcji &mdash; nigdy pusty.</div>
+          <div class="because">Dolna granica to bonus monet, cz&#281;&#347;ciej drobiazg, rzadko prawdziwy ciuch.
+            Skrzynka, kt&oacute;ra czasem daje &bdquo;nic&rdquo;, uczy Ci&#281; jej nie otwiera&#263;.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Bez serii dni, bez ognika, bez kary.</div>
+          <div class="because">Przerwana seria zabija nawyk skuteczniej ni&#380; nuda &mdash; i to prawdopodobnie
+            ona wysadzi&#322;a Ci&#281; w Duolingo. Post&#281;p pokazujemy w tym, <strong>co umiesz powiedzie&#263;</strong>
+            (&bdquo;o przesz&#322;o&#347;ci &mdash; 43 sytuacje&rdquo;), nie w punktach karnych.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Grafika: wektor warstwowy, jak papierowa laleczka.</div>
+          <div class="because">Ludzik z nak&#322;adanych warstw SVG. Wa&#380;y kilobajty, skaluje si&#281; bez rozmycia,
+            kolor to jedna linijka, a nowa bluzka to jedna warstwa wi&#281;cej. Nazwy przystank&oacute;w i
+            przedmiot&oacute;w z &#380;ycia testerki, nie &bdquo;Poziom 7&rdquo;.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Technika</h2>
+
+    <div class="ledger">
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Strona, kt&oacute;ra instaluje si&#281; jak program i dzia&#322;a offline.</div>
+          <div class="because">Wchodzisz raz na link, dodajesz na pulpit, dalej dzia&#322;a bez internetu.
+            Kole&#380;ance wysy&#322;asz <strong>jeden link</strong> &mdash; zero instalek, zero
+            &bdquo;Windows ochroni&#322; Tw&oacute;j komputer&rdquo;, zero antywirusa. Poprawki wchodz&#261; same.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">Laptop przy biurku. Telefon &mdash; nie teraz.</div>
+          <div class="because">Pisanie pe&#322;nych zda&#324; wymaga prawdziwej klawiatury, a m&oacute;wienie na g&#322;os
+            wymaga bycia samej. Wyb&oacute;r technologii nie zamyka telefonu na przysz&#322;o&#347;&#263;.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state ok">zamkni&#281;te</em>
+        <div class="row-body">
+          <div class="decision">&#346;ciganie: kod przez Messengera teraz, Firebase potem.</div>
+          <div class="because">Apka pakuje Tw&oacute;j post&#281;p w kr&oacute;tki tekst, wrzucasz go kole&#380;ance,
+            ona wkleja u siebie i widzi Tw&oacute;j ludzik na swojej mapie. Transportem jest Messenger,
+            nie serwer &mdash; dzie&#324; roboty, zero zale&#380;no&#347;ci. Firebase (&#380;ywe &#347;ciganie) dobudujemy,
+            je&#347;li obie wytrwacie miesi&#261;c; darmowy plan spokojnie wystarcza dla dw&oacute;ch os&oacute;b.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Co budujemy pierwsze</h2>
+    <p>Prototyp: <strong>pe&#322;na mechanika na drobnej tre&#347;ci.</strong> Generowanie 300 zda&#324; z wariantami,
+      pu&#322;apkami i diagnozami to najwi&#281;ksza pozycja pracy w ca&#322;ym projekcie &mdash; nie ma sensu robi&#263;
+      jej dla p&#281;tli, kt&oacute;rej ani razu nie widzia&#322;a&#347; w dzia&#322;aniu.</p>
+
+    <ul class="checklist">
+      <li><span class="box">&#9633;</span><span class="what">Cztery typy &#263;wicze&#324;, wszystkie
+        <small>kafelki, PL&rarr;EN + shadowing, sytuacja&rarr;reakcja, dyktando</small></span></li>
+      <li><span class="box">&#9633;</span><span class="what">Shadowing z prawdziwymi pauzami i wyborem g&#322;osu
+        <small>&#322;&#261;cznie z ostrze&#380;eniem, gdy na komputerze nie ma g&#322;osu US</small></span></li>
+      <li><span class="box">&#9633;</span><span class="what">Ocena: wzorzec, warianty, pu&#322;apki, oba przyciski zg&#322;oszenia
+        <small><em>to te&#380; jest poprawne</em> i <em>to brzmi dziwnie</em> &mdash; zapisywane do listy poprawek</small></span></li>
+      <li><span class="box">&#9633;</span><span class="what">Trasa Warszawa &rarr; Londyn, jedno miasto, cztery ciuchy, mystery box
+        <small>dwa liczniki, wyb&oacute;r jednej z dw&oacute;ch rzeczy za darmo, budka z drobiazgami</small></span></li>
+      <li><span class="box">&#9633;</span><span class="what">Tre&#347;&#263;: 30 zda&#324;, czyli dwie&ndash;trzy lekcje
+        <small>czasy na zdaniach z pracy testerki</small></span></li>
+    </ul>
+
+    <p>Potem siadasz, robisz dwie lekcje i m&oacute;wisz, co jest do niczego. Poprawiam p&#281;tl&#281;
+      &mdash; <strong>i dopiero wtedy</strong> generuj&#281; pe&#322;n&#261; tre&#347;&#263;.</p>
+  </section>
+
+  <section>
+    <h2>Jeszcze nierozstrzygni&#281;te</h2>
+
+    <div class="ledger">
+      <div class="row">
+        <em class="state open">otwarte</em>
+        <div class="row-body">
+          <div class="decision">Gdzie &#380;yje post&#281;p i co si&#281; dzieje po wyczyszczeniu przegl&#261;darki.</div>
+          <div class="because">Bez serwera post&#281;p siedzi lokalnie &mdash; a wyczyszczenie danych przegl&#261;darki
+            skasuje ca&#322;&#261; szaf&#281; i ca&#322;&#261; tras&#281;. Potrzebny eksport kopii albo przypomnienie.
+            <em>M&oacute;j typ: przycisk &bdquo;zapisz kopi&#281;&rdquo; plus automatyczne przypomnienie co tydzie&#324;.</em></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state open">otwarte</em>
+        <div class="row-body">
+          <div class="decision">Ile miast na trasie i jak rosn&#261; koszty dalej.</div>
+          <div class="because">Londyn 100&nbsp;km, Pary&#380; 300&nbsp;km &mdash; a potem? Koszty musz&#261; rosn&#261;&#263;,
+            ale nie do absurdu, i mi&#281;dzy miastami musi zawsze by&#263; coś taniego do kupienia.
+            <em>Ustalimy na konkretnych liczbach przy prototypie.</em></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state open">otwarte</em>
+        <div class="row-body">
+          <div class="decision">Kiedy wchodzi lu&#378;ne gadanie i trash talk.</div>
+          <div class="because">Wybra&#322;a&#347; grzeczny small talk na start. Lu&#378;ny rejestr czeka jako osobny
+            modu&#322; &mdash; ale nie ustalili&#347;my, czy po pierwszym module, czy dopiero gdy powiesz,
+            &#380;e small talk brzmi jak formularz.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <em class="state open">otwarte</em>
+        <div class="row-body">
+          <div class="decision">Nazwa.</div>
+          <div class="because">Na razie <strong>Lumio</strong>, bo tak nazywa si&#281; katalog.
+            Je&#347;li ma zosta&#263;, wchodzi do ikony na pulpicie i do linku dla kole&#380;anki.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Cztery rzeczy w tym planie s&#261; podj&#281;te ze &#347;wiadomym kosztem, nie w ciemno: brak mikrofonu,
+    syntezator zamiast nagra&#324;, grzeczny rejestr i kontrola jako&#347;ci bez cz&#322;owieka.
+    Ka&#380;da z nich jest odwracalna &mdash; &#380;adna nie zabetonowuje projektu.
+  </footer>
+
+</div>

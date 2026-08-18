@@ -1,0 +1,50 @@
+{
+  "stops": [
+    {
+      "id": "warszawa",
+      "name": "Warszawa",
+      "short": "Warszawa",
+      "km": 0,
+      "kind": "start",
+      "icon": "palace",
+      "flavor": "Start. Zwykłe szorty, zwykła koszulka, zero wymówek."
+    },
+    {
+      "id": "budka",
+      "name": "Budka przy Sprint Review",
+      "short": "Budka",
+      "km": 25,
+      "kind": "stall",
+      "icon": "kiosk",
+      "flavor": "Ktoś rozstawił stragan z drobiazgami. Nikt nie wie kto ani dlaczego.",
+      "stock": ["glasses", "bow", "lipstick"]
+    },
+    {
+      "id": "londyn",
+      "name": "Londyn",
+      "short": "Londyn",
+      "km": 60,
+      "kind": "city",
+      "icon": "bigben",
+      "flavor": "Dotarłaś. Wybierz jedną sukienkę za darmo — druga zostaje w sklepie za monety.",
+      "freeChoice": ["dress-navy", "dress-red"],
+      "stock": ["earrings"]
+    }
+  ],
+  "items": [
+    { "id": "hair-bob",       "name": "Włosy do ramion",   "slot": "hair",   "price": 0,   "source": "start" },
+    { "id": "hair-long",      "name": "Długie włosy",      "slot": "hair",   "price": 0,   "source": "start" },
+    { "id": "hair-ponytail",  "name": "Kucyk",              "slot": "hair",   "price": 0,   "source": "start" },
+    { "id": "top-tshirt",     "name": "Biała koszulka",    "slot": "top",    "price": 0,   "source": "start" },
+    { "id": "bottom-shorts",  "name": "Szare szorty",      "slot": "bottom", "price": 0,   "source": "start" },
+
+    { "id": "dress-navy",     "name": "Błękitna sukienka", "slot": "dress",  "price": 150, "source": "londyn" },
+    { "id": "dress-red",      "name": "Różowa sukienka",   "slot": "dress",  "price": 150, "source": "londyn" },
+    { "id": "earrings",       "name": "Kolczyki",           "slot": "ears",   "price": 40,  "source": "londyn" },
+
+    { "id": "glasses",        "name": "Okulary",            "slot": "eyes",   "price": 60,  "source": "budka" },
+    { "id": "lipstick",       "name": "Czerwona szminka",   "slot": "lips",   "price": 35,  "source": "budka" },
+    { "id": "bow",            "name": "Kokarda",            "slot": "head",   "price": 25,  "source": "budka" }
+  ],
+  "boxPool": ["bow", "lipstick", "glasses", "earrings"]
+}

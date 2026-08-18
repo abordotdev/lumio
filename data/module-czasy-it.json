@@ -1,0 +1,464 @@
+{
+  "id": "czasy-it",
+  "title": "Czasy na zdaniach z pracy",
+  "subtitle": "byłam / jestem / będę — na tym, co i tak mówisz w pracy",
+  "patterns": {
+    "past-done": "skończone i zamknięte",
+    "now": "dzieje się w tej chwili",
+    "always": "zawsze, zwykle",
+    "still-going": "trwa do teraz",
+    "done-no-time": "zrobione, bez mówienia kiedy",
+    "will": "decyzja o przyszłości",
+    "plan": "plan, który już masz"
+  },
+  "patternOrder": ["past-done", "now", "still-going", "will", "done-no-time", "plan", "always"],
+  "translations": [
+    {
+      "id": "t01",
+      "pattern": "past-done",
+      "pl": "Testowałam to wczoraj",
+      "en": "I tested it yesterday",
+      "accept": ["I tested this yesterday", "I did test it yesterday"],
+      "note": "skończone i zamknięte → tested",
+      "chunks": ["I tested it", "yesterday"],
+      "traps": [
+        { "input": "I have tested it yesterday", "why": "gdy mówisz kiedy (yesterday), nie używasz have — to zamknięta przeszłość" },
+        { "input": "I was tested it yesterday", "why": "was tested znaczy, że ktoś testował CIEBIE" },
+        { "input": "I test it yesterday", "why": "yesterday to przeszłość → tested, nie test" },
+        { "input": "I was testing it yesterday", "why": "to znaczy byłam w trakcie testowania — a tu chodzi o skończoną robotę" }
+      ]
+    },
+    {
+      "id": "t02",
+      "pattern": "past-done",
+      "pl": "Zgłosiłam ten błąd w piątek",
+      "en": "I reported that bug on Friday",
+      "accept": ["I reported this bug on Friday", "I reported the bug on Friday"],
+      "note": "konkretny, zamknięty moment → reported",
+      "chunks": ["I reported", "that bug", "on Friday"],
+      "traps": [
+        { "input": "I reported that bug in Friday", "why": "przy dniach tygodnia zawsze on: on Friday" },
+        { "input": "I reported that bug at Friday", "why": "przy dniach tygodnia on, nie at" },
+        { "input": "I have reported that bug on Friday", "why": "podajesz kiedy → bez have" }
+      ]
+    },
+    {
+      "id": "t03",
+      "pattern": "past-done",
+      "pl": "Sprawdziłam to dwa razy",
+      "en": "I checked it twice",
+      "accept": ["I checked this twice", "I checked it two times", "I have checked it twice", "I've checked it twice", "I did check it twice"],
+      "note": "skończona czynność → checked",
+      "chunks": ["I checked it", "twice"],
+      "traps": [
+        { "input": "I checked it two time", "why": "twice albo two times — nigdy two time" },
+        { "input": "I check it twice", "why": "to już się stało → checked" }
+      ]
+    },
+    {
+      "id": "t04",
+      "pattern": "past-done",
+      "pl": "Nie miałam czasu skończyć testów",
+      "en": "I didn't have time to finish the tests",
+      "accept": ["I did not have time to finish the tests", "I didn't have time to finish the testing", "I didn't have time to finish testing"],
+      "note": "przeczenie w przeszłości → didn't + podstawowa forma",
+      "chunks": ["I didn't have time", "to finish", "the tests"],
+      "traps": [
+        { "input": "I didn't had time to finish the tests", "why": "po didn't zawsze podstawowa forma: didn't have" },
+        { "input": "I hadn't time to finish the tests", "why": "hadn't tak się nie używa — mów didn't have" },
+        { "input": "I don't have time to finish the tests", "why": "to jest o teraz, a chodziło o przeszłość → didn't" }
+      ]
+    },
+
+    {
+      "id": "t05",
+      "pattern": "now",
+      "pl": "Testuję to teraz",
+      "en": "I'm testing it now",
+      "accept": ["I am testing it now", "I'm testing this now", "I'm testing it right now"],
+      "note": "dzieje się w tej chwili → I'm + -ing",
+      "chunks": ["I'm testing it", "now"],
+      "traps": [
+        { "input": "I test it now", "why": "now znaczy w tej chwili → I'm testing" },
+        { "input": "I'm test it now", "why": "po I'm zawsze forma z -ing: I'm testing" },
+        { "input": "I've been testing it now", "why": "I've been znaczy od jakiegoś czasu — a tu chodzi o samą tę chwilę" }
+      ]
+    },
+    {
+      "id": "t06",
+      "pattern": "now",
+      "pl": "Czekam na deploy",
+      "en": "I'm waiting for the deploy",
+      "accept": ["I am waiting for the deploy", "I'm waiting for the deployment", "I'm waiting for a deploy", "I'm waiting on the deploy"],
+      "note": "dzieje się teraz → I'm waiting (-ing, bo w trakcie)",
+      "chunks": ["I'm waiting", "for the deploy"],
+      "traps": [
+        { "input": "I'm waiting the deploy", "why": "wait zawsze z for: waiting for" },
+        { "input": "I wait for the deploy", "why": "I wait znaczy zwykle czekam — teraz to I'm waiting" }
+      ]
+    },
+    {
+      "id": "t07",
+      "pattern": "now",
+      "pl": "Pracuję dzisiaj nad koszykiem",
+      "en": "I'm working on the cart today",
+      "accept": ["I am working on the cart today", "Today I'm working on the cart", "I'm working on the basket today"],
+      "note": "dzisiaj, w trakcie → I'm working (-ing, bo teraz to robisz)",
+      "chunks": ["I'm working", "on the cart", "today"],
+      "traps": [
+        { "input": "I work on the cart today", "why": "dziś, w trakcie → I'm working" },
+        { "input": "I'm working at the cart today", "why": "pracować NAD czymś = work ON something" }
+      ]
+    },
+
+    {
+      "id": "t08",
+      "pattern": "still-going",
+      "pl": "Testuję to od rana",
+      "hint": "i nadal testuję",
+      "en": "I've been testing it since this morning",
+      "accept": ["I have been testing it since this morning", "I've been testing this since this morning", "I've been testing it since the morning"],
+      "note": "zaczęło się wcześniej i trwa do teraz → I've been + testing. -ing, bo to nadal trwa. I've been tested znaczy, że ktoś testował CIEBIE.",
+      "chunks": ["I've been", "testing it", "since this morning"],
+      "traps": [
+        { "input": "I'm testing it since this morning", "why": "I'm testing to tylko ta chwila — gdy coś trwa OD kiedyś, użyj I've been" },
+        { "input": "I test it since this morning", "why": "od rana i nadal → I've been testing" },
+        { "input": "I've been testing it from this morning", "why": "przy punkcie w czasie mówi się since, nie from" },
+        { "input": "I was testing it since this morning", "why": "I was zamyka to w przeszłości — a Ty nadal testujesz → I've been" }
+      ]
+    },
+    {
+      "id": "t09",
+      "pattern": "still-going",
+      "pl": "Czekam na to od godziny",
+      "hint": "i nadal czekam",
+      "en": "I've been waiting for it for an hour",
+      "accept": ["I have been waiting for it for an hour", "I've been waiting for this for an hour"],
+      "note": "trwa do teraz → I've been waiting (-ing, bo nadal czekasz); „od godziny\" jako długość → for an hour",
+      "chunks": ["I've been waiting", "for it", "for an hour"],
+      "traps": [
+        { "input": "I've been waiting for it since an hour", "why": "since przy momencie (since nine), for przy długości (for an hour)" },
+        { "input": "I'm waiting for it for an hour", "why": "gdy coś trwa OD jakiegoś czasu → I've been waiting" },
+        { "input": "I wait for it for an hour", "why": "trwa do teraz → I've been waiting" }
+      ]
+    },
+    {
+      "id": "t10",
+      "pattern": "still-going",
+      "pl": "Pracuję tu od trzech lat",
+      "hint": "i nadal pracuję",
+      "en": "I've been working here for three years",
+      "accept": ["I have been working here for three years", "I've worked here for three years", "I have worked here for three years"],
+      "note": "trwa do teraz → I've been working (-ing, bo nadal pracujesz)",
+      "chunks": ["I've been working", "here", "for three years"],
+      "traps": [
+        { "input": "I work here for three years", "why": "trwa do teraz → I've been working here" },
+        { "input": "I'm working here for three years", "why": "gdy liczysz, od jak dawna → I've been working" },
+        { "input": "I've been working here since three years", "why": "for przy długości: for three years" }
+      ]
+    },
+    {
+      "id": "t11",
+      "pattern": "still-going",
+      "pl": "Szukam tego błędu od wczoraj",
+      "hint": "i nadal szukam",
+      "en": "I've been looking for that bug since yesterday",
+      "accept": ["I have been looking for that bug since yesterday", "I've been looking for this bug since yesterday"],
+      "note": "trwa do teraz → I've been looking (-ing, bo nadal szukasz)",
+      "chunks": ["I've been looking", "for that bug", "since yesterday"],
+      "traps": [
+        { "input": "I'm looking for that bug since yesterday", "why": "gdy coś trwa OD kiedyś → I've been looking" },
+        { "input": "I've been looking that bug since yesterday", "why": "look zawsze z for: looking for" },
+        { "input": "I've been searching that bug since yesterday", "why": "search też wymaga for — albo prościej: looking for" }
+      ]
+    },
+
+    {
+      "id": "t12",
+      "pattern": "will",
+      "pl": "Sprawdzę to jutro",
+      "en": "I'll check it tomorrow",
+      "accept": ["I will check it tomorrow", "I'll check this tomorrow", "I'm going to check it tomorrow"],
+      "note": "decyzja o przyszłości → I'll",
+      "chunks": ["I'll check it", "tomorrow"],
+      "traps": [
+        { "input": "I check it tomorrow", "why": "przy jutro → I'll check" },
+        { "input": "I'll checking it tomorrow", "why": "po I'll podstawowa forma: I'll check" },
+        { "input": "I will checked it tomorrow", "why": "po will podstawowa forma: will check" }
+      ]
+    },
+    {
+      "id": "t13",
+      "pattern": "will",
+      "pl": "Zajmę się tym po lunchu",
+      "en": "I'll take a look after lunch",
+      "accept": ["I will take a look after lunch", "I'll look at it after lunch", "I'll take care of it after lunch", "I'll pick it up after lunch"],
+      "note": "obietnica na przyszłość → I'll",
+      "chunks": ["I'll take a look", "after lunch"],
+      "traps": [
+        { "input": "I'll take a look after the lunch", "why": "lunch bez the: after lunch" },
+        { "input": "I take a look after lunch", "why": "przy obietnicy → I'll take a look" }
+      ]
+    },
+    {
+      "id": "t14",
+      "pattern": "will",
+      "pl": "Napiszę do Tomka",
+      "en": "I'll message Tomek",
+      "accept": ["I will message Tomek", "I'll write to Tomek", "I'll text Tomek", "I'll ping Tomek", "I'll write Tomek"],
+      "note": "decyzja podjęta teraz → I'll",
+      "chunks": ["I'll message", "Tomek"],
+      "traps": [
+        { "input": "I write to Tomek", "why": "przy decyzji na teraz → I'll write to Tomek" },
+        { "input": "I'll messaging Tomek", "why": "po I'll podstawowa forma: I'll message" }
+      ]
+    },
+    {
+      "id": "t15",
+      "pattern": "will",
+      "pl": "Będę na callu o trzeciej",
+      "en": "I'll be on a call at three",
+      "accept": ["I will be on a call at three", "I'm going to be on a call at three", "I'll be on a call at 3", "I'll be in a call at three"],
+      "note": "przyszłość od „być\" → I'll be",
+      "chunks": ["I'll be", "on a call", "at three"],
+      "traps": [
+        { "input": "I'll on a call at three", "why": "brakuje be: I'll be on a call" },
+        { "input": "I will am on a call at three", "why": "po will zawsze be: will be" },
+        { "input": "I'll be on a call in three", "why": "przy godzinie at: at three" }
+      ]
+    },
+
+    {
+      "id": "t16",
+      "pattern": "done-no-time",
+      "pl": "Już to zgłosiłam",
+      "en": "I've already reported it",
+      "accept": ["I have already reported it", "I already reported it", "I've already reported this", "I've reported it already"],
+      "note": "zrobione, nie mówisz kiedy → I've + already",
+      "chunks": ["I've already", "reported it"],
+      "traps": [
+        { "input": "I already report it", "why": "to już się stało → I've already reported it" },
+        { "input": "I have already report it", "why": "po have idzie forma z -ed: reported" }
+      ]
+    },
+    {
+      "id": "t17",
+      "pattern": "done-no-time",
+      "pl": "Jeszcze tego nie sprawdziłam",
+      "en": "I haven't checked it yet",
+      "accept": ["I have not checked it yet", "I haven't checked this yet", "I didn't check it yet"],
+      "note": "jeszcze nie → haven't + yet",
+      "chunks": ["I haven't", "checked it", "yet"],
+      "traps": [
+        { "input": "I haven't check it yet", "why": "po haven't forma z -ed: checked" },
+        { "input": "I not checked it yet", "why": "przeczenie brzmi: haven't checked" },
+        { "input": "I haven't checked it still", "why": "„jeszcze\" w przeczeniu to yet, nie still" }
+      ]
+    },
+    {
+      "id": "t18",
+      "pattern": "done-no-time",
+      "pl": "Już skończyłam",
+      "en": "I've finished",
+      "accept": ["I have finished", "I'm done", "I am done", "I've finished it", "I've already finished"],
+      "note": "właśnie zrobione → I've finished albo I'm done",
+      "chunks": ["I've finished"],
+      "traps": [
+        { "input": "I already finish", "why": "to już się stało → I've finished" },
+        { "input": "I've finish", "why": "po I've forma z -ed: finished" }
+      ]
+    },
+
+    {
+      "id": "t19",
+      "pattern": "plan",
+      "pl": "Będę dzisiaj testować płatności",
+      "en": "I'm going to test payments today",
+      "accept": ["I am going to test payments today", "I'll be testing payments today", "I'm testing payments today"],
+      "note": "plan, który już masz → I'm going to",
+      "chunks": ["I'm going to", "test payments", "today"],
+      "traps": [
+        { "input": "I will be test payments today", "why": "po be idzie -ing: will be testing" },
+        { "input": "I'm going to testing payments today", "why": "po going to podstawowa forma: going to test" },
+        { "input": "I going to test payments today", "why": "brakuje am: I'm going to test" }
+      ]
+    },
+    {
+      "id": "t20",
+      "pattern": "plan",
+      "pl": "Nie będę tego dzisiaj kończyć",
+      "en": "I'm not going to finish it today",
+      "accept": ["I am not going to finish it today", "I won't finish it today", "I'm not going to finish this today"],
+      "note": "plan w przeczeniu → I'm not going to",
+      "chunks": ["I'm not going to", "finish it", "today"],
+      "traps": [
+        { "input": "I don't going to finish it today", "why": "przeczenie od I'm brzmi: I'm not going to" },
+        { "input": "I'm not going to finishing it today", "why": "po going to podstawowa forma: to finish" }
+      ]
+    },
+
+    {
+      "id": "t21",
+      "pattern": "always",
+      "pl": "Zawsze sprawdzam to na dwóch przeglądarkach",
+      "en": "I always check it on two browsers",
+      "accept": ["I always check this on two browsers", "I always test it on two browsers"],
+      "note": "zawsze, jako zasada → zwykła forma: I check",
+      "chunks": ["I always check it", "on two browsers"],
+      "traps": [
+        { "input": "I'm always checking it on two browsers", "why": "to znaczy ciągle to sprawdzam, z odcieniem narzekania — przy zasadzie użyj I check" },
+        { "input": "I always checking it on two browsers", "why": "brakuje formy — tu: I always check" },
+        { "input": "I check always it on two browsers", "why": "always stoi po I, przed czasownikiem: I always check" }
+      ]
+    },
+    {
+      "id": "t22",
+      "pattern": "always",
+      "pl": "Zwykle testuję po deployu",
+      "en": "I usually test after the deploy",
+      "accept": ["I usually test after a deploy", "Usually I test after the deploy", "I usually test after the deployment"],
+      "note": "zwykle, jako nawyk → zwykła forma: I test",
+      "chunks": ["I usually test", "after the deploy"],
+      "traps": [
+        { "input": "I'm usually testing after the deploy", "why": "przy nawyku użyj I test" },
+        { "input": "I usually testing after the deploy", "why": "brakuje formy — tu: I usually test" }
+      ]
+    },
+    {
+      "id": "t23",
+      "pattern": "past-done",
+      "pl": "Byłam na tym callu",
+      "hint": "wczoraj, skończone",
+      "en": "I was on that call",
+      "accept": ["I was on this call", "I was in that call"],
+      "note": "skończone i zamknięte → I was",
+      "chunks": ["I was", "on that call"],
+      "traps": [
+        { "input": "I've been on that call", "why": "I've been mówi, że to trwa albo że masz takie doświadczenie — przy zamkniętej sytuacji: I was" },
+        { "input": "I am on that call", "why": "to jest o teraz — a chodziło o przeszłość → I was" }
+      ]
+    },
+    {
+      "id": "t24",
+      "pattern": "now",
+      "pl": "Jestem na callu",
+      "hint": "właśnie teraz",
+      "en": "I'm on a call",
+      "accept": ["I am on a call", "I'm on a call right now", "I'm in a call"],
+      "note": "w tej chwili → I'm",
+      "chunks": ["I'm on a call"],
+      "traps": [
+        { "input": "I'm being on a call", "why": "being tu nie wchodzi — po prostu I'm on a call" },
+        { "input": "I was on a call", "why": "to przeszłość — teraz to I'm on a call" }
+      ]
+    }
+  ],
+
+  "reactions": [
+    {
+      "id": "r01",
+      "situation": "Koleżanka mówi, że deploy padł.",
+      "en": "Oh no, what happened?",
+      "accept": ["Oh no what happened", "Oh no, what's wrong?", "Oh no! What happened?", "Oh no, what happened"],
+      "chunks": ["Oh no", "what happened?"]
+    },
+    {
+      "id": "r02",
+      "situation": "Ktoś tłumaczy coś zawile i nie zrozumiałaś.",
+      "en": "Sorry, I didn't catch that.",
+      "accept": ["Sorry I didn't catch that", "Sorry, I didn't get that", "Sorry, could you repeat that?", "Sorry, could you say that again?"],
+      "chunks": ["Sorry", "I didn't catch that"]
+    },
+    {
+      "id": "r03",
+      "situation": "Ktoś narzeka na to samo, co Ciebie wkurza.",
+      "en": "Same here.",
+      "accept": ["Same here", "Same", "Me too", "Yeah, same here"],
+      "chunks": ["Same here"]
+    },
+    {
+      "id": "r04",
+      "situation": "Pomyliłaś się i chcesz to przyznać.",
+      "en": "My bad, I'll fix it.",
+      "accept": ["My bad I'll fix it", "My bad", "Sorry, my mistake, I'll fix it", "My bad, I will fix it"],
+      "chunks": ["My bad", "I'll fix it"]
+    },
+    {
+      "id": "r05",
+      "situation": "Potrzebujesz chwili, żeby coś sprawdzić.",
+      "en": "Hold on, let me check.",
+      "accept": ["Hold on let me check", "Hold on, let me check that", "Just a second, let me check", "One moment, let me check"],
+      "chunks": ["Hold on", "let me check"]
+    },
+    {
+      "id": "r06",
+      "situation": "Ktoś powiedział coś, co Cię zaskoczyło.",
+      "en": "Oh, really?",
+      "accept": ["Oh really", "Really?", "Wait, really?", "Oh really?"],
+      "chunks": ["Oh, really?"]
+    },
+    {
+      "id": "r07",
+      "situation": "Ktoś podał sensowny argument i przyznajesz mu rację.",
+      "en": "That makes sense.",
+      "accept": ["That makes sense", "Makes sense", "Yeah, that makes sense", "OK, that makes sense"],
+      "chunks": ["That makes sense"]
+    },
+    {
+      "id": "r08",
+      "situation": "Nie wiesz i chcesz powiedzieć to uczciwie.",
+      "en": "I'm not sure, let me find out.",
+      "accept": ["I'm not sure let me find out", "I'm not sure, I'll find out", "I don't know, let me check", "I am not sure, let me find out"],
+      "chunks": ["I'm not sure", "let me find out"]
+    }
+  ],
+
+  "dictation": [
+    {
+      "id": "d01",
+      "en": "I've been testing it since this morning",
+      "pl": "Testuję to od rana",
+      "note": "zaczęło się wcześniej i trwa do teraz → I've been + testing (-ing, bo czynność TRWA)",
+      "chunks": ["I've been", "testing it", "since this morning"],
+      "traps": [
+        { "input": "I'm testing it since this morning", "why": "I'm testing to tylko ta chwila — gdy coś trwa OD kiedyś, użyj I've been" }
+      ]
+    },
+    {
+      "id": "d02",
+      "en": "I haven't checked it yet",
+      "pl": "Jeszcze tego nie sprawdziłam",
+      "note": "po haven't zawsze forma z -ed: checked, nie check",
+      "chunks": ["I haven't", "checked it", "yet"],
+      "accept": ["I have not checked it yet", "I haven't checked this yet"],
+      "traps": [
+        { "input": "I haven't check it yet", "why": "po haven't forma z -ed: checked" },
+        { "input": "I have not check it yet", "why": "po have/haven't forma z -ed: checked" }
+      ]
+    },
+    {
+      "id": "d03",
+      "en": "I'll take a look after lunch",
+      "pl": "Zajmę się tym po lunchu",
+      "note": "obietnica na przyszłość → I'll",
+      "chunks": ["I'll take a look", "after lunch"]
+    },
+    {
+      "id": "d04",
+      "en": "She reported it on Friday",
+      "pl": "Zgłosiła to w piątek",
+      "note": "konkretny, zamknięty moment → reported; przy dniu tygodnia: on Friday",
+      "chunks": ["She reported it", "on Friday"],
+      "traps": [
+        { "input": "She reported it in Friday", "why": "przy dniach tygodnia zawsze on: on Friday" }
+      ]
+    },
+    {
+      "id": "d05",
+      "en": "We're waiting for the deploy",
+      "pl": "Czekamy na deploy",
+      "note": "dzieje się teraz, w tej chwili → we're waiting (-ing, bo czekanie trwa)",
+      "chunks": ["We're waiting", "for the deploy"]
+    }
+  ]
+}
