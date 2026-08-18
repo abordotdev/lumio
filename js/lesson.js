@@ -3,7 +3,13 @@ import { esc, h, mount, shuffle, seedFrom, toast } from './ui.js';
 import { grade } from './grade.js';
 import * as speech from './speech.js';
 import * as store from './store.js';
-import { buildLesson, buildReview, LESSON_MAX_ITEMS, LESSON_KM, LESSON_COINS } from './scheduler.js';
+import {
+  buildLesson,
+  buildReview,
+  LESSON_MAX_ITEMS,
+  LESSON_KM,
+  LESSON_COINS,
+} from './scheduler.js';
 import { formHint, tileBank, usesTenseTiles } from './forms.js';
 
 const KIND_LABEL = {
@@ -306,9 +312,11 @@ function showResult({ step, card, session, module, onFinish, answer }) {
     panel.appendChild(h(`<p class="muted">Konstrukcja dobra, tylko literówka w słowie:</p>`));
     if (pairs.length) {
       panel.appendChild(
-        h(`<p class="typo-fix">${pairs
-          .map((p) => `<mark class="typo-mark">${esc(p.mine)}</mark> → <b>${esc(p.want)}</b>`)
-          .join('<br>')}</p>`)
+        h(
+          `<p class="typo-fix">${pairs
+            .map((p) => `<mark class="typo-mark">${esc(p.mine)}</mark> → <b>${esc(p.want)}</b>`)
+            .join('<br>')}</p>`
+        )
       );
     } else if (result.diff) {
       panel.appendChild(

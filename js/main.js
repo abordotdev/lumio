@@ -11,11 +11,13 @@ async function loadJson(path) {
 }
 
 function fail(message, detail) {
-  mount(h(`<div class="card">
+  mount(
+    h(`<div class="card">
     <span class="label">Nie wystartowało</span>
     <h1>${message}</h1>
     <p class="muted">${detail}</p>
-  </div>`));
+  </div>`)
+  );
 }
 
 (async () => {
@@ -24,8 +26,8 @@ function fail(message, detail) {
   if (location.protocol === 'file:') {
     return fail(
       'Otwórz Lumio przez serwer, nie dwuklikiem',
-      'Przeglądarka blokuje wczytywanie plików z dysku. W katalogu projektu uruchom <b>node serve.js</b> '
-      + 'i wejdź na <b>http://localhost:4173</b>. Instrukcja jest w README.md.'
+      'Przeglądarka blokuje wczytywanie plików z dysku. W katalogu projektu uruchom <b>node serve.js</b> ' +
+        'i wejdź na <b>http://localhost:4173</b>. Instrukcja jest w README.md.'
     );
   }
 
@@ -86,7 +88,11 @@ function fail(message, detail) {
     const fallback = speech.recommended();
     if (fallback) {
       speech.setVoiceByName(fallback.name);
-      setTimeout(() => toast(`Głosu „${state.voiceName}" nie ma na tym komputerze. Wzięłam ${fallback.name}.`), 400);
+      setTimeout(
+        () =>
+          toast(`Głosu „${state.voiceName}" nie ma na tym komputerze. Wzięłam ${fallback.name}.`),
+        400
+      );
     }
   }
   if (!speech.currentVoice()) {
@@ -102,7 +108,9 @@ function fail(message, detail) {
   if (!('serviceWorker' in navigator)) return;
   const local = ['localhost', '127.0.0.1', ''].includes(location.hostname);
   if (location.protocol === 'https:' && !local) {
-    navigator.serviceWorker.register('sw.js').catch(() => { /* offline po prostu nie zadziała */ });
+    navigator.serviceWorker.register('sw.js').catch(() => {
+      /* offline po prostu nie zadziała */
+    });
   } else {
     const regs = await navigator.serviceWorker.getRegistrations();
     for (const reg of regs) await reg.unregister();

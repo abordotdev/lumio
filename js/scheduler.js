@@ -134,11 +134,7 @@ export function buildLesson(module, state) {
       )
     : [];
 
-  const reviews = take(
-    translations.filter((t) => weak(t.id, now)).sort(overdueSort),
-    4,
-    used
-  );
+  const reviews = take(translations.filter((t) => weak(t.id, now)).sort(overdueSort), 4, used);
 
   const filler = take(
     translations.filter((t) => !itemState(t.id).introduced).sort(unseenFirst),

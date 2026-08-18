@@ -19,7 +19,7 @@ const TYPES = {
   '.png': 'image/png',
   '.ico': 'image/x-icon',
   '.mp3': 'audio/mpeg',
-  '.woff2': 'font/woff2'
+  '.woff2': 'font/woff2',
 };
 
 const server = http.createServer((req, res) => {
@@ -52,7 +52,7 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {
       'Content-Type': TYPES[path.extname(target).toLowerCase()] || 'application/octet-stream',
       'Cache-Control': 'no-cache',
-      'Service-Worker-Allowed': '/'
+      'Service-Worker-Allowed': '/',
     });
     res.end(data);
   });
@@ -76,9 +76,7 @@ async function translatePl(req, res) {
     const text = q.trim();
     if (!text) return json(400, { error: 'puste' });
     const url =
-      'https://api.mymemory.translated.net/get?q=' +
-      encodeURIComponent(text) +
-      '&langpair=pl|en';
+      'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=pl|en';
     const r = await fetch(url);
     const data = await r.json();
     const en = String(data?.responseData?.translatedText || '').trim();

@@ -613,7 +613,9 @@ function moduleDetail(module) {
     if (emptyMine) return go('phrases');
     runLesson({ review: Boolean(outline?.reviewOnly) });
   });
-  panel.querySelector('[data-review]')?.addEventListener('click', () => runLesson({ review: true }));
+  panel
+    .querySelector('[data-review]')
+    ?.addEventListener('click', () => runLesson({ review: true }));
   return panel;
 }
 
@@ -1084,7 +1086,8 @@ function wardrobe() {
   for (const [, items] of bySlot) {
     for (const item of items) {
       const on = state.equipped[item.slot] === item.id;
-      const btn = h(`<button class="thing ${on ? 'on' : ''}" type="button" data-item="${esc(item.id)}">
+      const btn =
+        h(`<button class="thing ${on ? 'on' : ''}" type="button" data-item="${esc(item.id)}">
         <div class="thing-art">${renderItemIcon(item, { size: 72, look: state.look })}</div>
         <span class="n">${esc(item.name)}</span>
         <span class="s">${on ? 'na sobie — kliknij, by zdjąć' : 'założ'}</span>
