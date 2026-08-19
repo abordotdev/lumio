@@ -1334,6 +1334,17 @@ function settings() {
   const state = store.get();
   const wrap = h(`<div class="home-stack"></div>`);
 
+  // Nagłówek strony jak w Modułach — żeby Ustawienia nie zaczynały się „na zimno".
+  wrap.appendChild(
+    h(`<div class="naglowek">
+      <div class="rosnij">
+        <span class="oczko">Konto</span>
+        <h1>Ustawienia</h1>
+        <p>Wygląd strony, głos lektora, ludzik i kopia postępu — wszystko tutaj.</p>
+      </div>
+    </div>`)
+  );
+
   const paletteCard = h(`<div class="card">
     <span class="label">Wygląd strony</span>
     <h2>Kolor</h2>
