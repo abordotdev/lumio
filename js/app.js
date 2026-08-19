@@ -1518,6 +1518,29 @@ function settings() {
 
   wrap.appendChild(kartaInstalacji());
 
+  // Odświeżenie na telefonie z ekranu głównego — nie ma tam paska adresu, więc
+  // przycisk sam sprawdza nową wersję i przeładowuje.
+  const odswiezCard = h(`<div class="card">
+    <span class="label">Aktualizacja</span>
+    <h2>Odśwież aplikację</h2>
+    <p class="muted">Zwykle łapie nowości sama. Jak coś nie wskoczyło — kliknij, a pobierze
+      najnowszą wersję.</p>
+    <div class="row"><button class="primary" type="button" id="odswiez">Odśwież do najnowszej</button></div>
+  </div>`);
+  odswiezCard.querySelector('#odswiez').addEventListener('click', async () => {
+    const btn = odswiezCard.querySelector('#odswiez');
+    btn.disabled = true;
+    btn.textContent = 'Odświeżam…';
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration?.();
+      if (reg) await reg.update();
+    } catch {
+      /* i tak przeładowujemy */
+    }
+    window.location.reload();
+  });
+  wrap.appendChild(odswiezCard);
+
   const paletteCard = h(`<div class="card">
     <span class="label">Wygląd strony</span>
     <h2>Kolor</h2>
