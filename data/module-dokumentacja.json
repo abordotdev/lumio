@@ -1,0 +1,958 @@
+{
+  "id": "dokumentacja",
+  "title": "Dokumentacja",
+  "subtitle": "zwroty z dokumentacji i błędy, które w niej wyłapiesz",
+  "patterns": {
+    "overview": "wstęp i przegląd",
+    "common": "typowe zwroty",
+    "steps": "kroki i instrukcje",
+    "api": "opis API i pól",
+    "notes": "uwagi, ostrzeżenia, statusy",
+    "setup": "wymagania i konfiguracja",
+    "review": "co znalazłaś w dokumentacji"
+  },
+  "patternOrder": ["overview", "common", "steps", "api", "notes", "setup", "review"],
+  "translations": [
+    {
+      "id": "dok01",
+      "pattern": "overview",
+      "pl": "Ten przewodnik wyjaśnia, jak skonfigurować projekt",
+      "en": "This guide explains how to set up the project",
+      "accept": ["This guide shows how to set up the project"],
+      "note": "przewodnik robi to zawsze → explains, z -s przy on/ona/ono",
+      "chunks": ["This guide explains", "how to set up", "the project"],
+      "traps": [
+        {
+          "input": "This guide explain how to set up the project",
+          "why": "Guide to ono, więc explains z -s."
+        },
+        {
+          "input": "This guide explains how to setup the project",
+          "why": "Czasownik to set up, osobno. Setup razem to rzeczownik: the setup guide."
+        }
+      ],
+      "lemma": "explain"
+    },
+    {
+      "id": "dok02",
+      "pattern": "overview",
+      "pl": "Ta sekcja opisuje proces logowania",
+      "en": "This section describes the login flow",
+      "accept": ["This section describes the login process"],
+      "note": "section to ono → describes",
+      "chunks": ["This section describes", "the login flow"],
+      "traps": [
+        {
+          "input": "This section describe the login flow",
+          "why": "Section to ono, więc describes z -s."
+        }
+      ],
+      "lemma": "describe"
+    },
+    {
+      "id": "dok03",
+      "pattern": "overview",
+      "pl": "Poniższe kroki pokazują, jak wdrożyć",
+      "en": "The following steps show how to deploy",
+      "accept": ["These steps show how to deploy"],
+      "note": "steps to liczba mnoga → show, bez -s",
+      "chunks": ["The following steps", "show how to deploy"],
+      "traps": [
+        {
+          "input": "The following steps shows how to deploy",
+          "why": "Steps to liczba mnoga, więc show bez -s."
+        },
+        {
+          "input": "The below steps show how to deploy",
+          "why": "Przed listą mówimy the following, nie the below."
+        }
+      ],
+      "lemma": "show"
+    },
+    {
+      "id": "dok04",
+      "pattern": "overview",
+      "pl": "Po więcej szczegółów zajrzyj do dokumentacji API",
+      "en": "For more details, see the API reference",
+      "accept": ["For more details, check the API reference"],
+      "note": "w dokumentacji odsyła się przez see: see the reference",
+      "chunks": ["For more details,", "see the API reference"],
+      "traps": [
+        {
+          "input": "For more informations, see the API reference",
+          "why": "Information nie ma liczby mnogiej — zawsze information, nawet gdy dużo."
+        },
+        {
+          "input": "For more details, see to the API reference",
+          "why": "See nie potrzebuje to: see the reference."
+        }
+      ],
+      "lemma": "see"
+    },
+    {
+      "id": "dok05",
+      "pattern": "overview",
+      "pl": "Ta strona jest przeznaczona dla deweloperów",
+      "en": "This page is intended for developers",
+      "accept": ["This page is meant for developers"],
+      "note": "przeznaczone dla kogoś → intended for",
+      "chunks": ["This page is intended", "for developers"],
+      "traps": [
+        {
+          "input": "This page is intended to developers",
+          "why": "Przeznaczone dla kogoś to intended for, nie intended to."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok06",
+      "pattern": "overview",
+      "pl": "Ten dokument obejmuje podstawową konfigurację",
+      "en": "This document covers the basic setup",
+      "accept": ["This document covers basic setup"],
+      "note": "dokument obejmuje coś → covers; tu setup to rzeczownik, razem",
+      "chunks": ["This document covers", "the basic setup"],
+      "traps": [
+        {
+          "input": "This document cover the basic setup",
+          "why": "Document to ono, więc covers z -s."
+        }
+      ],
+      "lemma": "cover"
+    },
+    {
+      "id": "dok37",
+      "pattern": "common",
+      "pl": "Jak wspomniano wyżej, ten krok jest opcjonalny",
+      "en": "As mentioned above, this step is optional",
+      "accept": ["As noted above, this step is optional"],
+      "note": "odwołanie do wcześniejszego fragmentu → as mentioned above",
+      "chunks": ["As mentioned above,", "this step is optional"],
+      "traps": [
+        {
+          "input": "As mentioned before, this step is optional",
+          "why": "Do miejsca wyżej w dokumencie: as mentioned above. Before to raczej wcześniej w czasie."
+        },
+        {
+          "input": "How mentioned above, this step is optional",
+          "why": "Zaczynamy od As mentioned, nie How mentioned."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok38",
+      "pattern": "common",
+      "pl": "Na przykład możesz przekazać token",
+      "en": "For example, you can pass a token",
+      "accept": ["For instance, you can pass a token"],
+      "note": "na przykład → for example, na początku zdania z przecinkiem",
+      "chunks": ["For example,", "you can pass a token"],
+      "traps": [
+        {
+          "input": "For exemple, you can pass a token",
+          "why": "Example przez a: for example. Exemple to po francusku."
+        },
+        {
+          "input": "As example, you can pass a token",
+          "why": "Poprawnie for example albo for instance, nie as example."
+        }
+      ],
+      "lemma": "pass"
+    },
+    {
+      "id": "dok39",
+      "pattern": "common",
+      "pl": "W tym przypadku zrestartuj serwer",
+      "en": "In this case, restart the server",
+      "accept": ["In that case, restart the server"],
+      "note": "w takim przypadku → in this case",
+      "chunks": ["In this case,", "restart the server"],
+      "traps": [
+        {
+          "input": "In this cases, restart the server",
+          "why": "Po this rzeczownik w liczbie pojedynczej: in this case."
+        },
+        {
+          "input": "On this case, restart the server",
+          "why": "W tym przypadku: in this case, nie on this case."
+        }
+      ],
+      "lemma": "restart"
+    },
+    {
+      "id": "dok40",
+      "pattern": "common",
+      "pl": "Zajrzyj do tabeli poniżej",
+      "en": "Refer to the table below",
+      "accept": ["See the table below"],
+      "note": "odsyłanie w dokumentacji → refer to",
+      "chunks": ["Refer to", "the table below"],
+      "traps": [
+        {
+          "input": "Refer the table below",
+          "why": "Refer zawsze z to: refer to the table."
+        },
+        {
+          "input": "Refer to the below table",
+          "why": "Poniższa tabela to the table below — below idzie po rzeczowniku."
+        }
+      ],
+      "lemma": "refer"
+    },
+    {
+      "id": "dok41",
+      "pattern": "common",
+      "pl": "To jest opisane w następnej sekcji",
+      "en": "This is described in the next section",
+      "accept": ["This is covered in the next section"],
+      "note": "opisane gdzieś → described in",
+      "chunks": ["This is described", "in the next section"],
+      "traps": [
+        {
+          "input": "This is described on the next section",
+          "why": "W sekcji: in the next section, nie on."
+        },
+        {
+          "input": "This is describe in the next section",
+          "why": "Po is idzie forma z -ed: is described."
+        }
+      ],
+      "lemma": "describe"
+    },
+    {
+      "id": "dok42",
+      "pattern": "common",
+      "pl": "Zobacz przykład wyżej po szczegóły",
+      "en": "See the example above for details",
+      "accept": ["See the example above for more details"],
+      "note": "przykład wyżej → the example above",
+      "chunks": ["See the example above", "for details"],
+      "traps": [
+        {
+          "input": "See the above example for details",
+          "why": "Przykład wyżej to the example above — above idzie po rzeczowniku."
+        },
+        {
+          "input": "See the example above for detail",
+          "why": "Szczegóły → details, w liczbie mnogiej."
+        }
+      ],
+      "lemma": "see"
+    },
+    {
+      "id": "dok07",
+      "pattern": "steps",
+      "pl": "Kliknij Zapisz, żeby potwierdzić zmiany",
+      "en": "Click Save to confirm your changes",
+      "accept": ["Click Save to confirm the changes"],
+      "note": "instrukcja idzie w trybie rozkazującym: Click, nie You click",
+      "chunks": ["Click Save", "to confirm", "your changes"],
+      "situation": "Piszesz instrukcję krok po kroku. Użytkownik ma nacisnąć przycisk i zatwierdzić.",
+      "traps": [
+        {
+          "input": "You will click Save to confirm your changes",
+          "why": "W instrukcji piszemy wprost: Click Save. Bez you will."
+        },
+        {
+          "input": "Click on Save to confirm your changes",
+          "why": "Przy nazwie przycisku zwykle bez on: Click Save. Click on the button, gdy mowa ogólnie."
+        }
+      ],
+      "lemma": "click"
+    },
+    {
+      "id": "dok08",
+      "pattern": "steps",
+      "pl": "Wpisz swój e-mail w pierwszym polu",
+      "en": "Enter your email in the first field",
+      "accept": ["Type your email in the first field"],
+      "note": "w polu → in the field",
+      "chunks": ["Enter your email", "in the first field"],
+      "traps": [
+        {
+          "input": "Enter your email on the first field",
+          "why": "W polu formularza: in the field, nie on the field."
+        }
+      ],
+      "lemma": "enter"
+    },
+    {
+      "id": "dok09",
+      "pattern": "steps",
+      "pl": "Wybierz opcję z listy",
+      "en": "Select the option from the list",
+      "accept": ["Choose the option from the list"],
+      "note": "wybrać z listy → from the list",
+      "chunks": ["Select the option", "from the list"],
+      "traps": [
+        {
+          "input": "Select the option of the list",
+          "why": "Wybierasz z listy: from the list, nie of the list."
+        }
+      ],
+      "lemma": "select"
+    },
+    {
+      "id": "dok10",
+      "pattern": "steps",
+      "pl": "Upewnij się, że serwer działa",
+      "en": "Make sure the server is running",
+      "accept": ["Make sure that the server is running"],
+      "note": "coś działa w tej chwili → is running",
+      "chunks": ["Make sure", "the server is running"],
+      "traps": [
+        {
+          "input": "Make sure the server is run",
+          "why": "Po is idzie forma z -ing: is running."
+        },
+        {
+          "input": "Be sure the server is running",
+          "why": "W instrukcji stały zwrot to make sure, nie be sure."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok11",
+      "pattern": "steps",
+      "pl": "Otwórz ustawienia i przejdź do Konta",
+      "en": "Open the settings and go to Account",
+      "accept": ["Open settings and go to Account"],
+      "note": "przejść do zakładki → go to",
+      "chunks": ["Open the settings", "and go to Account"],
+      "traps": [
+        {
+          "input": "Open the settings and go on Account",
+          "why": "Przejść do miejsca w apce: go to, nie go on."
+        }
+      ],
+      "lemma": "go"
+    },
+    {
+      "id": "dok12",
+      "pattern": "steps",
+      "pl": "Poczekaj, aż proces się zakończy",
+      "en": "Wait until the process finishes",
+      "accept": ["Wait for the process to finish"],
+      "note": "po until czasownik zostaje zwykły: finishes, bez will",
+      "chunks": ["Wait until", "the process finishes"],
+      "traps": [
+        {
+          "input": "Wait until the process will finish",
+          "why": "Po until nigdy will: until the process finishes."
+        },
+        {
+          "input": "Wait until the process finish",
+          "why": "Process to ono, więc finishes z -s."
+        }
+      ],
+      "lemma": "wait"
+    },
+    {
+      "id": "dok13",
+      "pattern": "api",
+      "pl": "Ten endpoint zwraca listę użytkowników",
+      "en": "The endpoint returns a list of users",
+      "accept": ["This endpoint returns a list of users"],
+      "note": "endpoint robi to zawsze → returns z -s",
+      "chunks": ["The endpoint returns", "a list of users"],
+      "traps": [
+        {
+          "input": "The endpoint return a list of users",
+          "why": "Endpoint to ono, więc returns z -s."
+        },
+        {
+          "input": "The endpoint returns a list of user",
+          "why": "Wielu użytkowników → users, w liczbie mnogiej."
+        }
+      ],
+      "lemma": "return"
+    },
+    {
+      "id": "dok14",
+      "pattern": "api",
+      "pl": "To pole jest wymagane w żądaniu",
+      "en": "This field is required in the request",
+      "accept": ["This field is mandatory in the request"],
+      "note": "pole wymagane → is required",
+      "chunks": ["This field is required", "in the request"],
+      "traps": [
+        {
+          "input": "This field is require in the request",
+          "why": "Wymagane to required, z -ed. Require bez końcówki to czasownik."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok15",
+      "pattern": "api",
+      "pl": "Odpowiedź zawiera kod statusu",
+      "en": "The response contains a status code",
+      "accept": ["The response includes a status code"],
+      "note": "response to ono → contains z -s",
+      "chunks": ["The response contains", "a status code"],
+      "traps": [
+        {
+          "input": "The response contain a status code",
+          "why": "Response to ono, więc contains z -s."
+        }
+      ],
+      "lemma": "contain"
+    },
+    {
+      "id": "dok16",
+      "pattern": "api",
+      "pl": "Każdy użytkownik ma unikalny identyfikator",
+      "en": "Each user has a unique identifier",
+      "accept": ["Every user has a unique identifier"],
+      "note": "po each czasownik z -s → has",
+      "chunks": ["Each user has", "a unique identifier"],
+      "traps": [
+        {
+          "input": "Each user have a unique identifier",
+          "why": "Po each idzie has, nie have — each traktujemy jak on/ona/ono."
+        },
+        {
+          "input": "Each users has a unique identifier",
+          "why": "Po each rzeczownik w liczbie pojedynczej: each user."
+        }
+      ],
+      "lemma": "have"
+    },
+    {
+      "id": "dok17",
+      "pattern": "api",
+      "pl": "Ta metoda przyjmuje dwa parametry",
+      "en": "The method accepts two parameters",
+      "accept": ["This method accepts two parameters", "The method takes two parameters"],
+      "note": "metoda robi to zawsze → accepts z -s",
+      "chunks": ["The method accepts", "two parameters"],
+      "traps": [
+        {
+          "input": "The method accepts two parameter",
+          "why": "Dwa → parameters, w liczbie mnogiej."
+        },
+        {
+          "input": "The method accept two parameters",
+          "why": "Method to ono, więc accepts z -s."
+        }
+      ],
+      "lemma": "accept"
+    },
+    {
+      "id": "dok18",
+      "pattern": "api",
+      "pl": "Przekaż token w nagłówku",
+      "en": "Pass the token in the header",
+      "accept": ["Send the token in the header"],
+      "note": "w nagłówku → in the header",
+      "chunks": ["Pass the token", "in the header"],
+      "traps": [
+        {
+          "input": "Pass the token on the header",
+          "why": "W nagłówku: in the header, nie on the header."
+        }
+      ],
+      "lemma": "pass"
+    },
+    {
+      "id": "dok19",
+      "pattern": "notes",
+      "pl": "To pole jest opcjonalne",
+      "en": "This field is optional",
+      "accept": ["This field is not required"],
+      "note": "opcjonalne → optional; przeciwieństwo required",
+      "chunks": ["This field is optional"],
+      "traps": [
+        {
+          "input": "This field is optionnal",
+          "why": "Optional z jednym n. Częsty literówka w dokumentacji."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok20",
+      "pattern": "notes",
+      "pl": "Ta metoda jest przestarzała",
+      "en": "This method is deprecated",
+      "accept": ["This method is no longer supported"],
+      "note": "przestarzałe, wycofane → deprecated",
+      "chunks": ["This method is deprecated"],
+      "traps": [
+        {
+          "input": "This method is depreciated",
+          "why": "W kodzie mówi się deprecated. Depreciated to spadek wartości, co innego."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok21",
+      "pattern": "notes",
+      "pl": "Wartość domyślna to zero",
+      "en": "The default value is zero",
+      "accept": ["The default is zero"],
+      "note": "domyślna wartość → the default value",
+      "chunks": ["The default value", "is zero"],
+      "traps": [
+        {
+          "input": "The value by default is zero",
+          "why": "Domyślna wartość to the default value. By default stoi osobno: by default, it is zero."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok22",
+      "pattern": "notes",
+      "pl": "Ta zmiana nie jest wstecznie kompatybilna",
+      "en": "This change is not backwards compatible",
+      "accept": ["This change is not backward compatible"],
+      "note": "kompatybilny Z czymś → compatible with",
+      "chunks": ["This change is not", "backwards compatible"],
+      "traps": [
+        {
+          "input": "This change is not backwards compatible with the old version",
+          "why": "Samo compatible: compatible with, nie compatible to. Tu wersję można dopisać albo pominąć."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok23",
+      "pattern": "notes",
+      "pl": "Zwróć uwagę, że to może potrwać kilka minut",
+      "en": "Note that this may take a few minutes",
+      "accept": ["Please note that this may take a few minutes"],
+      "note": "w dokumentacji uwaga zaczyna się od Note that",
+      "chunks": ["Note that this", "may take a few minutes"],
+      "traps": [
+        {
+          "input": "Note that this may take a few minute",
+          "why": "Kilka → minutes, w liczbie mnogiej."
+        },
+        {
+          "input": "Note that this can take a few minutes",
+          "why": "W ostrzeżeniu o możliwości lepiej may: it may take a while."
+        }
+      ],
+      "lemma": "take"
+    },
+    {
+      "id": "dok24",
+      "pattern": "notes",
+      "pl": "Ta funkcja jest dostępna na życzenie",
+      "en": "This feature is available on request",
+      "accept": ["This feature is available upon request"],
+      "note": "na życzenie → on request",
+      "chunks": ["This feature is available", "on request"],
+      "traps": [
+        {
+          "input": "This feature is available on demand",
+          "why": "On demand to co innego (natychmiast, jak strumień). Na życzenie to on request."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok25",
+      "pattern": "setup",
+      "pl": "Potrzebujesz dostępu administratora, żeby kontynuować",
+      "en": "You need admin access to continue",
+      "accept": ["You need admin rights to continue"],
+      "note": "żeby coś zrobić → to continue",
+      "chunks": ["You need admin access", "to continue"],
+      "traps": [
+        {
+          "input": "You need an admin access to continue",
+          "why": "Access jest niepoliczalne — bez an: admin access."
+        }
+      ],
+      "lemma": "need"
+    },
+    {
+      "id": "dok26",
+      "pattern": "setup",
+      "pl": "To wymaga Node w wersji 18 lub wyższej",
+      "en": "This requires Node version 18 or higher",
+      "accept": ["This requires Node 18 or higher"],
+      "note": "coś wymaga czegoś → requires z -s",
+      "chunks": ["This requires", "Node version 18", "or higher"],
+      "traps": [
+        {
+          "input": "This require Node version 18 or higher",
+          "why": "This to ono, więc requires z -s."
+        },
+        {
+          "input": "This requires Node version 18 or upper",
+          "why": "Wyższa wersja → or higher, nie or upper."
+        }
+      ],
+      "lemma": "require"
+    },
+    {
+      "id": "dok27",
+      "pattern": "setup",
+      "pl": "Zanim zaczniesz, zainstaluj zależności",
+      "en": "Before you start, install the dependencies",
+      "accept": ["Before you begin, install the dependencies"],
+      "note": "po before czasownik zostaje zwykły: you start, bez will",
+      "chunks": ["Before you start,", "install the dependencies"],
+      "traps": [
+        {
+          "input": "Before you will start, install the dependencies",
+          "why": "Po before nigdy will: before you start."
+        },
+        {
+          "input": "Before you start, install the dependencys",
+          "why": "Liczba mnoga od dependency to dependencies — y zmienia się w ies."
+        }
+      ],
+      "lemma": "install"
+    },
+    {
+      "id": "dok28",
+      "pattern": "setup",
+      "pl": "Konfiguracja zależy od Twojego środowiska",
+      "en": "The configuration depends on your environment",
+      "accept": ["Configuration depends on your environment"],
+      "note": "zależy OD czegoś → depends on",
+      "chunks": ["The configuration", "depends on", "your environment"],
+      "traps": [
+        {
+          "input": "The configuration depends of your environment",
+          "why": "Zależeć od czegoś to depend ON, nie depend of. Bardzo częsty błąd w dokumentacji."
+        },
+        {
+          "input": "The configuration depend on your environment",
+          "why": "Configuration to ono, więc depends z -s."
+        }
+      ],
+      "lemma": "depend"
+    },
+    {
+      "id": "dok29",
+      "pattern": "setup",
+      "pl": "Te ustawienia dotyczą wszystkich użytkowników",
+      "en": "These settings apply to all users",
+      "accept": ["These settings apply to every user"],
+      "note": "coś dotyczy kogoś → applies/apply to",
+      "chunks": ["These settings", "apply to all users"],
+      "traps": [
+        {
+          "input": "These settings applies to all users",
+          "why": "Settings to liczba mnoga, więc apply bez -s."
+        },
+        {
+          "input": "These settings apply for all users",
+          "why": "Dotyczyć kogoś to apply TO, nie apply for."
+        }
+      ],
+      "lemma": "apply"
+    },
+    {
+      "id": "dok30",
+      "pattern": "setup",
+      "pl": "Zrób kopię zapasową, zanim zaktualizujesz",
+      "en": "Make a backup before you upgrade",
+      "accept": ["Create a backup before you upgrade"],
+      "note": "po before czasownik zostaje zwykły: you upgrade",
+      "chunks": ["Make a backup", "before you upgrade"],
+      "traps": [
+        {
+          "input": "Make a backup before you will upgrade",
+          "why": "Po before nigdy will: before you upgrade."
+        },
+        {
+          "input": "Do a backup before you upgrade",
+          "why": "Kopię się make albo create, nie do."
+        }
+      ],
+      "lemma": "make"
+    },
+    {
+      "id": "dok31",
+      "pattern": "review",
+      "pl": "Znalazłam literówkę w dokumentacji",
+      "en": "I found a typo in the documentation",
+      "accept": ["I found a typo in the docs"],
+      "note": "znalazłam, sprawa zamknięta → found",
+      "chunks": ["I found a typo", "in the documentation"],
+      "situation": "Przeglądasz dokumentację po angielsku. Trafiłaś na literówkę i mówisz o tym zespołowi.",
+      "traps": [
+        {
+          "input": "I find a typo in the documentation",
+          "why": "Już to znalazłaś, więc found. Find jest nieregularne: find → found."
+        },
+        {
+          "input": "I found a typo in the documentations",
+          "why": "Documentation nie ma liczby mnogiej — zawsze documentation."
+        }
+      ],
+      "lemma": "find"
+    },
+    {
+      "id": "dok32",
+      "pattern": "review",
+      "pl": "Kroki są w złej kolejności",
+      "en": "The steps are in the wrong order",
+      "accept": ["These steps are in the wrong order"],
+      "note": "steps to liczba mnoga → are",
+      "chunks": ["The steps are", "in the wrong order"],
+      "situation": "Instrukcja każe kliknąć Zapisz, zanim w ogóle otworzysz formularz. Mówisz, co jest nie tak.",
+      "traps": [
+        {
+          "input": "The steps is in the wrong order",
+          "why": "Steps to liczba mnoga, więc are."
+        },
+        {
+          "input": "The steps are in wrong order",
+          "why": "Przed wrong order idzie the: in the wrong order."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok33",
+      "pattern": "review",
+      "pl": "To zdanie nie zgadza się ze zrzutem ekranu",
+      "en": "This sentence doesn't match the screenshot",
+      "accept": ["This line does not match the screenshot"],
+      "note": "coś nie zgadza się z czymś → doesn't match",
+      "chunks": ["This sentence doesn't", "match the screenshot"],
+      "traps": [
+        {
+          "input": "This sentence doesn't match with the screenshot",
+          "why": "Match nie potrzebuje with: match the screenshot."
+        },
+        {
+          "input": "This sentence don't match the screenshot",
+          "why": "Sentence to ono, więc doesn't, nie don't."
+        }
+      ],
+      "lemma": "match"
+    },
+    {
+      "id": "dok34",
+      "pattern": "review",
+      "pl": "Przykład jest nieaktualny",
+      "en": "The example is out of date",
+      "accept": ["This example is out of date", "The example is outdated"],
+      "note": "nieaktualny → out of date",
+      "chunks": ["The example is", "out of date"],
+      "traps": [
+        {
+          "input": "The example is out of the date",
+          "why": "Stały zwrot to out of date, bez the w środku."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok35",
+      "pattern": "review",
+      "pl": "Ta część jest dla mnie niejasna",
+      "en": "This part is unclear to me",
+      "accept": ["This part is not clear to me"],
+      "note": "niejasny dla kogoś → unclear to me",
+      "chunks": ["This part is", "unclear to me"],
+      "situation": "Czytasz akapit trzeci raz i nadal nie wiesz, o co chodzi. Mówisz o tym autorowi.",
+      "traps": [
+        {
+          "input": "This part is unclear for me",
+          "why": "Niejasny dla kogoś to unclear TO me, nie for me."
+        }
+      ],
+      "lemma": "be"
+    },
+    {
+      "id": "dok36",
+      "pattern": "review",
+      "pl": "Dokumentacja mówi jedno, apka robi drugie",
+      "en": "The docs say one thing, the app does another",
+      "accept": ["The documentation says one thing, the app does another"],
+      "note": "docs to liczba mnoga → say; app to ono → does",
+      "chunks": ["The docs say one thing,", "the app does another"],
+      "traps": [
+        {
+          "input": "The docs says one thing, the app does another",
+          "why": "Docs to liczba mnoga, więc say bez -s."
+        },
+        {
+          "input": "The docs say one thing, the app do another",
+          "why": "App to ono, więc does z -s."
+        }
+      ],
+      "lemma": "say"
+    }
+  ],
+  "dictation": [
+    {
+      "id": "dokd01",
+      "en": "Click Save to confirm your changes",
+      "pl": "Kliknij Zapisz, żeby potwierdzić zmiany",
+      "chunks": ["Click Save", "to confirm", "your changes"],
+      "lemma": "click",
+      "note": "instrukcja idzie w trybie rozkazującym: Click, nie You click",
+      "accept": ["Click Save to confirm the changes"],
+      "traps": [
+        {
+          "input": "You will click Save to confirm your changes",
+          "why": "W instrukcji piszemy wprost: Click Save. Bez you will."
+        },
+        {
+          "input": "Click on Save to confirm your changes",
+          "why": "Przy nazwie przycisku zwykle bez on: Click Save. Click on the button, gdy mowa ogólnie."
+        }
+      ]
+    },
+    {
+      "id": "dokd02",
+      "en": "This field is required in the request",
+      "pl": "To pole jest wymagane w żądaniu",
+      "chunks": ["This field is required", "in the request"],
+      "lemma": "be",
+      "note": "pole wymagane → is required",
+      "accept": ["This field is mandatory in the request"],
+      "traps": [
+        {
+          "input": "This field is require in the request",
+          "why": "Wymagane to required, z -ed. Require bez końcówki to czasownik."
+        }
+      ]
+    },
+    {
+      "id": "dokd03",
+      "en": "This method is deprecated",
+      "pl": "Ta metoda jest przestarzała",
+      "chunks": ["This method is deprecated"],
+      "lemma": "be",
+      "note": "przestarzałe, wycofane → deprecated",
+      "accept": ["This method is no longer supported"],
+      "traps": [
+        {
+          "input": "This method is depreciated",
+          "why": "W kodzie mówi się deprecated. Depreciated to spadek wartości, co innego."
+        }
+      ]
+    },
+    {
+      "id": "dokd04",
+      "en": "The configuration depends on your environment",
+      "pl": "Konfiguracja zależy od Twojego środowiska",
+      "chunks": ["The configuration", "depends on", "your environment"],
+      "lemma": "depend",
+      "note": "zależy OD czegoś → depends on",
+      "accept": ["Configuration depends on your environment"],
+      "traps": [
+        {
+          "input": "The configuration depends of your environment",
+          "why": "Zależeć od czegoś to depend ON, nie depend of. Bardzo częsty błąd w dokumentacji."
+        },
+        {
+          "input": "The configuration depend on your environment",
+          "why": "Configuration to ono, więc depends z -s."
+        }
+      ]
+    },
+    {
+      "id": "dokd05",
+      "en": "I found a typo in the documentation",
+      "pl": "Znalazłam literówkę w dokumentacji",
+      "chunks": ["I found a typo", "in the documentation"],
+      "lemma": "find",
+      "note": "znalazłam, sprawa zamknięta → found",
+      "accept": ["I found a typo in the docs"],
+      "traps": [
+        {
+          "input": "I find a typo in the documentation",
+          "why": "Już to znalazłaś, więc found. Find jest nieregularne: find → found."
+        },
+        {
+          "input": "I found a typo in the documentations",
+          "why": "Documentation nie ma liczby mnogiej — zawsze documentation."
+        }
+      ]
+    },
+    {
+      "id": "dokd06",
+      "en": "The endpoint returns a list of users",
+      "pl": "Ten endpoint zwraca listę użytkowników",
+      "chunks": ["The endpoint returns", "a list of users"],
+      "lemma": "return",
+      "note": "endpoint robi to zawsze → returns z -s",
+      "accept": ["This endpoint returns a list of users"],
+      "traps": [
+        {
+          "input": "The endpoint return a list of users",
+          "why": "Endpoint to ono, więc returns z -s."
+        },
+        {
+          "input": "The endpoint returns a list of user",
+          "why": "Wielu użytkowników → users, w liczbie mnogiej."
+        }
+      ]
+    },
+    {
+      "id": "dokd07",
+      "en": "Make sure the server is running",
+      "pl": "Upewnij się, że serwer działa",
+      "chunks": ["Make sure", "the server is running"],
+      "lemma": "be",
+      "note": "coś działa w tej chwili → is running",
+      "accept": ["Make sure that the server is running"],
+      "traps": [
+        {
+          "input": "Make sure the server is run",
+          "why": "Po is idzie forma z -ing: is running."
+        },
+        {
+          "input": "Be sure the server is running",
+          "why": "W instrukcji stały zwrot to make sure, nie be sure."
+        }
+      ]
+    },
+    {
+      "id": "dokd08",
+      "en": "The docs say one thing, the app does another",
+      "pl": "Dokumentacja mówi jedno, apka robi drugie",
+      "chunks": ["The docs say one thing,", "the app does another"],
+      "lemma": "say",
+      "note": "docs to liczba mnoga → say; app to ono → does",
+      "accept": ["The documentation says one thing, the app does another"],
+      "traps": [
+        {
+          "input": "The docs says one thing, the app does another",
+          "why": "Docs to liczba mnoga, więc say bez -s."
+        },
+        {
+          "input": "The docs say one thing, the app do another",
+          "why": "App to ono, więc does z -s."
+        }
+      ]
+    },
+    {
+      "id": "dokd09",
+      "en": "Refer to the table below",
+      "pl": "Zajrzyj do tabeli poniżej",
+      "chunks": ["Refer to", "the table below"],
+      "lemma": "refer",
+      "note": "odsyłanie w dokumentacji → refer to",
+      "accept": ["See the table below"],
+      "traps": [
+        {
+          "input": "Refer the table below",
+          "why": "Refer zawsze z to: refer to the table."
+        },
+        {
+          "input": "Refer to the below table",
+          "why": "Poniższa tabela to the table below — below idzie po rzeczowniku."
+        }
+      ]
+    }
+  ]
+}
