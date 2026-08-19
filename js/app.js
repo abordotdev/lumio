@@ -521,7 +521,7 @@ function home() {
       tytul: powrot
         ? 'Spokojny powrót'
         : outline?.current
-          ? `Lekcja ${outline.current.n}: ${outline.current.title}`
+          ? `Lekcja ${outline.current.n}: ${outline.current.title}${outline.current.czesc ? ` · część ${outline.current.czesc}` : ''}`
           : MODULE?.title || 'Lekcja',
       opis,
       postep,
@@ -563,7 +563,8 @@ function lessonRowsHtml(outline) {
       const isNow = Boolean(outline.current && l.n === outline.current.n);
       const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
       const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
-      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(l.title)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
+      const nazwa = l.czesc ? `${l.title} · część ${l.czesc} z ${l.czesci}` : l.title;
+      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(nazwa)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
     })
     .join('');
 }

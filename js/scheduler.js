@@ -291,11 +291,18 @@ export function moduleOutline(module, modules) {
   const lessons = [];
   for (const pattern of module.patternOrder || []) {
     const items = (module.translations || []).filter((t) => t.pattern === pattern);
+    // Wzorzec na 6 zdan rozpada sie na dwie lekcje po 3 nowe. Bez numeru czesci
+    // obie mialyby ta sama nazwe i lista wygladala na zdublowana.
+    const czesci = Math.ceil(items.length / NEW_PER_LESSON);
+    let czesc = 0;
     for (let i = 0; i < items.length; i += NEW_PER_LESSON) {
       const chunk = items.slice(i, i + NEW_PER_LESSON);
+      czesc += 1;
       lessons.push({
         n: lessons.length + 1,
         pattern,
+        czesc: czesci > 1 ? czesc : 0,
+        czesci,
         title: (module.patterns && module.patterns[pattern]) || pattern,
         // „widziane" pcha lekcje do przodu, „umiem" stawia ptaszek. Rozdzielone,
         // żeby jedna pomyłka nie cofała wskaźnika bieżącej lekcji o pół modułu.

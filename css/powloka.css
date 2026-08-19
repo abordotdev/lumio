@@ -442,3 +442,105 @@
     animation: none;
   }
 }
+
+/* ---------- stare ekrany w nowym jezyku ----------
+   Moduly, Sklep, Szafa i Ustawienia maja jeszcze uklad z pierwszej wersji Lumio.
+   Zanim przepiszemy je po kolei, przyciski, pola i karty dostaja wyglad nowej apki,
+   zeby nie bylo dwoch stylow obok siebie. Kafelki ze slowami w lekcji zostaja
+   nietkniete - tam wyglad niesie znaczenie. */
+
+.app #tresc .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px 24px;
+  box-shadow: none;
+}
+
+.app #tresc button:not(.tile) {
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 18px;
+  border-radius: 13px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  transition: 0.16s;
+}
+.app #tresc button:not(.tile):hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--b700) 40%, var(--line));
+  color: var(--b900);
+  transform: translateY(-1px);
+}
+.app #tresc button:not(.tile):disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.app #tresc button.primary {
+  background: linear-gradient(135deg, var(--b500), var(--b700));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--b700) 26%, transparent);
+}
+.app #tresc button.primary:hover:not(:disabled) {
+  color: #fff;
+  filter: brightness(1.06);
+}
+.app #tresc button.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-2);
+}
+.app #tresc button.small {
+  font-size: 12.5px;
+  padding: 8px 13px;
+  border-radius: 10px;
+}
+.app #tresc button.link {
+  background: none;
+  border: 0;
+  padding: 6px 2px;
+  color: var(--ink-2);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.app #tresc input[type='text'],
+.app #tresc input[type='password'],
+.app #tresc textarea,
+.app #tresc select {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 11px 14px;
+  border-radius: 13px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  width: 100%;
+}
+.app #tresc input:focus-visible,
+.app #tresc textarea:focus-visible,
+.app #tresc select:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--b500) 60%, transparent);
+  outline-offset: 1px;
+}
+
+.app #tresc .label {
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.app #tresc h1,
+.app #tresc h2,
+.app #tresc h3 {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  letter-spacing: -0.02em;
+}
+.app #tresc .muted {
+  color: var(--ink-2);
+}

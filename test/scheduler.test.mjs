@@ -178,3 +178,47 @@ test('zdanie bez sytuacji zostaje zwykłym tłumaczeniem', () => {
   const { steps } = buildLesson(mod, store.get(), [mod]);
   assert.ok(!steps.some((s) => s.kind === 'situation'));
 });
+
+test('dwie lekcje z tego samego wzorca nie mają identycznej nazwy', () => {
+  fresh();
+  const mod = {
+    id: 'sz',
+    title: 'sz',
+    patterns: { p: 'zawsze, zwykle' },
+    patternOrder: ['p'],
+    translations: Array.from({ length: 6 }, (_, i) => ({
+      id: `sz${i}`,
+      pattern: 'p',
+      pl: `polskie ${i}`,
+      en: `english ${i}`,
+      chunks: [`english ${i}`],
+    })),
+    dictation: [],
+  };
+  const { lessons } = moduleOutline(mod, [mod]);
+  assert.equal(lessons.length, 2, 'sześć zdań to dwie lekcje po trzy nowe');
+  assert.equal(lessons[0].czesc, 1);
+  assert.equal(lessons[1].czesc, 2);
+  assert.equal(lessons[0].czesci, 2);
+});
+
+test('wzorzec, który mieści się w jednej lekcji, nie dostaje numeru części', () => {
+  fresh();
+  const mod = {
+    id: 'kr',
+    title: 'kr',
+    patterns: { p: 'krótki' },
+    patternOrder: ['p'],
+    translations: Array.from({ length: 3 }, (_, i) => ({
+      id: `kr${i}`,
+      pattern: 'p',
+      pl: `polskie ${i}`,
+      en: `english ${i}`,
+      chunks: [`english ${i}`],
+    })),
+    dictation: [],
+  };
+  const { lessons } = moduleOutline(mod, [mod]);
+  assert.equal(lessons.length, 1);
+  assert.equal(lessons[0].czesc, 0, 'jedna część to żadna część — bez dopisku');
+});
