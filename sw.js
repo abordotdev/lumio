@@ -1,5 +1,8 @@
 // Offline: wszystko do cache przy instalacji, potem cache-first.
-const VERSION = 'lumio-v27-2026-08-19';
+// Wersję stempluje deploy (patrz .github/workflows/pages.yml) — przy każdej wrzutce
+// wpisuje tu skrót commita i datę, więc świeży kod dostaje świeży cache bez ręcznego
+// bumpowania. Lokalnie zostaje 'lumio-dev'.
+const VERSION = 'lumio-dev';
 const SHELL = [
   './',
   'index.html',

@@ -39,6 +39,12 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      - name: Stempluj wersję service workera
+        run: |
+          STAMP="lumio-${GITHUB_SHA::7}-$(date -u +%Y-%m-%d)"
+          sed -i "s/const VERSION = '.*';/const VERSION = '$STAMP';/" sw.js
+          echo "Wersja cache: $STAMP"
+          grep "const VERSION" sw.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
