@@ -564,52 +564,27 @@ function lessonRowsHtml(outline) {
       const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
       const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
       const nazwa = l.czesc ? `${l.title} · część ${l.czesc} z ${l.czesci}` : l.title;
-      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(nazwa)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
+      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(nazwa)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span><span class="m">${mark}</span></li>`;
     })
     .join('');
 }
 
-function moduleDetail(module) {
-  const outline = moduleOutline(module, MODULES);
-  const emptyMine = module.id === 'moje' && !(module.translations || []).length;
-  const startLabel = emptyMine
-    ? 'Dodaj zdanie'
-    : !outline
-      ? 'Zaczynamy'
-      : outline.reviewOnly
-        ? 'Zaczynamy powtórkę'
-        : 'Zaczynamy';
-  const reviewLine = emptyMine
-    ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
-    : outline?.dueCount
-      ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
-      : outline?.reviewOnly
-        ? 'Wszystkie lekcje zrobione. Zostaje powtórka.'
-        : '';
-  const list =
-    outline && outline.lessons.length && !emptyMine
-      ? `<ol class="lesson-list">${lessonRowsHtml(outline)}</ol>`
-      : '';
-  const reviewBtn =
-    outline && outline.dueCount && !outline.reviewOnly && !emptyMine
-      ? `<button type="button" data-review>Powtórka (${outline.dueCount})</button>`
-      : '';
-  const panel = h(`<div class="mod-panel">
-    ${list}
-    ${reviewLine ? `<p class="muted review-line">${esc(reviewLine)}</p>` : ''}
-    <div class="row">
-      <button class="primary" type="button" data-start>${esc(startLabel)}</button>
-      ${reviewBtn}
-    </div>
-  </div>`);
-  panel.querySelector('[data-start]')?.addEventListener('click', () => {
-    if (emptyMine) return go('phrases');
-    runLesson({ review: Boolean(outline?.reviewOnly) });
-  });
-  panel
-    .querySelector('[data-review]')
-    ?.addEventListener('click', () => runLesson({ review: true }));
-  return panel;
+/** Ile w danym module zrobione, ile umiem, ile czeka. Liczone tylko dla niego. */
+function statModulu(m) {
+  const outline = moduleOutline(m, [m]);
+  const zrobione = outline.lessons.filter((l) => l.done).length;
+  const widziane = outline.lessons.filter((l) => l.seen).length;
+  let umiem = 0;
+  for (const t of [...(m.translations || []), ...(m.dictation || [])]) {
+    if (store.isMastered(t.id)) umiem += 1;
+  }
+  return {
+    outline,
+    zrobione,
+    widziane,
+    umiem,
+    postep: outline.total ? Math.round((zrobione / outline.total) * 100) : 0,
+  };
 }
 
 function pickModule(id) {
@@ -619,46 +594,134 @@ function pickModule(id) {
   MODULE = nextMod;
   store.setModuleId(nextMod.id);
   go('modules');
-  document.querySelector('.mod-block.open')?.scrollIntoView({ block: 'start' });
 }
 
 function modules() {
   refreshModules();
-  const wrap = h(`<div class="home-stack"></div>`);
+  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
+  const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
+  const wlasny = MODULE ? statModulu(MODULE) : null;
+
+  const opisOtwartego = emptyMine
+    ? 'Jeszcze pusto. Wpisz zdanie po polsku, a angielski dopiszę Ci przy najbliższej sesji.'
+    : outline?.reviewOnly
+      ? 'Wszystkie lekcje z tego modułu zrobione. Zostaje powtórka.'
+      : outline?.current
+        ? `Następna: lekcja ${outline.current.n} — ${outline.current.title}${outline.current.czesc ? ` · część ${outline.current.czesc}` : ''}.`
+        : 'Zaczynamy od pierwszej lekcji.';
+
+  const wrap = h(`<div></div>`);
+
   wrap.appendChild(
-    h(`<div>
-    <span class="label">Nauka</span>
-    <h1>Moduły</h1>
-    <p class="muted">Kliknij moduł — rozwinie się lista lekcji. Potem Zaczynamy.</p>
-  </div>`)
+    h(`<div class="naglowek">
+      <div class="rosnij">
+        <span class="oczko">Nauka</span>
+        <h1>Moduły</h1>
+        <p>Czasy to fundament. Reszta to sytuacje — bierz je, gdy czasy zaczną siedzieć.</p>
+      </div>
+    </div>`)
   );
-  const list = h(`<div class="mod-list"></div>`);
+
+  const hero = h(`<section class="hero">
+    <div class="tresc-hero">
+      <span class="oczko">Otwarty moduł</span>
+      <h2>${esc(MODULE?.title || 'Wybierz moduł')}</h2>
+      <p class="desc">${esc(opisOtwartego)}</p>
+      <div class="prog">
+        <div class="track"><div class="fill" style="width:${wlasny?.postep || 0}%"></div></div>
+        <span class="pc">${wlasny?.zrobione || 0} z ${wlasny?.outline.total || 0} lekcji</span>
+      </div>
+      <div class="btns">
+        <button class="btn btn-p" type="button" data-a="start">
+          ${esc(emptyMine ? 'Dodaj zdanie' : outline?.reviewOnly ? 'Zaczynamy powtórkę' : 'Zaczynamy')}
+        </button>
+        ${
+          outline?.dueCount && !outline.reviewOnly && !emptyMine
+            ? `<button class="btn btn-g" type="button" data-a="powtorka">Powtórka (${outline.dueCount})</button>`
+            : ''
+        }
+      </div>
+    </div>
+  </section>`);
+  hero.querySelector('[data-a="start"]').addEventListener('click', () => {
+    if (emptyMine) return go('phrases');
+    runLesson({ review: Boolean(outline?.reviewOnly) });
+  });
+  hero
+    .querySelector('[data-a="powtorka"]')
+    ?.addEventListener('click', () => runLesson({ review: true }));
+  wrap.appendChild(hero);
+
+  if (outline && outline.lessons.length && !emptyMine) {
+    wrap.appendChild(
+      h(`<div class="panel">
+        <span class="oczko">Lekcje w tym module</span>
+        <ol class="lista-lekcji">${lessonRowsHtml(outline)}</ol>
+      </div>`)
+    );
+  }
+
+  wrap.appendChild(
+    h(`<div class="naglowek">
+      <div class="rosnij">
+        <span class="oczko">Do wyboru</span>
+        <h2>Wszystkie moduły</h2>
+      </div>
+    </div>`)
+  );
+
+  const siatka = h(`<div class="moduly"></div>`);
   for (const m of MODULES) {
-    const on = MODULE && m.id === MODULE.id;
-    const n = (m.translations || []).length;
-    const count =
-      m.id === 'moje'
-        ? n
-          ? `${n} ${plural(n, 'zdanie', 'zdania', 'zdań')}`
-          : 'jeszcze pusto'
-        : m.subtitle || '';
-    const block = h(`<div class="mod-block ${on ? 'open' : ''}"></div>`);
-    const btn = h(`<button class="mod-card ${on ? 'on' : ''}" type="button">
-      <b>${esc(m.title)}</b>
-      <span>${esc(count)}</span>
+    const otwarty = MODULE && m.id === MODULE.id;
+    const st = statModulu(m);
+    const pusty = m.id === 'moje' && !(m.translations || []).length;
+
+    const stan = pusty
+      ? 'Puste'
+      : otwarty
+        ? 'Otwarty'
+        : st.zrobione && st.zrobione === st.outline.total
+          ? 'Zrobione'
+          : st.widziane
+            ? 'Zaczęty'
+            : 'Nie zaczęty';
+
+    const znaczniki = pusty
+      ? '<span class="znacznik spokoj">czeka na Twoje zdania</span>'
+      : [
+          `<span class="znacznik">${st.umiem} ${plural(st.umiem, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}</span>`,
+          st.outline.dueCount
+            ? `<span class="znacznik czeka">${st.outline.dueCount} do powtórki</span>`
+            : '',
+        ]
+          .filter(Boolean)
+          .join('');
+
+    const karta = h(`<button class="modul ${otwarty ? 'on' : ''}" type="button">
+      <span class="oczko">${esc(stan)}</span>
+      <h3>${esc(m.title)}</h3>
+      <p>${esc(m.subtitle || '')}</p>
+      ${
+        pusty
+          ? ''
+          : `<div class="postep-jasny">
+               <div class="track"><div class="fill" style="width:${st.postep}%"></div></div>
+               <span class="pc">${st.postep}%</span>
+             </div>`
+      }
+      <span class="stopka">${znaczniki}</span>
     </button>`);
-    btn.addEventListener('click', () => {
-      if (on) return;
+    karta.addEventListener('click', () => {
+      if (otwarty)
+        return pusty ? go('phrases') : runLesson({ review: Boolean(outline?.reviewOnly) });
       pickModule(m.id);
     });
-    block.appendChild(btn);
-    if (on) block.appendChild(moduleDetail(m));
-    list.appendChild(block);
+    siatka.appendChild(karta);
   }
-  wrap.appendChild(list);
+  wrap.appendChild(siatka);
+
   mount(wrap);
 }
-
 // Ikonki miast z ikony.js. Przystanki dostaja domek automatycznie.
 const IKONY_STACJI = {
   palace: 'pkin',
