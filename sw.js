@@ -1,5 +1,5 @@
 // Offline: wszystko do cache przy instalacji, potem cache-first.
-const VERSION = 'lumio-v24-2026-08-19';
+const VERSION = 'lumio-v25-2026-08-19';
 const SHELL = [
   './',
   'index.html',
@@ -32,6 +32,7 @@ const SHELL = [
   'data/module-rekrutacja.json',
   'data/module-praca.json',
   'data/module-zadania.json',
+  'data/module-dokumentacja.json',
   'data/route.json',
   'manifest.webmanifest',
   'icons/icon-192.svg',
