@@ -3,27 +3,26 @@ import { esc, h, mount, shuffle, seedFrom, toast } from './ui.js';
 import { grade } from './grade.js';
 import * as speech from './speech.js';
 import * as store from './store.js';
-import {
-  buildLesson,
-  buildReview,
-  LESSON_MAX_ITEMS,
-  LESSON_KM,
-  LESSON_COINS,
-} from './scheduler.js';
+import { buildLesson, buildReview, buildComeback, payout, LESSON_MAX_ITEMS } from './scheduler.js';
 import { formHint, tileBank, usesTenseTiles } from './forms.js';
 
 const KIND_LABEL = {
   tiles: 'Ułóż z kafelków',
   translate: 'Przetłumacz i powiedz na głos',
   dictate: 'Dyktando — zapisz, co słyszysz',
+  situation: 'Sytuacja — powiedz to po angielsku',
 };
 
 const MAX_STEPS = 15;
 const MAX_REQUEUE = 5;
 
-export function startLesson({ module, onFinish, review = false }) {
+export function startLesson({ module, modules, onFinish, review = false, comeback = false }) {
   const state = store.get();
-  const built = review ? buildReview(module) : buildLesson(module, state);
+  const wszystkie = modules && modules.length ? modules : [module];
+  let built;
+  if (comeback) built = buildComeback(wszystkie);
+  else if (review) built = buildReview(wszystkie);
+  else built = buildLesson(module, state, wszystkie);
   const { steps, focus } = built;
 
   if (!steps.length) {
@@ -104,6 +103,7 @@ function renderStep(session, module, onFinish) {
 
   if (step.kind === 'tiles') renderTiles(step, card, session, module, onFinish);
   else if (step.kind === 'dictate') renderDictate(step, card, session, module, onFinish);
+  else if (step.kind === 'situation') renderSituation(step, card, session, module, onFinish);
   else renderTyped(step, card, session, module, onFinish);
 
   const quit = h(
@@ -141,6 +141,39 @@ function renderTyped(step, card, session, module, onFinish) {
       return;
     }
     showResult({ step, card, session, module, onFinish, answer });
+  };
+  btn.addEventListener('click', submit);
+  ta.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submit();
+    }
+  });
+  setTimeout(() => ta.focus(), 30);
+}
+
+// Sytuacja zamiast polskiego zdania. Nie ma czego tłumaczyć — formę wybierasz sama.
+// To jest ten szczebel między „przetłumacz zdanie" a „mów", którego brakowało.
+function renderSituation(step, card, session, module, onFinish) {
+  const item = step.item;
+
+  card.appendChild(h(`<p class="situation">${esc(item.situation)}</p>`));
+  card.appendChild(
+    h(`<p class="tiny">Bez polskiego zdania. Powiedz to po swojemu, po angielsku.</p>`)
+  );
+
+  const ta = h(`<textarea rows="2" spellcheck="false" autocapitalize="off" autocomplete="off"
+    aria-label="Twoja odpowiedź po angielsku" placeholder="po angielsku…"></textarea>`);
+  const btn = h(`<button class="primary" type="button">Sprawdź</button>`);
+  card.appendChild(ta);
+  card.appendChild(h(`<div class="row end"></div>`)).appendChild(btn);
+
+  const submit = () => {
+    if (!ta.value.trim()) {
+      ta.focus();
+      return;
+    }
+    showResult({ step, card, session, module, onFinish, answer: ta.value });
   };
   btn.addEventListener('click', submit);
   ta.addEventListener('keydown', (e) => {
@@ -199,7 +232,9 @@ function renderDictate(step, card, session, module, onFinish) {
 
 function renderTiles(step, card, session, module, onFinish) {
   const item = step.item;
-  const bankTiles = shuffle(tileBank(item, module), seedFrom(item.id + 'x'));
+  // Zdanie z powtórki może pochodzić z innego modułu — rywalizujące kafelki
+  // muszą przyjść z jego własnego modułu, nie z otwartego.
+  const bankTiles = shuffle(tileBank(item, step.mod || module), seedFrom(item.id + 'x'));
 
   card.appendChild(h(`<p class="prompt-pl">${esc(item.pl)}</p>`));
   if (item.hint) card.appendChild(h(`<span class="prompt-hint">${esc(item.hint)}</span>`));
@@ -351,7 +386,9 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   if (!correct) tip = hint || result.why || (showNote ? item.note : '');
   else if (showNote) tip = item.note;
   if (tip) panel.appendChild(h(`<p class="why">${esc(tip)}</p>`));
-  if (step.kind === 'dictate' && item.pl) {
+  // Przy dyktandzie i przy sytuacji polskiego nie było widać — pokazujemy je dopiero teraz,
+  // żeby dało się zobaczyć, czemu ta forma pasowała.
+  if ((step.kind === 'dictate' || step.kind === 'situation') && item.pl) {
     panel.appendChild(h(`<p class="muted">Po polsku: <b>${esc(item.pl)}</b></p>`));
   }
 
@@ -538,8 +575,12 @@ function finish(session, module, onFinish, reason) {
   if (count === 0) return onFinish({ aborted: true });
 
   const seconds = Math.round(elapsed(session) / 1000);
-  const km = session.review ? 10 : LESSON_KM;
-  const coins = session.review ? 10 : LESSON_COINS;
+  const { km, coins } = payout({
+    answered: count,
+    target: Math.min(session.steps.length, MAX_STEPS),
+    review: session.review,
+    aborted: reason === 'przerwane',
+  });
   store.addLesson({ count, correct: session.correct, km, coins, seconds });
   if (session.focus) {
     const left = module.translations.filter(

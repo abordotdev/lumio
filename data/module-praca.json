@@ -20,15 +20,38 @@
         "At standup I say what I finished yesterday",
         "In the daily I say what I completed yesterday"
       ],
-      "chunks": ["In the daily", "I say what I finished", "yesterday"]
+      "chunks": ["In the daily", "I say what I finished", "yesterday"],
+      "lemma": "say",
+      "note": "na spotkaniu jesteś in the daily; wczoraj zamyka sprawę → finished",
+      "traps": [
+        {
+          "input": "In the daily I say what I have finished yesterday",
+          "why": "Yesterday zamyka sprawę — wtedy nigdy have. Zostaje finished."
+        },
+        {
+          "input": "On the daily I say what I finished yesterday",
+          "why": "Na spotkaniu jesteś in: in the daily, in the retro, in the meeting."
+        }
+      ]
     },
     {
       "id": "wr02",
       "pattern": "daily",
       "pl": "Dziś biorę zgłoszenie z regresji",
       "en": "Today I'm taking a regression ticket",
-      "accept": ["Today I am taking a regression ticket", "I'm picking up a regression ticket today"],
-      "chunks": ["Today I'm taking", "a regression ticket"]
+      "accept": [
+        "Today I am taking a regression ticket",
+        "I'm picking up a regression ticket today"
+      ],
+      "chunks": ["Today I'm taking", "a regression ticket"],
+      "lemma": "take",
+      "note": "dziś, konkretny plan na ten dzień → I'm taking",
+      "traps": [
+        {
+          "input": "Today I take a regression ticket",
+          "why": "I take opisuje nawyk. Gdy mówisz, co robisz dzisiaj: I'm taking."
+        }
+      ]
     },
     {
       "id": "wr03",
@@ -39,7 +62,14 @@
         "I am blocked by missing access to the environment",
         "Lack of environment access is blocking me"
       ],
-      "chunks": ["I'm blocked by", "missing access", "to the environment"]
+      "chunks": ["I'm blocked by", "missing access", "to the environment"],
+      "note": "coś blokuje CIEBIE → I'm blocked by",
+      "traps": [
+        {
+          "input": "I'm blocking by missing access to the environment",
+          "why": "To brak dostępu blokuje Ciebie, więc I'm blocked. I'm blocking znaczyłoby, że to Ty kogoś blokujesz."
+        }
+      ]
     },
     {
       "id": "wr04",
@@ -47,7 +77,15 @@
       "pl": "Skończę to przed południem",
       "en": "I'll finish this before noon",
       "accept": ["I will finish this before noon", "I'll get this done before noon"],
-      "chunks": ["I'll finish this", "before noon"]
+      "chunks": ["I'll finish this", "before noon"],
+      "lemma": "finish",
+      "note": "obietnica podjęta w rozmowie → I'll finish",
+      "traps": [
+        {
+          "input": "I finish this before noon",
+          "why": "Gdy właśnie decydujesz, co zrobisz, idzie I'll finish."
+        }
+      ]
     },
     {
       "id": "wr05",
@@ -55,7 +93,19 @@
       "pl": "Nie mam blokerów",
       "en": "I don't have any blockers",
       "accept": ["I have no blockers", "I don't have blockers"],
-      "chunks": ["I don't have", "any blockers"]
+      "chunks": ["I don't have", "any blockers"],
+      "lemma": "have",
+      "note": "w przeczeniu → don't have any",
+      "traps": [
+        {
+          "input": "I don t have some blockers",
+          "why": "W przeczeniu idzie any, nie some: I don't have any blockers."
+        },
+        {
+          "input": "I haven't any blockers",
+          "why": "Samo haven't nie wystarczy. Albo I don't have any, albo I haven't got any."
+        }
+      ]
     },
     {
       "id": "wr06",
@@ -63,7 +113,15 @@
       "pl": "Po daily wracam do testów",
       "en": "After the daily I go back to testing",
       "accept": ["After standup I go back to testing", "After the daily I get back to testing"],
-      "chunks": ["After the daily", "I go back", "to testing"]
+      "chunks": ["After the daily", "I go back", "to testing"],
+      "lemma": "go",
+      "note": "wracam do czegoś → go back to + -ing",
+      "traps": [
+        {
+          "input": "After the daily I go back to test",
+          "why": "Po go back to idzie rzeczownik albo forma z -ing: go back to testing."
+        }
+      ]
     },
     {
       "id": "wr07",
@@ -71,7 +129,15 @@
       "pl": "Na retro mówię, co poszło dobrze",
       "en": "In the retro I say what went well",
       "accept": ["At retro I say what went well", "In the retrospective I say what went well"],
-      "chunks": ["In the retro", "I say what went well"]
+      "chunks": ["In the retro", "I say what went well"],
+      "lemma": "say",
+      "note": "mówisz o minionym sprincie → what went well",
+      "traps": [
+        {
+          "input": "In the retro I say what goes well",
+          "why": "Retro podsumowuje to, co już było, więc went."
+        }
+      ]
     },
     {
       "id": "wr08",
@@ -79,7 +145,15 @@
       "pl": "Brakowało nam kryteriów akceptacji",
       "en": "We were missing acceptance criteria",
       "accept": ["We missed acceptance criteria", "We didn't have acceptance criteria"],
-      "chunks": ["We were missing", "acceptance criteria"]
+      "chunks": ["We were missing", "acceptance criteria"],
+      "lemma": "miss",
+      "note": "brakowało nam wtedy → we were missing",
+      "traps": [
+        {
+          "input": "We was missing acceptance criteria",
+          "why": "We zawsze z were: we were, they were."
+        }
+      ]
     },
     {
       "id": "wr09",
@@ -87,7 +161,15 @@
       "pl": "Proponuję krótsze daily",
       "en": "I suggest a shorter daily",
       "accept": ["I suggest shorter dailies", "I'd suggest a shorter daily"],
-      "chunks": ["I suggest", "a shorter daily"]
+      "chunks": ["I suggest", "a shorter daily"],
+      "lemma": "suggest",
+      "note": "proponuję coś → I suggest, bez przyimka",
+      "traps": [
+        {
+          "input": "I suggest for a shorter daily",
+          "why": "Suggest nie potrzebuje for: I suggest a shorter daily."
+        }
+      ]
     },
     {
       "id": "wr10",
@@ -98,7 +180,15 @@
         "We pull too many tickets into the sprint",
         "We take too many tickets into sprint"
       ],
-      "chunks": ["We take too many tickets", "into the sprint"]
+      "chunks": ["We take too many tickets", "into the sprint"],
+      "lemma": "take",
+      "note": "zgłoszenia da się policzyć → too many",
+      "traps": [
+        {
+          "input": "We take too much tickets into the sprint",
+          "why": "Tickets da się policzyć, więc too many. Too much idzie z tym, czego nie liczysz: too much work."
+        }
+      ]
     },
     {
       "id": "wr11",
@@ -106,7 +196,15 @@
       "pl": "Dobrze zadziałała para przy testach",
       "en": "Pairing on tests worked well",
       "accept": ["Pair testing worked well", "Pairing during tests worked well"],
-      "chunks": ["Pairing on tests", "worked well"]
+      "chunks": ["Pairing on tests", "worked well"],
+      "lemma": "work",
+      "note": "sprawdziło się w minionym sprincie → worked",
+      "traps": [
+        {
+          "input": "Pairing on tests works well",
+          "why": "Na retro mówisz o tym, co już było, więc worked."
+        }
+      ]
     },
     {
       "id": "wr12",
@@ -117,18 +215,31 @@
         "Next sprint I want fewer parallel topics",
         "For the next sprint I want less work in parallel"
       ],
-      "chunks": ["For the next sprint", "I want fewer", "parallel topics"]
+      "chunks": ["For the next sprint", "I want fewer", "parallel topics"],
+      "lemma": "want",
+      "note": "tematy da się policzyć → fewer",
+      "traps": [
+        {
+          "input": "For the next sprint I want less parallel topics",
+          "why": "Topics da się policzyć, więc fewer. Less idzie z tym, czego nie liczysz: less work."
+        }
+      ]
     },
     {
       "id": "wr13",
       "pattern": "swap",
       "pl": "Dziś robimy podmianę na produkcji",
       "en": "We're doing a production swap today",
-      "accept": [
-        "We are doing a production swap today",
-        "Today we're swapping production"
-      ],
-      "chunks": ["We're doing", "a production swap", "today"]
+      "accept": ["We are doing a production swap today", "Today we're swapping production"],
+      "chunks": ["We're doing", "a production swap", "today"],
+      "lemma": "do",
+      "note": "dziś, ustalone → we're doing",
+      "traps": [
+        {
+          "input": "We do a production swap today",
+          "why": "Gdy chodzi o dzisiejszy, ustalony plan: we're doing."
+        }
+      ]
     },
     {
       "id": "wr14",
@@ -136,7 +247,19 @@
       "pl": "Sprawdzam smoke po wrzutce",
       "en": "I run smoke tests after the deploy",
       "accept": ["I check smoke after the deploy", "I run a smoke test after the deploy"],
-      "chunks": ["I run smoke tests", "after the deploy"]
+      "chunks": ["I run smoke tests", "after the deploy"],
+      "lemma": "run",
+      "note": "po każdej wrzutce, czyli zawsze → I run",
+      "traps": [
+        {
+          "input": "I'm running smoke tests after the deploy",
+          "why": "To robisz po każdej wrzutce, czyli zawsze: I run."
+        },
+        {
+          "input": "I make smoke tests after the deploy",
+          "why": "Testy się run albo do. Make w tym miejscu nie chodzi."
+        }
+      ]
     },
     {
       "id": "wr15",
@@ -147,18 +270,35 @@
         "Rollback is ready if something goes down",
         "The rollback is ready if something breaks"
       ],
-      "chunks": ["The rollback is ready", "if something goes down"]
+      "chunks": ["The rollback is ready", "if something goes down"],
+      "lemma": "be",
+      "note": "gdyby coś padło → if something goes down",
+      "traps": [
+        {
+          "input": "The rollback is ready if something will go down",
+          "why": "Po if nigdy will: if something goes down."
+        }
+      ]
     },
     {
       "id": "wr16",
       "pattern": "swap",
       "pl": "Okno serwisowe zaczyna się o 22",
       "en": "The maintenance window starts at ten pm",
-      "accept": [
-        "The maintenance window starts at 10 pm",
-        "The service window starts at ten pm"
-      ],
-      "chunks": ["The maintenance window", "starts at ten pm"]
+      "accept": ["The maintenance window starts at 10 pm", "The service window starts at ten pm"],
+      "chunks": ["The maintenance window", "starts at ten pm"],
+      "lemma": "start",
+      "note": "o której godzinie → at ten",
+      "traps": [
+        {
+          "input": "The maintenance window start at ten pm",
+          "why": "Window to ono, więc starts z -s."
+        },
+        {
+          "input": "The maintenance window starts in ten pm",
+          "why": "O godzinie zawsze at: at ten, at three, at noon."
+        }
+      ]
     },
     {
       "id": "wr17",
@@ -169,7 +309,15 @@
         "On chat I am waiting for a green light from the developers",
         "I'm waiting on chat for a go from the developers"
       ],
-      "chunks": ["On chat I'm waiting", "for a green light", "from the developers"]
+      "chunks": ["On chat I'm waiting", "for a green light", "from the developers"],
+      "lemma": "wait",
+      "note": "czekam NA coś → wait for",
+      "traps": [
+        {
+          "input": "On chat I'm waiting a green light from the developers",
+          "why": "Czekać na coś to wait FOR: I'm waiting for a green light."
+        }
+      ]
     },
     {
       "id": "wr18",
@@ -180,7 +328,15 @@
         "After the swap I check the logs for an hour",
         "After the production swap I watch the logs for an hour"
       ],
-      "chunks": ["After the swap", "I watch the logs", "for an hour"]
+      "chunks": ["After the swap", "I watch the logs", "for an hour"],
+      "lemma": "watch",
+      "note": "jak długo → for an hour",
+      "traps": [
+        {
+          "input": "After the swap I watch the logs since an hour",
+          "why": "For mówi JAK DŁUGO (for an hour). Since mówi OD KIEDY (since ten)."
+        }
+      ]
     },
     {
       "id": "wr19",
@@ -188,7 +344,15 @@
       "pl": "Możemy przejść przez ten błąd razem",
       "en": "We can walk through this bug together",
       "accept": ["Can we walk through this bug together", "We can go through this bug together"],
-      "chunks": ["We can walk through", "this bug", "together"]
+      "chunks": ["We can walk through", "this bug", "together"],
+      "lemma": "walk",
+      "note": "przejść przez coś razem → walk through",
+      "traps": [
+        {
+          "input": "We can to walk through this bug together",
+          "why": "Po can nigdy to: can walk, can see, can help."
+        }
+      ]
     },
     {
       "id": "wr20",
@@ -199,7 +363,15 @@
         "I can reproduce it, I'll let you know when I find the cause",
         "I see it on my side, I will let you know when I find the root cause"
       ],
-      "chunks": ["I can see it on my side", "I'll let you know", "when I find the cause"]
+      "chunks": ["I can see it on my side", "I'll let you know", "when I find the cause"],
+      "lemma": "see",
+      "note": "dam znać, jak znajdę → I'll let you know when I find",
+      "traps": [
+        {
+          "input": "I can see it on my side, I'll let you know when I will find the cause",
+          "why": "Po when nigdy will: when I find the cause."
+        }
+      ]
     },
     {
       "id": "wr21",
@@ -210,7 +382,15 @@
         "This is not a blocker, we have a workaround",
         "It's not a blocker, we have a workaround"
       ],
-      "chunks": ["This isn't a blocker", "we have a workaround"]
+      "chunks": ["This isn't a blocker", "we have a workaround"],
+      "lemma": "be",
+      "note": "to nie jest → this isn't a",
+      "traps": [
+        {
+          "input": "This isn't blocker, we have a workaround",
+          "why": "Przed blocker trzeba a: isn't a blocker."
+        }
+      ]
     },
     {
       "id": "wr22",
@@ -218,7 +398,15 @@
       "pl": "Potwierdzę to na waszym środowisku",
       "en": "I'll confirm it on your environment",
       "accept": ["I will confirm it on your environment", "I'll check it on your environment"],
-      "chunks": ["I'll confirm it", "on your environment"]
+      "chunks": ["I'll confirm it", "on your environment"],
+      "lemma": "confirm",
+      "note": "obietnica dana klientowi → I'll confirm",
+      "traps": [
+        {
+          "input": "I confirm it on your environment",
+          "why": "Gdy obiecujesz coś w rozmowie: I'll confirm."
+        }
+      ]
     },
     {
       "id": "wr23",
@@ -229,7 +417,15 @@
         "Thank you for the recording, that helps a lot",
         "Thanks for the recording, it helps a lot"
       ],
-      "chunks": ["Thanks for the recording", "that helps a lot"]
+      "chunks": ["Thanks for the recording", "that helps a lot"],
+      "lemma": "help",
+      "note": "dziękuję za coś → thanks for the",
+      "traps": [
+        {
+          "input": "Thanks for the recording, that help a lot",
+          "why": "That to ono, więc helps z -s."
+        }
+      ]
     },
     {
       "id": "wr24",
@@ -237,7 +433,15 @@
       "pl": "O której możemy zrobić krótkie demo",
       "en": "What time can we do a short demo",
       "accept": ["When can we do a short demo", "What time could we do a short demo"],
-      "chunks": ["What time", "can we do", "a short demo"]
+      "chunks": ["What time", "can we do", "a short demo"],
+      "lemma": "do",
+      "note": "o której → what time",
+      "traps": [
+        {
+          "input": "Which time can we do a short demo",
+          "why": "O godzinę pytamy what time albo when."
+        }
+      ]
     },
     {
       "id": "wr25",
@@ -245,7 +449,15 @@
       "pl": "Wrzuć to na Slacka, żebym miała ślad",
       "en": "Drop it on Slack so I have a trail",
       "accept": ["Put it on Slack so I have a trail", "Please drop it on Slack so I have a record"],
-      "chunks": ["Drop it on Slack", "so I have a trail"]
+      "chunks": ["Drop it on Slack", "so I have a trail"],
+      "lemma": "drop",
+      "note": "wrzuć na Slacka → drop it on Slack",
+      "traps": [
+        {
+          "input": "Drop it on Slack so I will have a trail",
+          "why": "Po so w takim zdaniu wystarczy zwykłe I have."
+        }
+      ]
     },
     {
       "id": "wr26",
@@ -253,7 +465,15 @@
       "pl": "Biorę ten ticket z Jiry",
       "en": "I'm picking up this ticket from Jira",
       "accept": ["I am picking up this ticket from Jira", "I'll take this ticket from Jira"],
-      "chunks": ["I'm picking up", "this ticket", "from Jira"]
+      "chunks": ["I'm picking up", "this ticket", "from Jira"],
+      "lemma": "pick",
+      "note": "biorę właśnie teraz → I'm picking up",
+      "traps": [
+        {
+          "input": "I pick up this ticket from Jira",
+          "why": "Gdy mówisz, co robisz w tej chwili: I'm picking up."
+        }
+      ]
     },
     {
       "id": "wr27",
@@ -261,7 +481,19 @@
       "pl": "Jestem na spotkaniu do 11",
       "en": "I'm in a meeting until eleven",
       "accept": ["I am in a meeting until 11", "I'm in a meeting until 11"],
-      "chunks": ["I'm in a meeting", "until eleven"]
+      "chunks": ["I'm in a meeting", "until eleven"],
+      "lemma": "be",
+      "note": "do której → until eleven; na spotkaniu → in a meeting",
+      "traps": [
+        {
+          "input": "I'm in a meeting to eleven",
+          "why": "Do jakiejś godziny zawsze until albo till: until eleven."
+        },
+        {
+          "input": "I'm on a meeting until eleven",
+          "why": "Na spotkaniu jesteś in: in a meeting, in the daily."
+        }
+      ]
     },
     {
       "id": "wr28",
@@ -269,7 +501,15 @@
       "pl": "Zrzut ekranu wrzucam do zgłoszenia",
       "en": "I attach a screenshot to the ticket",
       "accept": ["I add a screenshot to the ticket", "I put a screenshot in the ticket"],
-      "chunks": ["I attach a screenshot", "to the ticket"]
+      "chunks": ["I attach a screenshot", "to the ticket"],
+      "lemma": "attach",
+      "note": "załączam DO zgłoszenia → attach to",
+      "traps": [
+        {
+          "input": "I attach a screenshot into the ticket",
+          "why": "Załączasz do zgłoszenia: attach to the ticket."
+        }
+      ]
     },
     {
       "id": "wr29",
@@ -277,7 +517,15 @@
       "pl": "Po lunchu wracam do regresji",
       "en": "After lunch I go back to regression",
       "accept": ["After lunch I get back to regression", "I'll go back to regression after lunch"],
-      "chunks": ["After lunch", "I go back", "to regression"]
+      "chunks": ["After lunch", "I go back", "to regression"],
+      "lemma": "go",
+      "note": "przy posiłkach nie ma the → after lunch",
+      "traps": [
+        {
+          "input": "After the lunch I go back to regression",
+          "why": "Przy posiłkach nie ma the: after lunch, before breakfast, after dinner."
+        }
+      ]
     },
     {
       "id": "wr30",
@@ -285,7 +533,15 @@
       "pl": "Pingnij mnie, jak build przejdzie",
       "en": "Ping me when the build goes green",
       "accept": ["Ping me when the build passes", "Ping me when the build is green"],
-      "chunks": ["Ping me", "when the build", "goes green"]
+      "chunks": ["Ping me", "when the build", "goes green"],
+      "lemma": "ping",
+      "note": "jak build przejdzie → when the build goes green",
+      "traps": [
+        {
+          "input": "Ping me when the build will go green",
+          "why": "Po when nigdy will: when the build goes green."
+        }
+      ]
     }
   ],
   "dictation": [
@@ -293,49 +549,135 @@
       "id": "wrd01",
       "en": "I don't have any blockers",
       "pl": "Nie mam blokerów",
-      "chunks": ["I don't have", "any blockers"]
+      "chunks": ["I don't have", "any blockers"],
+      "lemma": "have",
+      "accept": ["I have no blockers", "I don't have blockers"],
+      "note": "w przeczeniu → don't have any",
+      "traps": [
+        {
+          "input": "I don t have some blockers",
+          "why": "W przeczeniu idzie any, nie some: I don't have any blockers."
+        },
+        {
+          "input": "I haven't any blockers",
+          "why": "Samo haven't nie wystarczy. Albo I don't have any, albo I haven't got any."
+        }
+      ]
     },
     {
       "id": "wrd02",
       "en": "We were missing acceptance criteria",
       "pl": "Brakowało nam kryteriów akceptacji",
-      "chunks": ["We were missing", "acceptance criteria"]
+      "chunks": ["We were missing", "acceptance criteria"],
+      "lemma": "miss",
+      "accept": ["We missed acceptance criteria", "We didn't have acceptance criteria"],
+      "note": "brakowało nam wtedy → we were missing",
+      "traps": [
+        {
+          "input": "We was missing acceptance criteria",
+          "why": "We zawsze z were: we were, they were."
+        }
+      ]
     },
     {
       "id": "wrd03",
       "en": "We're doing a production swap today",
       "pl": "Dziś robimy podmianę na produkcji",
-      "chunks": ["We're doing", "a production swap", "today"]
+      "chunks": ["We're doing", "a production swap", "today"],
+      "lemma": "do",
+      "accept": ["We are doing a production swap today", "Today we're swapping production"],
+      "note": "dziś, ustalone → we're doing",
+      "traps": [
+        {
+          "input": "We do a production swap today",
+          "why": "Gdy chodzi o dzisiejszy, ustalony plan: we're doing."
+        }
+      ]
     },
     {
       "id": "wrd04",
       "en": "I run smoke tests after the deploy",
       "pl": "Sprawdzam smoke po wrzutce",
-      "chunks": ["I run smoke tests", "after the deploy"]
+      "chunks": ["I run smoke tests", "after the deploy"],
+      "lemma": "run",
+      "accept": ["I check smoke after the deploy", "I run a smoke test after the deploy"],
+      "note": "po każdej wrzutce, czyli zawsze → I run",
+      "traps": [
+        {
+          "input": "I'm running smoke tests after the deploy",
+          "why": "To robisz po każdej wrzutce, czyli zawsze: I run."
+        },
+        {
+          "input": "I make smoke tests after the deploy",
+          "why": "Testy się run albo do. Make w tym miejscu nie chodzi."
+        }
+      ]
     },
     {
       "id": "wrd05",
       "en": "This isn't a blocker, we have a workaround",
       "pl": "To nie jest blocker, mamy obejście",
-      "chunks": ["This isn't a blocker", "we have a workaround"]
+      "chunks": ["This isn't a blocker", "we have a workaround"],
+      "lemma": "be",
+      "accept": [
+        "This is not a blocker, we have a workaround",
+        "It's not a blocker, we have a workaround"
+      ],
+      "note": "to nie jest → this isn't a",
+      "traps": [
+        {
+          "input": "This isn't blocker, we have a workaround",
+          "why": "Przed blocker trzeba a: isn't a blocker."
+        }
+      ]
     },
     {
       "id": "wrd06",
       "en": "Thanks for the recording, that helps a lot",
       "pl": "Dziękuję za nagranie, to bardzo pomaga",
-      "chunks": ["Thanks for the recording", "that helps a lot"]
+      "chunks": ["Thanks for the recording", "that helps a lot"],
+      "lemma": "help",
+      "accept": [
+        "Thank you for the recording, that helps a lot",
+        "Thanks for the recording, it helps a lot"
+      ],
+      "note": "dziękuję za coś → thanks for the",
+      "traps": [
+        {
+          "input": "Thanks for the recording, that help a lot",
+          "why": "That to ono, więc helps z -s."
+        }
+      ]
     },
     {
       "id": "wrd07",
       "en": "I'm picking up this ticket from Jira",
       "pl": "Biorę ten ticket z Jiry",
-      "chunks": ["I'm picking up", "this ticket", "from Jira"]
+      "chunks": ["I'm picking up", "this ticket", "from Jira"],
+      "lemma": "pick",
+      "accept": ["I am picking up this ticket from Jira", "I'll take this ticket from Jira"],
+      "note": "biorę właśnie teraz → I'm picking up",
+      "traps": [
+        {
+          "input": "I pick up this ticket from Jira",
+          "why": "Gdy mówisz, co robisz w tej chwili: I'm picking up."
+        }
+      ]
     },
     {
       "id": "wrd08",
       "en": "Ping me when the build goes green",
       "pl": "Pingnij mnie, jak build przejdzie",
-      "chunks": ["Ping me", "when the build", "goes green"]
+      "chunks": ["Ping me", "when the build", "goes green"],
+      "lemma": "ping",
+      "accept": ["Ping me when the build passes", "Ping me when the build is green"],
+      "note": "jak build przejdzie → when the build goes green",
+      "traps": [
+        {
+          "input": "Ping me when the build will go green",
+          "why": "Po when nigdy will: when the build goes green."
+        }
+      ]
     }
   ]
 }

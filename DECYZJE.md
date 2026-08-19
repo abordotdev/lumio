@@ -56,12 +56,25 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
 
 ## Znane dziury w kodzie, do naprawy
 
-- **Powtórki nie wychodzą poza moduł** — [scheduler.js:20](js/scheduler.js#L20) szuka zdań
-  do powtórki tylko w otwartym module. Po przejściu dalej wcześniejsze zdania cichną.
-- **„✓ zrobione" kłamie** — [store.js:153](js/store.js#L153) ustawia `introduced` przy pierwszej
-  odpowiedzi, dobrej albo złej. Lekcja dostaje ptaszka, choć nic z niej nie umiesz.
-- **Powrót po przerwie straszy liczbą** — po kilku miesiącach ekran startowy wita napisem
-  „186 zdań czeka na powtórkę". To jest ten moment, w którym się zamyka apkę.
+- ~~**Powtórki nie wychodzą poza moduł**~~ — naprawione. Kolejka powtórek sięga do wszystkich
+  modułów, a każde zdanie niesie ze sobą swój moduł.
+- ~~**„✓ zrobione" kłamie**~~ — naprawione. Lista lekcji ma teraz trzy stany: `→` bieżąca,
+  `↻` przerobiona ale nieumiana, `✓` dopiero po dobrych odpowiedziach.
+- ~~**To samo zdanie dwa razy w jednej lekcji**~~ — naprawione. Dyktanda powielają zdania
+  z tłumaczeń pod innym id, więc lekcja porównuje też sam tekst, nie tylko id.
+- ~~**`forms.js` działa na 24 zdaniach ze 186**~~ — naprawione. Czasownik siedzi teraz w danych,
+  przy zdaniu, i działa w 194 zdaniach z 230. Reszta to gotowe zwroty small talku.
+- ~~**Cztery moduły z pięciu nie tłumaczą błędów**~~ — naprawione. Wszystkie 230 zdań mają
+  wyjaśnienie, 219 ma przewidziane pułapki (razem 290). Bez pułapek zostały tylko czyste
+  zwroty grzecznościowe, gdzie „błąd" byłby wymyślony na siłę.
+- **Dyktanda to w większości te same zdania co tłumaczenia** — w module czasy-it 7 z 9.
+  Lekcja już ich nie dubluje, ale dyktando powinno ćwiczyć słuch na czymś, czego nie widziałaś.
+  Do przerobienia przy dosypywaniu treści.
+- ~~**Powrót po przerwie straszy liczbą**~~ — naprawione. Po 14 dniach bez lekcji ekran startowy
+  mówi „Nie było Cię 3 miesiące. Zaczynamy spokojnie", pierwsza lekcja idzie od najlepiej
+  opanowanych zdań, a pomyłka cofa o jeden krok zamiast kasować miesiące.
+- ~~**Przerwana lekcja płaciła pełne 20 km**~~ — naprawione. Wystarczyło kliknąć „Zaczynamy",
+  odpowiedzieć raz i przerwać. Teraz przerwana płaci proporcjonalnie, dokończona pełną stawkę.
 - **`forms.js` działa na 24 zdaniach ze 186** — tabela czasowników kończy się na `t24`,
   a moduł czasy-it ma 42 zdania. Pozostałe cztery moduły nie mają w niej nic.
 - **Cztery moduły z pięciu nie tłumaczą błędów** — praca 0 pułapek, zadania 0, rekrutacja 2 na 54,

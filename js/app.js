@@ -122,7 +122,17 @@ const OUTFIT_SETS = [
   { name: 'Płaszcz i krata', top: 'top-coat', bottom: 'bottom-skirt' },
 ];
 
-function runLesson({ review = false } = {}) {
+// „Nie było Cię 3 miesiące" czyta się lepiej niż „nie było Cię 94 dni".
+function przerwaLabel(dni) {
+  if (dni >= 60) {
+    const m = Math.round(dni / 30);
+    return `${m} ${plural(m, 'miesiąc', 'miesiące', 'miesięcy')}`;
+  }
+  const t = Math.round(dni / 7);
+  return `${t} ${plural(t, 'tydzień', 'tygodnie', 'tygodni')}`;
+}
+
+function runLesson({ review = false, comeback = false } = {}) {
   refreshModules();
   if (!MODULE) return toast('Wybierz moduł.');
   if (MODULE.id === 'moje' && !(MODULE.translations || []).length) {
@@ -132,7 +142,9 @@ function runLesson({ review = false } = {}) {
   const back = SCREEN === 'modules' ? 'modules' : 'home';
   startLesson({
     module: MODULE,
+    modules: MODULES,
     review,
+    comeback,
     onFinish: (res) => {
       disk.writePairQuiet();
       if (res.aborted) return go(back);
@@ -519,7 +531,7 @@ function home() {
   if (d.level === 'blocked') wrap.appendChild(h(voiceBanner()));
 
   const who = state.nick || 'Ty';
-  const outline = MODULE ? moduleOutline(MODULE, state) : null;
+  const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
   const startLabel = emptyMine
     ? 'Dodaj zdanie'
@@ -529,16 +541,24 @@ function home() {
         ? 'Zaczynamy powtórkę'
         : 'Zaczynamy';
   const next = nextStop(ROUTE, state.km);
+
+  // Powrót po przerwie. To jest ten jeden ekran, który decyduje, czy wrócisz drugi raz —
+  // więc nie wita liczbą zaległych zdań, tylko czymś, od czego da się zacząć.
+  const powrot = !emptyMine && store.isComeback();
   const missionHint = emptyMine
     ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
-    : outline?.dueCount
-      ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
-      : next
-        ? `Zostało ${next.km - state.km} km do ${next.name}.`
-        : 'Koniec narysowanej trasy.';
-  const lessonTitle = outline?.current
-    ? `Lekcja ${outline.current.n}: ${outline.current.title}`
-    : MODULE?.title || 'Lekcja';
+    : powrot
+      ? `Nie było Cię ${przerwaLabel(store.daysSinceLastLesson())}. Zaczynamy spokojnie — od zdań, które szły Ci najlepiej.`
+      : outline?.dueCount
+        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
+        : next
+          ? `Zostało ${next.km - state.km} km do ${next.name}.`
+          : 'Koniec narysowanej trasy.';
+  const lessonTitle = powrot
+    ? 'Wracamy'
+    : outline?.current
+      ? `Lekcja ${outline.current.n}: ${outline.current.title}`
+      : MODULE?.title || 'Lekcja';
 
   wrap.appendChild(
     h(`<div class="hello">
@@ -553,9 +573,9 @@ function home() {
       <h2>${esc(lessonTitle)}</h2>
       <p>${esc(missionHint)}</p>
       <div class="row">
-        <button class="primary" type="button" id="start">${esc(startLabel)}</button>
+        <button class="primary" type="button" id="start">${esc(powrot ? 'Wracamy spokojnie' : startLabel)}</button>
         ${
-          outline && outline.dueCount && !outline.reviewOnly
+          !powrot && outline && outline.dueCount && !outline.reviewOnly
             ? `<button type="button" id="review">Powtórka (${outline.dueCount})</button>`
             : ''
         }
@@ -565,6 +585,7 @@ function home() {
   </div>`);
   mission.querySelector('#start').addEventListener('click', () => {
     if (emptyMine) return go('phrases');
+    if (powrot) return runLesson({ comeback: true });
     runLesson({ review: Boolean(outline?.reviewOnly) });
   });
   mission.querySelector('#review')?.addEventListener('click', () => runLesson({ review: true }));
@@ -584,15 +605,18 @@ function home() {
 function lessonRowsHtml(outline) {
   return outline.lessons
     .map((l) => {
-      const kind = l.done ? 'done' : outline.current && l.n === outline.current.n ? 'now' : '';
-      const mark = l.done ? '✓' : outline.current && l.n === outline.current.n ? '→' : '';
+      // Trzy stany, nie dwa: ptaszek należy się za dobrą odpowiedź, a nie za to,
+      // że zdanie się kiedyś pokazało. Widziane-ale-nieumiane dostaje strzałkę powrotu.
+      const isNow = Boolean(outline.current && l.n === outline.current.n);
+      const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
+      const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
       return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(l.title)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
     })
     .join('');
 }
 
 function moduleDetail(module) {
-  const outline = moduleOutline(module);
+  const outline = moduleOutline(module, MODULES);
   const emptyMine = module.id === 'moje' && !(module.translations || []).length;
   const startLabel = emptyMine
     ? 'Dodaj zdanie'
@@ -715,7 +739,11 @@ function summary(res) {
       <div class="fact"><span>kilometry</span><b>+${res.km}</b></div>
       <div class="fact"><span>monety</span><b>+${res.coins}</b></div>
     </div>
-    <p class="tiny">Pełna wypłata leci nawet w gorszy dzień — liczy się, że usiadłaś.</p>
+    <p class="tiny">${
+      res.reason === 'przerwane'
+        ? 'Przerwana lekcja płaci za to, co zdążyłaś. Dokończ następną, a stawka będzie pełna.'
+        : 'Pełna wypłata leci nawet w gorszy dzień — liczy się, że usiadłaś.'
+    }</p>
   </div>`)
   );
 

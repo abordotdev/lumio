@@ -16,30 +16,48 @@
       "pattern": "feature",
       "pl": "Biorę ten ficzer do testów",
       "en": "I'm taking this feature for testing",
-      "accept": [
-        "I am taking this feature for testing",
-        "I'm picking up this feature for testing"
-      ],
-      "chunks": ["I'm taking", "this feature", "for testing"]
+      "accept": ["I am taking this feature for testing", "I'm picking up this feature for testing"],
+      "chunks": ["I'm taking", "this feature", "for testing"],
+      "lemma": "take",
+      "note": "biorę właśnie teraz → I'm taking",
+      "traps": [
+        {
+          "input": "I take this feature for testing",
+          "why": "I take opisuje nawyk. Gdy mówisz, co robisz w tej chwili: I'm taking."
+        }
+      ]
     },
     {
       "id": "zt02",
       "pattern": "feature",
       "pl": "Kryteria akceptacji są w zgłoszeniu",
       "en": "The acceptance criteria are in the ticket",
-      "accept": [
-        "Acceptance criteria are in the ticket",
-        "The acceptance criteria are in the ticket"
-      ],
-      "chunks": ["The acceptance criteria", "are in the ticket"]
+      "accept": ["Acceptance criteria are in the ticket"],
+      "chunks": ["The acceptance criteria", "are in the ticket"],
+      "lemma": "be",
+      "note": "criteria to liczba mnoga → are",
+      "traps": [
+        {
+          "input": "The acceptance criteria is in the ticket",
+          "why": "Criteria to liczba mnoga (jedno to criterion), więc are."
+        }
+      ]
     },
     {
       "id": "zt03",
       "pattern": "feature",
       "pl": "Ten ficzer jest już na stagingu",
       "en": "This feature is already on staging",
-      "accept": ["This feature is already on staging", "The feature is already on staging"],
-      "chunks": ["This feature", "is already", "on staging"]
+      "accept": ["The feature is already on staging"],
+      "chunks": ["This feature", "is already", "on staging"],
+      "lemma": "be",
+      "note": "środowiska idą bez the → on staging",
+      "traps": [
+        {
+          "input": "This feature is already on the staging",
+          "why": "Nazwy środowisk idą bez the: on staging, on production, on test."
+        }
+      ]
     },
     {
       "id": "zt04",
@@ -47,7 +65,15 @@
       "pl": "Sprawdzam happy path",
       "en": "I'm checking the happy path",
       "accept": ["I am checking the happy path", "I'm testing the happy path"],
-      "chunks": ["I'm checking", "the happy path"]
+      "chunks": ["I'm checking", "the happy path"],
+      "lemma": "check",
+      "note": "sprawdzam właśnie teraz → I'm checking",
+      "traps": [
+        {
+          "input": "I check the happy path",
+          "why": "I check to opis nawyku. Gdy robisz to w tej chwili: I'm checking."
+        }
+      ]
     },
     {
       "id": "zt05",
@@ -58,7 +84,15 @@
         "I am missing test data for this feature",
         "I don't have test data for this feature"
       ],
-      "chunks": ["I'm missing", "test data", "for this feature"]
+      "chunks": ["I'm missing", "test data", "for this feature"],
+      "lemma": "miss",
+      "note": "brakuje mi czegoś → I'm missing",
+      "traps": [
+        {
+          "input": "I miss test data for this feature",
+          "why": "I miss znaczy „tęsknię\". Gdy czegoś brakuje: I'm missing."
+        }
+      ]
     },
     {
       "id": "zt06",
@@ -69,7 +103,15 @@
         "It works on Chrome, but not on Safari yet",
         "It works in Chrome, not in Safari yet"
       ],
-      "chunks": ["It works on Chrome", "not on Safari yet"]
+      "chunks": ["It works on Chrome", "not on Safari yet"],
+      "lemma": "work",
+      "note": "na przeglądarce → on Chrome",
+      "traps": [
+        {
+          "input": "It work on Chrome, not on Safari yet",
+          "why": "It to ono, więc works z -s."
+        }
+      ]
     },
     {
       "id": "zt07",
@@ -77,7 +119,15 @@
       "pl": "Znalazłam buga na produkcji",
       "en": "I found a bug in production",
       "accept": ["I found a bug on production", "I've found a bug in production"],
-      "chunks": ["I found", "a bug", "in production"]
+      "chunks": ["I found", "a bug", "in production"],
+      "lemma": "find",
+      "note": "na produkcji → in production",
+      "traps": [
+        {
+          "input": "I finded a bug in production",
+          "why": "Find jest nieregularne: find → found → found."
+        }
+      ]
     },
     {
       "id": "zt08",
@@ -85,34 +135,66 @@
       "pl": "Da się to odtworzyć za każdym razem",
       "en": "It can be reproduced every time",
       "accept": ["It is reproducible every time", "I can reproduce it every time"],
-      "chunks": ["It can be reproduced", "every time"]
+      "chunks": ["It can be reproduced", "every time"],
+      "note": "da się to odtworzyć → it can be reproduced",
+      "traps": [
+        {
+          "input": "It can be reproduce every time",
+          "why": "Po can be idzie forma z -ed: can be reproduced."
+        }
+      ]
     },
     {
       "id": "zt09",
       "pattern": "bug",
       "pl": "To wygląda na regresję",
       "en": "This looks like a regression",
-      "accept": ["It looks like a regression", "This looks like a regression"],
-      "chunks": ["This looks like", "a regression"]
+      "accept": ["It looks like a regression"],
+      "chunks": ["This looks like", "a regression"],
+      "lemma": "look",
+      "note": "wygląda na coś → looks like a",
+      "traps": [
+        {
+          "input": "This looks like regression",
+          "why": "Przed regression trzeba a: looks like a regression."
+        },
+        {
+          "input": "This look like a regression",
+          "why": "This to ono, więc looks z -s."
+        }
+      ]
     },
     {
       "id": "zt10",
       "pattern": "bug",
       "pl": "Bug znika po odświeżeniu",
       "en": "The bug disappears after a refresh",
-      "accept": [
-        "The bug disappears after refresh",
-        "The bug goes away after a refresh"
-      ],
-      "chunks": ["The bug disappears", "after a refresh"]
+      "accept": ["The bug disappears after refresh", "The bug goes away after a refresh"],
+      "chunks": ["The bug disappears", "after a refresh"],
+      "lemma": "disappear",
+      "note": "znika po czymś → disappears after",
+      "traps": [
+        {
+          "input": "The bug disappear after a refresh",
+          "why": "Bug to ono, więc disappears z -s."
+        }
+      ]
     },
     {
       "id": "zt11",
       "pattern": "bug",
       "pl": "Priorytet tego buga jest wysoki",
       "en": "The priority of this bug is high",
-      "accept": ["This bug has high priority", "The priority of this bug is high"],
-      "chunks": ["The priority", "of this bug", "is high"]
+      "accept": ["This bug has high priority"],
+      "chunks": ["The priority", "of this bug", "is high"],
+      "lemma": "be",
+      "note": "wysoki priorytet → high",
+      "traps": [
+        {
+          "input": "The priority of this bug is tall",
+          "why": "Wysoki priorytet to high. Tall mówi się o człowieku albo budynku."
+        }
+      ]
     },
     {
       "id": "zt12",
@@ -120,29 +202,47 @@
       "pl": "Czekam na poprawkę",
       "en": "I'm waiting for a fix",
       "accept": ["I am waiting for a fix", "I'm waiting for the fix"],
-      "chunks": ["I'm waiting", "for a fix"]
+      "chunks": ["I'm waiting", "for a fix"],
+      "lemma": "wait",
+      "note": "czekam NA coś → wait for",
+      "traps": [
+        {
+          "input": "I'm waiting a fix",
+          "why": "Czekać na coś to wait FOR: I'm waiting for a fix."
+        }
+      ]
     },
     {
       "id": "zt13",
       "pattern": "devs",
       "pl": "Możemy to przejść razem",
       "en": "Can we walk through this together",
-      "accept": [
-        "Can we go through this together",
-        "Can we walk through this together?"
-      ],
-      "chunks": ["Can we walk through", "this together"]
+      "accept": ["Can we go through this together"],
+      "chunks": ["Can we walk through", "this together"],
+      "lemma": "walk",
+      "note": "przejść przez coś razem → walk through",
+      "traps": [
+        {
+          "input": "Can we to walk through this together",
+          "why": "Po can nigdy to: can walk."
+        }
+      ]
     },
     {
       "id": "zt14",
       "pattern": "devs",
       "pl": "Gdzie w kodzie to siedzi",
       "en": "Where in the code does this live",
-      "accept": [
-        "Where in the code does this live?",
-        "Where does this live in the code"
-      ],
-      "chunks": ["Where in the code", "does this live"]
+      "accept": ["Where does this live in the code"],
+      "chunks": ["Where in the code", "does this live"],
+      "lemma": "live",
+      "note": "w pytaniu wchodzi does → does this live",
+      "traps": [
+        {
+          "input": "Where in the code this lives",
+          "why": "W pytaniu wchodzi does, a czasownik wraca do formy podstawowej: does this live."
+        }
+      ]
     },
     {
       "id": "zt15",
@@ -150,18 +250,31 @@
       "pl": "Wrzuć logi do zgłoszenia",
       "en": "Drop the logs into the ticket",
       "accept": ["Put the logs in the ticket", "Please drop the logs into the ticket"],
-      "chunks": ["Drop the logs", "into the ticket"]
+      "chunks": ["Drop the logs", "into the ticket"],
+      "lemma": "drop",
+      "note": "wrzuć do środka → drop into",
+      "traps": [
+        {
+          "input": "Drop the logs to the ticket",
+          "why": "Wrzucić coś do środka to drop into the ticket."
+        }
+      ]
     },
     {
       "id": "zt16",
       "pattern": "devs",
       "pl": "Na którym commicie to wyszło",
       "en": "Which commit did this come from",
-      "accept": [
-        "Which commit did this come from?",
-        "Which commit caused this"
-      ],
-      "chunks": ["Which commit", "did this come from"]
+      "accept": ["Which commit caused this"],
+      "chunks": ["Which commit", "did this come from"],
+      "lemma": "come",
+      "note": "po did czasownik wraca do formy podstawowej",
+      "traps": [
+        {
+          "input": "Which commit did this came from",
+          "why": "Po did czasownik wraca do formy podstawowej: did this come from."
+        }
+      ]
     },
     {
       "id": "zt17",
@@ -169,7 +282,15 @@
       "pl": "Potrzebuję Twojej pomocy przy tym case",
       "en": "I need your help with this case",
       "accept": ["I need your help on this case", "I need help with this case"],
-      "chunks": ["I need your help", "with this case"]
+      "chunks": ["I need your help", "with this case"],
+      "lemma": "need",
+      "note": "pomoc PRZY czymś → help with",
+      "traps": [
+        {
+          "input": "I need your help by this case",
+          "why": "Pomoc przy czymś to help with: help with this case."
+        }
+      ]
     },
     {
       "id": "zt18",
@@ -180,7 +301,15 @@
         "Let me know when the fix is on test",
         "Let me know when the fix lands on testing"
       ],
-      "chunks": ["Let me know", "when the fix", "lands on test"]
+      "chunks": ["Let me know", "when the fix", "lands on test"],
+      "lemma": "land",
+      "note": "daj znać, jak wyleci → let me know when the fix lands",
+      "traps": [
+        {
+          "input": "Let me know when the fix will land on test",
+          "why": "Po when nigdy will: when the fix lands."
+        }
+      ]
     },
     {
       "id": "zt19",
@@ -188,18 +317,31 @@
       "pl": "Sprawdzę to w bazie",
       "en": "I'll check this in the database",
       "accept": ["I will check this in the database", "I'll check it in the database"],
-      "chunks": ["I'll check this", "in the database"]
+      "chunks": ["I'll check this", "in the database"],
+      "lemma": "check",
+      "note": "decyzja podjęta przy rozmowie → I'll check",
+      "traps": [
+        {
+          "input": "I check this in the database",
+          "why": "Gdy właśnie decydujesz, że to zrobisz: I'll check."
+        }
+      ]
     },
     {
       "id": "zt20",
       "pattern": "db",
       "pl": "Rekord nie zapisuje się w tabeli",
       "en": "The record isn't saving in the table",
-      "accept": [
-        "The record is not saving in the table",
-        "The record doesn't save in the table"
-      ],
-      "chunks": ["The record isn't saving", "in the table"]
+      "accept": ["The record is not saving in the table", "The record doesn't save in the table"],
+      "chunks": ["The record isn't saving", "in the table"],
+      "lemma": "save",
+      "note": "nie zapisuje się w tej chwili → isn't saving; doesn't save znaczyłoby „nigdy się nie zapisuje\"",
+      "traps": [
+        {
+          "input": "The record isn't save in the table",
+          "why": "Po isn't idzie forma z -ing: isn't saving."
+        }
+      ]
     },
     {
       "id": "zt21",
@@ -210,7 +352,15 @@
         "The status in the database is different than on the screen",
         "The DB status is different from the screen"
       ],
-      "chunks": ["The status in the database", "is different from", "the screen"]
+      "chunks": ["The status in the database", "is different from", "the screen"],
+      "lemma": "be",
+      "note": "inny NIŻ coś → different from",
+      "traps": [
+        {
+          "input": "The status in the database is different like the screen",
+          "why": "Inny niż coś to different from."
+        }
+      ]
     },
     {
       "id": "zt22",
@@ -218,29 +368,47 @@
       "pl": "Potrzebuję zapytania do tego użytkownika",
       "en": "I need a query for this user",
       "accept": ["I need a query for that user", "I need a SELECT for this user"],
-      "chunks": ["I need a query", "for this user"]
+      "chunks": ["I need a query", "for this user"],
+      "lemma": "need",
+      "note": "zapytanie do kogoś → a query for",
+      "traps": [
+        {
+          "input": "I need query for this user",
+          "why": "Przed query trzeba a: a query for this user."
+        }
+      ]
     },
     {
       "id": "zt23",
       "pattern": "db",
       "pl": "W bazie testowej brakuje danych",
       "en": "The test database is missing data",
-      "accept": [
-        "The test DB is missing data",
-        "We're missing data in the test database"
-      ],
-      "chunks": ["The test database", "is missing data"]
+      "accept": ["The test DB is missing data", "We're missing data in the test database"],
+      "chunks": ["The test database", "is missing data"],
+      "lemma": "miss",
+      "note": "brakuje w niej danych → is missing data",
+      "traps": [
+        {
+          "input": "The test database is missing of data",
+          "why": "Missing nie potrzebuje of: is missing data."
+        }
+      ]
     },
     {
       "id": "zt24",
       "pattern": "db",
       "pl": "Mogę odpalić SELECT na produkcji",
       "en": "Can I run a SELECT on production",
-      "accept": [
-        "Can I run a SELECT on production?",
-        "Can I run a query on production"
-      ],
-      "chunks": ["Can I run", "a SELECT", "on production"]
+      "accept": ["Can I run a query on production"],
+      "chunks": ["Can I run", "a SELECT", "on production"],
+      "lemma": "run",
+      "note": "odpalić zapytanie → run a query",
+      "traps": [
+        {
+          "input": "Can I to run a SELECT on production",
+          "why": "Po can nigdy to: can run."
+        }
+      ]
     },
     {
       "id": "zt25",
@@ -248,59 +416,95 @@
       "pl": "Zgłaszam to jako błąd",
       "en": "I'm logging this as a bug",
       "accept": ["I am logging this as a bug", "I'm reporting this as a bug"],
-      "chunks": ["I'm logging this", "as a bug"]
+      "chunks": ["I'm logging this", "as a bug"],
+      "lemma": "log",
+      "note": "zgłaszam coś JAKO błąd → as a bug",
+      "traps": [
+        {
+          "input": "I'm logging this like a bug",
+          "why": "Zgłaszasz coś jako błąd: as a bug. Like znaczyłoby „podobne do\"."
+        }
+      ]
     },
     {
       "id": "zt26",
       "pattern": "report",
       "pl": "Dopisuję kroki do odtworzenia",
       "en": "I'm adding the steps to reproduce",
-      "accept": [
-        "I am adding the steps to reproduce",
-        "I'm adding steps to reproduce"
-      ],
-      "chunks": ["I'm adding", "the steps to reproduce"]
+      "accept": ["I am adding the steps to reproduce", "I'm adding steps to reproduce"],
+      "chunks": ["I'm adding", "the steps to reproduce"],
+      "lemma": "add",
+      "note": "kroki do odtworzenia → steps to reproduce",
+      "traps": [
+        {
+          "input": "I'm adding the steps to reproducing",
+          "why": "Po to idzie forma podstawowa: to reproduce."
+        }
+      ]
     },
     {
       "id": "zt27",
       "pattern": "report",
       "pl": "Załączam zrzut ekranu i logi",
       "en": "I'm attaching a screenshot and logs",
-      "accept": [
-        "I am attaching a screenshot and logs",
-        "I'm attaching a screenshot and the logs"
-      ],
-      "chunks": ["I'm attaching", "a screenshot and logs"]
+      "accept": ["I am attaching a screenshot and logs", "I'm attaching a screenshot and the logs"],
+      "chunks": ["I'm attaching", "a screenshot and logs"],
+      "lemma": "attach",
+      "note": "załączam właśnie teraz → I'm attaching",
+      "traps": [
+        {
+          "input": "I attach a screenshot and logs",
+          "why": "Gdy robisz to w tej chwili: I'm attaching."
+        }
+      ]
     },
     {
       "id": "zt28",
       "pattern": "report",
       "pl": "Oczekiwany wynik jest inny",
       "en": "The expected result is different",
-      "accept": [
-        "The expected result is different",
-        "Expected result is different"
-      ],
-      "chunks": ["The expected result", "is different"]
+      "accept": ["Expected result is different"],
+      "chunks": ["The expected result", "is different"],
+      "lemma": "be",
+      "note": "oczekiwany wynik → the expected result",
+      "traps": [
+        {
+          "input": "The expect result is different",
+          "why": "Przed rzeczownikiem idzie expected: the expected result."
+        }
+      ]
     },
     {
       "id": "zt29",
       "pattern": "report",
       "pl": "Środowisko to staging",
       "en": "The environment is staging",
-      "accept": ["The environment is staging", "Environment is staging"],
-      "chunks": ["The environment", "is staging"]
+      "accept": ["Environment is staging"],
+      "chunks": ["The environment", "is staging"],
+      "lemma": "be",
+      "note": "nazwy środowisk bez a → is staging",
+      "traps": [
+        {
+          "input": "The environment is a staging",
+          "why": "Nazwy środowisk idą bez a: is staging, is production."
+        }
+      ]
     },
     {
       "id": "zt30",
       "pattern": "report",
       "pl": "Ustawiam priorytet na blocker",
       "en": "I'm setting the priority to blocker",
-      "accept": [
-        "I am setting the priority to blocker",
-        "I'm setting priority to blocker"
-      ],
-      "chunks": ["I'm setting", "the priority", "to blocker"]
+      "accept": ["I am setting the priority to blocker", "I'm setting priority to blocker"],
+      "chunks": ["I'm setting", "the priority", "to blocker"],
+      "lemma": "set",
+      "note": "ustawiam NA coś → set the priority to",
+      "traps": [
+        {
+          "input": "I'm setting the priority on blocker",
+          "why": "Ustawiasz priorytet na coś: set the priority to blocker."
+        }
+      ]
     }
   ],
   "dictation": [
@@ -308,37 +512,91 @@
       "id": "ztd01",
       "en": "I'm taking this feature for testing",
       "pl": "Biorę ten ficzer do testów",
-      "chunks": ["I'm taking", "this feature", "for testing"]
+      "chunks": ["I'm taking", "this feature", "for testing"],
+      "lemma": "take",
+      "accept": ["I am taking this feature for testing", "I'm picking up this feature for testing"],
+      "note": "biorę właśnie teraz → I'm taking",
+      "traps": [
+        {
+          "input": "I take this feature for testing",
+          "why": "I take opisuje nawyk. Gdy mówisz, co robisz w tej chwili: I'm taking."
+        }
+      ]
     },
     {
       "id": "ztd02",
       "en": "I found a bug in production",
       "pl": "Znalazłam buga na produkcji",
-      "chunks": ["I found", "a bug", "in production"]
+      "chunks": ["I found", "a bug", "in production"],
+      "lemma": "find",
+      "accept": ["I found a bug on production", "I've found a bug in production"],
+      "note": "na produkcji → in production",
+      "traps": [
+        {
+          "input": "I finded a bug in production",
+          "why": "Find jest nieregularne: find → found → found."
+        }
+      ]
     },
     {
       "id": "ztd03",
       "en": "Can we walk through this together",
       "pl": "Możemy to przejść razem",
-      "chunks": ["Can we walk through", "this together"]
+      "chunks": ["Can we walk through", "this together"],
+      "lemma": "walk",
+      "accept": ["Can we go through this together"],
+      "note": "przejść przez coś razem → walk through",
+      "traps": [
+        {
+          "input": "Can we to walk through this together",
+          "why": "Po can nigdy to: can walk."
+        }
+      ]
     },
     {
       "id": "ztd04",
       "en": "I'll check this in the database",
       "pl": "Sprawdzę to w bazie",
-      "chunks": ["I'll check this", "in the database"]
+      "chunks": ["I'll check this", "in the database"],
+      "lemma": "check",
+      "accept": ["I will check this in the database", "I'll check it in the database"],
+      "note": "decyzja podjęta przy rozmowie → I'll check",
+      "traps": [
+        {
+          "input": "I check this in the database",
+          "why": "Gdy właśnie decydujesz, że to zrobisz: I'll check."
+        }
+      ]
     },
     {
       "id": "ztd05",
       "en": "I'm logging this as a bug",
       "pl": "Zgłaszam to jako błąd",
-      "chunks": ["I'm logging this", "as a bug"]
+      "chunks": ["I'm logging this", "as a bug"],
+      "lemma": "log",
+      "accept": ["I am logging this as a bug", "I'm reporting this as a bug"],
+      "note": "zgłaszam coś JAKO błąd → as a bug",
+      "traps": [
+        {
+          "input": "I'm logging this like a bug",
+          "why": "Zgłaszasz coś jako błąd: as a bug. Like znaczyłoby „podobne do\"."
+        }
+      ]
     },
     {
       "id": "ztd06",
       "en": "I'm attaching a screenshot and logs",
       "pl": "Załączam zrzut ekranu i logi",
-      "chunks": ["I'm attaching", "a screenshot and logs"]
+      "chunks": ["I'm attaching", "a screenshot and logs"],
+      "lemma": "attach",
+      "accept": ["I am attaching a screenshot and logs", "I'm attaching a screenshot and the logs"],
+      "note": "załączam właśnie teraz → I'm attaching",
+      "traps": [
+        {
+          "input": "I attach a screenshot and logs",
+          "why": "Gdy robisz to w tej chwili: I'm attaching."
+        }
+      ]
     }
   ]
 }
