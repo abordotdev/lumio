@@ -4,6 +4,7 @@ import * as store from './store.js';
 import * as speech from './speech.js';
 import {
   renderAvatar,
+  avatarOnLine,
   renderItemIcon,
   renderOutfitIcon,
   withItem,
@@ -15,6 +16,12 @@ import { startLesson } from './lesson.js';
 import { LESSON_KM, nextStop, moduleOutline } from './scheduler.js';
 import * as disk from './disk.js';
 import { buildMineModule, waitingPhrases, translatedPhrases } from './mine.js';
+import { createTrasaMap } from './mapa-trasy.js';
+
+// Zywa instancja mapy trasy oraz kilometr, na ktorym ostatnio stanela.
+// Dzieki temu po powrocie z lekcji ludzik przejezdza roznice, zamiast pojawiac sie od razu.
+let MAPA = null;
+let MAPA_KM = null;
 
 let BASE_MODULES = [];
 let MODULES = [];
@@ -87,6 +94,10 @@ export function boot({ modules, route }) {
 }
 
 export function go(screen, params = {}) {
+  if (MAPA) {
+    MAPA.destroy();
+    MAPA = null;
+  }
   setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
@@ -220,74 +231,6 @@ function mapRaceForm() {
   </div>`);
   bindRaceFields(box, { reload: true });
   return box;
-}
-
-const LANDMARKS = {
-  palace: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="14" y="18" width="20" height="34" fill="#C9D2DC"/>
-    <rect x="6" y="28" width="10" height="24" fill="#B4C0CC"/>
-    <rect x="32" y="28" width="10" height="24" fill="#B4C0CC"/>
-    <rect x="20" y="4" width="8" height="16" fill="#8FA0B0"/>
-    <polygon points="24,0 28,8 20,8" fill="#2C6753"/>
-    <rect x="18" y="24" width="3" height="5" fill="#5B7A9A"/>
-    <rect x="27" y="24" width="3" height="5" fill="#5B7A9A"/>
-  </svg>`,
-  kiosk: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="8" y="26" width="32" height="22" rx="2" fill="#E8C56B"/>
-    <polygon points="4,26 24,12 44,26" fill="#C23A52"/>
-    <rect x="20" y="32" width="8" height="16" fill="#6B3E24"/>
-    <circle cx="24" cy="18" r="3" fill="#FFF4C8"/>
-  </svg>`,
-  bigben: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="16" y="10" width="16" height="42" fill="#C4B089"/>
-    <rect x="14" y="6" width="20" height="8" fill="#A8946A"/>
-    <polygon points="24,0 32,8 16,8" fill="#2C6753"/>
-    <circle cx="24" cy="22" r="5.5" fill="#F4E8CE"/>
-    <circle cx="24" cy="22" r="1" fill="#191F1C"/>
-    <rect x="22" y="36" width="4" height="8" fill="#5B7A9A"/>
-  </svg>`,
-  gate: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="6" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <rect x="34" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <rect x="10" y="22" width="28" height="6" fill="#B4C0CC"/>
-    <rect x="10" y="32" width="28" height="6" fill="#B4C0CC"/>
-    <rect x="22" y="18" width="4" height="34" fill="#8FA0B0"/>
-  </svg>`,
-  tower: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <polygon points="24,2 28,22 20,22" fill="#8A8F7A"/>
-    <rect x="21" y="22" width="6" height="30" fill="#9AA184"/>
-    <polygon points="14,52 24,28 34,52" fill="#C4B089"/>
-  </svg>`,
-  spire: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="22" y="8" width="4" height="44" fill="#8FA0B0"/>
-    <polygon points="24,0 28,10 20,10" fill="#2C6753"/>
-    <rect x="16" y="40" width="16" height="12" fill="#C9D2DC"/>
-  </svg>`,
-  mill: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="20" y="28" width="8" height="24" fill="#C4B089"/>
-    <circle cx="24" cy="26" r="4" fill="#6B3E24"/>
-    <rect x="22" y="8" width="4" height="18" fill="#F4E8CE" transform="rotate(25 24 26)"/>
-    <rect x="22" y="8" width="4" height="18" fill="#E8C56B" transform="rotate(70 24 26)"/>
-    <rect x="22" y="8" width="4" height="18" fill="#F4E8CE" transform="rotate(115 24 26)"/>
-    <rect x="22" y="8" width="4" height="18" fill="#E8C56B" transform="rotate(160 24 26)"/>
-  </svg>`,
-  gaudi: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <path d="M10,52 Q14,20 24,8 Q34,20 38,52 Z" fill="#C4B089"/>
-    <path d="M18,52 Q20,28 24,18 Q28,28 30,52 Z" fill="#E8C56B"/>
-    <circle cx="24" cy="22" r="3" fill="#5B7A9A"/>
-  </svg>`,
-  castle: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="8" y="22" width="32" height="30" fill="#8FA0B0"/>
-    <rect x="6" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <rect x="34" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <polygon points="10,18 14,8 18,18" fill="#2C6753"/>
-    <polygon points="38,18 34,8 30,18" fill="#2C6753"/>
-    <rect x="20" y="34" width="8" height="18" fill="#6B3E24"/>
-  </svg>`,
-};
-
-function landmark(stop) {
-  return LANDMARKS[stop.icon] || `<span class="landmark-dot"></span>`;
 }
 
 // ---------- wybór głosu ----------
@@ -445,73 +388,6 @@ function look() {
 }
 
 // ---------- mapa ----------
-
-function stopIndexForKm(km, stops) {
-  let i = 0;
-  while (i < stops.length - 1 && km >= stops[i + 1].km) i += 1;
-  return i;
-}
-
-function routeListHtml(state) {
-  const stops = ROUTE.stops;
-  const youIdx = stopIndexForKm(state.km, stops);
-  const youName = state.nick || 'ty';
-  const rows = stops
-    .map((s, i) => {
-      const here = i === youIdx;
-      const them = (state.rivals || []).filter((r) => stopIndexForKm(r.km, stops) === i);
-      const dolls = [
-        here
-          ? `<div class="route-doll">${renderAvatar(state.equipped, { size: 52, look: state.look || {} })}<span>${esc(youName)}</span></div>`
-          : '',
-        ...them.map(
-          (r) =>
-            `<div class="route-doll them">${renderAvatar(r.eq || {}, { size: 52, look: r.look || {} })}<span>${esc(r.nick || 'ona')}</span></div>`
-        ),
-      ].join('');
-      return `<li class="route-stop ${state.km >= s.km ? 'reached' : ''} ${here ? 'here' : ''}">
-        ${landmark(s)}
-        <div class="route-copy">
-          <div class="name">${esc(s.short || s.name)}</div>
-          <div class="km">${s.km} km</div>
-        </div>
-        <div class="route-people">${dolls}</div>
-      </li>`;
-    })
-    .join('');
-  return `<ol class="route-list">${rows}</ol>`;
-}
-
-function peopleRow(state, { prompt = false } = {}) {
-  const youName = state.nick || 'Ty';
-  const you = `<div class="map-person">
-    ${renderAvatar(state.equipped, { size: 72, look: state.look || {} })}
-    <b>${esc(youName)}</b>
-    <span>${state.km} km</span>
-  </div>`;
-  const them = (state.rivals || [])
-    .map(
-      (r) => `<div class="map-person them">
-      ${renderAvatar(r.eq || {}, { size: 72, look: r.look || {} })}
-      <b>${esc(r.nick || 'Koleżanka')}</b>
-      <span>${Math.round(r.km)} km</span>
-    </div>`
-    )
-    .join('');
-  const empty =
-    prompt && !them ? `<p class="tiny">Wklej kod niżej, a jej ludzik stanie tu obok.</p>` : '';
-  return `<div class="map-people">${you}${them}${empty}</div>`;
-}
-
-function nextStopInfo(state) {
-  const next = nextStop(ROUTE, state.km);
-  if (!next)
-    return `<p class="muted">Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.</p>`;
-  const left = next.km - state.km;
-  const lessons = Math.ceil(left / LESSON_KM);
-  return `<p class="muted">Zostało <b>${left} km</b> do ${esc(next.name)}
-    — ${lessons} ${plural(lessons, 'lekcja', 'lekcje', 'lekcji')}.</p>`;
-}
 
 function home() {
   refreshModules();
@@ -705,19 +581,82 @@ function modules() {
   mount(wrap);
 }
 
+// Ikonki miast z ikony.js. Przystanki dostaja domek automatycznie.
+const IKONY_STACJI = {
+  palace: 'pkin',
+  bigben: 'bigben',
+  gate: 'brama',
+  tower: 'eiffel',
+  spire: 'spire',
+  mill: 'wiatrak',
+  gaudi: 'sagrada',
+  castle: 'zamek',
+};
+
+function stacjeZTrasy() {
+  return (ROUTE.stops || []).map((s) => ({
+    id: s.id,
+    n: s.short || s.name,
+    km: s.km,
+    t: s.kind === 'stall' ? 'stop' : 'city',
+    i: IKONY_STACJI[s.icon] || 'pkin',
+  }));
+}
+
+function klikStacji(stacja, stan) {
+  const stop = (ROUTE.stops || []).find((s) => s.id === stacja.id);
+  if (!stop) return;
+  const state = store.get();
+
+  if (stan === 'locked') {
+    // Nazwy miast po polsku sie odmieniaja, a my ich nie odmieniamy - stad szyk
+    // „Nazwa — jeszcze X km” zamiast „do Amsterdam”.
+    return toast(`${stop.short || stop.name} — jeszcze ${stop.km - state.km} km.`);
+  }
+  if (stan === 'next') {
+    const lekcje = Math.ceil((stop.km - state.km) / LESSON_KM);
+    toast(
+      `${stop.short || stop.name} — jeszcze ${lekcje} ${plural(lekcje, 'lekcja', 'lekcje', 'lekcji')}.`
+    );
+    return runLesson();
+  }
+  // dojechana: najpierw odbierz, co tam czeka, potem juz tylko przypomnienie
+  if (!state.visited.includes(stop.id)) return go('arrival', { stopId: stop.id });
+  toast(stop.flavor || 'Tu już byłaś.');
+}
+
 function fullMap() {
   const state = store.get();
+  const rywal = (state.rivals || [])[0] || null;
+
   const wrap = h(`<div class="home-stack"></div>`);
-  const card = h(`<div class="card">
-    <span class="label">Trasa</span>
-    <h1>Mapa</h1>
-    ${peopleRow(state, { prompt: true })}
-  </div>`);
+  const host = h(`<div class="trasa-host"></div>`);
+  wrap.appendChild(host);
+
+  const card = h(`<div class="card"><span class="label">Ściganie</span>
+    <h2>Twój kod i kod koleżanki</h2></div>`);
   card.appendChild(mapRaceForm());
-  card.appendChild(h(routeListHtml(state)));
-  card.appendChild(h(nextStopInfo(state)));
   wrap.appendChild(card);
   mount(wrap);
+
+  // Startujemy tam, gdzie mapa stanela poprzednio, i dojezdzamy animacja do teraz.
+  const doKm = state.km;
+  const odKm = MAPA_KM === null ? doKm : MAPA_KM;
+
+  MAPA = createTrasaMap(host, {
+    stations: stacjeZTrasy(),
+    me: { name: state.nick || 'Ty', km: odKm },
+    friend: rywal ? { name: rywal.nick || 'Koleżanka', km: Math.round(rywal.km) } : null,
+    renderAvatar(who, size) {
+      if (who === 'me') return avatarOnLine(state.equipped, { size, look: state.look || {} });
+      return avatarOnLine((rywal && rywal.eq) || {}, { size, look: (rywal && rywal.look) || {} });
+    },
+    onStation: klikStacji,
+  });
+
+  MAPA.scrollToCurrent('auto');
+  if (odKm !== doKm) MAPA.update({ me: { km: doKm } });
+  MAPA_KM = doKm;
 }
 
 // ---------- podsumowanie lekcji ----------
