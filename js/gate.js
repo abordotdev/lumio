@@ -15,12 +15,12 @@ export function gateRequired() {
 
 export async function isUnlocked() {
   if (!gateRequired()) return true;
-  return sessionStorage.getItem('lumio.gate') === GATE_HASH;
+  return localStorage.getItem('lumio.gate') === GATE_HASH;
 }
 
 export async function tryUnlock(password) {
   const hash = await digest(String(password || ''));
   if (hash !== GATE_HASH) return false;
-  sessionStorage.setItem('lumio.gate', hash);
+  localStorage.setItem('lumio.gate', hash);
   return true;
 }

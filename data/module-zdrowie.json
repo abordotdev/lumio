@@ -1,0 +1,173 @@
+{
+  "id": "zdrowie",
+  "title": "U lekarza",
+  "subtitle": "Zdrowie, wizyta u lekarza, apteka. Tylko układanie z kafelków.",
+  "sekcja": "Ogólne",
+  "kafelkiTylko": true,
+  "patterns": {
+    "objawy": "jak się czuję",
+    "lekarz": "u lekarza",
+    "apteka": "w aptece"
+  },
+  "patternOrder": ["objawy", "lekarz", "apteka"],
+  "translations": [
+    {
+      "id": "zdr01",
+      "pattern": "objawy",
+      "pl": "Boli mnie głowa",
+      "en": "I have a headache",
+      "chunks": ["I have", "a headache"],
+      "note": "boli głowa → I have a headache",
+      "lemma": "have"
+    },
+    {
+      "id": "zdr02",
+      "pattern": "objawy",
+      "pl": "Źle się czuję",
+      "en": "I feel sick",
+      "chunks": ["I feel", "sick"],
+      "note": "źle się czuję → I feel sick",
+      "lemma": "feel"
+    },
+    {
+      "id": "zdr03",
+      "pattern": "objawy",
+      "pl": "Boli mnie tutaj",
+      "en": "It hurts here",
+      "chunks": ["It hurts", "here"],
+      "note": "boli tutaj → it hurts here",
+      "lemma": "hurt"
+    },
+    {
+      "id": "zdr04",
+      "pattern": "objawy",
+      "pl": "Ciągle jestem zmęczona",
+      "en": "I am tired all the time",
+      "chunks": ["I am tired", "all the time"],
+      "note": "ciągle → all the time",
+      "lemma": "be"
+    },
+    {
+      "id": "zdr05",
+      "pattern": "objawy",
+      "pl": "Jestem przeziębiona",
+      "en": "I have a cold",
+      "chunks": ["I have", "a cold"],
+      "note": "przeziębienie → a cold",
+      "lemma": "have"
+    },
+    {
+      "id": "zdr06",
+      "pattern": "objawy",
+      "pl": "Bolą mnie plecy",
+      "en": "My back hurts",
+      "chunks": ["My back", "hurts"],
+      "note": "plecy po angielsku w liczbie pojedynczej → back",
+      "lemma": "hurt"
+    },
+    {
+      "id": "zdr07",
+      "pattern": "lekarz",
+      "pl": "Potrzebuję lekarza",
+      "en": "I need a doctor",
+      "chunks": ["I need", "a doctor"],
+      "note": "potrzebuję → I need",
+      "lemma": "need"
+    },
+    {
+      "id": "zdr08",
+      "pattern": "lekarz",
+      "pl": "Mogę umówić wizytę?",
+      "en": "Can I make an appointment?",
+      "chunks": ["Can I make", "an appointment?"],
+      "note": "umówić wizytę → make an appointment"
+    },
+    {
+      "id": "zdr09",
+      "pattern": "lekarz",
+      "pl": "Gdzie boli?",
+      "en": "Where does it hurt?",
+      "chunks": ["Where does", "it hurt?"],
+      "note": "gdzie boli → where does it hurt",
+      "lemma": "hurt"
+    },
+    {
+      "id": "zdr10",
+      "pattern": "lekarz",
+      "pl": "Jestem uczulona na penicylinę",
+      "en": "I am allergic to penicillin",
+      "chunks": ["I am allergic", "to penicillin"],
+      "note": "uczulona na → allergic to",
+      "lemma": "be"
+    },
+    {
+      "id": "zdr11",
+      "pattern": "lekarz",
+      "pl": "Proszę wziąć to lekarstwo",
+      "en": "Take this medicine",
+      "chunks": ["Take", "this medicine"],
+      "note": "proszę wziąć → take (polecenie)",
+      "lemma": "take"
+    },
+    {
+      "id": "zdr12",
+      "pattern": "lekarz",
+      "pl": "Zadzwoń po karetkę",
+      "en": "Call an ambulance",
+      "chunks": ["Call", "an ambulance"],
+      "note": "karetka → ambulance",
+      "lemma": "call"
+    },
+    {
+      "id": "zdr13",
+      "pattern": "apteka",
+      "pl": "Ma pan coś na kaszel?",
+      "en": "Do you have something for a cough?",
+      "chunks": ["Do you have", "something", "for a cough?"],
+      "note": "na kaszel → for a cough",
+      "lemma": "have"
+    },
+    {
+      "id": "zdr14",
+      "pattern": "apteka",
+      "pl": "Jak często to brać?",
+      "en": "How often do I take it?",
+      "chunks": ["How often", "do I take it?"],
+      "note": "jak często → how often",
+      "lemma": "take"
+    },
+    {
+      "id": "zdr15",
+      "pattern": "apteka",
+      "pl": "Czy jest bez recepty?",
+      "en": "Is it available without a prescription?",
+      "chunks": ["Is it available", "without a prescription?"],
+      "note": "bez recepty → without a prescription"
+    },
+    {
+      "id": "zdr16",
+      "pattern": "apteka",
+      "pl": "Raz dziennie",
+      "en": "Once a day",
+      "chunks": ["Once", "a day"],
+      "note": "raz dziennie → once a day"
+    },
+    {
+      "id": "zdr17",
+      "pattern": "apteka",
+      "pl": "Po jedzeniu",
+      "en": "After meals",
+      "chunks": ["After", "meals"],
+      "note": "po jedzeniu → after meals"
+    },
+    {
+      "id": "zdr18",
+      "pattern": "apteka",
+      "pl": "Poproszę coś przeciwbólowego",
+      "en": "I would like some painkillers",
+      "chunks": ["I would like", "some painkillers"],
+      "note": "przeciwbólowe → painkillers"
+    }
+  ],
+  "dictation": []
+}

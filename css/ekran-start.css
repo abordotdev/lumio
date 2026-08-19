@@ -416,6 +416,12 @@
 }
 
 /* ---------- siatka modułów ---------- */
+.app .grupa-modulow {
+  margin: 10px 0 -8px;
+}
+.app .grupa-modulow + .moduly {
+  margin-bottom: 8px;
+}
 .app .moduly {
   display: grid;
   grid-template-columns: 1fr 1fr;

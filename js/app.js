@@ -729,8 +729,7 @@ function modules() {
     </div>`)
   );
 
-  const siatka = h(`<div class="moduly"></div>`);
-  for (const m of MODULES) {
+  const kartaModulu = (m) => {
     const otwarty = MODULE && m.id === MODULE.id;
     const st = statModulu(m);
     const pusty = m.id === 'moje' && !(m.translations || []).length;
@@ -775,9 +774,23 @@ function modules() {
         return pusty ? go('phrases') : runLesson({ review: Boolean(outline?.reviewOnly) });
       pickModule(m.id);
     });
-    siatka.appendChild(karta);
+    return karta;
+  };
+
+  // Moduły w dwóch sekcjach: angielski w IT i ogólny. Zwykły angielski na górze,
+  // bo to on jest łatwiejszy na wejście; brakującą sekcję traktujemy jako ogólną.
+  const SEKCJE = [
+    { id: 'Ogólne', tytul: 'Ogólny angielski' },
+    { id: 'IT', tytul: 'Angielski w IT' },
+  ];
+  for (const sek of SEKCJE) {
+    const wSekcji = MODULES.filter((m) => (m.sekcja || 'Ogólne') === sek.id);
+    if (!wSekcji.length) continue;
+    wrap.appendChild(h(`<div class="grupa-modulow"><span class="oczko">${sek.tytul}</span></div>`));
+    const siatka = h(`<div class="moduly"></div>`);
+    for (const m of wSekcji) siatka.appendChild(kartaModulu(m));
+    wrap.appendChild(siatka);
   }
-  wrap.appendChild(siatka);
 
   mount(wrap);
 }

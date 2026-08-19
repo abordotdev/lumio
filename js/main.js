@@ -108,9 +108,26 @@ function fail(message, detail) {
   if (!('serviceWorker' in navigator)) return;
   const local = ['localhost', '127.0.0.1', ''].includes(location.hostname);
   if (location.protocol === 'https:' && !local) {
-    navigator.serviceWorker.register('sw.js').catch(() => {
-      /* offline po prostu nie zadziała */
+    // Aktualizacja bez kombinowania: gdy wejdzie nowa wersja apki, service worker
+    // sam przejmuje stronę, a my raz ją przeładowujemy. Koniec z otwieraniem nowej
+    // karty i wpisywaniem hasła, żeby złapać świeży kod.
+    const byloSterowanie = Boolean(navigator.serviceWorker.controller);
+    let przeladowano = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!byloSterowanie || przeladowano) return;
+      przeladowano = true;
+      window.location.reload();
     });
+    try {
+      const reg = await navigator.serviceWorker.register('sw.js');
+      reg.update().catch(() => {});
+      // Sprawdź nową wersję po powrocie do apki (np. z tła na telefonie).
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') reg.update().catch(() => {});
+      });
+    } catch {
+      /* offline po prostu nie zadziała */
+    }
   } else {
     const regs = await navigator.serviceWorker.getRegistrations();
     for (const reg of regs) await reg.unregister();

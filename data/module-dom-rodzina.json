@@ -1,0 +1,174 @@
+{
+  "id": "dom-rodzina",
+  "title": "Dom i rodzina",
+  "subtitle": "Rodzina, dom, codzienne sprawy. Tylko układanie z kafelków.",
+  "sekcja": "Ogólne",
+  "kafelkiTylko": true,
+  "patterns": {
+    "rodzina": "moja rodzina",
+    "dom": "mój dom",
+    "codzienne": "codziennie"
+  },
+  "patternOrder": ["rodzina", "dom", "codzienne"],
+  "translations": [
+    {
+      "id": "dmr01",
+      "pattern": "rodzina",
+      "pl": "To moja córka",
+      "en": "This is my daughter",
+      "chunks": ["This is", "my daughter"],
+      "note": "to jest → this is"
+    },
+    {
+      "id": "dmr02",
+      "pattern": "rodzina",
+      "pl": "Mam dwoje dzieci",
+      "en": "I have two children",
+      "chunks": ["I have", "two children"],
+      "note": "dzieci → children",
+      "lemma": "have"
+    },
+    {
+      "id": "dmr03",
+      "pattern": "rodzina",
+      "pl": "Mój mąż jest na emeryturze",
+      "en": "My husband is retired",
+      "chunks": ["My husband", "is retired"],
+      "note": "na emeryturze → retired",
+      "lemma": "be"
+    },
+    {
+      "id": "dmr04",
+      "pattern": "rodzina",
+      "pl": "Mieszkamy razem",
+      "en": "We live together",
+      "chunks": ["We live", "together"],
+      "note": "mieszkamy → we live",
+      "lemma": "live"
+    },
+    {
+      "id": "dmr05",
+      "pattern": "rodzina",
+      "pl": "Mój wnuk ma pięć lat",
+      "en": "My grandson is five",
+      "chunks": ["My grandson", "is five"],
+      "note": "ma pięć lat → is five",
+      "lemma": "be"
+    },
+    {
+      "id": "dmr06",
+      "pattern": "rodzina",
+      "pl": "Tęsknię za rodziną",
+      "en": "I miss my family",
+      "chunks": ["I miss", "my family"],
+      "note": "tęsknię za → I miss",
+      "lemma": "miss"
+    },
+    {
+      "id": "dmr07",
+      "pattern": "dom",
+      "pl": "Mieszkam blisko parku",
+      "en": "I live near the park",
+      "chunks": ["I live", "near the park"],
+      "note": "blisko → near",
+      "lemma": "live"
+    },
+    {
+      "id": "dmr08",
+      "pattern": "dom",
+      "pl": "Kuchnia jest mała",
+      "en": "The kitchen is small",
+      "chunks": ["The kitchen", "is small"],
+      "note": "mała → small",
+      "lemma": "be"
+    },
+    {
+      "id": "dmr09",
+      "pattern": "dom",
+      "pl": "Mam ogród",
+      "en": "I have a garden",
+      "chunks": ["I have", "a garden"],
+      "note": "ogród → garden",
+      "lemma": "have"
+    },
+    {
+      "id": "dmr10",
+      "pattern": "dom",
+      "pl": "Proszę wejść",
+      "en": "Come in, please",
+      "chunks": ["Come in,", "please"],
+      "note": "proszę wejść → come in"
+    },
+    {
+      "id": "dmr11",
+      "pattern": "dom",
+      "pl": "Czuj się jak u siebie",
+      "en": "Make yourself at home",
+      "chunks": ["Make yourself", "at home"],
+      "note": "jak u siebie → at home"
+    },
+    {
+      "id": "dmr12",
+      "pattern": "dom",
+      "pl": "Napijesz się herbaty?",
+      "en": "Would you like some tea?",
+      "chunks": ["Would you like", "some tea?"],
+      "note": "napijesz się → would you like"
+    },
+    {
+      "id": "dmr13",
+      "pattern": "codzienne",
+      "pl": "Wstaję wcześnie",
+      "en": "I get up early",
+      "chunks": ["I get up", "early"],
+      "note": "wstaję → I get up",
+      "lemma": "get"
+    },
+    {
+      "id": "dmr14",
+      "pattern": "codzienne",
+      "pl": "Idę na spacer",
+      "en": "I go for a walk",
+      "chunks": ["I go", "for a walk"],
+      "note": "na spacer → for a walk",
+      "lemma": "go"
+    },
+    {
+      "id": "dmr15",
+      "pattern": "codzienne",
+      "pl": "Oglądam wiadomości",
+      "en": "I watch the news",
+      "chunks": ["I watch", "the news"],
+      "note": "oglądam → I watch",
+      "lemma": "watch"
+    },
+    {
+      "id": "dmr16",
+      "pattern": "codzienne",
+      "pl": "Czytam każdego wieczoru",
+      "en": "I read every evening",
+      "chunks": ["I read", "every evening"],
+      "note": "każdego wieczoru → every evening",
+      "lemma": "read"
+    },
+    {
+      "id": "dmr17",
+      "pattern": "codzienne",
+      "pl": "Dzwonię do córki w niedziele",
+      "en": "I call my daughter on Sundays",
+      "chunks": ["I call", "my daughter", "on Sundays"],
+      "note": "w niedziele → on Sundays",
+      "lemma": "call"
+    },
+    {
+      "id": "dmr18",
+      "pattern": "codzienne",
+      "pl": "Lubię ogrodnictwo",
+      "en": "I like gardening",
+      "chunks": ["I like", "gardening"],
+      "note": "ogrodnictwo → gardening",
+      "lemma": "like"
+    }
+  ],
+  "dictation": []
+}

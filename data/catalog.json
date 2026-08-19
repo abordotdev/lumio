@@ -27,6 +27,14 @@
     {
       "id": "podroze",
       "file": "module-podroze.json"
+    },
+    {
+      "id": "zdrowie",
+      "file": "module-zdrowie.json"
+    },
+    {
+      "id": "dom-rodzina",
+      "file": "module-dom-rodzina.json"
     }
   ]
 }
