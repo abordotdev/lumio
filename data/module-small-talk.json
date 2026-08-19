@@ -32,7 +32,7 @@
       "pl": "Jak się masz?",
       "en": "How are you?",
       "accept": ["How are you doing?", "How's it going?"],
-      "note": "proste pytanie, nie How do you do (to brzmi muzealnie)",
+      "note": "standardowe powitanie; odpowiedź: I'm good, thanks",
       "chunks": ["How are you?"]
     },
     {
@@ -41,7 +41,7 @@
       "pl": "Dobrze, dziękuję",
       "en": "I'm good, thanks",
       "accept": ["I'm fine, thanks", "I'm well, thank you", "Good, thanks"],
-      "note": "I'm good jest naturalne; I'm well też przejdzie",
+      "note": "krótko i naturalnie → I'm good",
       "chunks": ["I'm good", "thanks"]
     },
     {
@@ -65,9 +65,15 @@
       "pl": "Poproszę herbatę",
       "en": "I'll have tea, please",
       "accept": ["I'd like tea, please", "Tea, please", "I'll take tea, please"],
-      "note": "I'll have + napój + please",
+      "note": "przy zamawianiu → I'll have",
       "chunks": ["I'll have tea", "please"],
-      "lemma": "have"
+      "lemma": "have",
+      "traps": [
+        {
+          "input": "I want tea, please",
+          "why": "I want brzmi ostro. Przy zamawianiu: I'll have albo Could I have."
+        }
+      ]
     },
     {
       "id": "sm06",
@@ -75,7 +81,8 @@
       "pl": "Cukier i mleko, proszę",
       "en": "Sugar and milk, please",
       "accept": ["Milk and sugar, please", "With milk and sugar, please"],
-      "chunks": ["Sugar and milk", "please"]
+      "chunks": ["Sugar and milk", "please"],
+      "note": "krótko, bez czasownika — tak się mówi przy kawie"
     },
     {
       "id": "sm07",
@@ -83,8 +90,14 @@
       "pl": "Zacznijmy spotkanie",
       "en": "Let's start the meeting",
       "accept": ["Let's get started", "Shall we start?", "Let's begin"],
-      "note": "Let's + czasownik",
-      "chunks": ["Let's start", "the meeting"]
+      "note": "zacznijmy → let's + forma podstawowa",
+      "chunks": ["Let's start", "the meeting"],
+      "traps": [
+        {
+          "input": "Let's to start the meeting",
+          "why": "Po let's idzie forma podstawowa: let's start."
+        }
+      ]
     },
     {
       "id": "sm08",
@@ -92,7 +105,14 @@
       "pl": "Siadaj, proszę",
       "en": "Please take a seat",
       "accept": ["Have a seat, please", "Please sit down", "Take a seat, please"],
-      "chunks": ["Please take", "a seat"]
+      "chunks": ["Please take", "a seat"],
+      "note": "uprzejme „siadaj\" → take a seat",
+      "traps": [
+        {
+          "input": "Please take seat",
+          "why": "Przed seat trzeba a: take a seat."
+        }
+      ]
     },
     {
       "id": "sm09",
@@ -106,7 +126,8 @@
           "input": "Sorry I late",
           "why": "brakuje I'm: Sorry I'm late"
         }
-      ]
+      ],
+      "note": "krótkie przeprosiny za spóźnienie → Sorry I'm late"
     },
     {
       "id": "sm10",
@@ -114,8 +135,14 @@
       "pl": "Możemy przełożyć?",
       "en": "Can we reschedule?",
       "accept": ["Could we reschedule?", "Can we move this?", "Can we reschedule this?"],
-      "note": "reschedule = przełożyć termin",
-      "chunks": ["Can we reschedule?"]
+      "note": "przełożyć spotkanie → reschedule",
+      "chunks": ["Can we reschedule?"],
+      "traps": [
+        {
+          "input": "Can we to reschedule?",
+          "why": "Po can nigdy to: can reschedule."
+        }
+      ]
     },
     {
       "id": "sm11",
@@ -138,7 +165,14 @@
       "pl": "Miło było pogadać",
       "en": "Nice talking to you",
       "accept": ["It was nice talking to you", "Great talking to you"],
-      "chunks": ["Nice talking", "to you"]
+      "chunks": ["Nice talking", "to you"],
+      "note": "na pożegnanie po rozmowie → nice talking to you",
+      "traps": [
+        {
+          "input": "Nice to talking to you",
+          "why": "Albo Nice talking to you, albo Nice to talk to you. Nie obie naraz."
+        }
+      ]
     },
     {
       "id": "sm13",
@@ -146,7 +180,8 @@
       "pl": "Do zobaczenia jutro",
       "en": "See you tomorrow",
       "accept": ["I'll see you tomorrow"],
-      "chunks": ["See you tomorrow"]
+      "chunks": ["See you tomorrow"],
+      "note": "do zobaczenia → see you + kiedy"
     },
     {
       "id": "sm14",
@@ -154,7 +189,8 @@
       "pl": "Miłego weekendu",
       "en": "Have a nice weekend",
       "accept": ["Have a good weekend", "Enjoy your weekend"],
-      "chunks": ["Have a nice weekend"]
+      "chunks": ["Have a nice weekend"],
+      "note": "życzenia → have a nice + co"
     },
     {
       "id": "sm15",
@@ -163,7 +199,14 @@
       "en": "How was your weekend?",
       "accept": ["How was the weekend?", "Did you have a good weekend?"],
       "chunks": ["How was", "your weekend?"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "weekend już minął → How was",
+      "traps": [
+        {
+          "input": "How is your weekend?",
+          "why": "Weekend już się skończył, więc How was your weekend."
+        }
+      ]
     },
     {
       "id": "sm16",
@@ -171,7 +214,14 @@
       "pl": "Brzmi dobrze",
       "en": "That sounds good",
       "accept": ["Sounds good", "That sounds great"],
-      "chunks": ["That sounds good"]
+      "chunks": ["That sounds good"],
+      "note": "brzmi dobrze → that sounds good",
+      "traps": [
+        {
+          "input": "That sounds well",
+          "why": "Po sounds idzie good. Well opisuje, JAK coś robisz."
+        }
+      ]
     },
     {
       "id": "sm17",
@@ -179,9 +229,15 @@
       "pl": "Wyślę Ci zaproszenie",
       "en": "I'll send you the invite",
       "accept": ["I'll send you an invite", "I'll send the invite", "I'll send you the invitation"],
-      "note": "obietnica → I'll",
+      "note": "obietnica dana w rozmowie → I'll send",
       "chunks": ["I'll send you", "the invite"],
-      "lemma": "send"
+      "lemma": "send",
+      "traps": [
+        {
+          "input": "I send you the invite",
+          "why": "Gdy obiecujesz coś w rozmowie: I'll send you the invite."
+        }
+      ]
     },
     {
       "id": "sm18",
@@ -193,7 +249,14 @@
         "Could you say that again?",
         "Sorry, could you repeat that?"
       ],
-      "chunks": ["Could you repeat that?"]
+      "chunks": ["Could you repeat that?"],
+      "note": "uprzejma prośba → Could you",
+      "traps": [
+        {
+          "input": "Could you repeat that again?",
+          "why": "Repeat już znaczy „jeszcze raz\" — again jest zbędne."
+        }
+      ]
     },
     {
       "id": "sm19",
@@ -201,7 +264,8 @@
       "pl": "Dzień dobry",
       "en": "Good morning",
       "accept": ["Morning"],
-      "chunks": ["Good morning"]
+      "chunks": ["Good morning"],
+      "note": "do południa → Good morning; po → Good afternoon"
     },
     {
       "id": "sm20",
@@ -209,7 +273,14 @@
       "pl": "Miło Cię znowu widzieć",
       "en": "Nice to see you again",
       "accept": ["Good to see you again", "It's nice to see you again"],
-      "chunks": ["Nice to see you", "again"]
+      "chunks": ["Nice to see you", "again"],
+      "note": "gdy już się znacie → nice to SEE you",
+      "traps": [
+        {
+          "input": "Nice to meet you again",
+          "why": "Meet to pierwsze poznanie. Gdy już się znacie: Nice to see you again."
+        }
+      ]
     },
     {
       "id": "sm21",
@@ -217,7 +288,14 @@
       "pl": "Wszystko w porządku?",
       "en": "Is everything OK?",
       "accept": ["Is everything okay?", "Everything OK?"],
-      "chunks": ["Is everything OK?"]
+      "chunks": ["Is everything OK?"],
+      "note": "wszystko w porządku → is everything OK",
+      "traps": [
+        {
+          "input": "Is everything is OK?",
+          "why": "Raz wystarczy: Is everything OK."
+        }
+      ]
     },
     {
       "id": "sm22",
@@ -225,7 +303,8 @@
       "pl": "Czarna, proszę",
       "en": "Black, please",
       "accept": ["Black coffee, please", "I'll have it black, please"],
-      "chunks": ["Black, please"]
+      "chunks": ["Black, please"],
+      "note": "kawa bez mleka → black"
     },
     {
       "id": "sm23",
@@ -233,7 +312,14 @@
       "pl": "Jeszcze łyk kawy?",
       "en": "Would you like more coffee?",
       "accept": ["Want more coffee?", "Would you like another coffee?"],
-      "chunks": ["Would you like", "more coffee?"]
+      "chunks": ["Would you like", "more coffee?"],
+      "note": "uprzejme pytanie → Would you like",
+      "traps": [
+        {
+          "input": "Would you like a more coffee?",
+          "why": "Przed more nie ma a: more coffee."
+        }
+      ]
     },
     {
       "id": "sm24",
@@ -241,7 +327,8 @@
       "pl": "Woda wystarczy",
       "en": "Water is fine",
       "accept": ["I'll have water", "Just water, please"],
-      "chunks": ["Water is fine"]
+      "chunks": ["Water is fine"],
+      "note": "wystarczy mi woda → water is fine"
     },
     {
       "id": "sm25",
@@ -249,8 +336,14 @@
       "pl": "Zróbmy to o dziesiątej",
       "en": "Let's do it at ten",
       "accept": ["Let's do it at 10", "Shall we do it at ten?"],
-      "note": "przy godzinie: at ten",
-      "chunks": ["Let's do it", "at ten"]
+      "note": "o godzinie → at ten",
+      "chunks": ["Let's do it", "at ten"],
+      "traps": [
+        {
+          "input": "Let's do it in ten",
+          "why": "O godzinie zawsze at: at ten. In ten znaczyłoby „za dziesięć minut\"."
+        }
+      ]
     },
     {
       "id": "sm26",
@@ -259,7 +352,14 @@
       "en": "Do you have a minute?",
       "accept": ["Have you got a minute?", "Got a minute?"],
       "chunks": ["Do you have", "a minute?"],
-      "lemma": "have"
+      "lemma": "have",
+      "note": "masz chwilę → Do you have a minute",
+      "traps": [
+        {
+          "input": "Have you a minute?",
+          "why": "Po angielsku w pytaniu trzeba do: Do you have a minute."
+        }
+      ]
     },
     {
       "id": "sm27",
@@ -267,8 +367,14 @@
       "pl": "Dzięki za pomoc",
       "en": "Thanks for your help",
       "accept": ["Thank you for your help", "Thanks for helping"],
-      "note": "Thanks for + rzeczownik albo -ing",
-      "chunks": ["Thanks for", "your help"]
+      "note": "dzięki za coś → thanks for + rzeczownik",
+      "chunks": ["Thanks for", "your help"],
+      "traps": [
+        {
+          "input": "Thanks for your helping",
+          "why": "Po thanks for idzie rzeczownik: your help."
+        }
+      ]
     },
     {
       "id": "sm28",
@@ -276,7 +382,8 @@
       "pl": "Trzymaj się",
       "en": "Take care",
       "accept": ["You take care"],
-      "chunks": ["Take care"]
+      "chunks": ["Take care"],
+      "note": "ciepłe pożegnanie → take care"
     },
     {
       "id": "sm29",
@@ -284,7 +391,8 @@
       "pl": "Co u Ciebie?",
       "en": "How are things?",
       "accept": ["What's new?", "How are things going?"],
-      "chunks": ["How are things?"]
+      "chunks": ["How are things?"],
+      "note": "luźniejsze „co u Ciebie\" → how are things"
     },
     {
       "id": "sm30",
@@ -293,7 +401,14 @@
       "en": "I'm on my way",
       "accept": ["I am on my way", "I'm on the way"],
       "chunks": ["I'm on my way"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "jestem w drodze → I'm on my way",
+      "traps": [
+        {
+          "input": "I'm on my road",
+          "why": "W drodze do kogoś: on my way. Road to droga jako ulica."
+        }
+      ]
     }
   ],
   "dictation": [
@@ -302,57 +417,121 @@
       "en": "Nice to meet you",
       "pl": "Miło Cię poznać",
       "note": "pierwsze spotkanie",
-      "chunks": ["Nice to meet you"]
+      "chunks": ["Nice to meet you"],
+      "traps": [
+        {
+          "input": "Nice to know you",
+          "why": "przy poznawaniu: meet, nie know"
+        }
+      ],
+      "accept": ["It's nice to meet you", "Pleased to meet you", "Nice meeting you"]
     },
     {
       "id": "smd02",
       "en": "Would you like some coffee?",
       "pl": "Chcesz kawę?",
-      "chunks": ["Would you like", "some coffee?"]
+      "chunks": ["Would you like", "some coffee?"],
+      "note": "uprzejmie: Would you like…",
+      "traps": [
+        {
+          "input": "You want coffee?",
+          "why": "brzmi ostro — lepiej Would you like some coffee?"
+        }
+      ],
+      "accept": ["Would you like a coffee?", "Do you want some coffee?", "Want some coffee?"]
     },
     {
       "id": "smd03",
       "en": "Sorry I'm late",
       "pl": "Przepraszam za spóźnienie",
-      "chunks": ["Sorry I'm late"]
+      "chunks": ["Sorry I'm late"],
+      "traps": [
+        {
+          "input": "Sorry I late",
+          "why": "brakuje I'm: Sorry I'm late"
+        }
+      ],
+      "accept": ["Sorry for being late", "I'm sorry I'm late"],
+      "note": "krótkie przeprosiny za spóźnienie → Sorry I'm late"
     },
     {
       "id": "smd04",
       "en": "Thanks for coming",
       "pl": "Dzięki, że przyszłaś",
       "note": "Thanks for + coming",
-      "chunks": ["Thanks for coming"]
+      "chunks": ["Thanks for coming"],
+      "traps": [
+        {
+          "input": "Thanks to come",
+          "why": "po thanks for idzie -ing: coming"
+        }
+      ],
+      "accept": ["Thank you for coming", "Thanks for being here"]
     },
     {
       "id": "smd05",
       "en": "See you tomorrow",
       "pl": "Do zobaczenia jutro",
-      "chunks": ["See you tomorrow"]
+      "chunks": ["See you tomorrow"],
+      "accept": ["I'll see you tomorrow"],
+      "note": "do zobaczenia → see you + kiedy"
     },
     {
       "id": "smd06",
       "en": "Nice to see you again",
       "pl": "Miło Cię znowu widzieć",
-      "chunks": ["Nice to see you", "again"]
+      "chunks": ["Nice to see you", "again"],
+      "accept": ["Good to see you again", "It's nice to see you again"],
+      "note": "gdy już się znacie → nice to SEE you",
+      "traps": [
+        {
+          "input": "Nice to meet you again",
+          "why": "Meet to pierwsze poznanie. Gdy już się znacie: Nice to see you again."
+        }
+      ]
     },
     {
       "id": "smd07",
       "en": "Do you have a minute?",
       "pl": "Masz chwilę?",
-      "chunks": ["Do you have", "a minute?"]
+      "chunks": ["Do you have", "a minute?"],
+      "accept": ["Have you got a minute?", "Got a minute?"],
+      "note": "masz chwilę → Do you have a minute",
+      "traps": [
+        {
+          "input": "Have you a minute?",
+          "why": "Po angielsku w pytaniu trzeba do: Do you have a minute."
+        }
+      ]
     },
     {
       "id": "smd08",
       "en": "Thanks for your help",
       "pl": "Dzięki za pomoc",
-      "chunks": ["Thanks for", "your help"]
+      "chunks": ["Thanks for", "your help"],
+      "note": "Thanks for + rzeczownik albo -ing",
+      "accept": ["Thank you for your help", "Thanks for helping"],
+      "traps": [
+        {
+          "input": "Thanks for your helping",
+          "why": "Po thanks for idzie rzeczownik: your help."
+        }
+      ]
     },
     {
       "id": "smd09",
       "en": "I'm on my way",
       "pl": "Jestem w drodze",
       "chunks": ["I'm on my way"],
-      "lemma": "be"
+      "lemma": "be",
+      "accept": ["I am on my way", "I'm on the way"],
+      "note": "jestem w drodze → I'm on my way",
+      "traps": [
+        {
+          "input": "I'm on my road",
+          "why": "W drodze do kogoś: on my way. Road to droga jako ulica."
+        }
+      ]
     }
   ]
 }

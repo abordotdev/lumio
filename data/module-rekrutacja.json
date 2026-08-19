@@ -24,9 +24,19 @@
         "I've got three years of experience in manual testing",
         "I have 3 years of experience in manual testing"
       ],
-      "note": "have + lata + experience in…",
+      "note": "ile lat + of experience — „years experience\" bez of nie przechodzi",
       "chunks": ["I have three years", "of experience", "in manual testing"],
-      "lemma": "have"
+      "lemma": "have",
+      "traps": [
+        {
+          "input": "I have three years experience in manual testing",
+          "why": "Między latami a experience zawsze idzie of: three years of experience."
+        },
+        {
+          "input": "I'm having three years of experience in manual testing",
+          "why": "Have w znaczeniu „mam\" nie chodzi z I'm. Po prostu I have."
+        }
+      ]
     },
     {
       "id": "rec02",
@@ -37,9 +47,15 @@
         "I am looking for a role in test automation",
         "I'm looking for a test automation role"
       ],
-      "note": "I'm looking for — dzieje się teraz",
+      "note": "szukasz teraz, w tym okresie życia → I'm looking for",
       "chunks": ["I'm looking for", "a role", "in test automation"],
-      "lemma": "look"
+      "lemma": "look",
+      "traps": [
+        {
+          "input": "I look for a role in test automation",
+          "why": "I look for to nawyk. Gdy szukasz właśnie teraz: I'm looking for."
+        }
+      ]
     },
     {
       "id": "rec03",
@@ -47,7 +63,14 @@
       "pl": "Miło mi, dziękuję za zaproszenie",
       "en": "Nice to meet you, thanks for having me",
       "accept": ["Nice to meet you, thank you for having me", "Thanks for having me"],
-      "chunks": ["Nice to meet you", "thanks for having me"]
+      "chunks": ["Nice to meet you", "thanks for having me"],
+      "note": "na wejściu: Nice to meet you. Za zaproszenie: thanks for having me",
+      "traps": [
+        {
+          "input": "Nice to meet you, thanks for invite me",
+          "why": "Po thanks for idzie forma z -ing: thanks for having me."
+        }
+      ]
     },
     {
       "id": "rec04",
@@ -56,7 +79,14 @@
       "en": "I write test cases and test reports",
       "accept": ["I write test cases and reports", "I write test cases and bug reports"],
       "chunks": ["I write", "test cases", "and test reports"],
-      "lemma": "write"
+      "lemma": "write",
+      "note": "to Twoja codzienna robota → I write",
+      "traps": [
+        {
+          "input": "I'm writing test cases and test reports",
+          "why": "I'm writing znaczy „piszę w tej chwili\". Gdy to Twoja stała praca: I write."
+        }
+      ]
     },
     {
       "id": "rec05",
@@ -64,9 +94,19 @@
       "pl": "Zgłaszam błędy w Jirze",
       "en": "I log bugs in Jira",
       "accept": ["I report bugs in Jira", "I file bugs in Jira"],
-      "note": "log bugs = zgłaszać tickety",
+      "note": "log a bug = zgłosić błąd w systemie",
       "chunks": ["I log bugs", "in Jira"],
-      "lemma": "log"
+      "lemma": "log",
+      "traps": [
+        {
+          "input": "I log bugs on Jira",
+          "why": "W narzędziu robimy coś in: in Jira, in Postman, in Confluence."
+        },
+        {
+          "input": "I'm logging bugs in Jira",
+          "why": "To Twój stały sposób pracy, więc I log — nie I'm logging."
+        }
+      ]
     },
     {
       "id": "rec06",
@@ -77,12 +117,12 @@
         "I tested it on staging before production",
         "I tested this on staging before prod"
       ],
-      "note": "skonczone i zamknięte → tested",
+      "note": "skończone i zamknięte → tested",
       "chunks": ["I tested this", "on staging", "before production"],
       "traps": [
         {
-          "input": "I have tested this on staging before production yesterday",
-          "why": "gdy jest konkretny moment, zwykle tested, nie have tested"
+          "input": "I have tested this on staging before production",
+          "why": "Gdy mówisz KIEDY to było — przed produkcją, wczoraj — zostaje samo tested, bez have."
         }
       ],
       "lemma": "test"
@@ -97,7 +137,14 @@
         "I covered the happy path and the edge cases"
       ],
       "chunks": ["I tested", "the happy path", "and the edge cases"],
-      "lemma": "test"
+      "lemma": "test",
+      "note": "opowiadasz o konkretnej pracy, którą zrobiłaś → tested",
+      "traps": [
+        {
+          "input": "I test the happy path and the edge cases",
+          "why": "I test to opis nawyku. Gdy opowiadasz, co zrobiłaś w tamtym projekcie: I tested."
+        }
+      ]
     },
     {
       "id": "rec08",
@@ -106,7 +153,14 @@
       "en": "I automated the smoke tests",
       "accept": ["I automated smoke tests", "I've automated the smoke tests"],
       "chunks": ["I automated", "the smoke tests"],
-      "lemma": "automate"
+      "lemma": "automate",
+      "note": "zrobione i zamknięte → automated",
+      "traps": [
+        {
+          "input": "I have automate the smoke tests",
+          "why": "Po have zawsze forma z -ed: have automated."
+        }
+      ]
     },
     {
       "id": "rec09",
@@ -117,9 +171,19 @@
         "I don't have commercial experience with Selenium yet",
         "I haven't got commercial Selenium experience yet"
       ],
-      "note": "uczciwie: don't have … yet",
+      "note": "uczciwie i bez owijania: don't have … yet",
       "chunks": ["I don't have", "commercial Selenium experience", "yet"],
-      "lemma": "have"
+      "lemma": "have",
+      "traps": [
+        {
+          "input": "I haven't commercial Selenium experience yet",
+          "why": "Samo haven't nie wystarczy. Albo I don't have, albo I haven't got."
+        },
+        {
+          "input": "I don't have commercial Selenium experience still",
+          "why": "„Jeszcze nie\" w przeczeniu to yet, na końcu zdania. Still znaczy „nadal\"."
+        }
+      ]
     },
     {
       "id": "rec10",
@@ -131,7 +195,14 @@
         "Integration tests cover API contracts"
       ],
       "chunks": ["Integration tests", "cover", "the API contracts"],
-      "lemma": "cover"
+      "lemma": "cover",
+      "note": "stały fakt o projekcie → cover",
+      "traps": [
+        {
+          "input": "Integration tests covers the API contracts",
+          "why": "Tests to liczba mnoga, więc bez -s: tests cover."
+        }
+      ]
     },
     {
       "id": "rec11",
@@ -143,7 +214,18 @@
         "I've written a test plan for this release"
       ],
       "chunks": ["I wrote", "a test plan", "for this release"],
-      "lemma": "write"
+      "lemma": "write",
+      "note": "napisany i gotowy → wrote",
+      "traps": [
+        {
+          "input": "I writed a test plan for this release",
+          "why": "Write jest nieregularne: write → wrote → written."
+        },
+        {
+          "input": "I wrote test plan for this release",
+          "why": "Przed planem trzeba a albo the: a test plan."
+        }
+      ]
     },
     {
       "id": "rec12",
@@ -152,7 +234,14 @@
       "en": "The documentation was out of date",
       "accept": ["The documentation was outdated", "Documentation was out of date"],
       "chunks": ["The documentation", "was out of date"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "była taka wtedy, sprawa zamknięta → was",
+      "traps": [
+        {
+          "input": "The documentation were out of date",
+          "why": "Documentation to jedna rzecz, więc was."
+        }
+      ]
     },
     {
       "id": "rec13",
@@ -161,7 +250,14 @@
       "en": "I asked for the acceptance criteria",
       "accept": ["I asked for acceptance criteria", "I asked for the AC"],
       "chunks": ["I asked for", "the acceptance criteria"],
-      "lemma": "ask"
+      "lemma": "ask",
+      "note": "poprosić O coś → ask for",
+      "traps": [
+        {
+          "input": "I asked about the acceptance criteria",
+          "why": "Ask for = prosić o coś. Ask about = dopytywać na jakiś temat."
+        }
+      ]
     },
     {
       "id": "rec14",
@@ -169,9 +265,15 @@
       "pl": "Używam Postmana, żeby sprawdzić API",
       "en": "I use Postman to check the API",
       "accept": ["I use Postman to test the API", "I use Postman to check APIs"],
-      "note": "nawyk → I use, nie I'm using (chyba że akurat teraz)",
+      "note": "narzędzie, którego używasz na co dzień → I use",
       "chunks": ["I use Postman", "to check the API"],
-      "lemma": "use"
+      "lemma": "use",
+      "traps": [
+        {
+          "input": "I'm using Postman to check the API",
+          "why": "I'm using to „używam akurat teraz\". Gdy to Twoje stałe narzędzie: I use."
+        }
+      ]
     },
     {
       "id": "rec15",
@@ -180,7 +282,14 @@
       "en": "I checked the logs after the deploy",
       "accept": ["I checked the logs after deploy", "I checked the logs after the deployment"],
       "chunks": ["I checked the logs", "after the deploy"],
-      "lemma": "check"
+      "lemma": "check",
+      "note": "po deployu, konkretny moment → checked",
+      "traps": [
+        {
+          "input": "I have checked the logs after the deploy",
+          "why": "Po deployu to konkretny moment w przeszłości, więc checked bez have."
+        }
+      ]
     },
     {
       "id": "rec16",
@@ -188,9 +297,19 @@
       "pl": "Wczoraj na produkcję poszedł hotfix",
       "en": "A hotfix went to production yesterday",
       "accept": ["A hotfix went to prod yesterday", "We shipped a hotfix to production yesterday"],
-      "note": "yesterday → przeszłość prosta",
+      "note": "yesterday zamyka sprawę → went",
       "chunks": ["A hotfix", "went to production", "yesterday"],
-      "lemma": "go"
+      "lemma": "go",
+      "traps": [
+        {
+          "input": "A hotfix has gone to production yesterday",
+          "why": "Yesterday to czas zamknięty — wtedy nigdy has ani have. Zostaje went."
+        },
+        {
+          "input": "A hotfix goed to production yesterday",
+          "why": "Go jest nieregularne: go → went → gone."
+        }
+      ]
     },
     {
       "id": "rec17",
@@ -202,7 +321,14 @@
         "We changed the prod config by mistake"
       ],
       "chunks": ["We swapped", "the production config", "by mistake"],
-      "lemma": "swap"
+      "lemma": "swap",
+      "note": "przez pomyłkę → by mistake, bez a",
+      "traps": [
+        {
+          "input": "We swapped the production config by a mistake",
+          "why": "By mistake to stały zwrot, bez a."
+        }
+      ]
     },
     {
       "id": "rec18",
@@ -211,7 +337,14 @@
       "en": "We ran a smoke test after the hotfix",
       "accept": ["We ran smoke tests after the hotfix"],
       "chunks": ["We ran", "a smoke test", "after the hotfix"],
-      "lemma": "run"
+      "lemma": "run",
+      "note": "odpalić testy → run tests; skończone → ran",
+      "traps": [
+        {
+          "input": "We runned a smoke test after the hotfix",
+          "why": "Run jest nieregularne: run → ran → run."
+        }
+      ]
     },
     {
       "id": "rec19",
@@ -223,7 +356,18 @@
         "We do regression before every release"
       ],
       "chunks": ["We do regression testing", "before every release"],
-      "lemma": "do"
+      "lemma": "do",
+      "note": "przed każdym releasem, czyli zawsze → we do",
+      "traps": [
+        {
+          "input": "We are doing regression testing before every release",
+          "why": "Before every release znaczy zawsze, więc we do."
+        },
+        {
+          "input": "We make regression testing before every release",
+          "why": "Testy się robi przez do albo run. Make w tym miejscu nie chodzi."
+        }
+      ]
     },
     {
       "id": "rec20",
@@ -235,7 +379,14 @@
         "I have exploratory testing experience"
       ],
       "chunks": ["I have experience", "with exploratory testing"],
-      "lemma": "have"
+      "lemma": "have",
+      "note": "experience with czymś, bez a",
+      "traps": [
+        {
+          "input": "I have a experience with exploratory testing",
+          "why": "Experience w tym znaczeniu jest niepoliczalne — bez a."
+        }
+      ]
     },
     {
       "id": "rec21",
@@ -243,12 +394,12 @@
       "pl": "Zwykle testuję na Chrome i Firefox",
       "en": "I usually test on Chrome and Firefox",
       "accept": ["I usually test in Chrome and Firefox", "I usually test on Chrome and on Firefox"],
-      "note": "nawyk → I usually test",
+      "note": "usually stoi PRZED czasownikiem",
       "chunks": ["I usually test", "on Chrome and Firefox"],
       "traps": [
         {
-          "input": "I'm usually testing on Chrome and Firefox",
-          "why": "przy nawyku: I usually test, nie I'm testing"
+          "input": "I test usually on Chrome and Firefox",
+          "why": "Usually idzie przed czasownikiem: I usually test."
         }
       ],
       "lemma": "test"
@@ -259,9 +410,19 @@
       "pl": "Testowałam to na stagingu od rana",
       "en": "I've been testing it on staging since this morning",
       "accept": ["I have been testing it on staging since this morning"],
-      "note": "od rana i trwa → I've been testing",
+      "note": "zaczęło się rano i trwa do teraz → I've been testing",
       "chunks": ["I've been testing it", "on staging", "since this morning"],
-      "lemma": "test"
+      "lemma": "test",
+      "traps": [
+        {
+          "input": "I'm testing it on staging since this morning",
+          "why": "I'm testing to tylko ta chwila. Gdy coś trwa OD rana: I've been testing."
+        },
+        {
+          "input": "I've been testing it on staging for this morning",
+          "why": "Since mówi OD KIEDY (since this morning). For mówi JAK DŁUGO (for two hours)."
+        }
+      ]
     },
     {
       "id": "rec23",
@@ -269,9 +430,15 @@
       "pl": "Pracuję jako testerka manualna",
       "en": "I work as a manual tester",
       "accept": ["I work as a QA tester", "I'm a manual tester"],
-      "note": "zawód, na stałe → I work as",
+      "note": "zawód → I work as a",
       "chunks": ["I work as", "a manual tester"],
-      "lemma": "work"
+      "lemma": "work",
+      "traps": [
+        {
+          "input": "I work as manual tester",
+          "why": "Przed zawodem zawsze a: as a tester, as a developer."
+        }
+      ]
     },
     {
       "id": "rec24",
@@ -280,7 +447,14 @@
       "en": "I want to grow in test automation",
       "accept": ["I want to grow in automation", "I'd like to grow in test automation"],
       "chunks": ["I want to grow", "in test automation"],
-      "lemma": "want"
+      "lemma": "want",
+      "note": "chcę coś robić → want to + czasownik",
+      "traps": [
+        {
+          "input": "I want grow in test automation",
+          "why": "Po want zawsze to: want to grow."
+        }
+      ]
     },
     {
       "id": "rec25",
@@ -288,9 +462,15 @@
       "pl": "Przygotowałam się do tej rozmowy",
       "en": "I prepared for this interview",
       "accept": ["I prepared for the interview", "I've prepared for this interview"],
-      "note": "skończone przygotowanie → prepared",
+      "note": "przygotować się DO czegoś → prepare for",
       "chunks": ["I prepared", "for this interview"],
-      "lemma": "prepare"
+      "lemma": "prepare",
+      "traps": [
+        {
+          "input": "I prepared to this interview",
+          "why": "Przygotować się do czegoś to prepare for, nie prepare to."
+        }
+      ]
     },
     {
       "id": "rec26",
@@ -299,7 +479,14 @@
       "en": "I reproduced that bug on Chrome",
       "accept": ["I reproduced this bug on Chrome", "I reproduced the bug in Chrome"],
       "chunks": ["I reproduced", "that bug", "on Chrome"],
-      "lemma": "reproduce"
+      "lemma": "reproduce",
+      "note": "błąd się odtwarza → reproduce",
+      "traps": [
+        {
+          "input": "I repeated that bug on Chrome",
+          "why": "Błąd się reproduce. Repeat to powtórzyć coś, co się mówi."
+        }
+      ]
     },
     {
       "id": "rec27",
@@ -311,7 +498,14 @@
         "I prioritize it with the product owner"
       ],
       "chunks": ["I set the priority", "with the product owner"],
-      "lemma": "set"
+      "lemma": "set",
+      "note": "set nie zmienia formy",
+      "traps": [
+        {
+          "input": "I setted the priority with the product owner",
+          "why": "Set wygląda tak samo w każdej formie: set → set → set."
+        }
+      ]
     },
     {
       "id": "rec28",
@@ -319,9 +513,15 @@
       "pl": "Piszę testy w Playwright",
       "en": "I write tests in Playwright",
       "accept": ["I write Playwright tests", "I write tests with Playwright"],
-      "note": "nawyk → I write",
+      "note": "na co dzień → I write",
       "chunks": ["I write tests", "in Playwright"],
-      "lemma": "write"
+      "lemma": "write",
+      "traps": [
+        {
+          "input": "I'm writing tests in Playwright",
+          "why": "Gdy to Twoja stała robota: I write. I'm writing znaczy „piszę właśnie teraz\"."
+        }
+      ]
     },
     {
       "id": "rec29",
@@ -330,7 +530,14 @@
       "en": "The pipeline runs the tests on CI",
       "accept": ["The pipeline runs tests on CI", "CI runs the tests in the pipeline"],
       "chunks": ["The pipeline", "runs the tests", "on CI"],
-      "lemma": "run"
+      "lemma": "run",
+      "note": "pipeline to ono, więc runs z -s",
+      "traps": [
+        {
+          "input": "The pipeline run the tests on CI",
+          "why": "Przy on, ona, ono dokładamy -s: the pipeline runs."
+        }
+      ]
     },
     {
       "id": "rec30",
@@ -341,9 +548,15 @@
         "I am learning to write stable selectors",
         "I'm learning how to write stable selectors"
       ],
-      "note": "w trakcie nauki → I’m learning",
+      "note": "w trakcie nauki, w tym okresie → I'm learning",
       "chunks": ["I'm learning", "to write", "stable selectors"],
-      "lemma": "learn"
+      "lemma": "learn",
+      "traps": [
+        {
+          "input": "I learn to write stable selectors",
+          "why": "I learn to nawyk. Gdy uczysz się tego właśnie teraz: I'm learning."
+        }
+      ]
     },
     {
       "id": "rec31",
@@ -355,7 +568,14 @@
         "I read the acceptance criteria before testing"
       ],
       "chunks": ["I read", "the acceptance criteria", "before I start testing"],
-      "lemma": "read"
+      "lemma": "read",
+      "note": "zawsze tak robisz → I read",
+      "traps": [
+        {
+          "input": "I read the acceptance criteria before I will start testing",
+          "why": "Po before nigdy will. Zostaje zwykłe I start."
+        }
+      ]
     },
     {
       "id": "rec32",
@@ -367,7 +587,14 @@
         "I update the cases when the requirements change"
       ],
       "chunks": ["I update the test cases", "after the requirements change"],
-      "lemma": "update"
+      "lemma": "update",
+      "note": "za każdym razem → I update",
+      "traps": [
+        {
+          "input": "I update the test cases after the requirements will change",
+          "why": "Po after nigdy will: after the requirements change."
+        }
+      ]
     },
     {
       "id": "rec33",
@@ -376,7 +603,14 @@
       "en": "I leave a comment on the ticket",
       "accept": ["I add a comment on the ticket", "I comment on the ticket"],
       "chunks": ["I leave a comment", "on the ticket"],
-      "lemma": "leave"
+      "lemma": "leave",
+      "note": "komentarz zostawia się ON the ticket",
+      "traps": [
+        {
+          "input": "I leave a comment in the ticket",
+          "why": "Na tickecie: on the ticket. In znaczyłoby „w środku dokumentu\"."
+        }
+      ]
     },
     {
       "id": "rec34",
@@ -385,7 +619,14 @@
       "en": "I check the 200 status and the response body",
       "accept": ["I check status 200 and the response body", "I check the 200 and the body"],
       "chunks": ["I check", "the 200 status", "and the response body"],
-      "lemma": "check"
+      "lemma": "check",
+      "note": "sprawdzasz to za każdym razem → I check",
+      "traps": [
+        {
+          "input": "I'm checking the 200 status and the response body",
+          "why": "To Twój stały sposób pracy, więc I check."
+        }
+      ]
     },
     {
       "id": "rec35",
@@ -394,7 +635,14 @@
       "en": "I send a POST request with a token",
       "accept": ["I send a POST with a token", "I send a POST request with the token"],
       "chunks": ["I send", "a POST request", "with a token"],
-      "lemma": "send"
+      "lemma": "send",
+      "note": "wysłać request → send a request",
+      "traps": [
+        {
+          "input": "I send a POST request with token",
+          "why": "Przed token trzeba a albo the: with a token."
+        }
+      ]
     },
     {
       "id": "rec36",
@@ -406,7 +654,14 @@
         "I check the response against the contract"
       ],
       "chunks": ["I compare the response", "with the contract"],
-      "lemma": "compare"
+      "lemma": "compare",
+      "note": "porównać Z czymś → compare with",
+      "traps": [
+        {
+          "input": "I'm comparing the response with the contract",
+          "why": "To stała czynność w Twojej pracy, więc I compare."
+        }
+      ]
     },
     {
       "id": "rec37",
@@ -415,7 +670,14 @@
       "en": "I save the collection in Postman",
       "accept": ["I save the Postman collection", "I save that collection in Postman"],
       "chunks": ["I save the collection", "in Postman"],
-      "lemma": "save"
+      "lemma": "save",
+      "note": "w narzędziu → in Postman",
+      "traps": [
+        {
+          "input": "I save the collection on Postman",
+          "why": "W narzędziu zawsze in: in Postman, in Jira."
+        }
+      ]
     },
     {
       "id": "rec38",
@@ -423,9 +685,15 @@
       "pl": "Rollback zajął pięć minut",
       "en": "The rollback took five minutes",
       "accept": ["The rollback took 5 minutes", "Rollback took five minutes"],
-      "note": "skończone → took",
+      "note": "zajęło tyle czasu → took",
       "chunks": ["The rollback", "took five minutes"],
-      "lemma": "take"
+      "lemma": "take",
+      "traps": [
+        {
+          "input": "The rollback taked five minutes",
+          "why": "Take jest nieregularne: take → took → taken."
+        }
+      ]
     },
     {
       "id": "rec39",
@@ -434,7 +702,14 @@
       "en": "I monitor errors after the release",
       "accept": ["I monitor the errors after the release", "I watch errors after the release"],
       "chunks": ["I monitor errors", "after the release"],
-      "lemma": "monitor"
+      "lemma": "monitor",
+      "note": "po każdym release, czyli stale → I monitor",
+      "traps": [
+        {
+          "input": "I'm monitoring errors after the release",
+          "why": "Gdy robisz to po każdym release: I monitor."
+        }
+      ]
     },
     {
       "id": "rec40",
@@ -443,7 +718,14 @@
       "en": "The feature flag was off",
       "accept": ["The feature flag was disabled", "The feature flag was turned off"],
       "chunks": ["The feature flag", "was off"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "była wyłączona wtedy → was off",
+      "traps": [
+        {
+          "input": "The feature flag were off",
+          "why": "Flag to jedna rzecz, więc was."
+        }
+      ]
     },
     {
       "id": "rec41",
@@ -452,7 +734,14 @@
       "en": "We run smoke tests before regression",
       "accept": ["We do smoke tests before regression", "We run a smoke test before regression"],
       "chunks": ["We run smoke tests", "before regression"],
-      "lemma": "run"
+      "lemma": "run",
+      "note": "przed każdą regresją → we run",
+      "traps": [
+        {
+          "input": "We are running smoke tests before regression",
+          "why": "Before regression znaczy za każdym razem, więc we run."
+        }
+      ]
     },
     {
       "id": "rec42",
@@ -464,7 +753,14 @@
         "I do a sanity check after the hotfix"
       ],
       "chunks": ["I also do", "a sanity check", "after a hotfix"],
-      "lemma": "do"
+      "lemma": "do",
+      "note": "also stoi PRZED czasownikiem",
+      "traps": [
+        {
+          "input": "I do also a sanity check after a hotfix",
+          "why": "Also idzie przed czasownikiem: I also do."
+        }
+      ]
     },
     {
       "id": "rec43",
@@ -473,7 +769,14 @@
       "en": "I usually go abroad on holiday",
       "accept": ["I usually go abroad on vacation", "On holiday I usually go abroad"],
       "chunks": ["I usually go abroad", "on holiday"],
-      "lemma": "go"
+      "lemma": "go",
+      "note": "za granicę → abroad, bez to",
+      "traps": [
+        {
+          "input": "I usually go to abroad on holiday",
+          "why": "Abroad samo w sobie znaczy „za granicę\" — nie dokładamy to."
+        }
+      ]
     },
     {
       "id": "rec44",
@@ -487,7 +790,17 @@
       ],
       "chunks": ["I was", "in Italy", "last year"],
       "lemma": "be",
-      "note": "byłam gdzieś → I was in, nie I was at"
+      "note": "byłam gdzieś → I was in",
+      "traps": [
+        {
+          "input": "I have been in Italy last year",
+          "why": "Last year to czas zamknięty — wtedy nigdy have been. Zostaje I was."
+        },
+        {
+          "input": "I was in Italy in last year",
+          "why": "Last year bez in: I was there last year, I was there last week."
+        }
+      ]
     },
     {
       "id": "rec45",
@@ -499,7 +812,14 @@
         "I read and go swimming in my free time"
       ],
       "chunks": ["In my free time", "I read", "and go swimming"],
-      "lemma": "read"
+      "lemma": "read",
+      "note": "chodzić na basen → go swimming",
+      "traps": [
+        {
+          "input": "In my free time I read and go to swimming",
+          "why": "Go swimming bez to. Tak samo go running, go shopping."
+        }
+      ]
     },
     {
       "id": "rec46",
@@ -508,7 +828,14 @@
       "en": "My hobbies are running and cooking",
       "accept": ["My hobby is running and cooking", "Running and cooking are my hobbies"],
       "chunks": ["My hobbies are", "running and cooking"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "czynności jako rzeczy → z -ing",
+      "traps": [
+        {
+          "input": "My hobbies are run and cook",
+          "why": "Gdy wymieniasz czynności jako rzeczy, dodajesz -ing: running, cooking."
+        }
+      ]
     },
     {
       "id": "rec47",
@@ -518,7 +845,13 @@
       "accept": ["I learn English every morning", "Every morning I study English"],
       "chunks": ["I study English", "every morning"],
       "lemma": "study",
-      "note": "uczyć się czegoś na serio → study; learn to raczej „nauczyć się\""
+      "note": "uczyć się czegoś na serio → study; learn to raczej „nauczyć się\"",
+      "traps": [
+        {
+          "input": "I'm studying English every morning",
+          "why": "Every morning znaczy zawsze, więc I study."
+        }
+      ]
     },
     {
       "id": "rec48",
@@ -527,7 +860,14 @@
       "en": "I watch series in English",
       "accept": ["I watch TV series in English", "I watch shows in English"],
       "chunks": ["I watch series", "in English"],
-      "lemma": "watch"
+      "lemma": "watch",
+      "note": "w jakimś języku → in English",
+      "traps": [
+        {
+          "input": "I watch series on English",
+          "why": "W jakimś języku zawsze in: in English, in Polish."
+        }
+      ]
     },
     {
       "id": "rec49",
@@ -539,7 +879,14 @@
         "I'm looking for a team I can learn in"
       ],
       "chunks": ["I'm looking for", "a team", "where I can learn"],
-      "lemma": "look"
+      "lemma": "look",
+      "note": "szukasz teraz → I'm looking for",
+      "traps": [
+        {
+          "input": "I'm looking for a team where I can to learn",
+          "why": "Po can nigdy to: can learn, can come, can help."
+        }
+      ]
     },
     {
       "id": "rec50",
@@ -551,7 +898,14 @@
         "I prefer remote, but I can come to the office for meetings"
       ],
       "chunks": ["I prefer remote work", "but I can come in", "for meetings"],
-      "lemma": "prefer"
+      "lemma": "prefer",
+      "note": "wolę coś → I prefer",
+      "traps": [
+        {
+          "input": "I prefer remote work, but I can to come in for meetings",
+          "why": "Po can nigdy to: can come."
+        }
+      ]
     },
     {
       "id": "rec51",
@@ -560,7 +914,14 @@
       "en": "My notice period is one month",
       "accept": ["My notice period is a month", "I have a one-month notice period"],
       "chunks": ["My notice period", "is one month"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "okres wypowiedzenia JEST miesięczny → is one month",
+      "traps": [
+        {
+          "input": "My notice period have one month",
+          "why": "Okres wypowiedzenia jest miesięczny, nie „ma\": my notice period is one month."
+        }
+      ]
     },
     {
       "id": "rec52",
@@ -572,7 +933,14 @@
         "I like breaking down complex tickets into steps"
       ],
       "chunks": ["I like breaking", "complex tickets", "down into steps"],
-      "lemma": "like"
+      "lemma": "like",
+      "note": "lubię coś robić → like + -ing",
+      "traps": [
+        {
+          "input": "I like break complex tickets down into steps",
+          "why": "Po like idzie -ing albo to: I like breaking / I like to break."
+        }
+      ]
     },
     {
       "id": "rec53",
@@ -584,7 +952,14 @@
         "I have a question about your onboarding"
       ],
       "chunks": ["I have a question", "about onboarding", "in your team"],
-      "lemma": "have"
+      "lemma": "have",
+      "note": "mam pytanie → I have a question",
+      "traps": [
+        {
+          "input": "I have question about onboarding in your team",
+          "why": "Przed question zawsze a: a question."
+        }
+      ]
     },
     {
       "id": "rec54",
@@ -596,7 +971,14 @@
         "If production is on fire, I check the logs first"
       ],
       "chunks": ["If something is on fire", "in production", "I check the logs first"],
-      "lemma": "check"
+      "lemma": "check",
+      "note": "jak coś się pali → if something is on fire",
+      "traps": [
+        {
+          "input": "If something will be on fire in production, I check the logs first",
+          "why": "Po if nigdy will: if something is on fire."
+        }
+      ]
     }
   ],
   "dictation": [
@@ -605,84 +987,210 @@
       "en": "I log bugs in Jira",
       "pl": "Zgłaszam błędy w Jirze",
       "chunks": ["I log bugs", "in Jira"],
-      "lemma": "log"
+      "lemma": "log",
+      "note": "log a bug = zgłosić błąd w systemie",
+      "traps": [
+        {
+          "input": "I log bugs on Jira",
+          "why": "W narzędziu robimy coś in: in Jira, in Postman, in Confluence."
+        },
+        {
+          "input": "I'm logging bugs in Jira",
+          "why": "To Twój stały sposób pracy, więc I log — nie I'm logging."
+        }
+      ],
+      "accept": ["I report bugs in Jira", "I file bugs in Jira"]
     },
     {
       "id": "recd02",
       "en": "I use Postman to check the API",
       "pl": "Używam Postmana, żeby sprawdzić API",
       "chunks": ["I use Postman", "to check the API"],
-      "lemma": "use"
+      "lemma": "use",
+      "note": "narzędzie, którego używasz na co dzień → I use",
+      "traps": [
+        {
+          "input": "I'm using Postman to check the API",
+          "why": "I'm using to „używam akurat teraz\". Gdy to Twoje stałe narzędzie: I use."
+        }
+      ],
+      "accept": ["I use Postman to test the API", "I use Postman to check APIs"]
     },
     {
       "id": "recd03",
       "en": "A hotfix went to production yesterday",
       "pl": "Wczoraj na produkcję poszedł hotfix",
       "chunks": ["A hotfix", "went to production", "yesterday"],
-      "lemma": "go"
+      "lemma": "go",
+      "note": "yesterday zamyka sprawę → went",
+      "traps": [
+        {
+          "input": "A hotfix has gone to production yesterday",
+          "why": "Yesterday to czas zamknięty — wtedy nigdy has ani have. Zostaje went."
+        },
+        {
+          "input": "A hotfix goed to production yesterday",
+          "why": "Go jest nieregularne: go → went → gone."
+        }
+      ],
+      "accept": ["A hotfix went to prod yesterday", "We shipped a hotfix to production yesterday"]
     },
     {
       "id": "recd04",
       "en": "We do regression testing before every release",
       "pl": "Przed każdym releasem robimy regresję",
       "chunks": ["We do regression testing", "before every release"],
-      "lemma": "do"
+      "lemma": "do",
+      "note": "przed każdym releasem, czyli zawsze → we do",
+      "traps": [
+        {
+          "input": "We are doing regression testing before every release",
+          "why": "Before every release znaczy zawsze, więc we do."
+        },
+        {
+          "input": "We make regression testing before every release",
+          "why": "Testy się robi przez do albo run. Make w tym miejscu nie chodzi."
+        }
+      ],
+      "accept": [
+        "We run regression tests before every release",
+        "We do regression before every release"
+      ]
     },
     {
       "id": "recd05",
       "en": "I don't have commercial Selenium experience yet",
       "pl": "Nie mam jeszcze komercyjnego Selenium",
       "chunks": ["I don't have", "commercial Selenium experience", "yet"],
-      "lemma": "have"
+      "lemma": "have",
+      "note": "uczciwie i bez owijania: don't have … yet",
+      "traps": [
+        {
+          "input": "I haven't commercial Selenium experience yet",
+          "why": "Samo haven't nie wystarczy. Albo I don't have, albo I haven't got."
+        },
+        {
+          "input": "I don't have commercial Selenium experience still",
+          "why": "„Jeszcze nie\" w przeczeniu to yet, na końcu zdania. Still znaczy „nadal\"."
+        }
+      ],
+      "accept": [
+        "I don't have commercial experience with Selenium yet",
+        "I haven't got commercial Selenium experience yet"
+      ]
     },
     {
       "id": "recd06",
       "en": "I work as a manual tester",
       "pl": "Pracuję jako testerka manualna",
       "chunks": ["I work as", "a manual tester"],
-      "lemma": "work"
+      "lemma": "work",
+      "note": "zawód → I work as a",
+      "traps": [
+        {
+          "input": "I work as manual tester",
+          "why": "Przed zawodem zawsze a: as a tester, as a developer."
+        }
+      ],
+      "accept": ["I work as a QA tester", "I'm a manual tester"]
     },
     {
       "id": "recd07",
       "en": "I write tests in Playwright",
       "pl": "Piszę testy w Playwright",
       "chunks": ["I write tests", "in Playwright"],
-      "lemma": "write"
+      "lemma": "write",
+      "note": "na co dzień → I write",
+      "traps": [
+        {
+          "input": "I'm writing tests in Playwright",
+          "why": "Gdy to Twoja stała robota: I write. I'm writing znaczy „piszę właśnie teraz\"."
+        }
+      ],
+      "accept": ["I write Playwright tests", "I write tests with Playwright"]
     },
     {
       "id": "recd08",
       "en": "I send a POST request with a token",
       "pl": "Wysyłam request POST z tokenem",
       "chunks": ["I send", "a POST request", "with a token"],
-      "lemma": "send"
+      "lemma": "send",
+      "note": "wysłać request → send a request",
+      "traps": [
+        {
+          "input": "I send a POST request with token",
+          "why": "Przed token trzeba a albo the: with a token."
+        }
+      ],
+      "accept": ["I send a POST with a token", "I send a POST request with the token"]
     },
     {
       "id": "recd09",
       "en": "The rollback took five minutes",
       "pl": "Rollback zajął pięć minut",
       "chunks": ["The rollback", "took five minutes"],
-      "lemma": "take"
+      "lemma": "take",
+      "note": "zajęło tyle czasu → took",
+      "traps": [
+        {
+          "input": "The rollback taked five minutes",
+          "why": "Take jest nieregularne: take → took → taken."
+        }
+      ],
+      "accept": ["The rollback took 5 minutes", "Rollback took five minutes"]
     },
     {
       "id": "recd10",
       "en": "I was in Italy last year",
       "pl": "W zeszłym roku byłam we Włoszech",
       "chunks": ["I was", "in Italy", "last year"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "byłam gdzieś → I was in",
+      "traps": [
+        {
+          "input": "I have been in Italy last year",
+          "why": "Last year to czas zamknięty — wtedy nigdy have been. Zostaje I was."
+        },
+        {
+          "input": "I was in Italy in last year",
+          "why": "Last year bez in: I was there last year, I was there last week."
+        }
+      ],
+      "accept": [
+        "I went to Italy last year",
+        "Last year I was in Italy",
+        "Last year I went to Italy"
+      ]
     },
     {
       "id": "recd11",
       "en": "I study English every morning",
       "pl": "Uczę się angielskiego codziennie rano",
       "chunks": ["I study English", "every morning"],
-      "lemma": "study"
+      "lemma": "study",
+      "note": "uczyć się czegoś na serio → study; learn to raczej „nauczyć się\"",
+      "traps": [
+        {
+          "input": "I'm studying English every morning",
+          "why": "Every morning znaczy zawsze, więc I study."
+        }
+      ],
+      "accept": ["I learn English every morning", "Every morning I study English"]
     },
     {
       "id": "recd12",
       "en": "My notice period is one month",
       "pl": "Mój okres wypowiedzenia to miesiąc",
       "chunks": ["My notice period", "is one month"],
-      "lemma": "be"
+      "lemma": "be",
+      "note": "okres wypowiedzenia JEST miesięczny → is one month",
+      "traps": [
+        {
+          "input": "My notice period have one month",
+          "why": "Okres wypowiedzenia jest miesięczny, nie „ma\": my notice period is one month."
+        }
+      ],
+      "accept": ["My notice period is a month", "I have a one-month notice period"]
     }
   ]
 }

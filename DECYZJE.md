@@ -62,8 +62,14 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
   `↻` przerobiona ale nieumiana, `✓` dopiero po dobrych odpowiedziach.
 - ~~**To samo zdanie dwa razy w jednej lekcji**~~ — naprawione. Dyktanda powielają zdania
   z tłumaczeń pod innym id, więc lekcja porównuje też sam tekst, nie tylko id.
+- ~~**`forms.js` działa na 24 zdaniach ze 186**~~ — naprawione. Czasownik siedzi teraz w danych,
+  przy zdaniu, i działa w 194 zdaniach z 230. Reszta to gotowe zwroty small talku.
+- ~~**Cztery moduły z pięciu nie tłumaczą błędów**~~ — naprawione. Wszystkie 230 zdań mają
+  wyjaśnienie, 219 ma przewidziane pułapki (razem 290). Bez pułapek zostały tylko czyste
+  zwroty grzecznościowe, gdzie „błąd" byłby wymyślony na siłę.
 - **Dyktanda to w większości te same zdania co tłumaczenia** — w module czasy-it 7 z 9.
-  Do przerobienia razem z treścią: dyktando ma ćwiczyć słuch na czymś, czego nie widziałaś.
+  Lekcja już ich nie dubluje, ale dyktando powinno ćwiczyć słuch na czymś, czego nie widziałaś.
+  Do przerobienia przy dosypywaniu treści.
 - ~~**Powrót po przerwie straszy liczbą**~~ — naprawione. Po 14 dniach bez lekcji ekran startowy
   mówi „Nie było Cię 3 miesiące. Zaczynamy spokojnie", pierwsza lekcja idzie od najlepiej
   opanowanych zdań, a pomyłka cofa o jeden krok zamiast kasować miesiące.

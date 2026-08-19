@@ -845,7 +845,17 @@
       "accept": ["I am going to merge it today", "I'll merge it today"],
       "note": "plan → I’m going to merge",
       "chunks": ["I'm going to", "merge it", "today"],
-      "lemma": "merge"
+      "lemma": "merge",
+      "traps": [
+        {
+          "input": "I will merge it today",
+          "why": "I'll to decyzja podjęta w tej chwili. Gdy to było zaplanowane wcześniej: I'm going to merge."
+        },
+        {
+          "input": "I'm going merge it today",
+          "why": "Po going zawsze to: I'm going to merge."
+        }
+      ]
     },
     {
       "id": "t37",
@@ -858,7 +868,17 @@
       ],
       "note": "plan zespołu → we’re going to",
       "chunks": ["We're going to", "talk about it", "at standup"],
-      "lemma": "talk"
+      "lemma": "talk",
+      "traps": [
+        {
+          "input": "We're going to talk about it on standup",
+          "why": "Na standupie: at standup, at the meeting, at the daily."
+        },
+        {
+          "input": "We're going talk about it at standup",
+          "why": "Po going zawsze to: going to talk."
+        }
+      ]
     },
     {
       "id": "t38",
@@ -900,7 +920,13 @@
       "accept": ["I often log this in Jira", "I often report it in Jira"],
       "note": "nawyk → I often log",
       "chunks": ["I often log it", "in Jira"],
-      "lemma": "log"
+      "lemma": "log",
+      "traps": [
+        {
+          "input": "I log it often in Jira",
+          "why": "Often idzie przed czasownikiem: I often log."
+        }
+      ]
     },
     {
       "id": "t41",
@@ -913,7 +939,17 @@
       ],
       "note": "zasada → I always run",
       "chunks": ["I always run", "a smoke test", "after the deploy"],
-      "lemma": "run"
+      "lemma": "run",
+      "traps": [
+        {
+          "input": "I run always a smoke test after the deploy",
+          "why": "Always idzie przed czasownikiem: I always run."
+        },
+        {
+          "input": "I'm always running a smoke test after the deploy",
+          "why": "Always znaczy zawsze, więc zwykłe I always run."
+        }
+      ]
     },
     {
       "id": "t42",
@@ -923,7 +959,13 @@
       "accept": ["I rarely write automation tests", "I seldom write automated tests"],
       "note": "nawyk → I rarely write",
       "chunks": ["I rarely write", "automated tests"],
-      "lemma": "write"
+      "lemma": "write",
+      "traps": [
+        {
+          "input": "I write rarely automated tests",
+          "why": "Rarely idzie przed czasownikiem: I rarely write."
+        }
+      ]
     }
   ],
   "reactions": [
@@ -1027,7 +1069,12 @@
           "why": "I'm testing to tylko ta chwila — gdy coś trwa OD kiedyś, użyj I've been"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "accept": [
+        "I have been testing it since this morning",
+        "I've been testing this since this morning",
+        "I've been testing it since the morning"
+      ]
     },
     {
       "id": "d02",
@@ -1054,7 +1101,23 @@
       "pl": "Zajmę się tym po lunchu",
       "note": "obietnica na przyszłość → I'll",
       "chunks": ["I'll take a look", "after lunch"],
-      "lemma": "take"
+      "lemma": "take",
+      "traps": [
+        {
+          "input": "I'll take a look after the lunch",
+          "why": "lunch bez the: after lunch"
+        },
+        {
+          "input": "I take a look after lunch",
+          "why": "przy obietnicy → I'll take a look"
+        }
+      ],
+      "accept": [
+        "I will take a look after lunch",
+        "I'll look at it after lunch",
+        "I'll take care of it after lunch",
+        "I'll pick it up after lunch"
+      ]
     },
     {
       "id": "d04",
@@ -1076,35 +1139,77 @@
       "pl": "Czekamy na deploy",
       "note": "dzieje się teraz, w tej chwili → we're waiting (-ing, bo czekanie trwa)",
       "chunks": ["We're waiting", "for the deploy"],
-      "lemma": "wait"
+      "lemma": "wait",
+      "traps": [
+        {
+          "input": "We are waiting the deploy",
+          "why": "Czekać na coś to wait FOR: we are waiting for the deploy."
+        }
+      ]
     },
     {
       "id": "d06",
       "en": "I'll let you know when I'm done",
       "pl": "Dam znać, jak skończę",
       "chunks": ["I'll let you know", "when I'm done"],
-      "lemma": "let"
+      "lemma": "let",
+      "note": "obietnica → I’ll let you know",
+      "traps": [
+        {
+          "input": "I let you know when I done",
+          "why": "obietnica: I’ll let you know when I’m done"
+        }
+      ],
+      "accept": ["I will let you know when I am done", "I'll let you know when I finish"]
     },
     {
       "id": "d07",
       "en": "I've already done it",
       "pl": "Już to zrobiłam",
       "chunks": ["I've already", "done it"],
-      "lemma": "do"
+      "lemma": "do",
+      "note": "zrobione → I’ve already done",
+      "traps": [
+        {
+          "input": "I already did it already",
+          "why": "wystarczy: I’ve already done it"
+        }
+      ],
+      "accept": ["I have already done it", "I've done it already", "I'm done with it"]
     },
     {
       "id": "d08",
       "en": "I'm going to merge it today",
       "pl": "Zamierzam to zmergować dziś",
       "chunks": ["I'm going to", "merge it", "today"],
-      "lemma": "merge"
+      "lemma": "merge",
+      "note": "plan → I’m going to merge",
+      "accept": ["I am going to merge it today", "I'll merge it today"],
+      "traps": [
+        {
+          "input": "I will merge it today",
+          "why": "I'll to decyzja podjęta w tej chwili. Gdy to było zaplanowane wcześniej: I'm going to merge."
+        },
+        {
+          "input": "I'm going merge it today",
+          "why": "Po going zawsze to: I'm going to merge."
+        }
+      ]
     },
     {
       "id": "d09",
       "en": "I never test on production",
       "pl": "Nigdy nie testuję na produkcji",
       "chunks": ["I never test", "on production"],
-      "lemma": "test"
+      "lemma": "test",
+      "note": "zasada → I never test",
+      "traps": [
+        {
+          "input": "I'm never testing on production",
+          "why": "przy zasadzie: I never test"
+        }
+      ],
+      "accept": ["I never test in production", "I never test on prod"]
     }
   ]
 }

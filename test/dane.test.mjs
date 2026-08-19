@@ -96,3 +96,50 @@ test('lista akceptowanych wariantów nie powtarza wzorca', () => {
     .map((z) => z.id);
   assert.deepEqual(duble, []);
 });
+
+test('przewidziany błąd nie jest przypadkiem poprawną odpowiedzią', () => {
+  const goly = (s) =>
+    String(s)
+      .toLowerCase()
+      .replace(/[’]/g, "'")
+      .replace(/[^\p{Letter}\p{Number}' ]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  const zle = [];
+  for (const z of zdania) {
+    const dobre = new Set([goly(z.en), ...(z.accept || []).map(goly)]);
+    for (const p of z.traps || []) {
+      if (dobre.has(goly(p.input)))
+        zle.push(`${z.id}: „${p.input}" jest i pułapką, i poprawną odpowiedzią`);
+    }
+  }
+  assert.deepEqual(zle, []);
+});
+
+test('każda pułapka ma i błędne zdanie, i wyjaśnienie', () => {
+  const braki = [];
+  for (const z of zdania) {
+    for (const p of z.traps || []) {
+      if (!p.input || !p.why) braki.push(z.id);
+    }
+  }
+  assert.deepEqual(braki, []);
+});
+
+test('wyjaśnienia nie używają nazw czasów — o to była cała umowa', () => {
+  const zakazane =
+    /(present perfect|past simple|present simple|present continuous|past continuous|future simple|czas przeszły|czas teraźniejszy|czas przyszły|bezokolicznik|imiesłów|tryb warunkowy)/i;
+  const wpadki = [];
+  for (const z of zdania) {
+    if (z.note && zakazane.test(z.note)) wpadki.push(`${z.id} (note): ${z.note}`);
+    for (const p of z.traps || []) {
+      if (zakazane.test(p.why)) wpadki.push(`${z.id} (pułapka): ${p.why}`);
+    }
+  }
+  assert.deepEqual(wpadki, []);
+});
+
+test('każde zdanie ma wyjaśnienie, po co ta forma', () => {
+  const braki = zdania.filter((z) => !z.note).map((z) => z.id);
+  assert.deepEqual(braki, []);
+});
