@@ -1,47 +1,107 @@
 // Rywalizujące formy czasownika do kafelków — nie obce słowa, tylko zły czas.
 
-const LEMMA = {
-  t01: 'test',
-  t05: 'test',
-  t08: 'test',
-  t19: 'test',
-  t22: 'test',
-  t02: 'report',
-  t16: 'report',
-  t03: 'check',
-  t12: 'check',
-  t17: 'check',
-  t21: 'check',
-  t04: 'have',
-  t06: 'wait',
-  t09: 'wait',
-  t07: 'work',
-  t10: 'work',
-  t11: 'look',
-  t13: 'take',
-  t14: 'message',
-  t15: 'be',
-  t23: 'be',
-  t24: 'be',
-  t18: 'finish',
-  t20: 'finish',
-};
-
 const IRR = {
-  have: { base: 'have', ed: 'had', pp: 'had', ing: 'having' },
-  be: { base: 'be', ed: 'was', pp: 'been', ing: 'being' },
-  take: { base: 'take', ed: 'took', pp: 'taken', ing: 'taking' },
+  be: { ed: 'was', pp: 'been', ing: 'being' },
+  begin: { ed: 'began', pp: 'begun', ing: 'beginning' },
+  break: { ed: 'broke', pp: 'broken', ing: 'breaking' },
+  bring: { ed: 'brought', pp: 'brought', ing: 'bringing' },
+  build: { ed: 'built', pp: 'built', ing: 'building' },
+  buy: { ed: 'bought', pp: 'bought', ing: 'buying' },
+  catch: { ed: 'caught', pp: 'caught', ing: 'catching' },
+  choose: { ed: 'chose', pp: 'chosen', ing: 'choosing' },
+  come: { ed: 'came', pp: 'come', ing: 'coming' },
+  do: { ed: 'did', pp: 'done', ing: 'doing' },
+  feel: { ed: 'felt', pp: 'felt', ing: 'feeling' },
+  find: { ed: 'found', pp: 'found', ing: 'finding' },
+  get: { ed: 'got', pp: 'got', ing: 'getting' },
+  give: { ed: 'gave', pp: 'given', ing: 'giving' },
+  go: { ed: 'went', pp: 'gone', ing: 'going' },
+  have: { ed: 'had', pp: 'had', ing: 'having' },
+  keep: { ed: 'kept', pp: 'kept', ing: 'keeping' },
+  know: { ed: 'knew', pp: 'known', ing: 'knowing' },
+  let: { ed: 'let', pp: 'let', ing: 'letting' },
+  leave: { ed: 'left', pp: 'left', ing: 'leaving' },
+  make: { ed: 'made', pp: 'made', ing: 'making' },
+  meet: { ed: 'met', pp: 'met', ing: 'meeting' },
+  put: { ed: 'put', pp: 'put', ing: 'putting' },
+  read: { ed: 'read', pp: 'read', ing: 'reading' },
+  run: { ed: 'ran', pp: 'run', ing: 'running' },
+  say: { ed: 'said', pp: 'said', ing: 'saying' },
+  see: { ed: 'saw', pp: 'seen', ing: 'seeing' },
+  send: { ed: 'sent', pp: 'sent', ing: 'sending' },
+  set: { ed: 'set', pp: 'set', ing: 'setting' },
+  speak: { ed: 'spoke', pp: 'spoken', ing: 'speaking' },
+  spend: { ed: 'spent', pp: 'spent', ing: 'spending' },
+  take: { ed: 'took', pp: 'taken', ing: 'taking' },
+  teach: { ed: 'taught', pp: 'taught', ing: 'teaching' },
+  tell: { ed: 'told', pp: 'told', ing: 'telling' },
+  think: { ed: 'thought', pp: 'thought', ing: 'thinking' },
+  understand: { ed: 'understood', pp: 'understood', ing: 'understanding' },
+  write: { ed: 'wrote', pp: 'written', ing: 'writing' },
 };
 
-function parts(lemma) {
-  if (IRR[lemma]) return IRR[lemma];
-  const e = lemma.endsWith('e');
-  return {
-    base: lemma,
-    ed: e ? `${lemma}d` : `${lemma}ed`,
-    pp: e ? `${lemma}d` : `${lemma}ed`,
-    ing: e ? `${lemma.slice(0, -1)}ing` : `${lemma}ing`,
-  };
+const SAMOGLOSKI = 'aeiou';
+
+// Dłuższe słowa podwajają tylko wtedy, gdy akcent pada na ostatnią sylabę.
+// Bez tej listy wychodzi „preferred" dobrze, ale też „monitorred" i „listenned".
+const PODWAJA_MIMO_WSZYSTKO = new Set([
+  'prefer',
+  'refer',
+  'defer',
+  'confer',
+  'infer',
+  'occur',
+  'recur',
+  'incur',
+  'admit',
+  'permit',
+  'commit',
+  'submit',
+  'omit',
+  'transmit',
+  'control',
+  'patrol',
+  'regret',
+  'forget',
+  'begin',
+  'upset',
+  'equip',
+  'compel',
+  'expel',
+  'propel',
+  'repel',
+  'rebel',
+  'deter',
+]);
+
+// Krótkie słowo typu spółgłoska-samogłoska-spółgłoska podwaja końcówkę: stop → stopped.
+function podwaja(lemma) {
+  if (lemma.length < 3) return false;
+  const [a, b, c] = lemma.slice(-3);
+  if (SAMOGLOSKI.includes(a) || !SAMOGLOSKI.includes(b) || SAMOGLOSKI.includes(c)) return false;
+  if ('wxy'.includes(c)) return false;
+  const sylaby = (lemma.match(/[aeiouy]+/g) || []).length;
+  return sylaby === 1 || PODWAJA_MIMO_WSZYSTKO.has(lemma);
+}
+
+export function verbForms(lemma) {
+  const slowo = String(lemma || '').toLowerCase();
+  if (!slowo) return null;
+  if (IRR[slowo]) return { base: slowo, ...IRR[slowo] };
+
+  if (slowo.endsWith('e') && !slowo.endsWith('ee')) {
+    const rdzen = slowo.slice(0, -1);
+    return { base: slowo, ed: `${slowo}d`, pp: `${slowo}d`, ing: `${rdzen}ing` };
+  }
+  if (/[^aeiou]y$/.test(slowo)) {
+    const rdzen = slowo.slice(0, -1);
+    return { base: slowo, ed: `${rdzen}ied`, pp: `${rdzen}ied`, ing: `${slowo}ing` };
+  }
+  if (podwaja(slowo)) {
+    const podwojone = slowo + slowo.slice(-1);
+    return { base: slowo, ed: `${podwojone}ed`, pp: `${podwojone}ed`, ing: `${podwojone}ing` };
+  }
+  return { base: slowo, ed: `${slowo}ed`, pp: `${slowo}ed`, ing: `${slowo}ing` };
 }
 
 function unique(list) {
@@ -74,12 +134,12 @@ function tileKey(s) {
 }
 
 export function verbDistractors(item, module) {
-  const lemma = item.lemma || LEMMA[item.id];
+  const lemma = item.lemma;
   const taken = new Set((item.chunks || []).map(tileKey));
   const rivals = [];
 
   if (lemma) {
-    const p = parts(lemma);
+    const p = verbForms(lemma);
     rivals.push(
       p.ed,
       p.ing,
@@ -95,7 +155,7 @@ export function verbDistractors(item, module) {
 
   if (module && lemma) {
     for (const t of module.translations || []) {
-      if ((t.lemma || LEMMA[t.id]) !== lemma || t.id === item.id) continue;
+      if (t.lemma !== lemma || t.id === item.id) continue;
       const first = (t.chunks || [])[0];
       if (first) rivals.push(first);
     }
@@ -107,7 +167,7 @@ export function verbDistractors(item, module) {
 }
 
 export function usesTenseTiles(item) {
-  return Boolean(item?.lemma || LEMMA[item?.id]);
+  return Boolean(item?.lemma);
 }
 
 function phraseDistractors(item, module) {

@@ -9,28 +9,16 @@
     "thanks": "podziękowanie i do zobaczenia",
     "small": "drobne pytania w pracy"
   },
-  "patternOrder": [
-    "greet",
-    "coffee",
-    "meeting",
-    "thanks",
-    "small"
-  ],
+  "patternOrder": ["greet", "coffee", "meeting", "thanks", "small"],
   "translations": [
     {
       "id": "sm01",
       "pattern": "greet",
       "pl": "Miło Cię poznać",
       "en": "Nice to meet you",
-      "accept": [
-        "It's nice to meet you",
-        "Pleased to meet you",
-        "Nice meeting you"
-      ],
+      "accept": ["It's nice to meet you", "Pleased to meet you", "Nice meeting you"],
       "note": "pierwsze spotkanie → Nice to meet you",
-      "chunks": [
-        "Nice to meet you"
-      ],
+      "chunks": ["Nice to meet you"],
       "traps": [
         {
           "input": "Nice to know you",
@@ -43,47 +31,27 @@
       "pattern": "greet",
       "pl": "Jak się masz?",
       "en": "How are you?",
-      "accept": [
-        "How are you",
-        "How are you doing?",
-        "How's it going?"
-      ],
+      "accept": ["How are you doing?", "How's it going?"],
       "note": "proste pytanie, nie How do you do (to brzmi muzealnie)",
-      "chunks": [
-        "How are you?"
-      ]
+      "chunks": ["How are you?"]
     },
     {
       "id": "sm03",
       "pattern": "greet",
       "pl": "Dobrze, dziękuję",
       "en": "I'm good, thanks",
-      "accept": [
-        "I'm fine, thanks",
-        "I'm well, thank you",
-        "Good, thanks"
-      ],
+      "accept": ["I'm fine, thanks", "I'm well, thank you", "Good, thanks"],
       "note": "I'm good jest naturalne; I'm well też przejdzie",
-      "chunks": [
-        "I'm good",
-        "thanks"
-      ]
+      "chunks": ["I'm good", "thanks"]
     },
     {
       "id": "sm04",
       "pattern": "coffee",
       "pl": "Chcesz kawę?",
       "en": "Would you like some coffee?",
-      "accept": [
-        "Would you like a coffee?",
-        "Do you want some coffee?",
-        "Want some coffee?"
-      ],
+      "accept": ["Would you like a coffee?", "Do you want some coffee?", "Want some coffee?"],
       "note": "uprzejmie: Would you like…",
-      "chunks": [
-        "Would you like",
-        "some coffee?"
-      ],
+      "chunks": ["Would you like", "some coffee?"],
       "traps": [
         {
           "input": "You want coffee?",
@@ -96,75 +64,43 @@
       "pattern": "coffee",
       "pl": "Poproszę herbatę",
       "en": "I'll have tea, please",
-      "accept": [
-        "I'd like tea, please",
-        "Tea, please",
-        "I'll take tea, please"
-      ],
+      "accept": ["I'd like tea, please", "Tea, please", "I'll take tea, please"],
       "note": "I'll have + napój + please",
-      "chunks": [
-        "I'll have tea",
-        "please"
-      ]
+      "chunks": ["I'll have tea", "please"],
+      "lemma": "have"
     },
     {
       "id": "sm06",
       "pattern": "coffee",
       "pl": "Cukier i mleko, proszę",
       "en": "Sugar and milk, please",
-      "accept": [
-        "Milk and sugar, please",
-        "With milk and sugar, please"
-      ],
-      "chunks": [
-        "Sugar and milk",
-        "please"
-      ]
+      "accept": ["Milk and sugar, please", "With milk and sugar, please"],
+      "chunks": ["Sugar and milk", "please"]
     },
     {
       "id": "sm07",
       "pattern": "meeting",
       "pl": "Zacznijmy spotkanie",
       "en": "Let's start the meeting",
-      "accept": [
-        "Let's get started",
-        "Shall we start?",
-        "Let's begin"
-      ],
+      "accept": ["Let's get started", "Shall we start?", "Let's begin"],
       "note": "Let's + czasownik",
-      "chunks": [
-        "Let's start",
-        "the meeting"
-      ]
+      "chunks": ["Let's start", "the meeting"]
     },
     {
       "id": "sm08",
       "pattern": "meeting",
       "pl": "Siadaj, proszę",
       "en": "Please take a seat",
-      "accept": [
-        "Have a seat, please",
-        "Please sit down",
-        "Take a seat, please"
-      ],
-      "chunks": [
-        "Please take",
-        "a seat"
-      ]
+      "accept": ["Have a seat, please", "Please sit down", "Take a seat, please"],
+      "chunks": ["Please take", "a seat"]
     },
     {
       "id": "sm09",
       "pattern": "meeting",
       "pl": "Przepraszam za spóźnienie",
       "en": "Sorry I'm late",
-      "accept": [
-        "Sorry for being late",
-        "I'm sorry I'm late",
-        "Sorry I'm late."
-      ],
-      "chunks": [
-        "Sorry I'm late"
-      ],
+      "accept": ["Sorry for being late", "I'm sorry I'm late"],
+      "chunks": ["Sorry I'm late"],
       "traps": [
         {
           "input": "Sorry I late",
@@ -177,29 +113,18 @@
       "pattern": "meeting",
       "pl": "Możemy przełożyć?",
       "en": "Can we reschedule?",
-      "accept": [
-        "Could we reschedule?",
-        "Can we move this?",
-        "Can we reschedule this?"
-      ],
+      "accept": ["Could we reschedule?", "Can we move this?", "Can we reschedule this?"],
       "note": "reschedule = przełożyć termin",
-      "chunks": [
-        "Can we reschedule?"
-      ]
+      "chunks": ["Can we reschedule?"]
     },
     {
       "id": "sm11",
       "pattern": "thanks",
       "pl": "Dzięki, że przyszłaś",
       "en": "Thanks for coming",
-      "accept": [
-        "Thank you for coming",
-        "Thanks for being here"
-      ],
+      "accept": ["Thank you for coming", "Thanks for being here"],
       "note": "Thanks for + -ing",
-      "chunks": [
-        "Thanks for coming"
-      ],
+      "chunks": ["Thanks for coming"],
       "traps": [
         {
           "input": "Thanks to come",
@@ -212,83 +137,51 @@
       "pattern": "thanks",
       "pl": "Miło było pogadać",
       "en": "Nice talking to you",
-      "accept": [
-        "It was nice talking to you",
-        "Great talking to you"
-      ],
-      "chunks": [
-        "Nice talking",
-        "to you"
-      ]
+      "accept": ["It was nice talking to you", "Great talking to you"],
+      "chunks": ["Nice talking", "to you"]
     },
     {
       "id": "sm13",
       "pattern": "thanks",
       "pl": "Do zobaczenia jutro",
       "en": "See you tomorrow",
-      "accept": [
-        "I'll see you tomorrow",
-        "See you tomorrow!"
-      ],
-      "chunks": [
-        "See you tomorrow"
-      ]
+      "accept": ["I'll see you tomorrow"],
+      "chunks": ["See you tomorrow"]
     },
     {
       "id": "sm14",
       "pattern": "thanks",
       "pl": "Miłego weekendu",
       "en": "Have a nice weekend",
-      "accept": [
-        "Have a good weekend",
-        "Enjoy your weekend"
-      ],
-      "chunks": [
-        "Have a nice weekend"
-      ]
+      "accept": ["Have a good weekend", "Enjoy your weekend"],
+      "chunks": ["Have a nice weekend"]
     },
     {
       "id": "sm15",
       "pattern": "small",
       "pl": "Jak minął weekend?",
       "en": "How was your weekend?",
-      "accept": [
-        "How was the weekend?",
-        "Did you have a good weekend?"
-      ],
-      "chunks": [
-        "How was",
-        "your weekend?"
-      ]
+      "accept": ["How was the weekend?", "Did you have a good weekend?"],
+      "chunks": ["How was", "your weekend?"],
+      "lemma": "be"
     },
     {
       "id": "sm16",
       "pattern": "small",
       "pl": "Brzmi dobrze",
       "en": "That sounds good",
-      "accept": [
-        "Sounds good",
-        "That sounds great"
-      ],
-      "chunks": [
-        "That sounds good"
-      ]
+      "accept": ["Sounds good", "That sounds great"],
+      "chunks": ["That sounds good"]
     },
     {
       "id": "sm17",
       "pattern": "small",
       "pl": "Wyślę Ci zaproszenie",
       "en": "I'll send you the invite",
-      "accept": [
-        "I'll send you an invite",
-        "I'll send the invite",
-        "I'll send you the invitation"
-      ],
+      "accept": ["I'll send you an invite", "I'll send the invite", "I'll send you the invitation"],
       "note": "obietnica → I'll",
-      "chunks": [
-        "I'll send you",
-        "the invite"
-      ]
+      "chunks": ["I'll send you", "the invite"],
+      "lemma": "send"
     },
     {
       "id": "sm18",
@@ -300,172 +193,107 @@
         "Could you say that again?",
         "Sorry, could you repeat that?"
       ],
-      "chunks": [
-        "Could you repeat that?"
-      ]
+      "chunks": ["Could you repeat that?"]
     },
     {
       "id": "sm19",
       "pattern": "greet",
       "pl": "Dzień dobry",
       "en": "Good morning",
-      "accept": [
-        "Morning",
-        "Good morning!"
-      ],
-      "chunks": [
-        "Good morning"
-      ]
+      "accept": ["Morning"],
+      "chunks": ["Good morning"]
     },
     {
       "id": "sm20",
       "pattern": "greet",
       "pl": "Miło Cię znowu widzieć",
       "en": "Nice to see you again",
-      "accept": [
-        "Good to see you again",
-        "It's nice to see you again"
-      ],
-      "chunks": [
-        "Nice to see you",
-        "again"
-      ]
+      "accept": ["Good to see you again", "It's nice to see you again"],
+      "chunks": ["Nice to see you", "again"]
     },
     {
       "id": "sm21",
       "pattern": "greet",
       "pl": "Wszystko w porządku?",
       "en": "Is everything OK?",
-      "accept": [
-        "Is everything okay?",
-        "Everything OK?"
-      ],
-      "chunks": [
-        "Is everything OK?"
-      ]
+      "accept": ["Is everything okay?", "Everything OK?"],
+      "chunks": ["Is everything OK?"]
     },
     {
       "id": "sm22",
       "pattern": "coffee",
       "pl": "Czarna, proszę",
       "en": "Black, please",
-      "accept": [
-        "Black coffee, please",
-        "I'll have it black, please"
-      ],
-      "chunks": [
-        "Black, please"
-      ]
+      "accept": ["Black coffee, please", "I'll have it black, please"],
+      "chunks": ["Black, please"]
     },
     {
       "id": "sm23",
       "pattern": "coffee",
       "pl": "Jeszcze łyk kawy?",
       "en": "Would you like more coffee?",
-      "accept": [
-        "Want more coffee?",
-        "Would you like another coffee?"
-      ],
-      "chunks": [
-        "Would you like",
-        "more coffee?"
-      ]
+      "accept": ["Want more coffee?", "Would you like another coffee?"],
+      "chunks": ["Would you like", "more coffee?"]
     },
     {
       "id": "sm24",
       "pattern": "coffee",
       "pl": "Woda wystarczy",
       "en": "Water is fine",
-      "accept": [
-        "I'll have water",
-        "Just water, please"
-      ],
-      "chunks": [
-        "Water is fine"
-      ]
+      "accept": ["I'll have water", "Just water, please"],
+      "chunks": ["Water is fine"]
     },
     {
       "id": "sm25",
       "pattern": "meeting",
       "pl": "Zróbmy to o dziesiątej",
       "en": "Let's do it at ten",
-      "accept": [
-        "Let's do it at 10",
-        "Shall we do it at ten?"
-      ],
+      "accept": ["Let's do it at 10", "Shall we do it at ten?"],
       "note": "przy godzinie: at ten",
-      "chunks": [
-        "Let's do it",
-        "at ten"
-      ]
+      "chunks": ["Let's do it", "at ten"]
     },
     {
       "id": "sm26",
       "pattern": "meeting",
       "pl": "Masz chwilę?",
       "en": "Do you have a minute?",
-      "accept": [
-        "Have you got a minute?",
-        "Got a minute?"
-      ],
-      "chunks": [
-        "Do you have",
-        "a minute?"
-      ]
+      "accept": ["Have you got a minute?", "Got a minute?"],
+      "chunks": ["Do you have", "a minute?"],
+      "lemma": "have"
     },
     {
       "id": "sm27",
       "pattern": "thanks",
       "pl": "Dzięki za pomoc",
       "en": "Thanks for your help",
-      "accept": [
-        "Thank you for your help",
-        "Thanks for helping"
-      ],
+      "accept": ["Thank you for your help", "Thanks for helping"],
       "note": "Thanks for + rzeczownik albo -ing",
-      "chunks": [
-        "Thanks for",
-        "your help"
-      ]
+      "chunks": ["Thanks for", "your help"]
     },
     {
       "id": "sm28",
       "pattern": "thanks",
       "pl": "Trzymaj się",
       "en": "Take care",
-      "accept": [
-        "Take care!",
-        "You take care"
-      ],
-      "chunks": [
-        "Take care"
-      ]
+      "accept": ["You take care"],
+      "chunks": ["Take care"]
     },
     {
       "id": "sm29",
       "pattern": "small",
       "pl": "Co u Ciebie?",
       "en": "How are things?",
-      "accept": [
-        "What's new?",
-        "How are things going?"
-      ],
-      "chunks": [
-        "How are things?"
-      ]
+      "accept": ["What's new?", "How are things going?"],
+      "chunks": ["How are things?"]
     },
     {
       "id": "sm30",
       "pattern": "small",
       "pl": "Jestem w drodze",
       "en": "I'm on my way",
-      "accept": [
-        "I am on my way",
-        "I'm on the way"
-      ],
-      "chunks": [
-        "I'm on my way"
-      ]
+      "accept": ["I am on my way", "I'm on the way"],
+      "chunks": ["I'm on my way"],
+      "lemma": "be"
     }
   ],
   "dictation": [
@@ -474,78 +302,57 @@
       "en": "Nice to meet you",
       "pl": "Miło Cię poznać",
       "note": "pierwsze spotkanie",
-      "chunks": [
-        "Nice to meet you"
-      ]
+      "chunks": ["Nice to meet you"]
     },
     {
       "id": "smd02",
       "en": "Would you like some coffee?",
       "pl": "Chcesz kawę?",
-      "chunks": [
-        "Would you like",
-        "some coffee?"
-      ]
+      "chunks": ["Would you like", "some coffee?"]
     },
     {
       "id": "smd03",
       "en": "Sorry I'm late",
       "pl": "Przepraszam za spóźnienie",
-      "chunks": [
-        "Sorry I'm late"
-      ]
+      "chunks": ["Sorry I'm late"]
     },
     {
       "id": "smd04",
       "en": "Thanks for coming",
       "pl": "Dzięki, że przyszłaś",
       "note": "Thanks for + coming",
-      "chunks": [
-        "Thanks for coming"
-      ]
+      "chunks": ["Thanks for coming"]
     },
     {
       "id": "smd05",
       "en": "See you tomorrow",
       "pl": "Do zobaczenia jutro",
-      "chunks": [
-        "See you tomorrow"
-      ]
+      "chunks": ["See you tomorrow"]
     },
     {
       "id": "smd06",
       "en": "Nice to see you again",
       "pl": "Miło Cię znowu widzieć",
-      "chunks": [
-        "Nice to see you",
-        "again"
-      ]
+      "chunks": ["Nice to see you", "again"]
     },
     {
       "id": "smd07",
       "en": "Do you have a minute?",
       "pl": "Masz chwilę?",
-      "chunks": [
-        "Do you have",
-        "a minute?"
-      ]
+      "chunks": ["Do you have", "a minute?"]
     },
     {
       "id": "smd08",
       "en": "Thanks for your help",
       "pl": "Dzięki za pomoc",
-      "chunks": [
-        "Thanks for",
-        "your help"
-      ]
+      "chunks": ["Thanks for", "your help"]
     },
     {
       "id": "smd09",
       "en": "I'm on my way",
       "pl": "Jestem w drodze",
-      "chunks": [
-        "I'm on my way"
-      ]
+      "chunks": ["I'm on my way"],
+      "lemma": "be"
     }
   ]
 }

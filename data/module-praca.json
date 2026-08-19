@@ -20,15 +20,20 @@
         "At standup I say what I finished yesterday",
         "In the daily I say what I completed yesterday"
       ],
-      "chunks": ["In the daily", "I say what I finished", "yesterday"]
+      "chunks": ["In the daily", "I say what I finished", "yesterday"],
+      "lemma": "say"
     },
     {
       "id": "wr02",
       "pattern": "daily",
       "pl": "Dziś biorę zgłoszenie z regresji",
       "en": "Today I'm taking a regression ticket",
-      "accept": ["Today I am taking a regression ticket", "I'm picking up a regression ticket today"],
-      "chunks": ["Today I'm taking", "a regression ticket"]
+      "accept": [
+        "Today I am taking a regression ticket",
+        "I'm picking up a regression ticket today"
+      ],
+      "chunks": ["Today I'm taking", "a regression ticket"],
+      "lemma": "take"
     },
     {
       "id": "wr03",
@@ -47,7 +52,8 @@
       "pl": "Skończę to przed południem",
       "en": "I'll finish this before noon",
       "accept": ["I will finish this before noon", "I'll get this done before noon"],
-      "chunks": ["I'll finish this", "before noon"]
+      "chunks": ["I'll finish this", "before noon"],
+      "lemma": "finish"
     },
     {
       "id": "wr05",
@@ -55,7 +61,8 @@
       "pl": "Nie mam blokerów",
       "en": "I don't have any blockers",
       "accept": ["I have no blockers", "I don't have blockers"],
-      "chunks": ["I don't have", "any blockers"]
+      "chunks": ["I don't have", "any blockers"],
+      "lemma": "have"
     },
     {
       "id": "wr06",
@@ -63,7 +70,8 @@
       "pl": "Po daily wracam do testów",
       "en": "After the daily I go back to testing",
       "accept": ["After standup I go back to testing", "After the daily I get back to testing"],
-      "chunks": ["After the daily", "I go back", "to testing"]
+      "chunks": ["After the daily", "I go back", "to testing"],
+      "lemma": "go"
     },
     {
       "id": "wr07",
@@ -71,7 +79,8 @@
       "pl": "Na retro mówię, co poszło dobrze",
       "en": "In the retro I say what went well",
       "accept": ["At retro I say what went well", "In the retrospective I say what went well"],
-      "chunks": ["In the retro", "I say what went well"]
+      "chunks": ["In the retro", "I say what went well"],
+      "lemma": "say"
     },
     {
       "id": "wr08",
@@ -79,7 +88,8 @@
       "pl": "Brakowało nam kryteriów akceptacji",
       "en": "We were missing acceptance criteria",
       "accept": ["We missed acceptance criteria", "We didn't have acceptance criteria"],
-      "chunks": ["We were missing", "acceptance criteria"]
+      "chunks": ["We were missing", "acceptance criteria"],
+      "lemma": "miss"
     },
     {
       "id": "wr09",
@@ -87,7 +97,8 @@
       "pl": "Proponuję krótsze daily",
       "en": "I suggest a shorter daily",
       "accept": ["I suggest shorter dailies", "I'd suggest a shorter daily"],
-      "chunks": ["I suggest", "a shorter daily"]
+      "chunks": ["I suggest", "a shorter daily"],
+      "lemma": "suggest"
     },
     {
       "id": "wr10",
@@ -98,7 +109,8 @@
         "We pull too many tickets into the sprint",
         "We take too many tickets into sprint"
       ],
-      "chunks": ["We take too many tickets", "into the sprint"]
+      "chunks": ["We take too many tickets", "into the sprint"],
+      "lemma": "take"
     },
     {
       "id": "wr11",
@@ -106,7 +118,8 @@
       "pl": "Dobrze zadziałała para przy testach",
       "en": "Pairing on tests worked well",
       "accept": ["Pair testing worked well", "Pairing during tests worked well"],
-      "chunks": ["Pairing on tests", "worked well"]
+      "chunks": ["Pairing on tests", "worked well"],
+      "lemma": "work"
     },
     {
       "id": "wr12",
@@ -117,18 +130,17 @@
         "Next sprint I want fewer parallel topics",
         "For the next sprint I want less work in parallel"
       ],
-      "chunks": ["For the next sprint", "I want fewer", "parallel topics"]
+      "chunks": ["For the next sprint", "I want fewer", "parallel topics"],
+      "lemma": "want"
     },
     {
       "id": "wr13",
       "pattern": "swap",
       "pl": "Dziś robimy podmianę na produkcji",
       "en": "We're doing a production swap today",
-      "accept": [
-        "We are doing a production swap today",
-        "Today we're swapping production"
-      ],
-      "chunks": ["We're doing", "a production swap", "today"]
+      "accept": ["We are doing a production swap today", "Today we're swapping production"],
+      "chunks": ["We're doing", "a production swap", "today"],
+      "lemma": "do"
     },
     {
       "id": "wr14",
@@ -136,7 +148,8 @@
       "pl": "Sprawdzam smoke po wrzutce",
       "en": "I run smoke tests after the deploy",
       "accept": ["I check smoke after the deploy", "I run a smoke test after the deploy"],
-      "chunks": ["I run smoke tests", "after the deploy"]
+      "chunks": ["I run smoke tests", "after the deploy"],
+      "lemma": "run"
     },
     {
       "id": "wr15",
@@ -147,18 +160,17 @@
         "Rollback is ready if something goes down",
         "The rollback is ready if something breaks"
       ],
-      "chunks": ["The rollback is ready", "if something goes down"]
+      "chunks": ["The rollback is ready", "if something goes down"],
+      "lemma": "be"
     },
     {
       "id": "wr16",
       "pattern": "swap",
       "pl": "Okno serwisowe zaczyna się o 22",
       "en": "The maintenance window starts at ten pm",
-      "accept": [
-        "The maintenance window starts at 10 pm",
-        "The service window starts at ten pm"
-      ],
-      "chunks": ["The maintenance window", "starts at ten pm"]
+      "accept": ["The maintenance window starts at 10 pm", "The service window starts at ten pm"],
+      "chunks": ["The maintenance window", "starts at ten pm"],
+      "lemma": "start"
     },
     {
       "id": "wr17",
@@ -169,7 +181,8 @@
         "On chat I am waiting for a green light from the developers",
         "I'm waiting on chat for a go from the developers"
       ],
-      "chunks": ["On chat I'm waiting", "for a green light", "from the developers"]
+      "chunks": ["On chat I'm waiting", "for a green light", "from the developers"],
+      "lemma": "wait"
     },
     {
       "id": "wr18",
@@ -180,7 +193,8 @@
         "After the swap I check the logs for an hour",
         "After the production swap I watch the logs for an hour"
       ],
-      "chunks": ["After the swap", "I watch the logs", "for an hour"]
+      "chunks": ["After the swap", "I watch the logs", "for an hour"],
+      "lemma": "watch"
     },
     {
       "id": "wr19",
@@ -188,7 +202,8 @@
       "pl": "Możemy przejść przez ten błąd razem",
       "en": "We can walk through this bug together",
       "accept": ["Can we walk through this bug together", "We can go through this bug together"],
-      "chunks": ["We can walk through", "this bug", "together"]
+      "chunks": ["We can walk through", "this bug", "together"],
+      "lemma": "walk"
     },
     {
       "id": "wr20",
@@ -199,7 +214,8 @@
         "I can reproduce it, I'll let you know when I find the cause",
         "I see it on my side, I will let you know when I find the root cause"
       ],
-      "chunks": ["I can see it on my side", "I'll let you know", "when I find the cause"]
+      "chunks": ["I can see it on my side", "I'll let you know", "when I find the cause"],
+      "lemma": "see"
     },
     {
       "id": "wr21",
@@ -210,7 +226,8 @@
         "This is not a blocker, we have a workaround",
         "It's not a blocker, we have a workaround"
       ],
-      "chunks": ["This isn't a blocker", "we have a workaround"]
+      "chunks": ["This isn't a blocker", "we have a workaround"],
+      "lemma": "be"
     },
     {
       "id": "wr22",
@@ -218,7 +235,8 @@
       "pl": "Potwierdzę to na waszym środowisku",
       "en": "I'll confirm it on your environment",
       "accept": ["I will confirm it on your environment", "I'll check it on your environment"],
-      "chunks": ["I'll confirm it", "on your environment"]
+      "chunks": ["I'll confirm it", "on your environment"],
+      "lemma": "confirm"
     },
     {
       "id": "wr23",
@@ -229,7 +247,8 @@
         "Thank you for the recording, that helps a lot",
         "Thanks for the recording, it helps a lot"
       ],
-      "chunks": ["Thanks for the recording", "that helps a lot"]
+      "chunks": ["Thanks for the recording", "that helps a lot"],
+      "lemma": "help"
     },
     {
       "id": "wr24",
@@ -237,7 +256,8 @@
       "pl": "O której możemy zrobić krótkie demo",
       "en": "What time can we do a short demo",
       "accept": ["When can we do a short demo", "What time could we do a short demo"],
-      "chunks": ["What time", "can we do", "a short demo"]
+      "chunks": ["What time", "can we do", "a short demo"],
+      "lemma": "do"
     },
     {
       "id": "wr25",
@@ -245,7 +265,8 @@
       "pl": "Wrzuć to na Slacka, żebym miała ślad",
       "en": "Drop it on Slack so I have a trail",
       "accept": ["Put it on Slack so I have a trail", "Please drop it on Slack so I have a record"],
-      "chunks": ["Drop it on Slack", "so I have a trail"]
+      "chunks": ["Drop it on Slack", "so I have a trail"],
+      "lemma": "drop"
     },
     {
       "id": "wr26",
@@ -253,7 +274,8 @@
       "pl": "Biorę ten ticket z Jiry",
       "en": "I'm picking up this ticket from Jira",
       "accept": ["I am picking up this ticket from Jira", "I'll take this ticket from Jira"],
-      "chunks": ["I'm picking up", "this ticket", "from Jira"]
+      "chunks": ["I'm picking up", "this ticket", "from Jira"],
+      "lemma": "pick"
     },
     {
       "id": "wr27",
@@ -261,7 +283,8 @@
       "pl": "Jestem na spotkaniu do 11",
       "en": "I'm in a meeting until eleven",
       "accept": ["I am in a meeting until 11", "I'm in a meeting until 11"],
-      "chunks": ["I'm in a meeting", "until eleven"]
+      "chunks": ["I'm in a meeting", "until eleven"],
+      "lemma": "be"
     },
     {
       "id": "wr28",
@@ -269,7 +292,8 @@
       "pl": "Zrzut ekranu wrzucam do zgłoszenia",
       "en": "I attach a screenshot to the ticket",
       "accept": ["I add a screenshot to the ticket", "I put a screenshot in the ticket"],
-      "chunks": ["I attach a screenshot", "to the ticket"]
+      "chunks": ["I attach a screenshot", "to the ticket"],
+      "lemma": "attach"
     },
     {
       "id": "wr29",
@@ -277,7 +301,8 @@
       "pl": "Po lunchu wracam do regresji",
       "en": "After lunch I go back to regression",
       "accept": ["After lunch I get back to regression", "I'll go back to regression after lunch"],
-      "chunks": ["After lunch", "I go back", "to regression"]
+      "chunks": ["After lunch", "I go back", "to regression"],
+      "lemma": "go"
     },
     {
       "id": "wr30",
@@ -285,7 +310,8 @@
       "pl": "Pingnij mnie, jak build przejdzie",
       "en": "Ping me when the build goes green",
       "accept": ["Ping me when the build passes", "Ping me when the build is green"],
-      "chunks": ["Ping me", "when the build", "goes green"]
+      "chunks": ["Ping me", "when the build", "goes green"],
+      "lemma": "ping"
     }
   ],
   "dictation": [
@@ -293,49 +319,57 @@
       "id": "wrd01",
       "en": "I don't have any blockers",
       "pl": "Nie mam blokerów",
-      "chunks": ["I don't have", "any blockers"]
+      "chunks": ["I don't have", "any blockers"],
+      "lemma": "have"
     },
     {
       "id": "wrd02",
       "en": "We were missing acceptance criteria",
       "pl": "Brakowało nam kryteriów akceptacji",
-      "chunks": ["We were missing", "acceptance criteria"]
+      "chunks": ["We were missing", "acceptance criteria"],
+      "lemma": "miss"
     },
     {
       "id": "wrd03",
       "en": "We're doing a production swap today",
       "pl": "Dziś robimy podmianę na produkcji",
-      "chunks": ["We're doing", "a production swap", "today"]
+      "chunks": ["We're doing", "a production swap", "today"],
+      "lemma": "do"
     },
     {
       "id": "wrd04",
       "en": "I run smoke tests after the deploy",
       "pl": "Sprawdzam smoke po wrzutce",
-      "chunks": ["I run smoke tests", "after the deploy"]
+      "chunks": ["I run smoke tests", "after the deploy"],
+      "lemma": "run"
     },
     {
       "id": "wrd05",
       "en": "This isn't a blocker, we have a workaround",
       "pl": "To nie jest blocker, mamy obejście",
-      "chunks": ["This isn't a blocker", "we have a workaround"]
+      "chunks": ["This isn't a blocker", "we have a workaround"],
+      "lemma": "be"
     },
     {
       "id": "wrd06",
       "en": "Thanks for the recording, that helps a lot",
       "pl": "Dziękuję za nagranie, to bardzo pomaga",
-      "chunks": ["Thanks for the recording", "that helps a lot"]
+      "chunks": ["Thanks for the recording", "that helps a lot"],
+      "lemma": "help"
     },
     {
       "id": "wrd07",
       "en": "I'm picking up this ticket from Jira",
       "pl": "Biorę ten ticket z Jiry",
-      "chunks": ["I'm picking up", "this ticket", "from Jira"]
+      "chunks": ["I'm picking up", "this ticket", "from Jira"],
+      "lemma": "pick"
     },
     {
       "id": "wrd08",
       "en": "Ping me when the build goes green",
       "pl": "Pingnij mnie, jak build przejdzie",
-      "chunks": ["Ping me", "when the build", "goes green"]
+      "chunks": ["Ping me", "when the build", "goes green"],
+      "lemma": "ping"
     }
   ]
 }

@@ -11,30 +11,16 @@
     "will": "decyzja o przyszłości",
     "plan": "plan, który już masz"
   },
-  "patternOrder": [
-    "past-done",
-    "now",
-    "still-going",
-    "will",
-    "done-no-time",
-    "plan",
-    "always"
-  ],
+  "patternOrder": ["past-done", "now", "still-going", "will", "done-no-time", "plan", "always"],
   "translations": [
     {
       "id": "t01",
       "pattern": "past-done",
       "pl": "Testowałam to wczoraj",
       "en": "I tested it yesterday",
-      "accept": [
-        "I tested this yesterday",
-        "I did test it yesterday"
-      ],
+      "accept": ["I tested this yesterday", "I did test it yesterday"],
       "note": "skończone i zamknięte → tested",
-      "chunks": [
-        "I tested it",
-        "yesterday"
-      ],
+      "chunks": ["I tested it", "yesterday"],
       "traps": [
         {
           "input": "I have tested it yesterday",
@@ -52,23 +38,17 @@
           "input": "I was testing it yesterday",
           "why": "to znaczy byłam w trakcie testowania — a tu chodzi o skończoną robotę"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t02",
       "pattern": "past-done",
       "pl": "Zgłosiłam ten błąd w piątek",
       "en": "I reported that bug on Friday",
-      "accept": [
-        "I reported this bug on Friday",
-        "I reported the bug on Friday"
-      ],
+      "accept": ["I reported this bug on Friday", "I reported the bug on Friday"],
       "note": "konkretny, zamknięty moment → reported",
-      "chunks": [
-        "I reported",
-        "that bug",
-        "on Friday"
-      ],
+      "chunks": ["I reported", "that bug", "on Friday"],
       "traps": [
         {
           "input": "I reported that bug in Friday",
@@ -82,7 +62,8 @@
           "input": "I have reported that bug on Friday",
           "why": "podajesz kiedy → bez have"
         }
-      ]
+      ],
+      "lemma": "report"
     },
     {
       "id": "t03",
@@ -97,10 +78,7 @@
         "I did check it twice"
       ],
       "note": "skończona czynność → checked",
-      "chunks": [
-        "I checked it",
-        "twice"
-      ],
+      "chunks": ["I checked it", "twice"],
       "traps": [
         {
           "input": "I checked it two time",
@@ -110,7 +88,8 @@
           "input": "I check it twice",
           "why": "to już się stało → checked"
         }
-      ]
+      ],
+      "lemma": "check"
     },
     {
       "id": "t04",
@@ -123,11 +102,7 @@
         "I didn't have time to finish testing"
       ],
       "note": "przeczenie w przeszłości → didn't + podstawowa forma",
-      "chunks": [
-        "I didn't have time",
-        "to finish",
-        "the tests"
-      ],
+      "chunks": ["I didn't have time", "to finish", "the tests"],
       "traps": [
         {
           "input": "I didn't had time to finish the tests",
@@ -141,23 +116,17 @@
           "input": "I don't have time to finish the tests",
           "why": "to jest o teraz, a chodziło o przeszłość → didn't"
         }
-      ]
+      ],
+      "lemma": "have"
     },
     {
       "id": "t05",
       "pattern": "now",
       "pl": "Testuję to teraz",
       "en": "I'm testing it now",
-      "accept": [
-        "I am testing it now",
-        "I'm testing this now",
-        "I'm testing it right now"
-      ],
+      "accept": ["I am testing it now", "I'm testing this now", "I'm testing it right now"],
       "note": "dzieje się w tej chwili → I'm + -ing",
-      "chunks": [
-        "I'm testing it",
-        "now"
-      ],
+      "chunks": ["I'm testing it", "now"],
       "traps": [
         {
           "input": "I test it now",
@@ -171,7 +140,8 @@
           "input": "I've been testing it now",
           "why": "I've been znaczy od jakiegoś czasu — a tu chodzi o samą tę chwilę"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t06",
@@ -185,10 +155,7 @@
         "I'm waiting on the deploy"
       ],
       "note": "dzieje się teraz → I'm waiting (-ing, bo w trakcie)",
-      "chunks": [
-        "I'm waiting",
-        "for the deploy"
-      ],
+      "chunks": ["I'm waiting", "for the deploy"],
       "traps": [
         {
           "input": "I'm waiting the deploy",
@@ -198,7 +165,8 @@
           "input": "I wait for the deploy",
           "why": "I wait znaczy zwykle czekam — teraz to I'm waiting"
         }
-      ]
+      ],
+      "lemma": "wait"
     },
     {
       "id": "t07",
@@ -211,11 +179,7 @@
         "I'm working on the basket today"
       ],
       "note": "dzisiaj, w trakcie → I'm working (-ing, bo teraz to robisz)",
-      "chunks": [
-        "I'm working",
-        "on the cart",
-        "today"
-      ],
+      "chunks": ["I'm working", "on the cart", "today"],
       "traps": [
         {
           "input": "I work on the cart today",
@@ -225,7 +189,8 @@
           "input": "I'm working at the cart today",
           "why": "pracować NAD czymś = work ON something"
         }
-      ]
+      ],
+      "lemma": "work"
     },
     {
       "id": "t08",
@@ -239,11 +204,7 @@
         "I've been testing it since the morning"
       ],
       "note": "zaczęło się wcześniej i trwa do teraz → I've been + testing. -ing, bo to nadal trwa. I've been tested znaczy, że ktoś testował CIEBIE.",
-      "chunks": [
-        "I've been",
-        "testing it",
-        "since this morning"
-      ],
+      "chunks": ["I've been", "testing it", "since this morning"],
       "traps": [
         {
           "input": "I'm testing it since this morning",
@@ -261,7 +222,8 @@
           "input": "I was testing it since this morning",
           "why": "I was zamyka to w przeszłości — a Ty nadal testujesz → I've been"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t09",
@@ -274,11 +236,7 @@
         "I've been waiting for this for an hour"
       ],
       "note": "trwa do teraz → I've been waiting (-ing, bo nadal czekasz); „od godziny\" jako długość → for an hour",
-      "chunks": [
-        "I've been waiting",
-        "for it",
-        "for an hour"
-      ],
+      "chunks": ["I've been waiting", "for it", "for an hour"],
       "traps": [
         {
           "input": "I've been waiting for it since an hour",
@@ -292,7 +250,8 @@
           "input": "I wait for it for an hour",
           "why": "trwa do teraz → I've been waiting"
         }
-      ]
+      ],
+      "lemma": "wait"
     },
     {
       "id": "t10",
@@ -306,11 +265,7 @@
         "I have worked here for three years"
       ],
       "note": "trwa do teraz → I've been working (-ing, bo nadal pracujesz)",
-      "chunks": [
-        "I've been working",
-        "here",
-        "for three years"
-      ],
+      "chunks": ["I've been working", "here", "for three years"],
       "traps": [
         {
           "input": "I work here for three years",
@@ -324,7 +279,8 @@
           "input": "I've been working here since three years",
           "why": "for przy długości: for three years"
         }
-      ]
+      ],
+      "lemma": "work"
     },
     {
       "id": "t11",
@@ -337,11 +293,7 @@
         "I've been looking for this bug since yesterday"
       ],
       "note": "trwa do teraz → I've been looking (-ing, bo nadal szukasz)",
-      "chunks": [
-        "I've been looking",
-        "for that bug",
-        "since yesterday"
-      ],
+      "chunks": ["I've been looking", "for that bug", "since yesterday"],
       "traps": [
         {
           "input": "I'm looking for that bug since yesterday",
@@ -355,7 +307,8 @@
           "input": "I've been searching that bug since yesterday",
           "why": "search też wymaga for — albo prościej: looking for"
         }
-      ]
+      ],
+      "lemma": "look"
     },
     {
       "id": "t12",
@@ -368,10 +321,7 @@
         "I'm going to check it tomorrow"
       ],
       "note": "decyzja o przyszłości → I'll",
-      "chunks": [
-        "I'll check it",
-        "tomorrow"
-      ],
+      "chunks": ["I'll check it", "tomorrow"],
       "traps": [
         {
           "input": "I check it tomorrow",
@@ -385,7 +335,8 @@
           "input": "I will checked it tomorrow",
           "why": "po will podstawowa forma: will check"
         }
-      ]
+      ],
+      "lemma": "check"
     },
     {
       "id": "t13",
@@ -399,10 +350,7 @@
         "I'll pick it up after lunch"
       ],
       "note": "obietnica na przyszłość → I'll",
-      "chunks": [
-        "I'll take a look",
-        "after lunch"
-      ],
+      "chunks": ["I'll take a look", "after lunch"],
       "traps": [
         {
           "input": "I'll take a look after the lunch",
@@ -412,7 +360,8 @@
           "input": "I take a look after lunch",
           "why": "przy obietnicy → I'll take a look"
         }
-      ]
+      ],
+      "lemma": "take"
     },
     {
       "id": "t14",
@@ -427,10 +376,7 @@
         "I'll write Tomek"
       ],
       "note": "decyzja podjęta teraz → I'll",
-      "chunks": [
-        "I'll message",
-        "Tomek"
-      ],
+      "chunks": ["I'll message", "Tomek"],
       "traps": [
         {
           "input": "I write to Tomek",
@@ -440,7 +386,8 @@
           "input": "I'll messaging Tomek",
           "why": "po I'll podstawowa forma: I'll message"
         }
-      ]
+      ],
+      "lemma": "message"
     },
     {
       "id": "t15",
@@ -454,11 +401,7 @@
         "I'll be in a call at three"
       ],
       "note": "przyszłość od „być\" → I'll be",
-      "chunks": [
-        "I'll be",
-        "on a call",
-        "at three"
-      ],
+      "chunks": ["I'll be", "on a call", "at three"],
       "traps": [
         {
           "input": "I'll on a call at three",
@@ -472,7 +415,8 @@
           "input": "I'll be on a call in three",
           "why": "przy godzinie at: at three"
         }
-      ]
+      ],
+      "lemma": "be"
     },
     {
       "id": "t16",
@@ -486,10 +430,7 @@
         "I've reported it already"
       ],
       "note": "zrobione, nie mówisz kiedy → I've + already",
-      "chunks": [
-        "I've already",
-        "reported it"
-      ],
+      "chunks": ["I've already", "reported it"],
       "traps": [
         {
           "input": "I already report it",
@@ -499,7 +440,8 @@
           "input": "I have already report it",
           "why": "po have idzie forma z -ed: reported"
         }
-      ]
+      ],
+      "lemma": "report"
     },
     {
       "id": "t17",
@@ -512,11 +454,7 @@
         "I didn't check it yet"
       ],
       "note": "jeszcze nie → haven't + yet",
-      "chunks": [
-        "I haven't",
-        "checked it",
-        "yet"
-      ],
+      "chunks": ["I haven't", "checked it", "yet"],
       "traps": [
         {
           "input": "I haven't check it yet",
@@ -530,7 +468,8 @@
           "input": "I haven't checked it still",
           "why": "„jeszcze\" w przeczeniu to yet, nie still"
         }
-      ]
+      ],
+      "lemma": "check"
     },
     {
       "id": "t18",
@@ -545,9 +484,7 @@
         "I've already finished"
       ],
       "note": "właśnie zrobione → I've finished albo I'm done",
-      "chunks": [
-        "I've finished"
-      ],
+      "chunks": ["I've finished"],
       "traps": [
         {
           "input": "I already finish",
@@ -557,7 +494,8 @@
           "input": "I've finish",
           "why": "po I've forma z -ed: finished"
         }
-      ]
+      ],
+      "lemma": "finish"
     },
     {
       "id": "t19",
@@ -570,11 +508,7 @@
         "I'm testing payments today"
       ],
       "note": "plan, który już masz → I'm going to",
-      "chunks": [
-        "I'm going to",
-        "test payments",
-        "today"
-      ],
+      "chunks": ["I'm going to", "test payments", "today"],
       "traps": [
         {
           "input": "I will be test payments today",
@@ -588,7 +522,8 @@
           "input": "I going to test payments today",
           "why": "brakuje am: I'm going to test"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t20",
@@ -601,11 +536,7 @@
         "I'm not going to finish this today"
       ],
       "note": "plan w przeczeniu → I'm not going to",
-      "chunks": [
-        "I'm not going to",
-        "finish it",
-        "today"
-      ],
+      "chunks": ["I'm not going to", "finish it", "today"],
       "traps": [
         {
           "input": "I don't going to finish it today",
@@ -615,22 +546,17 @@
           "input": "I'm not going to finishing it today",
           "why": "po going to podstawowa forma: to finish"
         }
-      ]
+      ],
+      "lemma": "finish"
     },
     {
       "id": "t21",
       "pattern": "always",
       "pl": "Zawsze sprawdzam to na dwóch przeglądarkach",
       "en": "I always check it on two browsers",
-      "accept": [
-        "I always check this on two browsers",
-        "I always test it on two browsers"
-      ],
+      "accept": ["I always check this on two browsers", "I always test it on two browsers"],
       "note": "zawsze, jako zasada → zwykła forma: I check",
-      "chunks": [
-        "I always check it",
-        "on two browsers"
-      ],
+      "chunks": ["I always check it", "on two browsers"],
       "traps": [
         {
           "input": "I'm always checking it on two browsers",
@@ -644,7 +570,8 @@
           "input": "I check always it on two browsers",
           "why": "always stoi po I, przed czasownikiem: I always check"
         }
-      ]
+      ],
+      "lemma": "check"
     },
     {
       "id": "t22",
@@ -657,10 +584,7 @@
         "I usually test after the deployment"
       ],
       "note": "zwykle, jako nawyk → zwykła forma: I test",
-      "chunks": [
-        "I usually test",
-        "after the deploy"
-      ],
+      "chunks": ["I usually test", "after the deploy"],
       "traps": [
         {
           "input": "I'm usually testing after the deploy",
@@ -670,7 +594,8 @@
           "input": "I usually testing after the deploy",
           "why": "brakuje formy — tu: I usually test"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t23",
@@ -678,15 +603,9 @@
       "pl": "Byłam na tym callu",
       "hint": "wczoraj, skończone",
       "en": "I was on that call",
-      "accept": [
-        "I was on this call",
-        "I was in that call"
-      ],
+      "accept": ["I was on this call", "I was in that call"],
       "note": "skończone i zamknięte → I was",
-      "chunks": [
-        "I was",
-        "on that call"
-      ],
+      "chunks": ["I was", "on that call"],
       "traps": [
         {
           "input": "I've been on that call",
@@ -696,7 +615,8 @@
           "input": "I am on that call",
           "why": "to jest o teraz — a chodziło o przeszłość → I was"
         }
-      ]
+      ],
+      "lemma": "be"
     },
     {
       "id": "t24",
@@ -704,15 +624,9 @@
       "pl": "Jestem na callu",
       "hint": "właśnie teraz",
       "en": "I'm on a call",
-      "accept": [
-        "I am on a call",
-        "I'm on a call right now",
-        "I'm in a call"
-      ],
+      "accept": ["I am on a call", "I'm on a call right now", "I'm in a call"],
       "note": "w tej chwili → I'm",
-      "chunks": [
-        "I'm on a call"
-      ],
+      "chunks": ["I'm on a call"],
       "traps": [
         {
           "input": "I'm being on a call",
@@ -722,22 +636,17 @@
           "input": "I was on a call",
           "why": "to przeszłość — teraz to I'm on a call"
         }
-      ]
+      ],
+      "lemma": "be"
     },
     {
       "id": "t25",
       "pattern": "past-done",
       "pl": "Wysłałam raport w poniedziałek",
       "en": "I sent the report on Monday",
-      "accept": [
-        "I sent this report on Monday",
-        "I sent the report on Monday."
-      ],
+      "accept": ["I sent this report on Monday"],
       "note": "konkretny dzień → sent; przy dniu tygodnia: on Monday",
-      "chunks": [
-        "I sent the report",
-        "on Monday"
-      ],
+      "chunks": ["I sent the report", "on Monday"],
       "traps": [
         {
           "input": "I sent the report in Monday",
@@ -747,23 +656,17 @@
           "input": "I have sent the report on Monday",
           "why": "podajesz kiedy → sent, bez have"
         }
-      ]
+      ],
+      "lemma": "send"
     },
     {
       "id": "t26",
       "pattern": "now",
       "pl": "Piszę teraz ticket",
       "en": "I'm writing a ticket now",
-      "accept": [
-        "I am writing a ticket now",
-        "I'm writing the ticket now"
-      ],
+      "accept": ["I am writing a ticket now", "I'm writing the ticket now"],
       "note": "w tej chwili → I’m + -ing",
-      "chunks": [
-        "I'm writing",
-        "a ticket",
-        "now"
-      ],
+      "chunks": ["I'm writing", "a ticket", "now"],
       "traps": [
         {
           "input": "I write a ticket now",
@@ -773,27 +676,24 @@
           "input": "I'm write a ticket now",
           "why": "po I’m forma z -ing: writing"
         }
-      ]
+      ],
+      "lemma": "write"
     },
     {
       "id": "t27",
       "pattern": "now",
       "pl": "Słucham Was",
       "en": "I'm listening",
-      "accept": [
-        "I am listening",
-        "I'm listening to you"
-      ],
+      "accept": ["I am listening", "I'm listening to you"],
       "note": "dzieje się teraz → I’m listening",
-      "chunks": [
-        "I'm listening"
-      ],
+      "chunks": ["I'm listening"],
       "traps": [
         {
           "input": "I listen",
           "why": "I listen to nawyk — teraz: I’m listening"
         }
-      ]
+      ],
+      "lemma": "listen"
     },
     {
       "id": "t28",
@@ -801,22 +701,16 @@
       "pl": "Siedzę na tym od rana",
       "hint": "i nadal siedzę",
       "en": "I've been on this since this morning",
-      "accept": [
-        "I have been on this since this morning",
-        "I've been on it since this morning"
-      ],
+      "accept": ["I have been on this since this morning", "I've been on it since this morning"],
       "note": "od rana i trwa → I’ve been",
-      "chunks": [
-        "I've been",
-        "on this",
-        "since this morning"
-      ],
+      "chunks": ["I've been", "on this", "since this morning"],
       "traps": [
         {
           "input": "I'm on this since this morning",
           "why": "gdy coś trwa OD kiedyś → I’ve been"
         }
-      ]
+      ],
+      "lemma": "be"
     },
     {
       "id": "t29",
@@ -824,16 +718,9 @@
       "pl": "Uczę się tego od tygodnia",
       "hint": "i nadal się uczę",
       "en": "I've been learning this for a week",
-      "accept": [
-        "I have been learning this for a week",
-        "I've been learning it for a week"
-      ],
+      "accept": ["I have been learning this for a week", "I've been learning it for a week"],
       "note": "trwa do teraz → I’ve been learning; długość → for a week",
-      "chunks": [
-        "I've been learning",
-        "this",
-        "for a week"
-      ],
+      "chunks": ["I've been learning", "this", "for a week"],
       "traps": [
         {
           "input": "I've been learning this since a week",
@@ -843,22 +730,17 @@
           "input": "I'm learning this for a week",
           "why": "gdy liczysz od jak dawna → I’ve been learning"
         }
-      ]
+      ],
+      "lemma": "learn"
     },
     {
       "id": "t30",
       "pattern": "will",
       "pl": "Oddzwonię za chwilę",
       "en": "I'll call you back in a minute",
-      "accept": [
-        "I will call you back in a minute",
-        "I'll call back in a minute"
-      ],
+      "accept": ["I will call you back in a minute", "I'll call back in a minute"],
       "note": "decyzja na teraz → I’ll",
-      "chunks": [
-        "I'll call you back",
-        "in a minute"
-      ],
+      "chunks": ["I'll call you back", "in a minute"],
       "traps": [
         {
           "input": "I call you back in a minute",
@@ -868,44 +750,33 @@
           "input": "I'll call you back after a minute",
           "why": "za chwilę: in a minute"
         }
-      ]
+      ],
+      "lemma": "call"
     },
     {
       "id": "t31",
       "pattern": "will",
       "pl": "Dam znać, jak skończę",
       "en": "I'll let you know when I'm done",
-      "accept": [
-        "I will let you know when I am done",
-        "I'll let you know when I finish"
-      ],
+      "accept": ["I will let you know when I am done", "I'll let you know when I finish"],
       "note": "obietnica → I’ll let you know",
-      "chunks": [
-        "I'll let you know",
-        "when I'm done"
-      ],
+      "chunks": ["I'll let you know", "when I'm done"],
       "traps": [
         {
           "input": "I let you know when I done",
           "why": "obietnica: I’ll let you know when I’m done"
         }
-      ]
+      ],
+      "lemma": "let"
     },
     {
       "id": "t32",
       "pattern": "done-no-time",
       "pl": "Już to widziałam",
       "en": "I've already seen it",
-      "accept": [
-        "I have already seen it",
-        "I already saw it",
-        "I've seen it already"
-      ],
+      "accept": ["I have already seen it", "I already saw it", "I've seen it already"],
       "note": "zrobione, bez kiedy → I’ve already seen",
-      "chunks": [
-        "I've already",
-        "seen it"
-      ],
+      "chunks": ["I've already", "seen it"],
       "traps": [
         {
           "input": "I already see it",
@@ -915,89 +786,66 @@
           "input": "I have already saw it",
           "why": "po have forma seen, nie saw"
         }
-      ]
+      ],
+      "lemma": "see"
     },
     {
       "id": "t33",
       "pattern": "done-no-time",
       "pl": "Jeszcze nie odpisałam",
       "en": "I haven't replied yet",
-      "accept": [
-        "I have not replied yet",
-        "I haven't answered yet"
-      ],
+      "accept": ["I have not replied yet", "I haven't answered yet"],
       "note": "jeszcze nie → haven’t + yet",
-      "chunks": [
-        "I haven't",
-        "replied",
-        "yet"
-      ],
+      "chunks": ["I haven't", "replied", "yet"],
       "traps": [
         {
           "input": "I haven't reply yet",
           "why": "po haven’t forma z -ed: replied"
         }
-      ]
+      ],
+      "lemma": "reply"
     },
     {
       "id": "t34",
       "pattern": "done-no-time",
       "pl": "Już to zrobiłam",
       "en": "I've already done it",
-      "accept": [
-        "I have already done it",
-        "I've done it already",
-        "I'm done with it"
-      ],
+      "accept": ["I have already done it", "I've done it already", "I'm done with it"],
       "note": "zrobione → I’ve already done",
-      "chunks": [
-        "I've already",
-        "done it"
-      ],
+      "chunks": ["I've already", "done it"],
       "traps": [
         {
           "input": "I already did it already",
           "why": "wystarczy: I’ve already done it"
         }
-      ]
+      ],
+      "lemma": "do"
     },
     {
       "id": "t35",
       "pattern": "plan",
       "pl": "Jutro będę testować na stagingu",
       "en": "I'm going to test on staging tomorrow",
-      "accept": [
-        "I am going to test on staging tomorrow",
-        "I'll be testing on staging tomorrow"
-      ],
+      "accept": ["I am going to test on staging tomorrow", "I'll be testing on staging tomorrow"],
       "note": "plan, który już masz → I’m going to",
-      "chunks": [
-        "I'm going to",
-        "test on staging",
-        "tomorrow"
-      ],
+      "chunks": ["I'm going to", "test on staging", "tomorrow"],
       "traps": [
         {
           "input": "I'm going to testing on staging tomorrow",
           "why": "po going to podstawowa forma: to test"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t36",
       "pattern": "plan",
       "pl": "Zamierzam to zmergować dziś",
       "en": "I'm going to merge it today",
-      "accept": [
-        "I am going to merge it today",
-        "I'll merge it today"
-      ],
+      "accept": ["I am going to merge it today", "I'll merge it today"],
       "note": "plan → I’m going to merge",
-      "chunks": [
-        "I'm going to",
-        "merge it",
-        "today"
-      ]
+      "chunks": ["I'm going to", "merge it", "today"],
+      "lemma": "merge"
     },
     {
       "id": "t37",
@@ -1009,69 +857,50 @@
         "We're going to discuss it at standup"
       ],
       "note": "plan zespołu → we’re going to",
-      "chunks": [
-        "We're going to",
-        "talk about it",
-        "at standup"
-      ]
+      "chunks": ["We're going to", "talk about it", "at standup"],
+      "lemma": "talk"
     },
     {
       "id": "t38",
       "pattern": "plan",
       "pl": "Nie będę dzisiaj na callu",
       "en": "I'm not going to be on the call today",
-      "accept": [
-        "I am not going to be on the call today",
-        "I won't be on the call today"
-      ],
+      "accept": ["I am not going to be on the call today", "I won't be on the call today"],
       "note": "plan w przeczeniu → I’m not going to be",
-      "chunks": [
-        "I'm not going to",
-        "be on the call",
-        "today"
-      ],
+      "chunks": ["I'm not going to", "be on the call", "today"],
       "traps": [
         {
           "input": "I don't going to be on the call today",
           "why": "przeczenie: I’m not going to"
         }
-      ]
+      ],
+      "lemma": "be"
     },
     {
       "id": "t39",
       "pattern": "always",
       "pl": "Nigdy nie testuję na produkcji",
       "en": "I never test on production",
-      "accept": [
-        "I never test in production",
-        "I never test on prod"
-      ],
+      "accept": ["I never test in production", "I never test on prod"],
       "note": "zasada → I never test",
-      "chunks": [
-        "I never test",
-        "on production"
-      ],
+      "chunks": ["I never test", "on production"],
       "traps": [
         {
           "input": "I'm never testing on production",
           "why": "przy zasadzie: I never test"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "t40",
       "pattern": "always",
       "pl": "Często loguję to w Jirze",
       "en": "I often log it in Jira",
-      "accept": [
-        "I often log this in Jira",
-        "I often report it in Jira"
-      ],
+      "accept": ["I often log this in Jira", "I often report it in Jira"],
       "note": "nawyk → I often log",
-      "chunks": [
-        "I often log it",
-        "in Jira"
-      ]
+      "chunks": ["I often log it", "in Jira"],
+      "lemma": "log"
     },
     {
       "id": "t41",
@@ -1083,26 +912,18 @@
         "I always do a smoke test after the deployment"
       ],
       "note": "zasada → I always run",
-      "chunks": [
-        "I always run",
-        "a smoke test",
-        "after the deploy"
-      ]
+      "chunks": ["I always run", "a smoke test", "after the deploy"],
+      "lemma": "run"
     },
     {
       "id": "t42",
       "pattern": "always",
       "pl": "Rzadko piszę testy automatyczne",
       "en": "I rarely write automated tests",
-      "accept": [
-        "I rarely write automation tests",
-        "I seldom write automated tests"
-      ],
+      "accept": ["I rarely write automation tests", "I seldom write automated tests"],
       "note": "nawyk → I rarely write",
-      "chunks": [
-        "I rarely write",
-        "automated tests"
-      ]
+      "chunks": ["I rarely write", "automated tests"],
+      "lemma": "write"
     }
   ],
   "reactions": [
@@ -1116,10 +937,7 @@
         "Oh no! What happened?",
         "Oh no, what happened"
       ],
-      "chunks": [
-        "Oh no",
-        "what happened?"
-      ]
+      "chunks": ["Oh no", "what happened?"]
     },
     {
       "id": "r02",
@@ -1131,24 +949,14 @@
         "Sorry, could you repeat that?",
         "Sorry, could you say that again?"
       ],
-      "chunks": [
-        "Sorry",
-        "I didn't catch that"
-      ]
+      "chunks": ["Sorry", "I didn't catch that"]
     },
     {
       "id": "r03",
       "situation": "Ktoś narzeka na to samo, co Ciebie wkurza.",
       "en": "Same here.",
-      "accept": [
-        "Same here",
-        "Same",
-        "Me too",
-        "Yeah, same here"
-      ],
-      "chunks": [
-        "Same here"
-      ]
+      "accept": ["Same here", "Same", "Me too", "Yeah, same here"],
+      "chunks": ["Same here"]
     },
     {
       "id": "r04",
@@ -1160,10 +968,7 @@
         "Sorry, my mistake, I'll fix it",
         "My bad, I will fix it"
       ],
-      "chunks": [
-        "My bad",
-        "I'll fix it"
-      ]
+      "chunks": ["My bad", "I'll fix it"]
     },
     {
       "id": "r05",
@@ -1175,24 +980,14 @@
         "Just a second, let me check",
         "One moment, let me check"
       ],
-      "chunks": [
-        "Hold on",
-        "let me check"
-      ]
+      "chunks": ["Hold on", "let me check"]
     },
     {
       "id": "r06",
       "situation": "Ktoś powiedział coś, co Cię zaskoczyło.",
       "en": "Oh, really?",
-      "accept": [
-        "Oh really",
-        "Really?",
-        "Wait, really?",
-        "Oh really?"
-      ],
-      "chunks": [
-        "Oh, really?"
-      ]
+      "accept": ["Oh really", "Really?", "Wait, really?", "Oh really?"],
+      "chunks": ["Oh, really?"]
     },
     {
       "id": "r07",
@@ -1204,9 +999,7 @@
         "Yeah, that makes sense",
         "OK, that makes sense"
       ],
-      "chunks": [
-        "That makes sense"
-      ]
+      "chunks": ["That makes sense"]
     },
     {
       "id": "r08",
@@ -1218,10 +1011,7 @@
         "I don't know, let me check",
         "I am not sure, let me find out"
       ],
-      "chunks": [
-        "I'm not sure",
-        "let me find out"
-      ]
+      "chunks": ["I'm not sure", "let me find out"]
     }
   ],
   "dictation": [
@@ -1230,32 +1020,22 @@
       "en": "I've been testing it since this morning",
       "pl": "Testuję to od rana",
       "note": "zaczęło się wcześniej i trwa do teraz → I've been + testing (-ing, bo czynność TRWA)",
-      "chunks": [
-        "I've been",
-        "testing it",
-        "since this morning"
-      ],
+      "chunks": ["I've been", "testing it", "since this morning"],
       "traps": [
         {
           "input": "I'm testing it since this morning",
           "why": "I'm testing to tylko ta chwila — gdy coś trwa OD kiedyś, użyj I've been"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "d02",
       "en": "I haven't checked it yet",
       "pl": "Jeszcze tego nie sprawdziłam",
       "note": "po haven't zawsze forma z -ed: checked, nie check",
-      "chunks": [
-        "I haven't",
-        "checked it",
-        "yet"
-      ],
-      "accept": [
-        "I have not checked it yet",
-        "I haven't checked this yet"
-      ],
+      "chunks": ["I haven't", "checked it", "yet"],
+      "accept": ["I have not checked it yet", "I haven't checked this yet"],
       "traps": [
         {
           "input": "I haven't check it yet",
@@ -1265,80 +1045,66 @@
           "input": "I have not check it yet",
           "why": "po have/haven't forma z -ed: checked"
         }
-      ]
+      ],
+      "lemma": "check"
     },
     {
       "id": "d03",
       "en": "I'll take a look after lunch",
       "pl": "Zajmę się tym po lunchu",
       "note": "obietnica na przyszłość → I'll",
-      "chunks": [
-        "I'll take a look",
-        "after lunch"
-      ]
+      "chunks": ["I'll take a look", "after lunch"],
+      "lemma": "take"
     },
     {
       "id": "d04",
       "en": "She reported it on Friday",
       "pl": "Zgłosiła to w piątek",
       "note": "konkretny, zamknięty moment → reported; przy dniu tygodnia: on Friday",
-      "chunks": [
-        "She reported it",
-        "on Friday"
-      ],
+      "chunks": ["She reported it", "on Friday"],
       "traps": [
         {
           "input": "She reported it in Friday",
           "why": "przy dniach tygodnia zawsze on: on Friday"
         }
-      ]
+      ],
+      "lemma": "report"
     },
     {
       "id": "d05",
       "en": "We're waiting for the deploy",
       "pl": "Czekamy na deploy",
       "note": "dzieje się teraz, w tej chwili → we're waiting (-ing, bo czekanie trwa)",
-      "chunks": [
-        "We're waiting",
-        "for the deploy"
-      ]
+      "chunks": ["We're waiting", "for the deploy"],
+      "lemma": "wait"
     },
     {
       "id": "d06",
       "en": "I'll let you know when I'm done",
       "pl": "Dam znać, jak skończę",
-      "chunks": [
-        "I'll let you know",
-        "when I'm done"
-      ]
+      "chunks": ["I'll let you know", "when I'm done"],
+      "lemma": "let"
     },
     {
       "id": "d07",
       "en": "I've already done it",
       "pl": "Już to zrobiłam",
-      "chunks": [
-        "I've already",
-        "done it"
-      ]
+      "chunks": ["I've already", "done it"],
+      "lemma": "do"
     },
     {
       "id": "d08",
       "en": "I'm going to merge it today",
       "pl": "Zamierzam to zmergować dziś",
-      "chunks": [
-        "I'm going to",
-        "merge it",
-        "today"
-      ]
+      "chunks": ["I'm going to", "merge it", "today"],
+      "lemma": "merge"
     },
     {
       "id": "d09",
       "en": "I never test on production",
       "pl": "Nigdy nie testuję na produkcji",
-      "chunks": [
-        "I never test",
-        "on production"
-      ]
+      "chunks": ["I never test", "on production"],
+      "lemma": "test"
     }
   ]
 }

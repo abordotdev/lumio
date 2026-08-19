@@ -13,17 +13,7 @@
     "life": "urlop, hobby i języki",
     "soft": "zdalnie, wypowiedzenie, pytania do nich"
   },
-  "patternOrder": [
-    "intro",
-    "manual",
-    "auto",
-    "docs",
-    "api",
-    "prod",
-    "types",
-    "life",
-    "soft"
-  ],
+  "patternOrder": ["intro", "manual", "auto", "docs", "api", "prod", "types", "life", "soft"],
   "translations": [
     {
       "id": "rec01",
@@ -35,11 +25,8 @@
         "I have 3 years of experience in manual testing"
       ],
       "note": "have + lata + experience in…",
-      "chunks": [
-        "I have three years",
-        "of experience",
-        "in manual testing"
-      ]
+      "chunks": ["I have three years", "of experience", "in manual testing"],
+      "lemma": "have"
     },
     {
       "id": "rec02",
@@ -51,55 +38,35 @@
         "I'm looking for a test automation role"
       ],
       "note": "I'm looking for — dzieje się teraz",
-      "chunks": [
-        "I'm looking for",
-        "a role",
-        "in test automation"
-      ]
+      "chunks": ["I'm looking for", "a role", "in test automation"],
+      "lemma": "look"
     },
     {
       "id": "rec03",
       "pattern": "intro",
       "pl": "Miło mi, dziękuję za zaproszenie",
       "en": "Nice to meet you, thanks for having me",
-      "accept": [
-        "Nice to meet you, thank you for having me",
-        "Thanks for having me"
-      ],
-      "chunks": [
-        "Nice to meet you",
-        "thanks for having me"
-      ]
+      "accept": ["Nice to meet you, thank you for having me", "Thanks for having me"],
+      "chunks": ["Nice to meet you", "thanks for having me"]
     },
     {
       "id": "rec04",
       "pattern": "manual",
       "pl": "Piszę przypadki testowe i raporty",
       "en": "I write test cases and test reports",
-      "accept": [
-        "I write test cases and reports",
-        "I write test cases and bug reports"
-      ],
-      "chunks": [
-        "I write",
-        "test cases",
-        "and test reports"
-      ]
+      "accept": ["I write test cases and reports", "I write test cases and bug reports"],
+      "chunks": ["I write", "test cases", "and test reports"],
+      "lemma": "write"
     },
     {
       "id": "rec05",
       "pattern": "manual",
       "pl": "Zgłaszam błędy w Jirze",
       "en": "I log bugs in Jira",
-      "accept": [
-        "I report bugs in Jira",
-        "I file bugs in Jira"
-      ],
+      "accept": ["I report bugs in Jira", "I file bugs in Jira"],
       "note": "log bugs = zgłaszać tickety",
-      "chunks": [
-        "I log bugs",
-        "in Jira"
-      ]
+      "chunks": ["I log bugs", "in Jira"],
+      "lemma": "log"
     },
     {
       "id": "rec06",
@@ -111,17 +78,14 @@
         "I tested this on staging before prod"
       ],
       "note": "skonczone i zamknięte → tested",
-      "chunks": [
-        "I tested this",
-        "on staging",
-        "before production"
-      ],
+      "chunks": ["I tested this", "on staging", "before production"],
       "traps": [
         {
           "input": "I have tested this on staging before production yesterday",
           "why": "gdy jest konkretny moment, zwykle tested, nie have tested"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "rec07",
@@ -132,25 +96,17 @@
         "I tested the happy path and edge cases",
         "I covered the happy path and the edge cases"
       ],
-      "chunks": [
-        "I tested",
-        "the happy path",
-        "and the edge cases"
-      ]
+      "chunks": ["I tested", "the happy path", "and the edge cases"],
+      "lemma": "test"
     },
     {
       "id": "rec08",
       "pattern": "auto",
       "pl": "Zautomatyzowałam testy dymne",
       "en": "I automated the smoke tests",
-      "accept": [
-        "I automated smoke tests",
-        "I've automated the smoke tests"
-      ],
-      "chunks": [
-        "I automated",
-        "the smoke tests"
-      ]
+      "accept": ["I automated smoke tests", "I've automated the smoke tests"],
+      "chunks": ["I automated", "the smoke tests"],
+      "lemma": "automate"
     },
     {
       "id": "rec09",
@@ -162,11 +118,8 @@
         "I haven't got commercial Selenium experience yet"
       ],
       "note": "uczciwie: don't have … yet",
-      "chunks": [
-        "I don't have",
-        "commercial Selenium experience",
-        "yet"
-      ]
+      "chunks": ["I don't have", "commercial Selenium experience", "yet"],
+      "lemma": "have"
     },
     {
       "id": "rec10",
@@ -177,11 +130,8 @@
         "The integration tests cover the API contracts",
         "Integration tests cover API contracts"
       ],
-      "chunks": [
-        "Integration tests",
-        "cover",
-        "the API contracts"
-      ]
+      "chunks": ["Integration tests", "cover", "the API contracts"],
+      "lemma": "cover"
     },
     {
       "id": "rec11",
@@ -192,84 +142,55 @@
         "I wrote the test plan for this release",
         "I've written a test plan for this release"
       ],
-      "chunks": [
-        "I wrote",
-        "a test plan",
-        "for this release"
-      ]
+      "chunks": ["I wrote", "a test plan", "for this release"],
+      "lemma": "write"
     },
     {
       "id": "rec12",
       "pattern": "docs",
       "pl": "Dokumentacja była nieaktualna",
       "en": "The documentation was out of date",
-      "accept": [
-        "The documentation was outdated",
-        "Documentation was out of date"
-      ],
-      "chunks": [
-        "The documentation",
-        "was out of date"
-      ]
+      "accept": ["The documentation was outdated", "Documentation was out of date"],
+      "chunks": ["The documentation", "was out of date"],
+      "lemma": "be"
     },
     {
       "id": "rec13",
       "pattern": "docs",
       "pl": "Poprosiłam o kryteria akceptacji",
       "en": "I asked for the acceptance criteria",
-      "accept": [
-        "I asked for acceptance criteria",
-        "I asked for the AC"
-      ],
-      "chunks": [
-        "I asked for",
-        "the acceptance criteria"
-      ]
+      "accept": ["I asked for acceptance criteria", "I asked for the AC"],
+      "chunks": ["I asked for", "the acceptance criteria"],
+      "lemma": "ask"
     },
     {
       "id": "rec14",
       "pattern": "api",
       "pl": "Używam Postmana, żeby sprawdzić API",
       "en": "I use Postman to check the API",
-      "accept": [
-        "I use Postman to test the API",
-        "I use Postman to check APIs"
-      ],
+      "accept": ["I use Postman to test the API", "I use Postman to check APIs"],
       "note": "nawyk → I use, nie I'm using (chyba że akurat teraz)",
-      "chunks": [
-        "I use Postman",
-        "to check the API"
-      ]
+      "chunks": ["I use Postman", "to check the API"],
+      "lemma": "use"
     },
     {
       "id": "rec15",
       "pattern": "api",
       "pl": "Sprawdziłam logi po deployu",
       "en": "I checked the logs after the deploy",
-      "accept": [
-        "I checked the logs after deploy",
-        "I checked the logs after the deployment"
-      ],
-      "chunks": [
-        "I checked the logs",
-        "after the deploy"
-      ]
+      "accept": ["I checked the logs after deploy", "I checked the logs after the deployment"],
+      "chunks": ["I checked the logs", "after the deploy"],
+      "lemma": "check"
     },
     {
       "id": "rec16",
       "pattern": "prod",
       "pl": "Wczoraj na produkcję poszedł hotfix",
       "en": "A hotfix went to production yesterday",
-      "accept": [
-        "A hotfix went to prod yesterday",
-        "We shipped a hotfix to production yesterday"
-      ],
+      "accept": ["A hotfix went to prod yesterday", "We shipped a hotfix to production yesterday"],
       "note": "yesterday → przeszłość prosta",
-      "chunks": [
-        "A hotfix",
-        "went to production",
-        "yesterday"
-      ]
+      "chunks": ["A hotfix", "went to production", "yesterday"],
+      "lemma": "go"
     },
     {
       "id": "rec17",
@@ -280,26 +201,17 @@
         "We replaced the production config by mistake",
         "We changed the prod config by mistake"
       ],
-      "chunks": [
-        "We swapped",
-        "the production config",
-        "by mistake"
-      ]
+      "chunks": ["We swapped", "the production config", "by mistake"],
+      "lemma": "swap"
     },
     {
       "id": "rec18",
       "pattern": "prod",
       "pl": "Po hotfixie odpaliliśmy smoke test",
       "en": "We ran a smoke test after the hotfix",
-      "accept": [
-        "We ran smoke tests after the hotfix",
-        "We ran a smoke test after the hotfix."
-      ],
-      "chunks": [
-        "We ran",
-        "a smoke test",
-        "after the hotfix"
-      ]
+      "accept": ["We ran smoke tests after the hotfix"],
+      "chunks": ["We ran", "a smoke test", "after the hotfix"],
+      "lemma": "run"
     },
     {
       "id": "rec19",
@@ -310,10 +222,8 @@
         "We run regression tests before every release",
         "We do regression before every release"
       ],
-      "chunks": [
-        "We do regression testing",
-        "before every release"
-      ]
+      "chunks": ["We do regression testing", "before every release"],
+      "lemma": "do"
     },
     {
       "id": "rec20",
@@ -324,105 +234,72 @@
         "I've got experience with exploratory testing",
         "I have exploratory testing experience"
       ],
-      "chunks": [
-        "I have experience",
-        "with exploratory testing"
-      ]
+      "chunks": ["I have experience", "with exploratory testing"],
+      "lemma": "have"
     },
     {
       "id": "rec21",
       "pattern": "types",
       "pl": "Zwykle testuję na Chrome i Firefox",
       "en": "I usually test on Chrome and Firefox",
-      "accept": [
-        "I usually test in Chrome and Firefox",
-        "I usually test on Chrome and on Firefox"
-      ],
+      "accept": ["I usually test in Chrome and Firefox", "I usually test on Chrome and on Firefox"],
       "note": "nawyk → I usually test",
-      "chunks": [
-        "I usually test",
-        "on Chrome and Firefox"
-      ],
+      "chunks": ["I usually test", "on Chrome and Firefox"],
       "traps": [
         {
           "input": "I'm usually testing on Chrome and Firefox",
           "why": "przy nawyku: I usually test, nie I'm testing"
         }
-      ]
+      ],
+      "lemma": "test"
     },
     {
       "id": "rec22",
       "pattern": "types",
       "pl": "Testowałam to na stagingu od rana",
       "en": "I've been testing it on staging since this morning",
-      "accept": [
-        "I have been testing it on staging since this morning"
-      ],
+      "accept": ["I have been testing it on staging since this morning"],
       "note": "od rana i trwa → I've been testing",
-      "chunks": [
-        "I've been testing it",
-        "on staging",
-        "since this morning"
-      ]
+      "chunks": ["I've been testing it", "on staging", "since this morning"],
+      "lemma": "test"
     },
     {
       "id": "rec23",
       "pattern": "intro",
       "pl": "Pracuję jako testerka manualna",
       "en": "I work as a manual tester",
-      "accept": [
-        "I work as a QA tester",
-        "I'm a manual tester"
-      ],
+      "accept": ["I work as a QA tester", "I'm a manual tester"],
       "note": "zawód, na stałe → I work as",
-      "chunks": [
-        "I work as",
-        "a manual tester"
-      ]
+      "chunks": ["I work as", "a manual tester"],
+      "lemma": "work"
     },
     {
       "id": "rec24",
       "pattern": "intro",
       "pl": "Chcę rozwijać się w automatyzacji",
       "en": "I want to grow in test automation",
-      "accept": [
-        "I want to grow in automation",
-        "I'd like to grow in test automation"
-      ],
-      "chunks": [
-        "I want to grow",
-        "in test automation"
-      ]
+      "accept": ["I want to grow in automation", "I'd like to grow in test automation"],
+      "chunks": ["I want to grow", "in test automation"],
+      "lemma": "want"
     },
     {
       "id": "rec25",
       "pattern": "intro",
       "pl": "Przygotowałam się do tej rozmowy",
       "en": "I prepared for this interview",
-      "accept": [
-        "I prepared for the interview",
-        "I've prepared for this interview"
-      ],
+      "accept": ["I prepared for the interview", "I've prepared for this interview"],
       "note": "skończone przygotowanie → prepared",
-      "chunks": [
-        "I prepared",
-        "for this interview"
-      ]
+      "chunks": ["I prepared", "for this interview"],
+      "lemma": "prepare"
     },
     {
       "id": "rec26",
       "pattern": "manual",
       "pl": "Odtworzyłam ten błąd na Chrome",
       "en": "I reproduced that bug on Chrome",
-      "accept": [
-        "I reproduced this bug on Chrome",
-        "I reproduced the bug in Chrome"
-      ],
-      "chunks": [
-        "I reproduced",
-        "that bug",
-        "on Chrome"
-      ]
+      "accept": ["I reproduced this bug on Chrome", "I reproduced the bug in Chrome"],
+      "chunks": ["I reproduced", "that bug", "on Chrome"],
+      "lemma": "reproduce"
     },
     {
       "id": "rec27",
@@ -433,40 +310,27 @@
         "I agree the priority with the product owner",
         "I prioritize it with the product owner"
       ],
-      "chunks": [
-        "I set the priority",
-        "with the product owner"
-      ]
+      "chunks": ["I set the priority", "with the product owner"],
+      "lemma": "set"
     },
     {
       "id": "rec28",
       "pattern": "auto",
       "pl": "Piszę testy w Playwright",
       "en": "I write tests in Playwright",
-      "accept": [
-        "I write Playwright tests",
-        "I write tests with Playwright"
-      ],
+      "accept": ["I write Playwright tests", "I write tests with Playwright"],
       "note": "nawyk → I write",
-      "chunks": [
-        "I write tests",
-        "in Playwright"
-      ]
+      "chunks": ["I write tests", "in Playwright"],
+      "lemma": "write"
     },
     {
       "id": "rec29",
       "pattern": "auto",
       "pl": "Pipeline odpala testy na CI",
       "en": "The pipeline runs the tests on CI",
-      "accept": [
-        "The pipeline runs tests on CI",
-        "CI runs the tests in the pipeline"
-      ],
-      "chunks": [
-        "The pipeline",
-        "runs the tests",
-        "on CI"
-      ]
+      "accept": ["The pipeline runs tests on CI", "CI runs the tests in the pipeline"],
+      "chunks": ["The pipeline", "runs the tests", "on CI"],
+      "lemma": "run"
     },
     {
       "id": "rec30",
@@ -478,11 +342,8 @@
         "I'm learning how to write stable selectors"
       ],
       "note": "w trakcie nauki → I’m learning",
-      "chunks": [
-        "I'm learning",
-        "to write",
-        "stable selectors"
-      ]
+      "chunks": ["I'm learning", "to write", "stable selectors"],
+      "lemma": "learn"
     },
     {
       "id": "rec31",
@@ -493,11 +354,8 @@
         "I read the AC before I start testing",
         "I read the acceptance criteria before testing"
       ],
-      "chunks": [
-        "I read",
-        "the acceptance criteria",
-        "before I start testing"
-      ]
+      "chunks": ["I read", "the acceptance criteria", "before I start testing"],
+      "lemma": "read"
     },
     {
       "id": "rec32",
@@ -508,54 +366,35 @@
         "I update test cases after the requirements change",
         "I update the cases when the requirements change"
       ],
-      "chunks": [
-        "I update the test cases",
-        "after the requirements change"
-      ]
+      "chunks": ["I update the test cases", "after the requirements change"],
+      "lemma": "update"
     },
     {
       "id": "rec33",
       "pattern": "docs",
       "pl": "Zostawiam komentarz na tickecie",
       "en": "I leave a comment on the ticket",
-      "accept": [
-        "I add a comment on the ticket",
-        "I comment on the ticket"
-      ],
-      "chunks": [
-        "I leave a comment",
-        "on the ticket"
-      ]
+      "accept": ["I add a comment on the ticket", "I comment on the ticket"],
+      "chunks": ["I leave a comment", "on the ticket"],
+      "lemma": "leave"
     },
     {
       "id": "rec34",
       "pattern": "api",
       "pl": "Sprawdzam status 200 i treść odpowiedzi",
       "en": "I check the 200 status and the response body",
-      "accept": [
-        "I check status 200 and the response body",
-        "I check the 200 and the body"
-      ],
-      "chunks": [
-        "I check",
-        "the 200 status",
-        "and the response body"
-      ]
+      "accept": ["I check status 200 and the response body", "I check the 200 and the body"],
+      "chunks": ["I check", "the 200 status", "and the response body"],
+      "lemma": "check"
     },
     {
       "id": "rec35",
       "pattern": "api",
       "pl": "Wysyłam request POST z tokenem",
       "en": "I send a POST request with a token",
-      "accept": [
-        "I send a POST with a token",
-        "I send a POST request with the token"
-      ],
-      "chunks": [
-        "I send",
-        "a POST request",
-        "with a token"
-      ]
+      "accept": ["I send a POST with a token", "I send a POST request with the token"],
+      "chunks": ["I send", "a POST request", "with a token"],
+      "lemma": "send"
     },
     {
       "id": "rec36",
@@ -566,81 +405,54 @@
         "I compare the response against the contract",
         "I check the response against the contract"
       ],
-      "chunks": [
-        "I compare the response",
-        "with the contract"
-      ]
+      "chunks": ["I compare the response", "with the contract"],
+      "lemma": "compare"
     },
     {
       "id": "rec37",
       "pattern": "api",
       "pl": "Zapisuję kolekcję w Postmanie",
       "en": "I save the collection in Postman",
-      "accept": [
-        "I save the Postman collection",
-        "I save that collection in Postman"
-      ],
-      "chunks": [
-        "I save the collection",
-        "in Postman"
-      ]
+      "accept": ["I save the Postman collection", "I save that collection in Postman"],
+      "chunks": ["I save the collection", "in Postman"],
+      "lemma": "save"
     },
     {
       "id": "rec38",
       "pattern": "prod",
       "pl": "Rollback zajął pięć minut",
       "en": "The rollback took five minutes",
-      "accept": [
-        "The rollback took 5 minutes",
-        "Rollback took five minutes"
-      ],
+      "accept": ["The rollback took 5 minutes", "Rollback took five minutes"],
       "note": "skończone → took",
-      "chunks": [
-        "The rollback",
-        "took five minutes"
-      ]
+      "chunks": ["The rollback", "took five minutes"],
+      "lemma": "take"
     },
     {
       "id": "rec39",
       "pattern": "prod",
       "pl": "Monitoruję błędy po releasie",
       "en": "I monitor errors after the release",
-      "accept": [
-        "I monitor the errors after the release",
-        "I watch errors after the release"
-      ],
-      "chunks": [
-        "I monitor errors",
-        "after the release"
-      ]
+      "accept": ["I monitor the errors after the release", "I watch errors after the release"],
+      "chunks": ["I monitor errors", "after the release"],
+      "lemma": "monitor"
     },
     {
       "id": "rec40",
       "pattern": "prod",
       "pl": "Feature flag była wyłączona",
       "en": "The feature flag was off",
-      "accept": [
-        "The feature flag was disabled",
-        "The feature flag was turned off"
-      ],
-      "chunks": [
-        "The feature flag",
-        "was off"
-      ]
+      "accept": ["The feature flag was disabled", "The feature flag was turned off"],
+      "chunks": ["The feature flag", "was off"],
+      "lemma": "be"
     },
     {
       "id": "rec41",
       "pattern": "types",
       "pl": "Przed regresją robimy smoke",
       "en": "We run smoke tests before regression",
-      "accept": [
-        "We do smoke tests before regression",
-        "We run a smoke test before regression"
-      ],
-      "chunks": [
-        "We run smoke tests",
-        "before regression"
-      ]
+      "accept": ["We do smoke tests before regression", "We run a smoke test before regression"],
+      "chunks": ["We run smoke tests", "before regression"],
+      "lemma": "run"
     },
     {
       "id": "rec42",
@@ -651,30 +463,31 @@
         "I also run a sanity check after a hotfix",
         "I do a sanity check after the hotfix"
       ],
-      "chunks": [
-        "I also do",
-        "a sanity check",
-        "after a hotfix"
-      ]
+      "chunks": ["I also do", "a sanity check", "after a hotfix"],
+      "lemma": "do"
     },
     {
       "id": "rec43",
       "pattern": "life",
       "pl": "Na urlopie zwykle wyjeżdżam za granicę",
       "en": "I usually go abroad on holiday",
-      "accept": [
-        "I usually go abroad on vacation",
-        "On holiday I usually go abroad"
-      ],
-      "chunks": ["I usually go abroad", "on holiday"]
+      "accept": ["I usually go abroad on vacation", "On holiday I usually go abroad"],
+      "chunks": ["I usually go abroad", "on holiday"],
+      "lemma": "go"
     },
     {
       "id": "rec44",
       "pattern": "life",
       "pl": "W zeszłym roku byłam we Włoszech",
-      "en": "I went to Italy last year",
-      "accept": ["Last year I went to Italy", "I was in Italy last year"],
-      "chunks": ["I went", "to Italy", "last year"]
+      "en": "I was in Italy last year",
+      "accept": [
+        "I went to Italy last year",
+        "Last year I was in Italy",
+        "Last year I went to Italy"
+      ],
+      "chunks": ["I was", "in Italy", "last year"],
+      "lemma": "be",
+      "note": "byłam gdzieś → I was in, nie I was at"
     },
     {
       "id": "rec45",
@@ -685,7 +498,8 @@
         "In my spare time I read and go swimming",
         "I read and go swimming in my free time"
       ],
-      "chunks": ["In my free time", "I read", "and go swimming"]
+      "chunks": ["In my free time", "I read", "and go swimming"],
+      "lemma": "read"
     },
     {
       "id": "rec46",
@@ -693,15 +507,18 @@
       "pl": "Moje hobby to bieganie i gotowanie",
       "en": "My hobbies are running and cooking",
       "accept": ["My hobby is running and cooking", "Running and cooking are my hobbies"],
-      "chunks": ["My hobbies are", "running and cooking"]
+      "chunks": ["My hobbies are", "running and cooking"],
+      "lemma": "be"
     },
     {
       "id": "rec47",
       "pattern": "life",
       "pl": "Uczę się angielskiego codziennie rano",
-      "en": "I learn English every morning",
-      "accept": ["I study English every morning", "Every morning I learn English"],
-      "chunks": ["I learn English", "every morning"]
+      "en": "I study English every morning",
+      "accept": ["I learn English every morning", "Every morning I study English"],
+      "chunks": ["I study English", "every morning"],
+      "lemma": "study",
+      "note": "uczyć się czegoś na serio → study; learn to raczej „nauczyć się\""
     },
     {
       "id": "rec48",
@@ -709,7 +526,8 @@
       "pl": "Oglądam seriale po angielsku",
       "en": "I watch series in English",
       "accept": ["I watch TV series in English", "I watch shows in English"],
-      "chunks": ["I watch series", "in English"]
+      "chunks": ["I watch series", "in English"],
+      "lemma": "watch"
     },
     {
       "id": "rec49",
@@ -720,7 +538,8 @@
         "I am looking for a team where I can learn",
         "I'm looking for a team I can learn in"
       ],
-      "chunks": ["I'm looking for", "a team", "where I can learn"]
+      "chunks": ["I'm looking for", "a team", "where I can learn"],
+      "lemma": "look"
     },
     {
       "id": "rec50",
@@ -731,7 +550,8 @@
         "I prefer working remotely, but I can come in for meetings",
         "I prefer remote, but I can come to the office for meetings"
       ],
-      "chunks": ["I prefer remote work", "but I can come in", "for meetings"]
+      "chunks": ["I prefer remote work", "but I can come in", "for meetings"],
+      "lemma": "prefer"
     },
     {
       "id": "rec51",
@@ -739,7 +559,8 @@
       "pl": "Mój okres wypowiedzenia to miesiąc",
       "en": "My notice period is one month",
       "accept": ["My notice period is a month", "I have a one-month notice period"],
-      "chunks": ["My notice period", "is one month"]
+      "chunks": ["My notice period", "is one month"],
+      "lemma": "be"
     },
     {
       "id": "rec52",
@@ -750,7 +571,8 @@
         "I like to break complex tickets down into steps",
         "I like breaking down complex tickets into steps"
       ],
-      "chunks": ["I like breaking", "complex tickets", "down into steps"]
+      "chunks": ["I like breaking", "complex tickets", "down into steps"],
+      "lemma": "like"
     },
     {
       "id": "rec53",
@@ -761,7 +583,8 @@
         "I've got a question about onboarding in your team",
         "I have a question about your onboarding"
       ],
-      "chunks": ["I have a question", "about onboarding", "in your team"]
+      "chunks": ["I have a question", "about onboarding", "in your team"],
+      "lemma": "have"
     },
     {
       "id": "rec54",
@@ -772,7 +595,8 @@
         "When something is on fire in production, I check the logs first",
         "If production is on fire, I check the logs first"
       ],
-      "chunks": ["If something is on fire", "in production", "I check the logs first"]
+      "chunks": ["If something is on fire", "in production", "I check the logs first"],
+      "lemma": "check"
     }
   ],
   "dictation": [
@@ -780,103 +604,85 @@
       "id": "recd01",
       "en": "I log bugs in Jira",
       "pl": "Zgłaszam błędy w Jirze",
-      "chunks": [
-        "I log bugs",
-        "in Jira"
-      ]
+      "chunks": ["I log bugs", "in Jira"],
+      "lemma": "log"
     },
     {
       "id": "recd02",
       "en": "I use Postman to check the API",
       "pl": "Używam Postmana, żeby sprawdzić API",
-      "chunks": [
-        "I use Postman",
-        "to check the API"
-      ]
+      "chunks": ["I use Postman", "to check the API"],
+      "lemma": "use"
     },
     {
       "id": "recd03",
       "en": "A hotfix went to production yesterday",
       "pl": "Wczoraj na produkcję poszedł hotfix",
-      "chunks": [
-        "A hotfix",
-        "went to production",
-        "yesterday"
-      ]
+      "chunks": ["A hotfix", "went to production", "yesterday"],
+      "lemma": "go"
     },
     {
       "id": "recd04",
       "en": "We do regression testing before every release",
       "pl": "Przed każdym releasem robimy regresję",
-      "chunks": [
-        "We do regression testing",
-        "before every release"
-      ]
+      "chunks": ["We do regression testing", "before every release"],
+      "lemma": "do"
     },
     {
       "id": "recd05",
       "en": "I don't have commercial Selenium experience yet",
       "pl": "Nie mam jeszcze komercyjnego Selenium",
-      "chunks": [
-        "I don't have",
-        "commercial Selenium experience",
-        "yet"
-      ]
+      "chunks": ["I don't have", "commercial Selenium experience", "yet"],
+      "lemma": "have"
     },
     {
       "id": "recd06",
       "en": "I work as a manual tester",
       "pl": "Pracuję jako testerka manualna",
-      "chunks": [
-        "I work as",
-        "a manual tester"
-      ]
+      "chunks": ["I work as", "a manual tester"],
+      "lemma": "work"
     },
     {
       "id": "recd07",
       "en": "I write tests in Playwright",
       "pl": "Piszę testy w Playwright",
-      "chunks": [
-        "I write tests",
-        "in Playwright"
-      ]
+      "chunks": ["I write tests", "in Playwright"],
+      "lemma": "write"
     },
     {
       "id": "recd08",
       "en": "I send a POST request with a token",
       "pl": "Wysyłam request POST z tokenem",
-      "chunks": [
-        "I send",
-        "a POST request",
-        "with a token"
-      ]
+      "chunks": ["I send", "a POST request", "with a token"],
+      "lemma": "send"
     },
     {
       "id": "recd09",
       "en": "The rollback took five minutes",
       "pl": "Rollback zajął pięć minut",
-      "chunks": [
-        "The rollback",
-        "took five minutes"
-      ]
+      "chunks": ["The rollback", "took five minutes"],
+      "lemma": "take"
     },
     {
       "id": "recd10",
-      "en": "I went to Italy last year",
+      "en": "I was in Italy last year",
       "pl": "W zeszłym roku byłam we Włoszech",
-      "chunks": ["I went", "to Italy", "last year"]
+      "chunks": ["I was", "in Italy", "last year"],
+      "lemma": "be"
     },
     {
       "id": "recd11",
-      "en": "I learn English every morning",
+      "en": "I study English every morning",
       "pl": "Uczę się angielskiego codziennie rano",
-      "chunks": ["I learn English", "every morning"]
+      "chunks": ["I study English", "every morning"],
+      "lemma": "study"
     },
     {
       "id": "recd12",
       "en": "My notice period is one month",
       "pl": "Mój okres wypowiedzenia to miesiąc",
-      "chunks": ["My notice period", "is one month"]
+      "chunks": ["My notice period", "is one month"],
+      "lemma": "be"
     }
   ]
 }
