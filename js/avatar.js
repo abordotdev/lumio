@@ -17,6 +17,7 @@ export const HAIR_STYLES = [
   { id: 'hair-bob', name: 'Do ramion' },
   { id: 'hair-long', name: 'Długie' },
   { id: 'hair-ponytail', name: 'Kucyk' },
+  { id: 'hair-short', name: 'Krótkie (chłopak)' },
 ];
 
 const SKIN = '#F3C4A4';
@@ -40,6 +41,10 @@ function hairBack(id, c) {
       <ellipse cx="80" cy="52" rx="36" ry="32" fill="${c.dark}"/>
       <path d="M50,80 Q44,150 54,210" fill="none" stroke="${c.shine}" stroke-width="2.2" opacity=".35"/>`;
   }
+  if (id === 'hair-short') {
+    // Krótkie, chłopięce — sam czepek na czubku, bez pukli po bokach.
+    return `<ellipse cx="80" cy="50" rx="33" ry="29" fill="${c.dark}"/>`;
+  }
   return `
     <ellipse cx="80" cy="54" rx="34" ry="32" fill="${c.dark}"/>
     <path d="M46,64 Q42,92 50,118 Q60,96 58,70 Z" fill="${c.main}"/>
@@ -62,6 +67,15 @@ function hairFront(id, c) {
       <path d="M48,60 Q52,92 48,118" fill="${c.main}"/>
       <path d="M112,60 Q108,92 112,118" fill="${c.main}"/>
       <path d="M64,26 Q80,14 100,34" fill="none" stroke="${c.shine}" stroke-width="2.6" opacity=".5"/>`;
+  }
+  if (id === 'hair-short') {
+    // Krótka grzywka i przystrzyżone boki — czytelnie „chłopięce".
+    return `
+      <path d="M48,54 Q50,20 80,16 Q110,20 112,54 Q104,40 94,38 L66,38 Q56,40 48,54 Z" fill="${c.main}"/>
+      <path d="M62,34 Q80,24 98,34 Q88,44 80,40 Q72,44 62,34 Z" fill="${c.dark}"/>
+      <path d="M48,54 Q50,68 50,80 L56,80 Q55,64 58,50 Z" fill="${c.main}"/>
+      <path d="M112,54 Q110,68 110,80 L104,80 Q105,64 102,50 Z" fill="${c.main}"/>
+      <path d="M64,26 Q80,18 96,30" fill="none" stroke="${c.shine}" stroke-width="2.2" opacity=".45"/>`;
   }
   return `
     <path d="M47,46 Q80,8 113,46 L111,60 Q98,34 80,34 Q62,34 49,60 Z" fill="${c.main}"/>
@@ -471,6 +485,7 @@ const ICON_BOX = {
   neck: [60, 96, 40, 52],
   'hair-long': [40, 4, 80, 160],
   'hair-ponytail': [40, 6, 96, 140],
+  'hair-short': [44, 8, 72, 86],
   'bottom-jeans': [48, 152, 64, 100],
   'bottom-ball': [36, 146, 88, 106],
   earrings: [45, 70, 10, 10],

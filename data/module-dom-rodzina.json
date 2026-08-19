@@ -17,7 +17,8 @@
       "pl": "To moja córka",
       "en": "This is my daughter",
       "chunks": ["This is", "my daughter"],
-      "note": "to jest → this is"
+      "note": "to jest → this is",
+      "wym": "dis iz maj doter"
     },
     {
       "id": "dmr02",
@@ -26,7 +27,8 @@
       "en": "I have two children",
       "chunks": ["I have", "two children"],
       "note": "dzieci → children",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "aj hew tu czyldren"
     },
     {
       "id": "dmr03",
@@ -35,7 +37,8 @@
       "en": "My husband is retired",
       "chunks": ["My husband", "is retired"],
       "note": "na emeryturze → retired",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "maj hazbend iz ritajerd"
     },
     {
       "id": "dmr04",
@@ -44,7 +47,8 @@
       "en": "We live together",
       "chunks": ["We live", "together"],
       "note": "mieszkamy → we live",
-      "lemma": "live"
+      "lemma": "live",
+      "wym": "łi liw tugeder"
     },
     {
       "id": "dmr05",
@@ -53,7 +57,8 @@
       "en": "My grandson is five",
       "chunks": ["My grandson", "is five"],
       "note": "ma pięć lat → is five",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "maj grendsan iz fajw"
     },
     {
       "id": "dmr06",
@@ -62,7 +67,8 @@
       "en": "I miss my family",
       "chunks": ["I miss", "my family"],
       "note": "tęsknię za → I miss",
-      "lemma": "miss"
+      "lemma": "miss",
+      "wym": "aj mis maj femili"
     },
     {
       "id": "dmr07",
@@ -71,7 +77,8 @@
       "en": "I live near the park",
       "chunks": ["I live", "near the park"],
       "note": "blisko → near",
-      "lemma": "live"
+      "lemma": "live",
+      "wym": "aj liw nir de park"
     },
     {
       "id": "dmr08",
@@ -80,7 +87,8 @@
       "en": "The kitchen is small",
       "chunks": ["The kitchen", "is small"],
       "note": "mała → small",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "de kiczen iz smol"
     },
     {
       "id": "dmr09",
@@ -89,7 +97,8 @@
       "en": "I have a garden",
       "chunks": ["I have", "a garden"],
       "note": "ogród → garden",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "aj hew e garden"
     },
     {
       "id": "dmr10",
@@ -97,7 +106,8 @@
       "pl": "Proszę wejść",
       "en": "Come in, please",
       "chunks": ["Come in,", "please"],
-      "note": "proszę wejść → come in"
+      "note": "proszę wejść → come in",
+      "wym": "kam in pliz"
     },
     {
       "id": "dmr11",
@@ -105,7 +115,8 @@
       "pl": "Czuj się jak u siebie",
       "en": "Make yourself at home",
       "chunks": ["Make yourself", "at home"],
-      "note": "jak u siebie → at home"
+      "note": "jak u siebie → at home",
+      "wym": "mejk jorself et hołm"
     },
     {
       "id": "dmr12",
@@ -113,7 +124,8 @@
       "pl": "Napijesz się herbaty?",
       "en": "Would you like some tea?",
       "chunks": ["Would you like", "some tea?"],
-      "note": "napijesz się → would you like"
+      "note": "napijesz się → would you like",
+      "wym": "łud ju lajk sam ti"
     },
     {
       "id": "dmr13",
@@ -122,7 +134,8 @@
       "en": "I get up early",
       "chunks": ["I get up", "early"],
       "note": "wstaję → I get up",
-      "lemma": "get"
+      "lemma": "get",
+      "wym": "aj get ap erli"
     },
     {
       "id": "dmr14",
@@ -131,7 +144,8 @@
       "en": "I go for a walk",
       "chunks": ["I go", "for a walk"],
       "note": "na spacer → for a walk",
-      "lemma": "go"
+      "lemma": "go",
+      "wym": "aj goł for e łok"
     },
     {
       "id": "dmr15",
@@ -140,7 +154,8 @@
       "en": "I watch the news",
       "chunks": ["I watch", "the news"],
       "note": "oglądam → I watch",
-      "lemma": "watch"
+      "lemma": "watch",
+      "wym": "aj łocz de niuz"
     },
     {
       "id": "dmr16",
@@ -149,7 +164,8 @@
       "en": "I read every evening",
       "chunks": ["I read", "every evening"],
       "note": "każdego wieczoru → every evening",
-      "lemma": "read"
+      "lemma": "read",
+      "wym": "aj rid ewri iwning"
     },
     {
       "id": "dmr17",
@@ -158,7 +174,8 @@
       "en": "I call my daughter on Sundays",
       "chunks": ["I call", "my daughter", "on Sundays"],
       "note": "w niedziele → on Sundays",
-      "lemma": "call"
+      "lemma": "call",
+      "wym": "aj kol maj doter on sandejz"
     },
     {
       "id": "dmr18",
@@ -167,7 +184,8 @@
       "en": "I like gardening",
       "chunks": ["I like", "gardening"],
       "note": "ogrodnictwo → gardening",
-      "lemma": "like"
+      "lemma": "like",
+      "wym": "aj lajk gardning"
     }
   ],
   "dictation": []

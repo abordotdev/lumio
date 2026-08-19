@@ -24,7 +24,8 @@
           "input": "Nice to know you",
           "why": "przy poznawaniu: meet, nie know"
         }
-      ]
+      ],
+      "wym": "najs tu mit ju"
     },
     {
       "id": "sm02",
@@ -33,7 +34,8 @@
       "en": "How are you?",
       "accept": ["How are you doing?", "How's it going?"],
       "note": "standardowe powitanie; odpowiedź: I'm good, thanks",
-      "chunks": ["How are you?"]
+      "chunks": ["How are you?"],
+      "wym": "hał ar ju"
     },
     {
       "id": "sm03",
@@ -42,7 +44,8 @@
       "en": "I'm good, thanks",
       "accept": ["I'm fine, thanks", "I'm well, thank you", "Good, thanks"],
       "note": "krótko i naturalnie → I'm good",
-      "chunks": ["I'm good", "thanks"]
+      "chunks": ["I'm good", "thanks"],
+      "wym": "ajm gud tenks"
     },
     {
       "id": "sm04",
@@ -57,7 +60,8 @@
           "input": "You want coffee?",
           "why": "brzmi ostro — lepiej Would you like some coffee?"
         }
-      ]
+      ],
+      "wym": "łud ju lajk sam kofi"
     },
     {
       "id": "sm05",
@@ -73,7 +77,8 @@
           "input": "I want tea, please",
           "why": "I want brzmi ostro. Przy zamawianiu: I'll have albo Could I have."
         }
-      ]
+      ],
+      "wym": "ajl hew ti pliz"
     },
     {
       "id": "sm06",
@@ -82,7 +87,8 @@
       "en": "Sugar and milk, please",
       "accept": ["Milk and sugar, please", "With milk and sugar, please"],
       "chunks": ["Sugar and milk", "please"],
-      "note": "krótko, bez czasownika — tak się mówi przy kawie"
+      "note": "krótko, bez czasownika — tak się mówi przy kawie",
+      "wym": "szuger end milk pliz"
     },
     {
       "id": "sm07",
@@ -97,7 +103,8 @@
           "input": "Let's to start the meeting",
           "why": "Po let's idzie forma podstawowa: let's start."
         }
-      ]
+      ],
+      "wym": "lets start de miting"
     },
     {
       "id": "sm08",
@@ -112,7 +119,8 @@
           "input": "Please take seat",
           "why": "Przed seat trzeba a: take a seat."
         }
-      ]
+      ],
+      "wym": "pliz tejk e sit"
     },
     {
       "id": "sm09",
@@ -127,7 +135,8 @@
           "why": "brakuje I'm: Sorry I'm late"
         }
       ],
-      "note": "krótkie przeprosiny za spóźnienie → Sorry I'm late"
+      "note": "krótkie przeprosiny za spóźnienie → Sorry I'm late",
+      "wym": "sori ajm lejt"
     },
     {
       "id": "sm10",
@@ -142,7 +151,8 @@
           "input": "Can we to reschedule?",
           "why": "Po can nigdy to: can reschedule."
         }
-      ]
+      ],
+      "wym": "ken łi riskedżul"
     },
     {
       "id": "sm11",
@@ -157,7 +167,8 @@
           "input": "Thanks to come",
           "why": "po thanks for idzie -ing: coming"
         }
-      ]
+      ],
+      "wym": "tenks for kaming"
     },
     {
       "id": "sm12",
@@ -172,7 +183,8 @@
           "input": "Nice to talking to you",
           "why": "Albo Nice talking to you, albo Nice to talk to you. Nie obie naraz."
         }
-      ]
+      ],
+      "wym": "najs toking tu ju"
     },
     {
       "id": "sm13",
@@ -181,7 +193,8 @@
       "en": "See you tomorrow",
       "accept": ["I'll see you tomorrow"],
       "chunks": ["See you tomorrow"],
-      "note": "do zobaczenia → see you + kiedy"
+      "note": "do zobaczenia → see you + kiedy",
+      "wym": "si ju tumoroł"
     },
     {
       "id": "sm14",
@@ -190,7 +203,8 @@
       "en": "Have a nice weekend",
       "accept": ["Have a good weekend", "Enjoy your weekend"],
       "chunks": ["Have a nice weekend"],
-      "note": "życzenia → have a nice + co"
+      "note": "życzenia → have a nice + co",
+      "wym": "hew e najs łikend"
     },
     {
       "id": "sm15",
@@ -206,7 +220,8 @@
           "input": "How is your weekend?",
           "why": "Weekend już się skończył, więc How was your weekend."
         }
-      ]
+      ],
+      "wym": "hał łoz jor łikend"
     },
     {
       "id": "sm16",
@@ -221,7 +236,8 @@
           "input": "That sounds well",
           "why": "Po sounds idzie good. Well opisuje, JAK coś robisz."
         }
-      ]
+      ],
+      "wym": "det sałndz gud"
     },
     {
       "id": "sm17",
@@ -237,7 +253,8 @@
           "input": "I send you the invite",
           "why": "Gdy obiecujesz coś w rozmowie: I'll send you the invite."
         }
-      ]
+      ],
+      "wym": "ajl send ju de inwajt"
     },
     {
       "id": "sm18",
@@ -256,7 +273,8 @@
           "input": "Could you repeat that again?",
           "why": "Repeat już znaczy „jeszcze raz\" — again jest zbędne."
         }
-      ]
+      ],
+      "wym": "kud ju ripit det"
     },
     {
       "id": "sm19",
@@ -265,7 +283,8 @@
       "en": "Good morning",
       "accept": ["Morning"],
       "chunks": ["Good morning"],
-      "note": "do południa → Good morning; po → Good afternoon"
+      "note": "do południa → Good morning; po → Good afternoon",
+      "wym": "gud morning"
     },
     {
       "id": "sm20",
@@ -280,7 +299,8 @@
           "input": "Nice to meet you again",
           "why": "Meet to pierwsze poznanie. Gdy już się znacie: Nice to see you again."
         }
-      ]
+      ],
+      "wym": "najs tu si ju egen"
     },
     {
       "id": "sm21",
@@ -295,7 +315,8 @@
           "input": "Is everything is OK?",
           "why": "Raz wystarczy: Is everything OK."
         }
-      ]
+      ],
+      "wym": "iz ewriting okej"
     },
     {
       "id": "sm22",
@@ -304,7 +325,8 @@
       "en": "Black, please",
       "accept": ["Black coffee, please", "I'll have it black, please"],
       "chunks": ["Black, please"],
-      "note": "kawa bez mleka → black"
+      "note": "kawa bez mleka → black",
+      "wym": "blek pliz"
     },
     {
       "id": "sm23",
@@ -319,7 +341,8 @@
           "input": "Would you like a more coffee?",
           "why": "Przed more nie ma a: more coffee."
         }
-      ]
+      ],
+      "wym": "łud ju lajk mor kofi"
     },
     {
       "id": "sm24",
@@ -328,7 +351,8 @@
       "en": "Water is fine",
       "accept": ["I'll have water", "Just water, please"],
       "chunks": ["Water is fine"],
-      "note": "wystarczy mi woda → water is fine"
+      "note": "wystarczy mi woda → water is fine",
+      "wym": "łoter iz fajn"
     },
     {
       "id": "sm25",
@@ -343,7 +367,8 @@
           "input": "Let's do it in ten",
           "why": "O godzinie zawsze at: at ten. In ten znaczyłoby „za dziesięć minut\"."
         }
-      ]
+      ],
+      "wym": "lets du it et ten"
     },
     {
       "id": "sm26",
@@ -359,7 +384,8 @@
           "input": "Have you a minute?",
           "why": "Po angielsku w pytaniu trzeba do: Do you have a minute."
         }
-      ]
+      ],
+      "wym": "du ju hew e minit"
     },
     {
       "id": "sm27",
@@ -374,7 +400,8 @@
           "input": "Thanks for your helping",
           "why": "Po thanks for idzie rzeczownik: your help."
         }
-      ]
+      ],
+      "wym": "tenks for jor help"
     },
     {
       "id": "sm28",
@@ -383,7 +410,8 @@
       "en": "Take care",
       "accept": ["You take care"],
       "chunks": ["Take care"],
-      "note": "ciepłe pożegnanie → take care"
+      "note": "ciepłe pożegnanie → take care",
+      "wym": "tejk ker"
     },
     {
       "id": "sm29",
@@ -392,7 +420,8 @@
       "en": "How are things?",
       "accept": ["What's new?", "How are things going?"],
       "chunks": ["How are things?"],
-      "note": "luźniejsze „co u Ciebie\" → how are things"
+      "note": "luźniejsze „co u Ciebie\" → how are things",
+      "wym": "hał ar tingz"
     },
     {
       "id": "sm30",
@@ -408,7 +437,8 @@
           "input": "I'm on my road",
           "why": "W drodze do kogoś: on my way. Road to droga jako ulica."
         }
-      ]
+      ],
+      "wym": "ajm on maj łej"
     }
   ],
   "dictation": [

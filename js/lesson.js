@@ -400,6 +400,10 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   if ((step.kind === 'dictate' || step.kind === 'situation') && item.pl) {
     panel.appendChild(h(`<p class="muted">Po polsku: <b>${esc(item.pl)}</b></p>`));
   }
+  // Podpowiedź, jak to przeczytać po polsku (np. „I have to" → „aj hew tu").
+  if (item.wym) {
+    panel.appendChild(h(`<p class="muted">Czytaj: <b>${esc(item.wym)}</b></p>`));
+  }
 
   card.appendChild(panel);
 

@@ -19,7 +19,8 @@
       "en": "I am tired",
       "chunks": ["I am", "tired"],
       "note": "jestem → I am",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "aj em tajerd"
     },
     {
       "id": "pdr02",
@@ -28,7 +29,8 @@
       "en": "I was there yesterday",
       "chunks": ["I was", "there", "yesterday"],
       "note": "byłam → I was",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "aj łoz der jesterdej"
     },
     {
       "id": "pdr03",
@@ -37,7 +39,8 @@
       "en": "I will be back soon",
       "chunks": ["I will be", "back", "soon"],
       "note": "będę → I will be",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "aj łil bi bek sun"
     },
     {
       "id": "pdr04",
@@ -46,7 +49,8 @@
       "en": "I am hungry",
       "chunks": ["I am", "hungry"],
       "note": "jestem → I am",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "aj em hangri"
     },
     {
       "id": "pdr05",
@@ -55,7 +59,8 @@
       "en": "We were on holiday",
       "chunks": ["We were", "on holiday"],
       "note": "byliśmy → We were",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "łi łer on holidej"
     },
     {
       "id": "pdr06",
@@ -64,7 +69,8 @@
       "en": "I will call you later",
       "chunks": ["I will call", "you", "later"],
       "note": "zadzwonię → I will call",
-      "lemma": "call"
+      "lemma": "call",
+      "wym": "aj łil kol ju lejter"
     },
     {
       "id": "pdr07",
@@ -72,7 +78,8 @@
       "pl": "Gdzie jest bramka?",
       "en": "Where is the gate?",
       "chunks": ["Where is", "the gate?"],
-      "note": "pytanie o miejsce → Where is"
+      "note": "pytanie o miejsce → Where is",
+      "wym": "łer iz de gejt"
     },
     {
       "id": "pdr08",
@@ -80,7 +87,8 @@
       "pl": "Oto mój paszport",
       "en": "Here is my passport",
       "chunks": ["Here is", "my passport"],
-      "note": "oto → here is"
+      "note": "oto → here is",
+      "wym": "hir iz maj pasport"
     },
     {
       "id": "pdr09",
@@ -89,7 +97,8 @@
       "en": "I have one suitcase",
       "chunks": ["I have", "one suitcase"],
       "note": "mam → I have",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "aj hew łan sutkejs"
     },
     {
       "id": "pdr10",
@@ -97,7 +106,8 @@
       "pl": "Mój lot jest opóźniony",
       "en": "My flight is delayed",
       "chunks": ["My flight", "is delayed"],
-      "note": "opóźniony → delayed"
+      "note": "opóźniony → delayed",
+      "wym": "maj flajt iz dilejd"
     },
     {
       "id": "pdr11",
@@ -105,7 +115,8 @@
       "pl": "Gdzie mogę się odprawić?",
       "en": "Where can I check in?",
       "chunks": ["Where can I", "check in?"],
-      "note": "gdzie mogę → where can I"
+      "note": "gdzie mogę → where can I",
+      "wym": "łer ken aj czek in"
     },
     {
       "id": "pdr12",
@@ -113,7 +124,8 @@
       "pl": "Czy to właściwa bramka?",
       "en": "Is this the right gate?",
       "chunks": ["Is this", "the right gate?"],
-      "note": "czy to → is this"
+      "note": "czy to → is this",
+      "wym": "iz dis de rajt gejt"
     },
     {
       "id": "pdr13",
@@ -122,7 +134,8 @@
       "en": "I have a reservation",
       "chunks": ["I have", "a reservation"],
       "note": "mam → I have",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "aj hew e rezerwejszyn"
     },
     {
       "id": "pdr14",
@@ -130,7 +143,8 @@
       "pl": "Mogę prosić klucz?",
       "en": "Can I have the key?",
       "chunks": ["Can I have", "the key?"],
-      "note": "mogę prosić → can I have"
+      "note": "mogę prosić → can I have",
+      "wym": "ken aj hew de ki"
     },
     {
       "id": "pdr15",
@@ -138,7 +152,8 @@
       "pl": "O której jest śniadanie?",
       "en": "What time is breakfast?",
       "chunks": ["What time is", "breakfast?"],
-      "note": "o której → what time"
+      "note": "o której → what time",
+      "wym": "łot tajm iz brekfast"
     },
     {
       "id": "pdr16",
@@ -146,7 +161,8 @@
       "pl": "W pokoju jest za zimno",
       "en": "The room is too cold",
       "chunks": ["The room", "is too cold"],
-      "note": "za zimno → too cold"
+      "note": "za zimno → too cold",
+      "wym": "de rum iz tu kold"
     },
     {
       "id": "pdr17",
@@ -154,7 +170,8 @@
       "pl": "Chciałabym się wymeldować",
       "en": "I would like to check out",
       "chunks": ["I would like to", "check out"],
-      "note": "chciałabym → I would like to"
+      "note": "chciałabym → I would like to",
+      "wym": "aj łud lajk tu czek ałt"
     },
     {
       "id": "pdr18",
@@ -162,7 +179,8 @@
       "pl": "Czy śniadanie jest wliczone?",
       "en": "Is breakfast included?",
       "chunks": ["Is breakfast", "included?"],
-      "note": "wliczone → included"
+      "note": "wliczone → included",
+      "wym": "iz brekfast inkludyd"
     },
     {
       "id": "pdr19",
@@ -170,7 +188,8 @@
       "pl": "Ile to kosztuje?",
       "en": "How much is this?",
       "chunks": ["How much", "is this?"],
-      "note": "ile → how much"
+      "note": "ile → how much",
+      "wym": "hał macz iz dis"
     },
     {
       "id": "pdr20",
@@ -178,7 +197,8 @@
       "pl": "Czy przyjmujecie karty?",
       "en": "Do you take cards?",
       "chunks": ["Do you take", "cards?"],
-      "note": "czy przyjmujecie → do you take"
+      "note": "czy przyjmujecie → do you take",
+      "wym": "du ju tejk kardz"
     },
     {
       "id": "pdr21",
@@ -187,7 +207,8 @@
       "en": "I am just looking",
       "chunks": ["I am", "just looking"],
       "note": "tylko oglądam → just looking",
-      "lemma": "look"
+      "lemma": "look",
+      "wym": "aj em dżast luking"
     },
     {
       "id": "pdr22",
@@ -195,7 +216,8 @@
       "pl": "Mogę przymierzyć?",
       "en": "Can I try it on?",
       "chunks": ["Can I", "try it on?"],
-      "note": "przymierzyć → try it on"
+      "note": "przymierzyć → try it on",
+      "wym": "ken aj traj it on"
     },
     {
       "id": "pdr23",
@@ -204,7 +226,8 @@
       "en": "Do you have a smaller size?",
       "chunks": ["Do you have", "a smaller size?"],
       "note": "mniejszy → smaller",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "du ju hew e smoler sajz"
     },
     {
       "id": "pdr24",
@@ -213,7 +236,8 @@
       "en": "I will take it",
       "chunks": ["I will take", "it"],
       "note": "wezmę → I will take",
-      "lemma": "take"
+      "lemma": "take",
+      "wym": "aj łil tejk it"
     },
     {
       "id": "pdr25",
@@ -221,7 +245,8 @@
       "pl": "Gdzie jest dworzec?",
       "en": "Where is the station?",
       "chunks": ["Where is", "the station?"],
-      "note": "gdzie jest → where is"
+      "note": "gdzie jest → where is",
+      "wym": "łer iz de stejszyn"
     },
     {
       "id": "pdr26",
@@ -229,7 +254,8 @@
       "pl": "Stolik dla dwóch osób, proszę",
       "en": "A table for two, please",
       "chunks": ["A table for two,", "please"],
-      "note": "stolik dla dwóch → a table for two"
+      "note": "stolik dla dwóch → a table for two",
+      "wym": "e tejbl for tu pliz"
     },
     {
       "id": "pdr27",
@@ -237,7 +263,8 @@
       "pl": "Mogę prosić menu?",
       "en": "Can I see the menu?",
       "chunks": ["Can I see", "the menu?"],
-      "note": "mogę prosić → can I see"
+      "note": "mogę prosić → can I see",
+      "wym": "ken aj si de meniu"
     },
     {
       "id": "pdr28",
@@ -245,7 +272,8 @@
       "pl": "Rachunek, proszę",
       "en": "The bill, please",
       "chunks": ["The bill,", "please"],
-      "note": "rachunek → the bill"
+      "note": "rachunek → the bill",
+      "wym": "de bil pliz"
     },
     {
       "id": "pdr29",
@@ -253,7 +281,8 @@
       "pl": "Jak tam dojadę?",
       "en": "How do I get there?",
       "chunks": ["How do I", "get there?"],
-      "note": "jak dojadę → how do I get"
+      "note": "jak dojadę → how do I get",
+      "wym": "hał du aj get der"
     },
     {
       "id": "pdr30",
@@ -261,7 +290,8 @@
       "pl": "Możesz mi pomóc?",
       "en": "Can you help me?",
       "chunks": ["Can you", "help me?"],
-      "note": "możesz → can you"
+      "note": "możesz → can you",
+      "wym": "ken ju help mi"
     }
   ],
   "dictation": [],

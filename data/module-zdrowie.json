@@ -18,7 +18,8 @@
       "en": "I have a headache",
       "chunks": ["I have", "a headache"],
       "note": "boli głowa → I have a headache",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "aj hew e hedejk"
     },
     {
       "id": "zdr02",
@@ -27,7 +28,8 @@
       "en": "I feel sick",
       "chunks": ["I feel", "sick"],
       "note": "źle się czuję → I feel sick",
-      "lemma": "feel"
+      "lemma": "feel",
+      "wym": "aj fil sik"
     },
     {
       "id": "zdr03",
@@ -36,7 +38,8 @@
       "en": "It hurts here",
       "chunks": ["It hurts", "here"],
       "note": "boli tutaj → it hurts here",
-      "lemma": "hurt"
+      "lemma": "hurt",
+      "wym": "it herts hir"
     },
     {
       "id": "zdr04",
@@ -45,7 +48,8 @@
       "en": "I am tired all the time",
       "chunks": ["I am tired", "all the time"],
       "note": "ciągle → all the time",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "aj em tajerd ol de tajm"
     },
     {
       "id": "zdr05",
@@ -54,7 +58,8 @@
       "en": "I have a cold",
       "chunks": ["I have", "a cold"],
       "note": "przeziębienie → a cold",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "aj hew e kold"
     },
     {
       "id": "zdr06",
@@ -63,7 +68,8 @@
       "en": "My back hurts",
       "chunks": ["My back", "hurts"],
       "note": "plecy po angielsku w liczbie pojedynczej → back",
-      "lemma": "hurt"
+      "lemma": "hurt",
+      "wym": "maj bek herts"
     },
     {
       "id": "zdr07",
@@ -72,7 +78,8 @@
       "en": "I need a doctor",
       "chunks": ["I need", "a doctor"],
       "note": "potrzebuję → I need",
-      "lemma": "need"
+      "lemma": "need",
+      "wym": "aj nid e doktor"
     },
     {
       "id": "zdr08",
@@ -80,7 +87,8 @@
       "pl": "Mogę umówić wizytę?",
       "en": "Can I make an appointment?",
       "chunks": ["Can I make", "an appointment?"],
-      "note": "umówić wizytę → make an appointment"
+      "note": "umówić wizytę → make an appointment",
+      "wym": "ken aj mejk en epojntment"
     },
     {
       "id": "zdr09",
@@ -89,7 +97,8 @@
       "en": "Where does it hurt?",
       "chunks": ["Where does", "it hurt?"],
       "note": "gdzie boli → where does it hurt",
-      "lemma": "hurt"
+      "lemma": "hurt",
+      "wym": "łer daz it hert"
     },
     {
       "id": "zdr10",
@@ -98,7 +107,8 @@
       "en": "I am allergic to penicillin",
       "chunks": ["I am allergic", "to penicillin"],
       "note": "uczulona na → allergic to",
-      "lemma": "be"
+      "lemma": "be",
+      "wym": "aj em elerdżik tu penisilin"
     },
     {
       "id": "zdr11",
@@ -107,7 +117,8 @@
       "en": "Take this medicine",
       "chunks": ["Take", "this medicine"],
       "note": "proszę wziąć → take (polecenie)",
-      "lemma": "take"
+      "lemma": "take",
+      "wym": "tejk dis medsyn"
     },
     {
       "id": "zdr12",
@@ -116,7 +127,8 @@
       "en": "Call an ambulance",
       "chunks": ["Call", "an ambulance"],
       "note": "karetka → ambulance",
-      "lemma": "call"
+      "lemma": "call",
+      "wym": "kol en embiulans"
     },
     {
       "id": "zdr13",
@@ -125,7 +137,8 @@
       "en": "Do you have something for a cough?",
       "chunks": ["Do you have", "something", "for a cough?"],
       "note": "na kaszel → for a cough",
-      "lemma": "have"
+      "lemma": "have",
+      "wym": "du ju hew samting for e kof"
     },
     {
       "id": "zdr14",
@@ -134,7 +147,8 @@
       "en": "How often do I take it?",
       "chunks": ["How often", "do I take it?"],
       "note": "jak często → how often",
-      "lemma": "take"
+      "lemma": "take",
+      "wym": "hał ofen du aj tejk it"
     },
     {
       "id": "zdr15",
@@ -142,7 +156,8 @@
       "pl": "Czy jest bez recepty?",
       "en": "Is it available without a prescription?",
       "chunks": ["Is it available", "without a prescription?"],
-      "note": "bez recepty → without a prescription"
+      "note": "bez recepty → without a prescription",
+      "wym": "iz it ewejlebl łidałt e priskripszyn"
     },
     {
       "id": "zdr16",
@@ -150,7 +165,8 @@
       "pl": "Raz dziennie",
       "en": "Once a day",
       "chunks": ["Once", "a day"],
-      "note": "raz dziennie → once a day"
+      "note": "raz dziennie → once a day",
+      "wym": "łans e dej"
     },
     {
       "id": "zdr17",
@@ -158,7 +174,8 @@
       "pl": "Po jedzeniu",
       "en": "After meals",
       "chunks": ["After", "meals"],
-      "note": "po jedzeniu → after meals"
+      "note": "po jedzeniu → after meals",
+      "wym": "after milz"
     },
     {
       "id": "zdr18",
@@ -166,7 +183,8 @@
       "pl": "Poproszę coś przeciwbólowego",
       "en": "I would like some painkillers",
       "chunks": ["I would like", "some painkillers"],
-      "note": "przeciwbólowe → painkillers"
+      "note": "przeciwbólowe → painkillers",
+      "wym": "aj łud lajk sam pejnkilers"
     }
   ],
   "dictation": []
