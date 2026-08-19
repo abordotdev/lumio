@@ -105,7 +105,7 @@ export function boot({ modules, route }) {
   applyPalette(store.get().palette);
   montujPowloke(document.getElementById('app'), danePowloki(), {
     onNav: (id) => go(id),
-    onDzwonek: pokazSprawy,
+    onOdswiez: odswiezApke,
     maskotka: () => avatarNaPodlodze(store.get().equipped, { look: store.get().look || {} }),
   });
   bindChrome();
@@ -515,11 +515,16 @@ function sprawyDoZalatwienia() {
   return lista;
 }
 
-function pokazSprawy() {
-  const sprawy = sprawyDoZalatwienia();
-  if (!sprawy.length) return toast('Nic nie czeka. Możesz się uczyć.');
-  toast(sprawy[0]);
-  if (sprawy.length > 1) setTimeout(() => toast(sprawy[1]), 2600);
+// Odświeżenie apki z przycisku w górnym pasku: sprawdza nową wersję i przeładowuje.
+async function odswiezApke() {
+  toast('Odświeżam…');
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration?.();
+    if (reg) await reg.update();
+  } catch {
+    /* i tak przeładowujemy */
+  }
+  window.location.reload();
 }
 
 /** Dane dla wspolnej oprawy - pasek boczny, gorny i ludzik w rogu. */
@@ -1517,29 +1522,6 @@ function settings() {
   );
 
   wrap.appendChild(kartaInstalacji());
-
-  // Odświeżenie na telefonie z ekranu głównego — nie ma tam paska adresu, więc
-  // przycisk sam sprawdza nową wersję i przeładowuje.
-  const odswiezCard = h(`<div class="card">
-    <span class="label">Aktualizacja</span>
-    <h2>Odśwież aplikację</h2>
-    <p class="muted">Zwykle łapie nowości sama. Jak coś nie wskoczyło — kliknij, a pobierze
-      najnowszą wersję.</p>
-    <div class="row"><button class="primary" type="button" id="odswiez">Odśwież do najnowszej</button></div>
-  </div>`);
-  odswiezCard.querySelector('#odswiez').addEventListener('click', async () => {
-    const btn = odswiezCard.querySelector('#odswiez');
-    btn.disabled = true;
-    btn.textContent = 'Odświeżam…';
-    try {
-      const reg = await navigator.serviceWorker?.getRegistration?.();
-      if (reg) await reg.update();
-    } catch {
-      /* i tak przeładowujemy */
-    }
-    window.location.reload();
-  });
-  wrap.appendChild(odswiezCard);
 
   const paletteCard = h(`<div class="card">
     <span class="label">Wygląd strony</span>

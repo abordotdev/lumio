@@ -67,7 +67,7 @@ export function montujPowloke(host, dane, h = {}) {
         <span class="chip"><span class="cic">${icon('i-route', 17)}</span><b class="km"></b><span class="un">km</span></span>
         <span class="chip coin"><span class="cic">${icon('i-coin', 17)}</span><b class="monety"></b><span class="un">monet</span></span>
         <button class="icon-btn ust" type="button" data-nav="settings" aria-label="Ustawienia">${icon('i-gear', 19)}</button>
-        <button class="icon-btn" type="button" data-akcja="dzwonek" aria-label="Co wymaga uwagi">${icon('i-bell', 19)}<i class="kropka" hidden></i></button>
+        <button class="icon-btn" type="button" data-akcja="odswiez" aria-label="Odśwież aplikację">${icon('i-refresh', 19)}</button>
       </header>
       <div class="kolumna" id="tresc"></div>
     </div>
@@ -89,7 +89,6 @@ export function montujPowloke(host, dane, h = {}) {
     lv: host.querySelector('.usr .lv'),
     km: host.querySelector('.pasek .km'),
     monety: host.querySelector('.pasek .monety'),
-    kropka: host.querySelector('.kropka'),
     ludzik: host.querySelector('.ludzik-rog svg'),
     bubble: host.querySelector('.ludzik-rog .bubble'),
     tresc: host.querySelector('#tresc'),
@@ -104,7 +103,7 @@ export function montujPowloke(host, dane, h = {}) {
     const akcja = e.target.closest('[data-akcja]');
     if (!akcja) return;
     e.preventDefault();
-    if (akcja.dataset.akcja === 'dzwonek') return handlery.onDzwonek?.();
+    if (akcja.dataset.akcja === 'odswiez') return handlery.onOdswiez?.();
   });
 
   odswiezPowloke(dane);
@@ -120,7 +119,6 @@ export function odswiezPowloke(dane) {
   el.lv.textContent = dane.podpis;
   el.km.textContent = dane.km;
   el.monety.textContent = dane.monety;
-  el.kropka.hidden = !dane.uwaga;
   el.tresc.classList.toggle('waska', Boolean(dane.waska));
 
   const rysunek = handlery.maskotka ? handlery.maskotka() : '';
