@@ -8,8 +8,8 @@ alwaysApply: true
 Źródło prawdy: `AGENTS.md`. Stosuj zawsze.
 
 - Jak czegoś nie wiesz — pytaj. Nie zgaduj.
-- Nie odpalaj testów całej aplikacji. Tylko krótkie testy zmienianej funkcjonalności. Po approve — wyłącznie edytowane komponenty.
+- Nie odpalaj wszystkich testów naraz — najpierw zapytaj i poczekaj na zgodę. Sam z siebie: tylko testy zmienianej funkcjonalności.
 - Przy commicie haczyk sam odpala Prettier i ESLint na ruszonych plikach. Nie formatuj całego repo. Haczka nie omijaj.
 - Runtime bez zależności. Nie dokładaj bibliotek do działania apki bez pytania.
 - Małe zmiany. Bez refaktorów i bez ruszania `data/`, jeśli zadanie tego nie dotyczy.
-- Dobre praktyki zawsze: review przed wrzutką na stronę, zmiana na gałęzi (nie prosto na `main`), bez sekretów, bez dziur w grze oznaczanych jako gotowe.
+- Dobre praktyki zawsze: review przed commitem, zmiana na gałęzi (nie prosto na `main`), bez sekretów, bez dziur w grze oznaczanych jako gotowe.
