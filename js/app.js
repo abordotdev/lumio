@@ -1271,7 +1271,7 @@ function wardrobe() {
     dressHead(state, {
       label: 'Szafa',
       title: 'Ubierz się',
-      hint: 'Górę i dół zakładasz osobno. Kliknij coś założonego, żeby to zdjąć.',
+      hint: 'Górę i dół zakładasz osobno. Kliknij to, co masz na sobie, żeby zdjąć.',
     })
   );
 
@@ -1291,7 +1291,7 @@ function wardrobe() {
         h(`<button class="thing ${on ? 'on' : ''}" type="button" data-item="${esc(item.id)}">
         <div class="thing-art">${renderItemIcon(item, { size: 72, look: state.look })}</div>
         <span class="n">${esc(item.name)}</span>
-        <span class="s">${on ? 'na sobie — kliknij, by zdjąć' : 'założ'}</span>
+        <span class="s">${on ? 'na sobie' : 'załóż'}</span>
       </button>`);
       btn.addEventListener('click', () => {
         const wornNow = store.get().equipped[item.slot] === item.id;
@@ -1304,7 +1304,7 @@ function wardrobe() {
           const worn = next.equipped[it.slot] === it.id;
           b.classList.toggle('on', worn);
           const s = b.querySelector('.s');
-          if (s) s.textContent = worn ? 'na sobie — kliknij, by zdjąć' : 'założ';
+          if (s) s.textContent = worn ? 'na sobie' : 'załóż';
         }
       });
       grid.appendChild(btn);

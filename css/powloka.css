@@ -295,14 +295,24 @@
   padding: 14px 40px 170px;
   display: flex;
   flex-direction: column;
-  gap: 34px;
+  --odstep: 34px;
+  gap: var(--odstep);
+}
+
+/* Ekran moze oddac jedna owijke zamiast osobnych sekcji - wtedy odstep z kolumny
+   nie dziala, bo dziecko jest tylko jedno, i sekcje sklejaja sie w scianę.
+   Owijka dostaje wiec ten sam uklad. */
+.app .kolumna > div:only-child:not([style*='flex']) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--odstep);
 }
 
 /* Ekrany, ktore maja jeszcze stary uklad kart, dostaja wezsza kolumne -
    szeroka jest dla ekranu startowego i mapy. */
 .app .kolumna.waska {
   max-width: 50rem;
-  gap: 1.5rem;
+  --odstep: 1.5rem;
 }
 
 /* Ludzik stoi w rogu tylko wtedy, gdy okno jest na tyle szerokie, ze da sie
@@ -462,7 +472,9 @@
   box-shadow: none;
 }
 
-.app #tresc button:not(.tile) {
+/* .box-lid i .thing maja wlasny wyglad - ogolna regula zmniejszala prezent
+   w skrzynce do 14 px i splaszczala kafelki w szafie. */
+.app #tresc button:not(.tile):not(.box-lid):not(.thing) {
   font-family: inherit;
   font-weight: 800;
   font-size: 14px;
@@ -473,12 +485,12 @@
   color: var(--ink);
   transition: 0.16s;
 }
-.app #tresc button:not(.tile):hover:not(:disabled) {
+.app #tresc button:not(.tile):not(.box-lid):not(.thing):hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--b700) 40%, var(--line));
   color: var(--b900);
   transform: translateY(-1px);
 }
-.app #tresc button:not(.tile):disabled {
+.app #tresc button:not(.tile):not(.box-lid):not(.thing):disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
@@ -555,4 +567,93 @@
   .app .ludzik-rog {
     display: none;
   }
+}
+
+/* ---------- skrzynka po lekcji ---------- */
+.app #tresc .box-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0 6px;
+}
+.app #tresc .box-lid {
+  font-size: 5.5rem;
+  line-height: 1;
+  width: 11rem;
+  height: 11rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: radial-gradient(circle at 50% 40%, var(--warm100), var(--b100));
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--b700) 18%, transparent);
+  transition: 0.16s;
+}
+.app #tresc .box-lid:hover {
+  transform: scale(1.04);
+}
+/* Tylko iskierka jest wielka - napis z nagroda ma wlasny rozmiar nizej. */
+.app #tresc .box-wrap .reveal:not(.prize) {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+.app #tresc .prize {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--b900);
+  margin: 0;
+  text-align: center;
+}
+
+/* ---------- kafelki w szafie i sklepie ---------- */
+.app #tresc .thing {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  transition: 0.16s;
+}
+.app #tresc .thing:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(30, 25, 45, 0.09);
+}
+.app #tresc .thing .n {
+  font-weight: 800;
+  font-size: 13.5px;
+  color: var(--ink);
+  text-align: center;
+}
+/* Napis pod przedmiotem niesie stan, wiec ma kolor: zielony gdy na sobie,
+   spokojny gdy tylko do zalozenia. */
+.app #tresc .thing .s {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--b700);
+  background: var(--b100);
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+.app #tresc .thing.on {
+  border-color: var(--b500);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--b500) 30%, transparent);
+}
+.app #tresc .thing.on .s {
+  color: #fff;
+  background: linear-gradient(135deg, var(--b500), var(--b700));
+}
+.app #tresc .thing.drogo .s,
+.app #tresc .thing:disabled .s {
+  color: var(--muted);
+  background: var(--bg);
 }
