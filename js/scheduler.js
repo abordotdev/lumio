@@ -124,6 +124,54 @@ export function buildReview(modules) {
   };
 }
 
+export const COMEBACK_ITEMS = 10;
+
+/**
+ * Ile kilometrów i monet za lekcję.
+ *
+ * Lekcja doprowadzona do końca — czy to na materiale, czy na czasie — płaci pełną stawkę.
+ * Gorszy dzień nie jest karany, tak było umówione.
+ *
+ * Ale przerwana w połowie płaci proporcjonalnie. Bez tego wystarczyło kliknąć
+ * „Zaczynamy", odpowiedzieć raz i przerwać, żeby dostać całe 20 km — a wtedy
+ * cała trasa przestaje cokolwiek znaczyć.
+ */
+export function payout({ answered, target, review, aborted }) {
+  const pelneKm = review ? 10 : LESSON_KM;
+  const pelneMonety = review ? 10 : LESSON_COINS;
+  if (!answered) return { km: 0, coins: 0 };
+  if (!aborted) return { km: pelneKm, coins: pelneMonety };
+  const udzial = target > 0 ? Math.min(1, answered / target) : 0;
+  return { km: Math.round(pelneKm * udzial), coins: Math.round(pelneMonety * udzial) };
+}
+
+/**
+ * Pierwsza lekcja po długiej przerwie.
+ *
+ * Nie sypiemy jej w twarz liczbą zaległych zdań i nie zaczynamy od tych, które
+ * szły najgorzej. Zaczynamy od najlepiej opanowanych — żeby wróciła pewność,
+ * zanim wrócą trudne zdania. Te słabsze przyjdą przy następnej lekcji.
+ */
+export function buildComeback(modules) {
+  const used = new Set();
+  const known = allPairs(modules)
+    .filter((p) => itemState(p.item.id).introduced)
+    .sort((a, b) => {
+      const boxDiff = itemState(b.item.id).box - itemState(a.item.id).box;
+      if (boxDiff !== 0) return boxDiff;
+      return itemState(b.item.id).streak - itemState(a.item.id).streak;
+    });
+  const picked = take(known, COMEBACK_ITEMS, used);
+  return {
+    steps: picked.map((pair, i) =>
+      step(pair, reviewKind(pair, i), { isNew: false, review: true, comeback: true })
+    ),
+    focus: null,
+    review: true,
+    comeback: true,
+  };
+}
+
 export function nextPattern(module) {
   for (const p of module.patternOrder || []) {
     if ((module.translations || []).some((t) => t.pattern === p && !itemState(t.id).introduced)) {

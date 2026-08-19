@@ -64,8 +64,11 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
   z tłumaczeń pod innym id, więc lekcja porównuje też sam tekst, nie tylko id.
 - **Dyktanda to w większości te same zdania co tłumaczenia** — w module czasy-it 7 z 9.
   Do przerobienia razem z treścią: dyktando ma ćwiczyć słuch na czymś, czego nie widziałaś.
-- **Powrót po przerwie straszy liczbą** — po kilku miesiącach ekran startowy wita napisem
-  „186 zdań czeka na powtórkę". To jest ten moment, w którym się zamyka apkę.
+- ~~**Powrót po przerwie straszy liczbą**~~ — naprawione. Po 14 dniach bez lekcji ekran startowy
+  mówi „Nie było Cię 3 miesiące. Zaczynamy spokojnie", pierwsza lekcja idzie od najlepiej
+  opanowanych zdań, a pomyłka cofa o jeden krok zamiast kasować miesiące.
+- ~~**Przerwana lekcja płaciła pełne 20 km**~~ — naprawione. Wystarczyło kliknąć „Zaczynamy",
+  odpowiedzieć raz i przerwać. Teraz przerwana płaci proporcjonalnie, dokończona pełną stawkę.
 - **`forms.js` działa na 24 zdaniach ze 186** — tabela czasowników kończy się na `t24`,
   a moduł czasy-it ma 42 zdania. Pozostałe cztery moduły nie mają w niej nic.
 - **Cztery moduły z pięciu nie tłumaczą błędów** — praca 0 pułapek, zadania 0, rekrutacja 2 na 54,

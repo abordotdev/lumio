@@ -3,13 +3,7 @@ import { esc, h, mount, shuffle, seedFrom, toast } from './ui.js';
 import { grade } from './grade.js';
 import * as speech from './speech.js';
 import * as store from './store.js';
-import {
-  buildLesson,
-  buildReview,
-  LESSON_MAX_ITEMS,
-  LESSON_KM,
-  LESSON_COINS,
-} from './scheduler.js';
+import { buildLesson, buildReview, buildComeback, payout, LESSON_MAX_ITEMS } from './scheduler.js';
 import { formHint, tileBank, usesTenseTiles } from './forms.js';
 
 const KIND_LABEL = {
@@ -21,10 +15,13 @@ const KIND_LABEL = {
 const MAX_STEPS = 15;
 const MAX_REQUEUE = 5;
 
-export function startLesson({ module, modules, onFinish, review = false }) {
+export function startLesson({ module, modules, onFinish, review = false, comeback = false }) {
   const state = store.get();
   const wszystkie = modules && modules.length ? modules : [module];
-  const built = review ? buildReview(wszystkie) : buildLesson(module, state, wszystkie);
+  let built;
+  if (comeback) built = buildComeback(wszystkie);
+  else if (review) built = buildReview(wszystkie);
+  else built = buildLesson(module, state, wszystkie);
   const { steps, focus } = built;
 
   if (!steps.length) {
@@ -541,8 +538,12 @@ function finish(session, module, onFinish, reason) {
   if (count === 0) return onFinish({ aborted: true });
 
   const seconds = Math.round(elapsed(session) / 1000);
-  const km = session.review ? 10 : LESSON_KM;
-  const coins = session.review ? 10 : LESSON_COINS;
+  const { km, coins } = payout({
+    answered: count,
+    target: Math.min(session.steps.length, MAX_STEPS),
+    review: session.review,
+    aborted: reason === 'przerwane',
+  });
   store.addLesson({ count, correct: session.correct, km, coins, seconds });
   if (session.focus) {
     const left = module.translations.filter(

@@ -159,12 +159,35 @@ export function recordAnswer(id, correct) {
   } else {
     it.wrong += 1;
     it.streak = 0;
-    it.box = 0;
+    // Po długiej przerwie zapominanie jest normalne. Jedna pomyłka nie może
+    // kasować miesięcy postępu — cofa o jeden krok, nie na sam dół.
+    it.box = isComeback() ? Math.max(0, it.box - 1) : 0;
     // Źle = wraca od razu, nie za 10 minut.
     it.due = Date.now();
   }
   save();
   return it;
+}
+
+// Po tylu dniach bez lekcji traktujemy wejście jako powrót, nie jak zwykły dzień.
+export const COMEBACK_AFTER_DAYS = 14;
+
+export function lastLessonAt() {
+  const list = state.lessons || [];
+  return list.length ? list[list.length - 1].at : null;
+}
+
+export function daysSinceLastLesson() {
+  const at = lastLessonAt();
+  if (!at) return null;
+  const diff = Date.now() - new Date(at).getTime();
+  return Math.floor(diff / (24 * 3600 * 1000));
+}
+
+// Nie trzymamy osobnej flagi: gdy tylko zrobisz lekcję, przerwa przestaje istnieć sama.
+export function isComeback() {
+  const dni = daysSinceLastLesson();
+  return dni !== null && dni >= COMEBACK_AFTER_DAYS;
 }
 
 // „Umiem" znaczy: odpowiedziałam dobrze, a nie: zdanie mi się kiedyś pokazało.

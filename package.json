@@ -8,7 +8,7 @@
     "format": "prettier --write \"js/**/*.js\" \"test/**/*.mjs\" serve.js sw.js css/app.css index.html",
     "format:check": "prettier --check \"js/**/*.js\" \"test/**/*.mjs\" serve.js sw.js css/app.css index.html",
     "prepare": "husky",
-    "test": "node --test test/"
+    "test": "node --test \"test/**/*.test.mjs\""
   },
   "lint-staged": {
     "*.css": "prettier --write",
