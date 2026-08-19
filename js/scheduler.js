@@ -272,8 +272,16 @@ export function buildLesson(module, state, opcje = {}) {
     used
   ).map((pair) => step(pair, 'dictate'));
 
-  const pools = [tiles, typed.slice(0, 4), dictations];
-  const order = [0, 1, 0, 2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 1, 2];
+  // Reakcje: krótka odzywka na sytuację (np. „deploy padł" → „Oh no, what happened?").
+  // Bez polskiego — sama dobierasz formę. Jedna na lekcję, jeśli moduł je ma.
+  const reactions = take(
+    (module.reactions || []).map((item) => ({ item, mod: module })).sort(unseenFirst),
+    1,
+    used
+  ).map((pair) => step(pair, 'situation'));
+
+  const pools = [tiles, typed.slice(0, 4), dictations, reactions];
+  const order = [0, 1, 0, 2, 0, 3, 0, 1, 0, 2, 0, 1, 0, 2, 3];
   const steps = [];
   for (const p of order) {
     if (pools[p].length) steps.push(pools[p].shift());

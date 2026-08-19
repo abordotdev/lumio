@@ -222,3 +222,32 @@ test('wzorzec, który mieści się w jednej lekcji, nie dostaje numeru części'
   assert.equal(lessons.length, 1);
   assert.equal(lessons[0].czesc, 0, 'jedna część to żadna część — bez dopisku');
 });
+
+test('reakcja modułu wchodzi do lekcji jako sytuacja', () => {
+  fresh();
+  const mod = {
+    id: 'reak',
+    title: 'reak',
+    patterns: { p: 'p' },
+    patternOrder: ['p'],
+    translations: Array.from({ length: 6 }, (_, i) => ({
+      id: `rk${i}`,
+      pattern: 'p',
+      pl: `polskie ${i}`,
+      en: `english ${i}`,
+      chunks: [`english ${i}`],
+    })),
+    reactions: [
+      {
+        id: 'rr1',
+        situation: 'Deploy padł.',
+        en: 'Oh no, what happened?',
+        chunks: ['Oh no', 'what happened?'],
+      },
+    ],
+    dictation: [],
+  };
+  const { steps } = buildLesson(mod, store.get());
+  const sytuacja = steps.find((s) => s.kind === 'situation' && s.item.id === 'rr1');
+  assert.ok(sytuacja, 'reakcja ma trafić do lekcji jako krok „sytuacja"');
+});

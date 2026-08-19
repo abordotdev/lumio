@@ -143,3 +143,31 @@ test('każde zdanie ma wyjaśnienie, po co ta forma', () => {
   const braki = zdania.filter((z) => !z.note).map((z) => z.id);
   assert.deepEqual(braki, []);
 });
+
+// Reakcje: krótkie odzywki na sytuację. Nie mają polskiego zdania (kontekst jest
+// po polsku w polu situation), więc sprawdzamy je osobno od reszty.
+const reakcje = moduly.flatMap((m) => (m.dane.reactions || []).map((r) => ({ ...r, modul: m.id })));
+
+test('każda reakcja ma sytuację, angielski i kawałki', () => {
+  const braki = reakcje
+    .filter((r) => !r.situation || !r.en || !(r.chunks || []).length)
+    .map((r) => r.id);
+  assert.deepEqual(braki, []);
+});
+
+test('kawałki reakcji składają się z powrotem w całą odzywkę', () => {
+  const goly = (s) =>
+    String(s)
+      .toLowerCase()
+      .replace(/[^\p{Letter}\p{Number}]/gu, '');
+  const rozjazd = reakcje
+    .filter((r) => goly((r.chunks || []).join(' ')) !== goly(r.en))
+    .map((r) => `${r.id}: „${(r.chunks || []).join(' | ')}" ≠ „${r.en}"`);
+  assert.deepEqual(rozjazd, []);
+});
+
+test('id reakcji nie zderzają się z id zdań', () => {
+  const idZdan = new Set(zdania.map((z) => z.id));
+  const kolizje = reakcje.filter((r) => idZdan.has(r.id)).map((r) => r.id);
+  assert.deepEqual(kolizje, []);
+});

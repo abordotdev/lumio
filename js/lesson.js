@@ -439,12 +439,11 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   // Źle → to samo zdanie wraca w innym rodzaju ćwiczenia.
   if (!correct && session.requeued < MAX_REQUEUE && session.steps.length < MAX_STEPS + 4) {
     const kinds = ['tiles', 'translate', 'dictate'];
-    const nextKind = kinds[(kinds.indexOf(step.kind) + 1) % kinds.length];
-    session.steps.push({
-      ...step,
-      kind: nextKind === 'tiles' && !item.pl ? 'translate' : nextKind,
-      isNew: false,
-    });
+    let nextKind = kinds[(kinds.indexOf(step.kind) + 1) % kinds.length];
+    // Bez polskiego (reakcje, dyktanda) kafelki i tłumaczenie nie mają z czego wyjść —
+    // taki wpis wraca na słuch.
+    if (!item.pl) nextKind = 'dictate';
+    session.steps.push({ ...step, kind: nextKind, isNew: false });
     session.requeued += 1;
   }
 
