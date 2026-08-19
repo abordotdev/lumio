@@ -5,6 +5,7 @@ import * as speech from './speech.js';
 import {
   renderAvatar,
   avatarOnLine,
+  avatarNaPodlodze,
   renderItemIcon,
   renderOutfitIcon,
   withItem,
@@ -17,11 +18,20 @@ import { LESSON_KM, nextStop, moduleOutline } from './scheduler.js';
 import * as disk from './disk.js';
 import { buildMineModule, waitingPhrases, translatedPhrases } from './mine.js';
 import { createTrasaMap } from './mapa-trasy.js';
+import { renderStart } from './ekran-start.js';
 
 // Zywa instancja mapy trasy oraz kilometr, na ktorym ostatnio stanela.
 // Dzieki temu po powrocie z lekcji ludzik przejezdza roznice, zamiast pojawiac sie od razu.
 let MAPA = null;
 let MAPA_KM = null;
+
+// Zywa instancja ekranu startowego - trzeba ja sprzatnac przy zmianie widoku.
+let START = null;
+
+// Kafelek "Seria dni" jest w projekcie ekranu startowego, ale w planie Lumio stoi
+// wprost: bez serii dni, bez ognika, bez kar. Do decyzji Agnieszki.
+// false = drugi kafelek pokazuje, ile zdan juz umiesz.
+const SERIA_DNI = false;
 
 let BASE_MODULES = [];
 let MODULES = [];
@@ -98,6 +108,11 @@ export function go(screen, params = {}) {
     MAPA.destroy();
     MAPA = null;
   }
+  if (START) {
+    START.destroy();
+    START = null;
+  }
+  document.body.classList.toggle('ekran-start', screen === 'home');
   setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
@@ -389,93 +404,143 @@ function look() {
 
 // ---------- mapa ----------
 
+// Ile zdan siedzi juz na dobre - pudelko 3 znaczy, ze przetrwalo tydzien odstepu.
+function umiemZdan() {
+  let ile = 0;
+  let wszystkich = 0;
+  for (const m of MODULES) {
+    for (const t of [...(m.translations || []), ...(m.dictation || [])]) {
+      wszystkich += 1;
+      if (store.isMastered(t.id)) ile += 1;
+    }
+  }
+  return { ile, wszystkich };
+}
+
+// Co wymaga uwagi - to laduje pod dzwonkiem w prawym gornym rogu.
+function sprawyDoZalatwienia() {
+  const state = store.get();
+  const lista = [];
+  if (speech.diagnosis().level === 'blocked')
+    lista.push('Nie ma głosu — lekcje nie przeczytają zdań.');
+  if (store.backupIsStale()) lista.push('Dawno nie było kopii postępu.');
+  const czeka = (state.customPhrases || []).filter((f) => !String(f.en || '').trim()).length;
+  if (czeka) {
+    lista.push(
+      `${czeka} ${plural(czeka, 'Twoje zdanie czeka', 'Twoje zdania czekają', 'Twoich zdań czeka')} na tłumaczenie.`
+    );
+  }
+  const doOdebrania = pendingStops();
+  if (doOdebrania.length) lista.push(`${doOdebrania[0].name} — jest coś do odebrania.`);
+  return lista;
+}
+
+function daneStartu() {
+  const state = store.get();
+  const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
+  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
+  const powrot = !emptyMine && store.isComeback();
+  const next = nextStop(ROUTE, state.km);
+  const umiem = umiemZdan();
+
+  const zrobione = outline ? outline.lessons.filter((l) => l.done).length : 0;
+  const postep = outline && outline.total ? Math.round((zrobione / outline.total) * 100) : 0;
+
+  const podtytul = emptyMine
+    ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
+    : powrot
+      ? `Nie było Cię <b>${przerwaLabel(store.daysSinceLastLesson())}</b>. Zaczynamy spokojnie.`
+      : next
+        ? `Do celu zostało <b>${next.km - state.km} km</b> — ${Math.ceil((next.km - state.km) / LESSON_KM)} ${plural(Math.ceil((next.km - state.km) / LESSON_KM), 'lekcja', 'lekcje', 'lekcji')}.`
+        : 'Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.';
+
+  const opis = emptyMine
+    ? 'Najpierw dodaj kilka swoich zdań z pracy.'
+    : powrot
+      ? 'Zaczynamy od zdań, które szły Ci najlepiej. Bez pośpiechu.'
+      : outline?.dueCount
+        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę. Zajmie Ci to jakieś 10 minut.`
+        : 'Piętnaście zdań, jakieś 10 minut.';
+
+  return {
+    aktywnaZakladka: 'start',
+    me: {
+      imie: state.nick || 'Ty',
+      poziom: umiem.ile
+        ? `${umiem.ile} ${plural(umiem.ile, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}`
+        : 'Dopiero zaczynasz',
+      km: state.km,
+      monety: state.coins,
+    },
+    podtytul,
+    dymek: powrot ? 'Dobrze Cię widzieć.' : 'Gotowa na angielski?',
+    naglowekLekcji: powrot ? 'WRACAMY' : 'DZISIEJSZA LEKCJA',
+    lekcja: {
+      tytul: powrot
+        ? 'Spokojny powrót'
+        : outline?.current
+          ? `Lekcja ${outline.current.n}: ${outline.current.title}`
+          : MODULE?.title || 'Lekcja',
+      opis,
+      doPowtorki: powrot || emptyMine ? 0 : outline?.dueCount || 0,
+      postepModulu: postep,
+      przyciskStart: emptyMine ? 'Dodaj zdanie' : powrot ? 'Wracamy spokojnie' : 'Zaczynamy',
+    },
+    kafle: {
+      lekcjeZrobione: state.lessons.length,
+      lekcjeNota: outline
+        ? `${MODULE.title} · ${outline.total - zrobione} do końca`
+        : 'Wybierz moduł',
+      seria: SERIA_DNI ? store.streakDays() : null,
+      drugiLab: 'Umiem',
+      drugiVal: umiem.ile,
+      drugiJednostka: `z ${umiem.wszystkich} zdań`,
+      drugiNota: umiem.ile
+        ? 'Zdania, które przetrwały tydzień odstępu.'
+        : 'Zdanie liczy się po tygodniu.',
+    },
+  };
+}
+
+const NAV_NA_EKRAN = {
+  start: 'home',
+  moduly: 'modules',
+  mapa: 'map',
+  szafa: 'wardrobe',
+  sklep: 'shop',
+  ustawienia: 'settings',
+};
+
 function home() {
   refreshModules();
   const state = store.get();
-  const wrap = h(`<div class="home-stack"></div>`);
-
-  if (store.backupIsStale()) {
-    const b = h(`<div class="banner warn">
-      <span class="grow"><b>Dawno nie było kopii.</b> Zapisz postęp, zanim przeglądarka go skasuje.</span>
-      <button class="small primary" type="button">Zapisz kopię</button>
-    </div>`);
-    b.querySelector('button').addEventListener('click', () => go('settings'));
-    wrap.appendChild(b);
-  }
-
-  const d = speech.diagnosis();
-  if (d.level === 'blocked') wrap.appendChild(h(voiceBanner()));
-
-  const who = state.nick || 'Ty';
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
-  const startLabel = emptyMine
-    ? 'Dodaj zdanie'
-    : !outline
-      ? 'Zaczynamy'
-      : outline.reviewOnly
-        ? 'Zaczynamy powtórkę'
-        : 'Zaczynamy';
-  const next = nextStop(ROUTE, state.km);
-
-  // Powrót po przerwie. To jest ten jeden ekran, który decyduje, czy wrócisz drugi raz —
-  // więc nie wita liczbą zaległych zdań, tylko czymś, od czego da się zacząć.
   const powrot = !emptyMine && store.isComeback();
-  const missionHint = emptyMine
-    ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
-    : powrot
-      ? `Nie było Cię ${przerwaLabel(store.daysSinceLastLesson())}. Zaczynamy spokojnie — od zdań, które szły Ci najlepiej.`
-      : outline?.dueCount
-        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
-        : next
-          ? `Zostało ${next.km - state.km} km do ${next.name}.`
-          : 'Koniec narysowanej trasy.';
-  const lessonTitle = powrot
-    ? 'Wracamy'
-    : outline?.current
-      ? `Lekcja ${outline.current.n}: ${outline.current.title}`
-      : MODULE?.title || 'Lekcja';
 
-  wrap.appendChild(
-    h(`<div class="hello">
-    <h1>Cześć, ${esc(who)}!</h1>
-    <p class="muted">Gotowa na angielski?</p>
-  </div>`)
-  );
-
-  const mission = h(`<div class="mission">
-    <div class="mission-copy">
-      <span class="label">Dzisiejsza lekcja</span>
-      <h2>${esc(lessonTitle)}</h2>
-      <p>${esc(missionHint)}</p>
-      <div class="row">
-        <button class="primary" type="button" id="start">${esc(powrot ? 'Wracamy spokojnie' : startLabel)}</button>
-        ${
-          !powrot && outline && outline.dueCount && !outline.reviewOnly
-            ? `<button type="button" id="review">Powtórka (${outline.dueCount})</button>`
-            : ''
-        }
-      </div>
-    </div>
-    <div class="mission-doll">${doll(state.equipped, 132)}</div>
-  </div>`);
-  mission.querySelector('#start').addEventListener('click', () => {
-    if (emptyMine) return go('phrases');
-    if (powrot) return runLesson({ comeback: true });
-    runLesson({ review: Boolean(outline?.reviewOnly) });
-  });
-  mission.querySelector('#review')?.addEventListener('click', () => runLesson({ review: true }));
-  wrap.appendChild(mission);
-
-  wrap.appendChild(
-    h(`<div class="stat-row">
-    <div class="stat"><b>${state.km}</b><span>kilometrów</span></div>
-    <div class="stat"><b>${state.lessons.length}</b><span>lekcji</span></div>
-    <div class="stat"><b>${state.coins}</b><span>monet</span></div>
-  </div>`)
-  );
-
+  const wrap = h(`<div></div>`);
+  if (speech.diagnosis().level === 'blocked') wrap.appendChild(h(voiceBanner()));
+  const gniazdo = h(`<div></div>`);
+  wrap.appendChild(gniazdo);
   mount(wrap);
+
+  START = renderStart(gniazdo, daneStartu(), {
+    maskotka: () => avatarNaPodlodze(state.equipped, { look: state.look || {} }),
+    onLekcja() {
+      if (emptyMine) return go('phrases');
+      if (powrot) return runLesson({ comeback: true });
+      runLesson({ review: Boolean(outline?.reviewOnly) });
+    },
+    onPowtorka: () => runLesson({ review: true }),
+    onZmienLekcje: () => go('modules'),
+    onNav: (id) => go(NAV_NA_EKRAN[id] || 'home'),
+    onDzwonek() {
+      const sprawy = sprawyDoZalatwienia();
+      if (!sprawy.length) return toast('Nic nie czeka. Możesz się uczyć.');
+      toast(sprawy[0]);
+      if (sprawy.length > 1) setTimeout(() => toast(sprawy[1]), 2600);
+    },
+  });
 }
 
 function lessonRowsHtml(outline) {

@@ -190,6 +190,33 @@ export function isComeback() {
   return dni !== null && dni >= COMEBACK_AFTER_DAYS;
 }
 
+function dzien(iso) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+/**
+ * Ile dni pod rząd była lekcja, licząc wstecz od dziś.
+ *
+ * Wczorajszy dzień też otwiera serię — inaczej seria kasowałaby się o północy,
+ * zanim zdążysz usiąść do lekcji.
+ */
+export function streakDays(now = Date.now()) {
+  const dni = new Set((state.lessons || []).map((l) => dzien(l.at)));
+  if (!dni.size) return 0;
+
+  const dzis = dzien(new Date(now).toISOString());
+  const wczoraj = dzien(new Date(now - 24 * 3600 * 1000).toISOString());
+  if (!dni.has(dzis) && !dni.has(wczoraj)) return 0;
+
+  let ile = 0;
+  for (let i = dni.has(dzis) ? 0 : 1; i < 400; i += 1) {
+    if (!dni.has(dzien(new Date(now - i * 24 * 3600 * 1000).toISOString()))) break;
+    ile += 1;
+  }
+  return ile;
+}
+
 // „Umiem" znaczy: odpowiedziałam dobrze, a nie: zdanie mi się kiedyś pokazało.
 // Bez tego lista lekcji stawiała ptaszek za samo obejrzenie zdania.
 export function isDone(id) {

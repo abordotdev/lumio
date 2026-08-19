@@ -436,6 +436,20 @@ export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
      aria-label="Twój ludzik" class="doll">${avatarBody(equipped, { look })}</svg>`;
 }
 
+// Ludzik dla ekranu startowego. Komponent rysuje go w układzie „0 0 100 146"
+// ze stopami na y=146 — inaczej przestaje stać na podłodze. Klasa „body" jest
+// potrzebna, bo to ją komponent kołysze animacją.
+export const PODLOGA = { w: 100, h: 146 };
+
+export function avatarNaPodlodze(equipped = {}, { look = {} } = {}) {
+  const s = PODLOGA.h / DOLL.feet;
+  const x = PODLOGA.w / 2 - (DOLL.w / 2) * s;
+  return `<g class="body"><g transform="translate(${x.toFixed(2)} 0) scale(${s.toFixed(4)})">${avatarBody(
+    equipped,
+    { look }
+  )}</g></g>`;
+}
+
 // Ludzik dla mapy trasy: (0,0) wypada na stopach, rysunek idzie w górę.
 // Taki kontrakt ma komponent mapy — dzięki temu stawia postać na linii bez zgadywania wysokości.
 export function avatarOnLine(equipped = {}, { size = 54, look = {} } = {}) {
