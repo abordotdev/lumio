@@ -32,11 +32,6 @@ const server = http.createServer((req, res) => {
   }
   if (pathname.endsWith('/')) pathname += 'index.html';
 
-  if (pathname === '/api/translate') {
-    translatePl(req, res);
-    return;
-  }
-
   const target = path.join(ROOT, pathname);
   if (!target.startsWith(ROOT)) {
     res.writeHead(403).end('Nie tędy');
@@ -62,27 +57,3 @@ server.listen(PORT, () => {
   console.log(`Lumio działa na http://localhost:${PORT}`);
   console.log('Zatrzymanie: Ctrl+C');
 });
-
-async function translatePl(req, res) {
-  const json = (code, body) => {
-    res.writeHead(code, {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'no-store',
-    });
-    res.end(JSON.stringify(body));
-  };
-  try {
-    const q = new URL(req.url, 'http://localhost').searchParams.get('q') || '';
-    const text = q.trim();
-    if (!text) return json(400, { error: 'puste' });
-    const url =
-      'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=pl|en';
-    const r = await fetch(url);
-    const data = await r.json();
-    const en = String(data?.responseData?.translatedText || '').trim();
-    if (!en) return json(502, { error: 'puste tłumaczenie' });
-    return json(200, { en });
-  } catch {
-    return json(502, { error: 'tłumacz padł' });
-  }
-}
