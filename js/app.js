@@ -1460,14 +1460,38 @@ function kartaInstalacji() {
     });
     slot.appendChild(btn);
   } else if (jabłko()) {
-    slot.appendChild(
-      h(`<ol class="tiny" style="margin:.4rem 0 0;padding-left:1.1rem;line-height:1.7">
-        <li>Na dole ekranu kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką w górę).</li>
-        <li>Przewiń i wybierz <b>„Do ekranu początkowego"</b>.</li>
-        <li>Kliknij <b>Dodaj</b> w prawym górnym rogu.</li>
-      </ol>
-      <p class="tiny" style="margin:.5rem 0 0">Działa w przeglądarce <b>Safari</b>.</p>`)
-    );
+    // Na iPhonie dodać do ekranu da się TYLKO z Safari. Chrome/Firefox/Edge na iOS
+    // tego nie umieją (tak ustawił Apple) — wtedy kierujemy do Safari.
+    const nieSafari = /CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
+    if (nieSafari) {
+      const blok = h(`<div>
+        <p class="tiny" style="margin:.4rem 0 0">Na iPhonie ikonę na pulpicie dodaje się
+          <b>tylko z Safari</b> — ta przeglądarka tego nie umie (tak ustawił Apple).</p>
+        <ol class="tiny" style="margin:.5rem 0 0;padding-left:1.1rem;line-height:1.7">
+          <li>Skopiuj adres poniżej.</li>
+          <li>Otwórz <b>Safari</b> i wklej go w pasku adresu.</li>
+          <li>Kliknij <b>Udostępnij</b> ⬆️ → <b>„Do ekranu początkowego"</b> → <b>Dodaj</b>.</li>
+        </ol>
+        <div class="row" style="margin-top:.6rem"><button class="primary" type="button" data-a="kopiuj">Kopiuj adres</button></div>
+      </div>`);
+      blok.querySelector('[data-a="kopiuj"]').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(location.origin + location.pathname);
+          toast('Adres skopiowany. Wklej go w Safari.');
+        } catch {
+          toast('Skopiuj ręcznie: ' + location.host + location.pathname);
+        }
+      });
+      slot.appendChild(blok);
+    } else {
+      slot.appendChild(
+        h(`<ol class="tiny" style="margin:.4rem 0 0;padding-left:1.1rem;line-height:1.7">
+          <li>Na dole ekranu kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką w górę).</li>
+          <li>Przewiń i wybierz <b>„Do ekranu początkowego"</b>.</li>
+          <li>Kliknij <b>Dodaj</b> w prawym górnym rogu.</li>
+        </ol>`)
+      );
+    }
   } else {
     slot.appendChild(
       h(`<p class="tiny" style="margin:.4rem 0 0">W menu przeglądarki (⋮) wybierz
