@@ -23,6 +23,10 @@
     {
       "id": "dokumentacja",
       "file": "module-dokumentacja.json"
+    },
+    {
+      "id": "podroze",
+      "file": "module-podroze.json"
     }
   ]
 }

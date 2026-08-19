@@ -251,3 +251,29 @@ test('reakcja modułu wchodzi do lekcji jako sytuacja', () => {
   const sytuacja = steps.find((s) => s.kind === 'situation' && s.item.id === 'rr1');
   assert.ok(sytuacja, 'reakcja ma trafić do lekcji jako krok „sytuacja"');
 });
+
+test('moduł „tylko kafelki" robi lekcję wyłącznie z układania z klocków', () => {
+  fresh();
+  const mod = {
+    id: 'kaf',
+    title: 'kaf',
+    kafelkiTylko: true,
+    patterns: { p: 'p' },
+    patternOrder: ['p'],
+    translations: Array.from({ length: 12 }, (_, i) => ({
+      id: `kf${i}`,
+      pattern: 'p',
+      pl: `polskie ${i}`,
+      en: `english number ${i}`,
+      chunks: ['english', `number ${i}`],
+    })),
+    dictation: [{ id: 'kfd', pl: 'x', en: 'x y', chunks: ['x y'] }],
+    reactions: [{ id: 'kfr', situation: 's', en: 'oh no', chunks: ['oh no'] }],
+  };
+  const { steps } = buildLesson(mod, store.get());
+  assert.ok(steps.length > 0, 'lekcja nie jest pusta');
+  assert.ok(
+    steps.every((s) => s.kind === 'tiles'),
+    'żaden krok nie jest pisaniem, dyktandem ani sytuacją'
+  );
+});

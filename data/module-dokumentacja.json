@@ -526,7 +526,7 @@
       "pl": "Ta zmiana nie jest wstecznie kompatybilna",
       "en": "This change is not backwards compatible",
       "accept": ["This change is not backward compatible"],
-      "note": "kompatybilny Z czymś → compatible with",
+      "note": "wstecznie kompatybilny → backwards compatible",
       "chunks": ["This change is not", "backwards compatible"],
       "traps": [
         {

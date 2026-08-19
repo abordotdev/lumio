@@ -215,7 +215,10 @@ export function buildLesson(module, state, opcje = {}) {
         )
       : [];
 
-  const brakuje = (ile) => Math.max(0, 7 - ile);
+  // Moduł „tylko kafelki" robi całą lekcję z układania z klocków — bez pisania,
+  // dyktand i sytuacji. Wtedy pula kafelków rośnie na całą lekcję, nie tylko do 7.
+  const celKafelkow = module.kafelkiTylko ? LESSON_MAX_ITEMS : 7;
+  const brakuje = (ile) => Math.max(0, celKafelkow - ile);
   const extraTiles = take(
     mine.filter((p) => !itemState(p.item.id).introduced).sort(unseenFirst),
     brakuje(newOnes.length),
@@ -227,7 +230,7 @@ export function buildLesson(module, state, opcje = {}) {
     used
   );
   const tiles = [...newOnes, ...extraTiles, ...moreTiles]
-    .slice(0, 7)
+    .slice(0, celKafelkow)
     .map((pair) => step(pair, 'tiles'));
 
   // Kontrast: zdanie z innego wzorca, już poznane. Bierzemy je z TEGO modułu —
@@ -280,8 +283,10 @@ export function buildLesson(module, state, opcje = {}) {
     used
   ).map((pair) => step(pair, 'situation'));
 
-  const pools = [tiles, typed.slice(0, 4), dictations, reactions];
-  const order = [0, 1, 0, 2, 0, 3, 0, 1, 0, 2, 0, 1, 0, 2, 3];
+  const pools = module.kafelkiTylko ? [tiles] : [tiles, typed.slice(0, 4), dictations, reactions];
+  const order = module.kafelkiTylko
+    ? Array.from({ length: LESSON_MAX_ITEMS }, () => 0)
+    : [0, 1, 0, 2, 0, 3, 0, 1, 0, 2, 0, 1, 0, 2, 3];
   const steps = [];
   for (const p of order) {
     if (pools[p].length) steps.push(pools[p].shift());

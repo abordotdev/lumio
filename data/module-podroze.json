@@ -1,0 +1,268 @@
+{
+  "id": "podroze",
+  "title": "W podróży",
+  "subtitle": "Najczęstsze zwroty: lotnisko, hotel, sklep, wycieczka. Tylko układanie z kafelków.",
+  "kafelkiTylko": true,
+  "patterns": {
+    "czasy": "byłem, jestem, będę",
+    "lotnisko": "na lotnisku",
+    "hotel": "w hotelu",
+    "sklep": "w sklepie",
+    "wycieczka": "na wycieczce"
+  },
+  "patternOrder": ["czasy", "lotnisko", "hotel", "sklep", "wycieczka"],
+  "translations": [
+    {
+      "id": "pdr01",
+      "pattern": "czasy",
+      "pl": "Jestem zmęczona",
+      "en": "I am tired",
+      "chunks": ["I am", "tired"],
+      "note": "jestem → I am",
+      "lemma": "be"
+    },
+    {
+      "id": "pdr02",
+      "pattern": "czasy",
+      "pl": "Byłam tam wczoraj",
+      "en": "I was there yesterday",
+      "chunks": ["I was", "there", "yesterday"],
+      "note": "byłam → I was",
+      "lemma": "be"
+    },
+    {
+      "id": "pdr03",
+      "pattern": "czasy",
+      "pl": "Będę niedługo z powrotem",
+      "en": "I will be back soon",
+      "chunks": ["I will be", "back", "soon"],
+      "note": "będę → I will be",
+      "lemma": "be"
+    },
+    {
+      "id": "pdr04",
+      "pattern": "czasy",
+      "pl": "Jestem głodna",
+      "en": "I am hungry",
+      "chunks": ["I am", "hungry"],
+      "note": "jestem → I am",
+      "lemma": "be"
+    },
+    {
+      "id": "pdr05",
+      "pattern": "czasy",
+      "pl": "Byliśmy na wakacjach",
+      "en": "We were on holiday",
+      "chunks": ["We were", "on holiday"],
+      "note": "byliśmy → We were",
+      "lemma": "be"
+    },
+    {
+      "id": "pdr06",
+      "pattern": "czasy",
+      "pl": "Zadzwonię do ciebie później",
+      "en": "I will call you later",
+      "chunks": ["I will call", "you", "later"],
+      "note": "zadzwonię → I will call",
+      "lemma": "call"
+    },
+    {
+      "id": "pdr07",
+      "pattern": "lotnisko",
+      "pl": "Gdzie jest bramka?",
+      "en": "Where is the gate?",
+      "chunks": ["Where is", "the gate?"],
+      "note": "pytanie o miejsce → Where is"
+    },
+    {
+      "id": "pdr08",
+      "pattern": "lotnisko",
+      "pl": "Oto mój paszport",
+      "en": "Here is my passport",
+      "chunks": ["Here is", "my passport"],
+      "note": "oto → here is"
+    },
+    {
+      "id": "pdr09",
+      "pattern": "lotnisko",
+      "pl": "Mam jedną walizkę",
+      "en": "I have one suitcase",
+      "chunks": ["I have", "one suitcase"],
+      "note": "mam → I have",
+      "lemma": "have"
+    },
+    {
+      "id": "pdr10",
+      "pattern": "lotnisko",
+      "pl": "Mój lot jest opóźniony",
+      "en": "My flight is delayed",
+      "chunks": ["My flight", "is delayed"],
+      "note": "opóźniony → delayed"
+    },
+    {
+      "id": "pdr11",
+      "pattern": "lotnisko",
+      "pl": "Gdzie mogę się odprawić?",
+      "en": "Where can I check in?",
+      "chunks": ["Where can I", "check in?"],
+      "note": "gdzie mogę → where can I"
+    },
+    {
+      "id": "pdr12",
+      "pattern": "lotnisko",
+      "pl": "Czy to właściwa bramka?",
+      "en": "Is this the right gate?",
+      "chunks": ["Is this", "the right gate?"],
+      "note": "czy to → is this"
+    },
+    {
+      "id": "pdr13",
+      "pattern": "hotel",
+      "pl": "Mam rezerwację",
+      "en": "I have a reservation",
+      "chunks": ["I have", "a reservation"],
+      "note": "mam → I have",
+      "lemma": "have"
+    },
+    {
+      "id": "pdr14",
+      "pattern": "hotel",
+      "pl": "Mogę prosić klucz?",
+      "en": "Can I have the key?",
+      "chunks": ["Can I have", "the key?"],
+      "note": "mogę prosić → can I have"
+    },
+    {
+      "id": "pdr15",
+      "pattern": "hotel",
+      "pl": "O której jest śniadanie?",
+      "en": "What time is breakfast?",
+      "chunks": ["What time is", "breakfast?"],
+      "note": "o której → what time"
+    },
+    {
+      "id": "pdr16",
+      "pattern": "hotel",
+      "pl": "W pokoju jest za zimno",
+      "en": "The room is too cold",
+      "chunks": ["The room", "is too cold"],
+      "note": "za zimno → too cold"
+    },
+    {
+      "id": "pdr17",
+      "pattern": "hotel",
+      "pl": "Chciałabym się wymeldować",
+      "en": "I would like to check out",
+      "chunks": ["I would like to", "check out"],
+      "note": "chciałabym → I would like to"
+    },
+    {
+      "id": "pdr18",
+      "pattern": "hotel",
+      "pl": "Czy śniadanie jest wliczone?",
+      "en": "Is breakfast included?",
+      "chunks": ["Is breakfast", "included?"],
+      "note": "wliczone → included"
+    },
+    {
+      "id": "pdr19",
+      "pattern": "sklep",
+      "pl": "Ile to kosztuje?",
+      "en": "How much is this?",
+      "chunks": ["How much", "is this?"],
+      "note": "ile → how much"
+    },
+    {
+      "id": "pdr20",
+      "pattern": "sklep",
+      "pl": "Czy przyjmujecie karty?",
+      "en": "Do you take cards?",
+      "chunks": ["Do you take", "cards?"],
+      "note": "czy przyjmujecie → do you take"
+    },
+    {
+      "id": "pdr21",
+      "pattern": "sklep",
+      "pl": "Tylko oglądam",
+      "en": "I am just looking",
+      "chunks": ["I am", "just looking"],
+      "note": "tylko oglądam → just looking",
+      "lemma": "look"
+    },
+    {
+      "id": "pdr22",
+      "pattern": "sklep",
+      "pl": "Mogę przymierzyć?",
+      "en": "Can I try it on?",
+      "chunks": ["Can I", "try it on?"],
+      "note": "przymierzyć → try it on"
+    },
+    {
+      "id": "pdr23",
+      "pattern": "sklep",
+      "pl": "Czy jest mniejszy rozmiar?",
+      "en": "Do you have a smaller size?",
+      "chunks": ["Do you have", "a smaller size?"],
+      "note": "mniejszy → smaller",
+      "lemma": "have"
+    },
+    {
+      "id": "pdr24",
+      "pattern": "sklep",
+      "pl": "Wezmę to",
+      "en": "I will take it",
+      "chunks": ["I will take", "it"],
+      "note": "wezmę → I will take",
+      "lemma": "take"
+    },
+    {
+      "id": "pdr25",
+      "pattern": "wycieczka",
+      "pl": "Gdzie jest dworzec?",
+      "en": "Where is the station?",
+      "chunks": ["Where is", "the station?"],
+      "note": "gdzie jest → where is"
+    },
+    {
+      "id": "pdr26",
+      "pattern": "wycieczka",
+      "pl": "Stolik dla dwóch osób, proszę",
+      "en": "A table for two, please",
+      "chunks": ["A table for two,", "please"],
+      "note": "stolik dla dwóch → a table for two"
+    },
+    {
+      "id": "pdr27",
+      "pattern": "wycieczka",
+      "pl": "Mogę prosić menu?",
+      "en": "Can I see the menu?",
+      "chunks": ["Can I see", "the menu?"],
+      "note": "mogę prosić → can I see"
+    },
+    {
+      "id": "pdr28",
+      "pattern": "wycieczka",
+      "pl": "Rachunek, proszę",
+      "en": "The bill, please",
+      "chunks": ["The bill,", "please"],
+      "note": "rachunek → the bill"
+    },
+    {
+      "id": "pdr29",
+      "pattern": "wycieczka",
+      "pl": "Jak tam dojadę?",
+      "en": "How do I get there?",
+      "chunks": ["How do I", "get there?"],
+      "note": "jak dojadę → how do I get"
+    },
+    {
+      "id": "pdr30",
+      "pattern": "wycieczka",
+      "pl": "Możesz mi pomóc?",
+      "en": "Can you help me?",
+      "chunks": ["Can you", "help me?"],
+      "note": "możesz → can you"
+    }
+  ],
+  "dictation": []
+}

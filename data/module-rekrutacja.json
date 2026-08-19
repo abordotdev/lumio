@@ -407,20 +407,16 @@
     {
       "id": "rec22",
       "pattern": "types",
-      "pl": "Testowałam to na stagingu od rana",
-      "en": "I've been testing it on staging since this morning",
-      "accept": ["I have been testing it on staging since this morning"],
-      "note": "zaczęło się rano i trwa do teraz → I've been testing",
-      "chunks": ["I've been testing it", "on staging", "since this morning"],
-      "lemma": "test",
+      "pl": "Najczęściej robię testy manualne i eksploracyjne",
+      "en": "I mostly do manual and exploratory testing",
+      "accept": ["I do mostly manual and exploratory testing"],
+      "note": "manualne i eksploracyjne → manual and exploratory",
+      "chunks": ["I mostly do", "manual and", "exploratory testing"],
+      "lemma": "do",
       "traps": [
         {
-          "input": "I'm testing it on staging since this morning",
-          "why": "I'm testing to tylko ta chwila. Gdy coś trwa OD rana: I've been testing."
-        },
-        {
-          "input": "I've been testing it on staging for this morning",
-          "why": "Since mówi OD KIEDY (since this morning). For mówi JAK DŁUGO (for two hours)."
+          "input": "I mostly make manual and exploratory testing",
+          "why": "testy się robi: do testing, nie make testing."
         }
       ]
     },
