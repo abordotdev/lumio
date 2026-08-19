@@ -553,3 +553,35 @@
 .app .grupa .lista-lekcji li {
   border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }
+
+/* ---------- panel lekcji: nagłówek klikalny, zwijanie ---------- */
+.app .panel-naglowek {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: none;
+  border: 0;
+  padding: 0 0 6px;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.app .panel-naglowek .chevron {
+  flex: 0 0 auto;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.app .panel.zwiniety .panel-naglowek .chevron {
+  transform: rotate(-90deg);
+}
+.app .panel.zwiniety .grupy {
+  display: none;
+}
+.app .panel.zwiniety .panel-naglowek .podpowiedz {
+  display: none;
+}

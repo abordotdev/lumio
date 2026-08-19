@@ -26,6 +26,10 @@ import { montujPowloke, odswiezPowloke } from './powloka.js';
 let MAPA = null;
 let MAPA_KM = null;
 
+// Czy lista lekcji w otwartym module jest zwinięta. Trzymane w sesji, żeby raz
+// zwinięta została zwinięta przy przełączaniu modułów.
+let LESSONS_COLLAPSED = false;
+
 let BASE_MODULES = [];
 let MODULES = [];
 let MODULE = null;
@@ -688,16 +692,25 @@ function modules() {
   wrap.appendChild(hero);
 
   if (outline && outline.lessons.length && !emptyMine) {
-    const panel = h(`<div class="panel">
-      <div class="naglowek">
+    const zwiniety = LESSONS_COLLAPSED;
+    const panel = h(`<div class="panel ${zwiniety ? 'zwiniety' : ''}">
+      <button class="panel-naglowek" type="button" data-a="zwin" aria-expanded="${zwiniety ? 'false' : 'true'}">
         <div class="rosnij">
           <span class="oczko">Lekcje w tym module</span>
           <p class="podpowiedz">Kliknij dowolną, żeby ją zrobić — nie musisz iść po kolei.</p>
         </div>
-      </div>
+        <span class="chevron" aria-hidden="true">⌄</span>
+      </button>
       <div class="grupy">${lessonGroupsHtml(outline)}</div>
     </div>`);
-    panel.addEventListener('click', (e) => {
+    panel.querySelector('[data-a="zwin"]').addEventListener('click', () => {
+      LESSONS_COLLAPSED = !LESSONS_COLLAPSED;
+      panel.classList.toggle('zwiniety', LESSONS_COLLAPSED);
+      panel
+        .querySelector('[data-a="zwin"]')
+        .setAttribute('aria-expanded', LESSONS_COLLAPSED ? 'false' : 'true');
+    });
+    panel.querySelector('.grupy').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-ids]');
       if (!btn) return;
       const ids = btn.dataset.ids.split(',').filter(Boolean);
