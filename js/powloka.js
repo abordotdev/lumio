@@ -60,10 +60,13 @@ export function montujPowloke(host, dane, h = {}) {
 
     <div class="scena">
       <header class="pasek">
-        <button class="menu-btn" type="button" data-akcja="menu" aria-label="Menu">${icon('i-grid', 19)}</button>
+        <button class="marka-mobi" type="button" data-nav="home" aria-label="Lumio — Start">
+          <span class="mark">${icon('i-spark', 18)}</span><b class="name">Lumio</b>
+        </button>
         <span class="rosnij"></span>
         <span class="chip"><span class="cic">${icon('i-route', 17)}</span><b class="km"></b><span class="un">km</span></span>
         <span class="chip coin"><span class="cic">${icon('i-coin', 17)}</span><b class="monety"></b><span class="un">monet</span></span>
+        <button class="icon-btn ust" type="button" data-nav="settings" aria-label="Ustawienia">${icon('i-gear', 19)}</button>
         <button class="icon-btn" type="button" data-akcja="dzwonek" aria-label="Co wymaga uwagi">${icon('i-bell', 19)}<i class="kropka" hidden></i></button>
       </header>
       <div class="kolumna" id="tresc"></div>
@@ -96,13 +99,11 @@ export function montujPowloke(host, dane, h = {}) {
     const nav = e.target.closest('[data-nav]');
     if (nav) {
       e.preventDefault();
-      el.app.classList.remove('menu-otwarte');
       return handlery.onNav?.(nav.dataset.nav);
     }
     const akcja = e.target.closest('[data-akcja]');
     if (!akcja) return;
     e.preventDefault();
-    if (akcja.dataset.akcja === 'menu') return el.app.classList.toggle('menu-otwarte');
     if (akcja.dataset.akcja === 'dzwonek') return handlery.onDzwonek?.();
   });
 

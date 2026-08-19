@@ -35,6 +35,8 @@ let MODULES = [];
 let MODULE = null;
 let ROUTE = null;
 let SCREEN = 'home';
+// Historia zakładek, żeby swipe w prawo na telefonie cofał do poprzedniej.
+let HISTORIA = [];
 
 function refreshModules() {
   MODULES = [...BASE_MODULES, buildMineModule(store.get().customPhrases || [])];
@@ -87,6 +89,7 @@ export function boot({ modules, route }) {
     maskotka: () => avatarNaPodlodze(store.get().equipped, { look: store.get().look || {} }),
   });
   bindChrome();
+  wlaczGestCofania();
   for (const btn of document.querySelectorAll('[data-go]')) {
     btn.addEventListener('click', () => go(btn.getAttribute('data-go')));
   }
@@ -116,6 +119,11 @@ export function go(screen, params = {}) {
   // Wchodząc w Moduły z innej zakładki, lista lekcji startuje zwinięta — żeby nie
   // trzeba było scrollować. Przełączanie modułów w środku zostawia Twój wybór.
   if (screen === 'modules' && SCREEN !== 'modules') LESSONS_COLLAPSED = true;
+  // Do historii wrzucamy tylko ruch „w przód", żeby swipe miał gdzie cofnąć.
+  if (!params.back && SCREEN && SCREEN !== screen) {
+    HISTORIA.push(SCREEN);
+    if (HISTORIA.length > 20) HISTORIA.shift();
+  }
   SCREEN = screen;
   markNav(screen);
   odswiezPowloke(danePowloki(screen));
@@ -133,6 +141,55 @@ export function go(screen, params = {}) {
     arrival,
   };
   (screens[screen] || home)(params);
+}
+
+// Cofnięcie do poprzedniej zakładki (swipe w prawo na telefonie).
+function cofnij() {
+  if (!HISTORIA.length) return;
+  const poprzednia = HISTORIA.pop();
+  go(poprzednia, { back: true });
+}
+
+// Swipe w prawo = cofnij. Pomijamy lekcję (żeby nie przerwać jej gestem) oraz
+// miejsca, które same łapią przeciąganie w poziomie: kafelki, mapę, pola tekstowe.
+function wlaczGestCofania() {
+  let start = null;
+  const pomin = (t) => {
+    // W trakcie lekcji nie cofamy gestem — od wyjścia jest „Przerwij lekcję".
+    if (document.querySelector('.lekcja-krok')) return true;
+    return Boolean(
+      t &&
+      t.closest &&
+      t.closest('#mapa, .tile, .tile-bank, .tile-slot, textarea, input, select, svg')
+    );
+  };
+  document.addEventListener(
+    'touchstart',
+    (e) => {
+      if (e.touches.length !== 1 || pomin(e.target)) {
+        start = null;
+        return;
+      }
+      const t = e.touches[0];
+      start = { x: t.clientX, y: t.clientY, t: e.timeStamp };
+    },
+    { passive: true }
+  );
+  document.addEventListener(
+    'touchend',
+    (e) => {
+      if (!start) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - start.x;
+      const dy = t.clientY - start.y;
+      const dt = e.timeStamp - start.t;
+      start = null;
+      // Wyraźnie poziomy, w prawo, dość długi i szybki — i nie tuż przy krawędzi
+      // menu na dole.
+      if (dx > 80 && Math.abs(dx) > 2 * Math.abs(dy) && dt < 600) cofnij();
+    },
+    { passive: true }
+  );
 }
 
 const itemById = (id) => (ROUTE.items || []).find((i) => i.id === id);

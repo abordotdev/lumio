@@ -101,7 +101,9 @@ function renderStep(session, module, onFinish) {
   }
 
   const step = session.steps[session.index];
-  const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
+  const wrap = h(
+    `<div class="lekcja-krok" style="display:flex;flex-direction:column;gap:1.25rem"></div>`
+  );
   wrap.appendChild(h(header(session)));
 
   const card = h(`<div class="card"></div>`);

@@ -233,7 +233,36 @@
 .app .rosnij {
   flex: 1;
 }
-.app .menu-btn {
+/* Logo w górnym pasku i przycisk ustawień — tylko na telefonie (na desktopie
+   są w bocznym pasku). Na desktopie schowane. */
+.app .marka-mobi {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.app .marka-mobi .mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(140deg, var(--b500), var(--b900));
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--b700) 34%, transparent);
+}
+.app .marka-mobi .name {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.app .icon-btn.ust {
   display: none;
 }
 .app .chip {
@@ -406,31 +435,38 @@
 }
 
 @media (max-width: 900px) {
+  /* Nawigacja idzie dolnym paskiem (tabbar), więc boczny pasek znika, a z nim
+     całe rozwijane menu z hamburgera. W górnym pasku zostaje logo i ustawienia. */
   .app .side {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 30;
-    transform: translateX(-100%);
-    transition: transform 0.2s;
-    box-shadow: 0 0 40px rgba(20, 25, 40, 0.18);
+    display: none;
   }
-  .app.menu-otwarte .side {
-    transform: none;
+  .app .marka-mobi {
+    display: inline-flex;
   }
-  .app .menu-btn {
+  .app .icon-btn.ust {
     display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    background: var(--panel);
-    color: var(--ink-2);
-    cursor: pointer;
   }
   .app .pasek {
     padding: 12px 16px 4px;
+    gap: 7px;
+  }
+  /* Na wąskim ekranie odchudzamy plakietki km/monet, żeby zmieściły się jeszcze
+     ustawienia i dzwonek po prawej. Słowa „km"/„monet" znikają — zostaje liczba. */
+  .app .pasek .chip {
+    padding: 4px 9px 4px 4px;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .app .pasek .chip .un {
+    display: none;
+  }
+  .app .pasek .chip .cic {
+    width: 24px;
+    height: 24px;
+  }
+  .app .pasek .icon-btn {
+    width: 36px;
+    height: 36px;
   }
   .app .kolumna {
     padding: 6px 16px 190px;
