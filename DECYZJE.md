@@ -67,9 +67,8 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
 - ~~**Cztery moduły z pięciu nie tłumaczą błędów**~~ — naprawione. Wszystkie 230 zdań mają
   wyjaśnienie, 219 ma przewidziane pułapki (razem 290). Bez pułapek zostały tylko czyste
   zwroty grzecznościowe, gdzie „błąd" byłby wymyślony na siłę.
-- **Dyktanda to w większości te same zdania co tłumaczenia** — w module czasy-it 7 z 9.
-  Lekcja już ich nie dubluje, ale dyktando powinno ćwiczyć słuch na czymś, czego nie widziałaś.
-  Do przerobienia przy dosypywaniu treści.
+- ~~**Dyktanda to w większości te same zdania co tłumaczenia**~~ — naprawione. Każdy moduł ma
+  własny zestaw krótkich zdań na słuch, których nie ma w kafelkach ani tłumaczeniach (48 nowych).
 - ~~**Powrót po przerwie straszy liczbą**~~ — naprawione. Po 14 dniach bez lekcji ekran startowy
   mówi „Nie było Cię 3 miesiące. Zaczynamy spokojnie", pierwsza lekcja idzie od najlepiej
   opanowanych zdań, a pomyłka cofa o jeden krok zamiast kasować miesiące.
@@ -79,7 +78,16 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
   a moduł czasy-it ma 42 zdania. Pozostałe cztery moduły nie mają w niej nic.
 - **Cztery moduły z pięciu nie tłumaczą błędów** — praca 0 pułapek, zadania 0, rekrutacja 2 na 54,
   small-talk 4 na 30. Wyjaśnienie po błędzie to najlepsza rzecz w tej apce i prawie jej nie ma.
-- **Reakcje są martwe** — 8 reakcji w module czasy-it, żadna linijka kodu ich nie czyta.
-- **Wersja w `sw.js` wpisywana ręcznie** — zapomniana przy wrzutce zostawia ludzi ze starą apką.
-- **Wczytanie kopii wymaga Notatnika** — apka zna folder z kopią, więc powinna umieć wczytać
-  plik sama, bez kopiuj-wklej.
+- ~~**Reakcje są martwe**~~ — naprawione. Jedna reakcja na lekcję wchodzi jako krok „sytuacja".
+- ~~**Wersja w `sw.js` wpisywana ręcznie**~~ — naprawione. Deploy stempluje wersję skrótem commita.
+- ~~**Wczytanie kopii wymaga Notatnika**~~ — naprawione. W ustawieniach jest wybór pliku z kopią.
+
+## Zrobione poza listą dziur
+
+- **Powtórki nie mieszają się już do lekcji modułu** — lekcja modułu = tylko jego zdania.
+  Powtórki z innych modułów wracają w trybie „Powtórka" i po przerwie.
+- **Moduł „Dokumentacja"** — dosypane realne słownictwo: specyfikacja/limity, walidacja pól,
+  jak to działa (60 zdań).
+- **Fraunces wgrany lokalnie** — nagłówki działają offline i nie pukają do Google Fonts.
+- **Ustawienia mają nagłówek strony** — spójne z Modułami, Sklepem i Szafą.
+- **Testy** — 68 w 8 plikach: harmonogram, formy, powrót, seria, dane, reakcje, ocena, postęp.
