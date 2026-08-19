@@ -10,6 +10,7 @@ const KIND_LABEL = {
   tiles: 'Ułóż z kafelków',
   translate: 'Przetłumacz i powiedz na głos',
   dictate: 'Dyktando — zapisz, co słyszysz',
+  situation: 'Sytuacja — powiedz to po angielsku',
 };
 
 const MAX_STEPS = 15;
@@ -102,6 +103,7 @@ function renderStep(session, module, onFinish) {
 
   if (step.kind === 'tiles') renderTiles(step, card, session, module, onFinish);
   else if (step.kind === 'dictate') renderDictate(step, card, session, module, onFinish);
+  else if (step.kind === 'situation') renderSituation(step, card, session, module, onFinish);
   else renderTyped(step, card, session, module, onFinish);
 
   const quit = h(
@@ -139,6 +141,39 @@ function renderTyped(step, card, session, module, onFinish) {
       return;
     }
     showResult({ step, card, session, module, onFinish, answer });
+  };
+  btn.addEventListener('click', submit);
+  ta.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submit();
+    }
+  });
+  setTimeout(() => ta.focus(), 30);
+}
+
+// Sytuacja zamiast polskiego zdania. Nie ma czego tłumaczyć — formę wybierasz sama.
+// To jest ten szczebel między „przetłumacz zdanie" a „mów", którego brakowało.
+function renderSituation(step, card, session, module, onFinish) {
+  const item = step.item;
+
+  card.appendChild(h(`<p class="situation">${esc(item.situation)}</p>`));
+  card.appendChild(
+    h(`<p class="tiny">Bez polskiego zdania. Powiedz to po swojemu, po angielsku.</p>`)
+  );
+
+  const ta = h(`<textarea rows="2" spellcheck="false" autocapitalize="off" autocomplete="off"
+    aria-label="Twoja odpowiedź po angielsku" placeholder="po angielsku…"></textarea>`);
+  const btn = h(`<button class="primary" type="button">Sprawdź</button>`);
+  card.appendChild(ta);
+  card.appendChild(h(`<div class="row end"></div>`)).appendChild(btn);
+
+  const submit = () => {
+    if (!ta.value.trim()) {
+      ta.focus();
+      return;
+    }
+    showResult({ step, card, session, module, onFinish, answer: ta.value });
   };
   btn.addEventListener('click', submit);
   ta.addEventListener('keydown', (e) => {
@@ -351,7 +386,9 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   if (!correct) tip = hint || result.why || (showNote ? item.note : '');
   else if (showNote) tip = item.note;
   if (tip) panel.appendChild(h(`<p class="why">${esc(tip)}</p>`));
-  if (step.kind === 'dictate' && item.pl) {
+  // Przy dyktandzie i przy sytuacji polskiego nie było widać — pokazujemy je dopiero teraz,
+  // żeby dało się zobaczyć, czemu ta forma pasowała.
+  if ((step.kind === 'dictate' || step.kind === 'situation') && item.pl) {
     panel.appendChild(h(`<p class="muted">Po polsku: <b>${esc(item.pl)}</b></p>`));
   }
 

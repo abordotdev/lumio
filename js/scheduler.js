@@ -124,6 +124,15 @@ export function buildReview(modules) {
   };
 }
 
+// Zdanie, które już umiesz, dostaje trudniejszą wersję: samą sytuację, bez polskiego
+// zdania pod ręką. Wtedy formę wybierasz sama, zamiast tłumaczyć gotowca.
+function typedKind(pair, i) {
+  if (!pair.item.pl) return 'dictate';
+  if (i % 3 === 2) return 'dictate';
+  if (pair.item.situation && isDone(pair.item.id)) return 'situation';
+  return 'translate';
+}
+
 export const COMEBACK_ITEMS = 10;
 
 /**
@@ -237,15 +246,14 @@ export function buildLesson(module, state, modules) {
     used
   );
 
-  const typed = [...contrast, ...reviews, ...filler].map((pair, i) => {
-    if (!pair.item.pl) return step(pair, 'dictate');
-    return step(pair, i % 3 === 2 ? 'dictate' : 'translate');
-  });
+  const typed = [...contrast, ...reviews, ...filler].map((pair, i) =>
+    step(pair, typedKind(pair, i))
+  );
 
   while (typed.length < 4) {
     const more = take(mine.slice().sort(unseenFirst), 1, used);
     if (!more.length) break;
-    typed.push(step(more[0], 'translate'));
+    typed.push(step(more[0], typedKind(more[0], typed.length)));
   }
 
   const dictations = take(

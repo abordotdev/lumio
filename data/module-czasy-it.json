@@ -39,7 +39,8 @@
           "why": "to znaczy byłam w trakcie testowania — a tu chodzi o skończoną robotę"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Koleżanka pyta, czy ktoś dotykał tej strony. Ty siedziałaś nad nią wczoraj i skończyłaś."
     },
     {
       "id": "t02",
@@ -63,7 +64,8 @@
           "why": "podajesz kiedy → bez have"
         }
       ],
-      "lemma": "report"
+      "lemma": "report",
+      "situation": "Developer pyta, czy ten błąd jest gdzieś zapisany. Wrzuciłaś go w piątek."
     },
     {
       "id": "t03",
@@ -89,7 +91,8 @@
           "why": "to już się stało → checked"
         }
       ],
-      "lemma": "check"
+      "lemma": "check",
+      "situation": "Ktoś podważa Twój wynik. Przeszłaś przez to dwa razy i masz pewność."
     },
     {
       "id": "t04",
@@ -117,7 +120,8 @@
           "why": "to jest o teraz, a chodziło o przeszłość → didn't"
         }
       ],
-      "lemma": "have"
+      "lemma": "have",
+      "situation": "Na daily pytają o testy. Wczoraj wpadło coś pilnego i nie zdążyłaś."
     },
     {
       "id": "t05",
@@ -141,7 +145,8 @@
           "why": "I've been znaczy od jakiegoś czasu — a tu chodzi o samą tę chwilę"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Ktoś pyta, czym się w tej chwili zajmujesz. Masz to otwarte na ekranie."
     },
     {
       "id": "t06",
@@ -166,7 +171,8 @@
           "why": "I wait znaczy zwykle czekam — teraz to I'm waiting"
         }
       ],
-      "lemma": "wait"
+      "lemma": "wait",
+      "situation": "Pytają, czemu jeszcze nie ruszyłaś. Nie możesz, dopóki nie wyjdzie wrzutka."
     },
     {
       "id": "t07",
@@ -190,7 +196,8 @@
           "why": "pracować NAD czymś = work ON something"
         }
       ],
-      "lemma": "work"
+      "lemma": "work",
+      "situation": "Na standupie mówisz, nad czym siedzisz dzisiaj."
     },
     {
       "id": "t08",
@@ -223,7 +230,8 @@
           "why": "I was zamyka to w przeszłości — a Ty nadal testujesz → I've been"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Koleżanka pyta, co robisz. Zaczęłaś rano i nadal to robisz."
     },
     {
       "id": "t09",
@@ -251,7 +259,8 @@
           "why": "trwa do teraz → I've been waiting"
         }
       ],
-      "lemma": "wait"
+      "lemma": "wait",
+      "situation": "Ktoś pyta, czy długo czekasz. Godzinę — i wciąż czekasz."
     },
     {
       "id": "t10",
@@ -280,7 +289,8 @@
           "why": "for przy długości: for three years"
         }
       ],
-      "lemma": "work"
+      "lemma": "work",
+      "situation": "Na rozmowie pytają o staż w tej firmie. Zaczęłaś trzy lata temu i nadal tu jesteś."
     },
     {
       "id": "t11",
@@ -308,7 +318,8 @@
           "why": "search też wymaga for — albo prościej: looking for"
         }
       ],
-      "lemma": "look"
+      "lemma": "look",
+      "situation": "Pytają, jak idzie. Grzebiesz w tym od wczoraj i wciąż nie znalazłaś."
     },
     {
       "id": "t12",
@@ -336,7 +347,8 @@
           "why": "po will podstawowa forma: will check"
         }
       ],
-      "lemma": "check"
+      "lemma": "check",
+      "situation": "Ktoś prosi o sprawdzenie. Dziś nie dasz rady — właśnie decydujesz, że jutro."
     },
     {
       "id": "t13",
@@ -361,7 +373,8 @@
           "why": "przy obietnicy → I'll take a look"
         }
       ],
-      "lemma": "take"
+      "lemma": "take",
+      "situation": "Pytają, kiedy się tym zajmiesz. Właśnie postanawiasz: po lunchu."
     },
     {
       "id": "t14",
@@ -387,7 +400,8 @@
           "why": "po I'll podstawowa forma: I'll message"
         }
       ],
-      "lemma": "message"
+      "lemma": "message",
+      "situation": "Trzeba kogoś dopytać o szczegół. Zgłaszasz się, że to Ty się odezwiesz."
     },
     {
       "id": "t15",
@@ -416,7 +430,8 @@
           "why": "przy godzinie at: at three"
         }
       ],
-      "lemma": "be"
+      "lemma": "be",
+      "situation": "Pytają, czy będziesz. Potwierdzasz obecność na trzeciej."
     },
     {
       "id": "t16",
@@ -441,7 +456,8 @@
           "why": "po have idzie forma z -ed: reported"
         }
       ],
-      "lemma": "report"
+      "lemma": "report",
+      "situation": "Ktoś mówi, że trzeba zgłosić ten błąd. Ty już to zrobiłaś — kiedy, nieważne."
     },
     {
       "id": "t17",
@@ -469,7 +485,8 @@
           "why": "„jeszcze\" w przeczeniu to yet, nie still"
         }
       ],
-      "lemma": "check"
+      "lemma": "check",
+      "situation": "Pytają o wynik. Nie zdążyłaś jeszcze, ale masz to na liście."
     },
     {
       "id": "t18",
@@ -495,7 +512,8 @@
           "why": "po I've forma z -ed: finished"
         }
       ],
-      "lemma": "finish"
+      "lemma": "finish",
+      "situation": "Pytają, czy jeszcze nad tym siedzisz. Skończyłaś przed chwilą."
     },
     {
       "id": "t19",
@@ -523,7 +541,8 @@
           "why": "brakuje am: I'm going to test"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Na daily mówisz, co masz w planie na dziś. Ustaliłaś to wcześniej."
     },
     {
       "id": "t20",
@@ -547,7 +566,8 @@
           "why": "po going to podstawowa forma: to finish"
         }
       ],
-      "lemma": "finish"
+      "lemma": "finish",
+      "situation": "Ktoś liczy, że dziś to domkniesz. Wiesz już, że nie zdążysz."
     },
     {
       "id": "t21",
@@ -571,7 +591,8 @@
           "why": "always stoi po I, przed czasownikiem: I always check"
         }
       ],
-      "lemma": "check"
+      "lemma": "check",
+      "situation": "Na rozmowie opisujesz, jak pracujesz. Robisz to za każdym razem, bez wyjątku."
     },
     {
       "id": "t22",
@@ -595,7 +616,8 @@
           "why": "brakuje formy — tu: I usually test"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Pytają o Twój sposób pracy. Zwykle tak robisz, choć nie zawsze."
     },
     {
       "id": "t23",
@@ -616,7 +638,8 @@
           "why": "to jest o teraz — a chodziło o przeszłość → I was"
         }
       ],
-      "lemma": "be"
+      "lemma": "be",
+      "situation": "Ktoś pyta, czy ktoś z was był na wczorajszym spotkaniu. Byłaś."
     },
     {
       "id": "t24",
@@ -637,7 +660,8 @@
           "why": "to przeszłość — teraz to I'm on a call"
         }
       ],
-      "lemma": "be"
+      "lemma": "be",
+      "situation": "Ktoś pisze do Ciebie na Slacku. Właśnie siedzisz na spotkaniu."
     },
     {
       "id": "t25",
@@ -657,7 +681,8 @@
           "why": "podajesz kiedy → sent, bez have"
         }
       ],
-      "lemma": "send"
+      "lemma": "send",
+      "situation": "Pytają, czy raport poszedł. Wysłałaś go w poniedziałek."
     },
     {
       "id": "t26",
@@ -677,7 +702,8 @@
           "why": "po I’m forma z -ing: writing"
         }
       ],
-      "lemma": "write"
+      "lemma": "write",
+      "situation": "Ktoś pyta, czym się zajmujesz. Masz otwarte okno zgłoszenia."
     },
     {
       "id": "t27",
@@ -693,7 +719,8 @@
           "why": "I listen to nawyk — teraz: I’m listening"
         }
       ],
-      "lemma": "listen"
+      "lemma": "listen",
+      "situation": "Na callu ktoś sprawdza, czy jesteś. Dajesz znać, że jesteś i słuchasz."
     },
     {
       "id": "t28",
@@ -710,7 +737,8 @@
           "why": "gdy coś trwa OD kiedyś → I’ve been"
         }
       ],
-      "lemma": "be"
+      "lemma": "be",
+      "situation": "Pytają, czy długo już nad tym siedzisz. Od rana — i nadal siedzisz."
     },
     {
       "id": "t29",
@@ -731,7 +759,8 @@
           "why": "gdy liczysz od jak dawna → I’ve been learning"
         }
       ],
-      "lemma": "learn"
+      "lemma": "learn",
+      "situation": "Ktoś pyta, od kiedy to ogarniasz. Tydzień — i wciąż się uczysz."
     },
     {
       "id": "t30",
@@ -751,7 +780,8 @@
           "why": "za chwilę: in a minute"
         }
       ],
-      "lemma": "call"
+      "lemma": "call",
+      "situation": "Ktoś dzwoni, a Ty nie możesz teraz rozmawiać. Obiecujesz oddzwonić."
     },
     {
       "id": "t31",
@@ -767,7 +797,8 @@
           "why": "obietnica: I’ll let you know when I’m done"
         }
       ],
-      "lemma": "let"
+      "lemma": "let",
+      "situation": "Ktoś czeka na Twój wynik. Obiecujesz odezwać się, jak skończysz."
     },
     {
       "id": "t32",
@@ -787,7 +818,8 @@
           "why": "po have forma seen, nie saw"
         }
       ],
-      "lemma": "see"
+      "lemma": "see",
+      "situation": "Ktoś podsyła Ci link do błędu. Widziałaś go już wcześniej."
     },
     {
       "id": "t33",
@@ -803,7 +835,8 @@
           "why": "po haven’t forma z -ed: replied"
         }
       ],
-      "lemma": "reply"
+      "lemma": "reply",
+      "situation": "Pytają, czy odpowiedziałaś na tego maila. Jeszcze nie, ale odpiszesz."
     },
     {
       "id": "t34",
@@ -819,7 +852,8 @@
           "why": "wystarczy: I’ve already done it"
         }
       ],
-      "lemma": "do"
+      "lemma": "do",
+      "situation": "Ktoś prosi Cię o zadanie, które masz już z głowy."
     },
     {
       "id": "t35",
@@ -835,7 +869,8 @@
           "why": "po going to podstawowa forma: to test"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Na daily mówisz o planie na jutro. Jest ustalony."
     },
     {
       "id": "t36",
@@ -855,7 +890,8 @@
           "input": "I'm going merge it today",
           "why": "Po going zawsze to: I'm going to merge."
         }
-      ]
+      ],
+      "situation": "Pytają o Twojego brancha. Masz to w planie na dzisiaj."
     },
     {
       "id": "t37",
@@ -878,7 +914,8 @@
           "input": "We're going talk about it at standup",
           "why": "Po going zawsze to: going to talk."
         }
-      ]
+      ],
+      "situation": "Ktoś zaczyna długi temat na czacie. Mówisz, że to już zaplanowane na standup."
     },
     {
       "id": "t38",
@@ -894,7 +931,8 @@
           "why": "przeczenie: I’m not going to"
         }
       ],
-      "lemma": "be"
+      "lemma": "be",
+      "situation": "Przychodzi zaproszenie na spotkanie. Wiesz już, że Cię nie będzie."
     },
     {
       "id": "t39",
@@ -910,7 +948,8 @@
           "why": "przy zasadzie: I never test"
         }
       ],
-      "lemma": "test"
+      "lemma": "test",
+      "situation": "Na rozmowie pytają o Twoje zasady. To reguła bez wyjątku."
     },
     {
       "id": "t40",
@@ -926,7 +965,8 @@
           "input": "I log it often in Jira",
           "why": "Often idzie przed czasownikiem: I often log."
         }
-      ]
+      ],
+      "situation": "Pytają, gdzie trafiają Twoje uwagi. Często do Jiry."
     },
     {
       "id": "t41",
@@ -949,7 +989,8 @@
           "input": "I'm always running a smoke test after the deploy",
           "why": "Always znaczy zawsze, więc zwykłe I always run."
         }
-      ]
+      ],
+      "situation": "Opisujesz swój stały rytuał po każdej wrzutce."
     },
     {
       "id": "t42",
@@ -965,7 +1006,8 @@
           "input": "I write rarely automated tests",
           "why": "Rarely idzie przed czasownikiem: I rarely write."
         }
-      ]
+      ],
+      "situation": "Pytają, ile masz doświadczenia w automatach. Uczciwie: rzadko je piszesz."
     }
   ],
   "reactions": [
@@ -1074,7 +1116,8 @@
         "I have been testing it since this morning",
         "I've been testing this since this morning",
         "I've been testing it since the morning"
-      ]
+      ],
+      "situation": "Koleżanka pyta, co robisz. Zaczęłaś rano i nadal to robisz."
     },
     {
       "id": "d02",
@@ -1093,7 +1136,8 @@
           "why": "po have/haven't forma z -ed: checked"
         }
       ],
-      "lemma": "check"
+      "lemma": "check",
+      "situation": "Pytają o wynik. Nie zdążyłaś jeszcze, ale masz to na liście."
     },
     {
       "id": "d03",
@@ -1117,7 +1161,8 @@
         "I'll look at it after lunch",
         "I'll take care of it after lunch",
         "I'll pick it up after lunch"
-      ]
+      ],
+      "situation": "Pytają, kiedy się tym zajmiesz. Właśnie postanawiasz: po lunchu."
     },
     {
       "id": "d04",
@@ -1160,7 +1205,8 @@
           "why": "obietnica: I’ll let you know when I’m done"
         }
       ],
-      "accept": ["I will let you know when I am done", "I'll let you know when I finish"]
+      "accept": ["I will let you know when I am done", "I'll let you know when I finish"],
+      "situation": "Ktoś czeka na Twój wynik. Obiecujesz odezwać się, jak skończysz."
     },
     {
       "id": "d07",
@@ -1175,7 +1221,8 @@
           "why": "wystarczy: I’ve already done it"
         }
       ],
-      "accept": ["I have already done it", "I've done it already", "I'm done with it"]
+      "accept": ["I have already done it", "I've done it already", "I'm done with it"],
+      "situation": "Ktoś prosi Cię o zadanie, które masz już z głowy."
     },
     {
       "id": "d08",
@@ -1194,7 +1241,8 @@
           "input": "I'm going merge it today",
           "why": "Po going zawsze to: I'm going to merge."
         }
-      ]
+      ],
+      "situation": "Pytają o Twojego brancha. Masz to w planie na dzisiaj."
     },
     {
       "id": "d09",
@@ -1209,7 +1257,8 @@
           "why": "przy zasadzie: I never test"
         }
       ],
-      "accept": ["I never test in production", "I never test on prod"]
+      "accept": ["I never test in production", "I never test on prod"],
+      "situation": "Na rozmowie pytają o Twoje zasady. To reguła bez wyjątku."
     }
   ]
 }

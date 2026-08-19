@@ -128,3 +128,53 @@ test('to samo zdanie nie wchodzi do lekcji dwa razy pod dwoma id', () => {
   const teksty = steps.map((s) => s.item.en);
   assert.equal(new Set(teksty).size, teksty.length, 'żadne zdanie nie powtarza się w lekcji');
 });
+
+test('sytuacja pojawia się dopiero przy zdaniu, które już umiem', () => {
+  fresh();
+  // Moduł musi być większy niż pula kafelków (7), inaczej na tłumaczenia nic nie zostaje.
+  const zdania = [];
+  for (let i = 0; i < 12; i += 1) {
+    zdania.push({
+      id: `s${i}`,
+      pattern: 'p',
+      pl: `polskie ${i}`,
+      en: `english number ${i}`,
+      chunks: [`english number ${i}`],
+      situation: `scenka ${i}`,
+    });
+  }
+  const mod = {
+    id: 'syt',
+    title: 'syt',
+    patterns: { p: 'p' },
+    patternOrder: ['p'],
+    translations: zdania,
+    dictation: [],
+  };
+
+  // połowę już umiem, połowy nie widziałam
+  for (let i = 0; i < 6; i += 1) store.recordAnswer(`s${i}`, true);
+
+  const { steps } = buildLesson(mod, store.get(), [mod]);
+  const sytuacje = steps.filter((s) => s.kind === 'situation');
+
+  assert.ok(sytuacje.length > 0, 'znane zdania mają wracać jako sytuacje');
+  for (const s of sytuacje) {
+    assert.ok(store.isDone(s.item.id), `${s.item.id} nie jest jeszcze umiane, a dostało sytuację`);
+  }
+});
+
+test('zdanie bez sytuacji zostaje zwykłym tłumaczeniem', () => {
+  fresh();
+  const mod = {
+    id: 'bez',
+    title: 'bez',
+    patterns: { p: 'p' },
+    patternOrder: ['p'],
+    translations: [{ id: 'b1', pattern: 'p', pl: 'a', en: 'a b c', chunks: ['a b c'] }],
+    dictation: [],
+  };
+  store.recordAnswer('b1', true);
+  const { steps } = buildLesson(mod, store.get(), [mod]);
+  assert.ok(!steps.some((s) => s.kind === 'situation'));
+});
