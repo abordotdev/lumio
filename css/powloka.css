@@ -304,6 +304,14 @@
   gap: 1.25rem;
 }
 
+/* Na szerokim ekranie ostatnie 170 px zostaje wolne - tam stoi ludzik.
+   Bez tego karty wchodzily pod niego. */
+@media (min-width: 1200px) {
+  .app .kolumna {
+    padding-right: 170px;
+  }
+}
+
 /* ---------- ludzik w rogu ---------- */
 .app .ludzik-rog {
   position: fixed;

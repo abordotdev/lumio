@@ -152,7 +152,7 @@ function przerwaLabel(dni) {
   return `${t} ${plural(t, 'tydzień', 'tygodnie', 'tygodni')}`;
 }
 
-function runLesson({ review = false, comeback = false } = {}) {
+function runLesson({ review = false, comeback = false, ids = null } = {}) {
   refreshModules();
   if (!MODULE) return toast('Wybierz moduł.');
   if (MODULE.id === 'moje' && !(MODULE.translations || []).length) {
@@ -165,6 +165,7 @@ function runLesson({ review = false, comeback = false } = {}) {
     modules: MODULES,
     review,
     comeback,
+    ids,
     onFinish: (res) => {
       disk.writePairQuiet();
       if (res.aborted) return go(back);
@@ -452,7 +453,7 @@ function danePowloki(screen = SCREEN) {
     monety: state.coins,
     uwaga: sprawyDoZalatwienia().length > 0,
     // Szeroka kolumna tylko tam, gdzie tresc jest na nia pisana.
-    waska: !['home', 'map'].includes(screen),
+    waska: !['home', 'map', 'modules'].includes(screen),
     dymek: screen !== 'home' ? '' : powrot ? 'Dobrze Cię widzieć.' : 'Gotowa na angielski?',
   };
 }
@@ -564,7 +565,17 @@ function lessonRowsHtml(outline) {
       const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
       const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
       const nazwa = l.czesc ? `${l.title} · część ${l.czesc} z ${l.czesci}` : l.title;
-      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(nazwa)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span><span class="m">${mark}</span></li>`;
+      const podpis = isNow
+        ? 'tutaj jesteś'
+        : l.done
+          ? 'umiesz'
+          : l.seen
+            ? 'do poprawy'
+            : 'jeszcze nie';
+      return `<li class="${kind}"><button type="button" data-ids="${esc((l.ids || []).join(','))}"
+        aria-label="Lekcja ${l.n}: ${esc(nazwa)}, ${podpis}">
+        <span class="n">${l.n}</span><span class="t">${esc(nazwa)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span><span class="m">${mark}</span>
+      </button></li>`;
     })
     .join('');
 }
@@ -653,12 +664,23 @@ function modules() {
   wrap.appendChild(hero);
 
   if (outline && outline.lessons.length && !emptyMine) {
-    wrap.appendChild(
-      h(`<div class="panel">
-        <span class="oczko">Lekcje w tym module</span>
-        <ol class="lista-lekcji">${lessonRowsHtml(outline)}</ol>
-      </div>`)
-    );
+    const panel = h(`<div class="panel">
+      <div class="naglowek">
+        <div class="rosnij">
+          <span class="oczko">Lekcje w tym module</span>
+          <p class="podpowiedz">Kliknij dowolną, żeby ją zrobić — nie musisz iść po kolei.</p>
+        </div>
+      </div>
+      <ol class="lista-lekcji">${lessonRowsHtml(outline)}</ol>
+    </div>`);
+    panel.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-ids]');
+      if (!btn) return;
+      const ids = btn.dataset.ids.split(',').filter(Boolean);
+      if (!ids.length) return;
+      runLesson({ ids });
+    });
+    wrap.appendChild(panel);
   }
 
   wrap.appendChild(

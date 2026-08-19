@@ -196,20 +196,25 @@ export function nextPattern(module) {
  * Nowy materiał bierzemy tylko z otwartego modułu, żeby nauka szła po kolei.
  * Powtórki ciągniemy ze wszystkich, żeby nic nie zostało z tyłu.
  */
-export function buildLesson(module, state, modules) {
+export function buildLesson(module, state, modules, opcje = {}) {
   const now = Date.now();
   const used = new Set();
   const wszystkie = asList(modules).length ? asList(modules) : [module];
   const mine = (module.translations || []).map((item) => ({ item, mod: module }));
-  const focus = nextPattern(module);
 
-  const newOnes = focus
-    ? take(
-        mine.filter((p) => p.item.pattern === focus && !itemState(p.item.id).introduced),
-        NEW_PER_LESSON,
-        used
-      )
-    : [];
+  // Lekcja wybrana z listy: bierzemy dokladnie jej zdania, nawet jesli byly juz widziane.
+  const wybrane = opcje.ids?.length ? mine.filter((p) => opcje.ids.includes(p.item.id)) : null;
+  const focus = wybrane ? wybrane[0]?.item.pattern || null : nextPattern(module);
+
+  const newOnes = wybrane
+    ? take(wybrane, NEW_PER_LESSON, used)
+    : focus
+      ? take(
+          mine.filter((p) => p.item.pattern === focus && !itemState(p.item.id).introduced),
+          NEW_PER_LESSON,
+          used
+        )
+      : [];
 
   const brakuje = (ile) => Math.max(0, 7 - ile);
   const extraTiles = take(
@@ -303,6 +308,9 @@ export function moduleOutline(module, modules) {
         pattern,
         czesc: czesci > 1 ? czesc : 0,
         czesci,
+        // Identyfikatory zdan tej lekcji - dzieki nim mozna ja wybrac z listy,
+        // zamiast czekac, az harmonogram sam do niej dojdzie.
+        ids: chunk.map((t) => t.id),
         title: (module.patterns && module.patterns[pattern]) || pattern,
         // „widziane" pcha lekcje do przodu, „umiem" stawia ptaszek. Rozdzielone,
         // żeby jedna pomyłka nie cofała wskaźnika bieżącej lekcji o pół modułu.

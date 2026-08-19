@@ -326,16 +326,45 @@
   flex-direction: column;
 }
 .app .lista-lekcji li {
-  display: grid;
-  grid-template-columns: 2rem 1fr auto 1.6rem;
-  gap: 12px;
-  align-items: center;
-  padding: 11px 4px;
   border-top: 1px solid var(--line);
-  font-size: 14px;
 }
 .app .lista-lekcji li:first-child {
   border-top: 0;
+}
+/* Caly wiersz jest przyciskiem - lekcje da sie wybrac z listy, nie tylko
+   czekac, az harmonogram sam do niej dojdzie. */
+.app .lista-lekcji button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2rem 1fr auto 1.8rem;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 10px;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 13px;
+  cursor: pointer;
+  color: inherit;
+  transition: 0.14s;
+}
+.app .lista-lekcji button:hover {
+  background: var(--bg);
+}
+.app .lista-lekcji button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--b500) 60%, transparent);
+  outline-offset: -2px;
+}
+.app .podpowiedz {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.app .panel > .naglowek {
+  margin-bottom: 6px;
 }
 .app .lista-lekcji .n {
   font-weight: 800;
@@ -371,9 +400,10 @@
   background: var(--warm100);
   color: var(--warm);
 }
-.app .lista-lekcji .now {
+.app .lista-lekcji .now button {
   background: var(--b100);
-  border-radius: 12px;
+}
+.app .lista-lekcji .now {
   border-top-color: transparent;
 }
 .app .lista-lekcji .now .t {
@@ -489,10 +519,11 @@
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  .app .lista-lekcji li {
+  .app .lista-lekcji button {
     grid-template-columns: 1.6rem 1fr auto;
     gap: 8px;
     font-size: 13.5px;
+    padding: 12px 6px;
   }
   .app .lista-lekcji .s {
     display: none;
