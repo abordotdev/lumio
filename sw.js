@@ -1,5 +1,5 @@
 // Offline: wszystko do cache przy instalacji, potem cache-first.
-const VERSION = 'lumio-v21-2026-08-18';
+const VERSION = 'lumio-v22-2026-08-19';
 const SHELL = [
   './',
   'index.html',
