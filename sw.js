@@ -6,10 +6,13 @@ const VERSION = 'lumio-dev';
 const SHELL = [
   './',
   'index.html',
+  'css/fonts.css',
   'css/app.css',
   'css/mapa-trasy.css',
   'css/powloka.css',
   'css/ekran-start.css',
+  'fonts/fraunces-latin.woff2',
+  'fonts/fraunces-latin-ext.woff2',
   'js/main.js',
   'js/mapa-trasy.js',
   'js/ekran-start.js',
