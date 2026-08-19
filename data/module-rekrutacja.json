@@ -983,214 +983,60 @@
   ],
   "dictation": [
     {
-      "id": "recd01",
-      "en": "I log bugs in Jira",
-      "pl": "Zgłaszam błędy w Jirze",
-      "chunks": ["I log bugs", "in Jira"],
-      "lemma": "log",
-      "note": "log a bug = zgłosić błąd w systemie",
-      "traps": [
-        {
-          "input": "I log bugs on Jira",
-          "why": "W narzędziu robimy coś in: in Jira, in Postman, in Confluence."
-        },
-        {
-          "input": "I'm logging bugs in Jira",
-          "why": "To Twój stały sposób pracy, więc I log — nie I'm logging."
-        }
-      ],
-      "accept": ["I report bugs in Jira", "I file bugs in Jira"]
+      "id": "rkd01",
+      "en": "Tell me about yourself",
+      "pl": "Proszę opowiedzieć o sobie",
+      "chunks": ["Tell me", "about yourself"],
+      "note": "yourself razem, jedno słowo"
     },
     {
-      "id": "recd02",
-      "en": "I use Postman to check the API",
-      "pl": "Używam Postmana, żeby sprawdzić API",
-      "chunks": ["I use Postman", "to check the API"],
-      "lemma": "use",
-      "note": "narzędzie, którego używasz na co dzień → I use",
-      "traps": [
-        {
-          "input": "I'm using Postman to check the API",
-          "why": "I'm using to „używam akurat teraz\". Gdy to Twoje stałe narzędzie: I use."
-        }
-      ],
-      "accept": ["I use Postman to test the API", "I use Postman to check APIs"]
+      "id": "rkd02",
+      "en": "What are your strengths?",
+      "pl": "Jakie są Pani mocne strony?",
+      "chunks": ["What are", "your strengths?"],
+      "note": "strengths — trudne, przez gths na końcu"
     },
     {
-      "id": "recd03",
-      "en": "A hotfix went to production yesterday",
-      "pl": "Wczoraj na produkcję poszedł hotfix",
-      "chunks": ["A hotfix", "went to production", "yesterday"],
-      "lemma": "go",
-      "note": "yesterday zamyka sprawę → went",
-      "traps": [
-        {
-          "input": "A hotfix has gone to production yesterday",
-          "why": "Yesterday to czas zamknięty — wtedy nigdy has ani have. Zostaje went."
-        },
-        {
-          "input": "A hotfix goed to production yesterday",
-          "why": "Go jest nieregularne: go → went → gone."
-        }
-      ],
-      "accept": ["A hotfix went to prod yesterday", "We shipped a hotfix to production yesterday"]
+      "id": "rkd03",
+      "en": "I have three years of experience",
+      "pl": "Mam trzy lata doświadczenia",
+      "chunks": ["I have three years", "of experience"],
+      "note": "experience przez ie w środku"
     },
     {
-      "id": "recd04",
-      "en": "We do regression testing before every release",
-      "pl": "Przed każdym releasem robimy regresję",
-      "chunks": ["We do regression testing", "before every release"],
-      "lemma": "do",
-      "note": "przed każdym releasem, czyli zawsze → we do",
-      "traps": [
-        {
-          "input": "We are doing regression testing before every release",
-          "why": "Before every release znaczy zawsze, więc we do."
-        },
-        {
-          "input": "We make regression testing before every release",
-          "why": "Testy się robi przez do albo run. Make w tym miejscu nie chodzi."
-        }
-      ],
-      "accept": [
-        "We run regression tests before every release",
-        "We do regression before every release"
-      ]
+      "id": "rkd04",
+      "en": "I work well under pressure",
+      "pl": "Dobrze pracuję pod presją",
+      "chunks": ["I work well", "under pressure"],
+      "note": "pressure przez dwa s"
     },
     {
-      "id": "recd05",
-      "en": "I don't have commercial Selenium experience yet",
-      "pl": "Nie mam jeszcze komercyjnego Selenium",
-      "chunks": ["I don't have", "commercial Selenium experience", "yet"],
-      "lemma": "have",
-      "note": "uczciwie i bez owijania: don't have … yet",
-      "traps": [
-        {
-          "input": "I haven't commercial Selenium experience yet",
-          "why": "Samo haven't nie wystarczy. Albo I don't have, albo I haven't got."
-        },
-        {
-          "input": "I don't have commercial Selenium experience still",
-          "why": "„Jeszcze nie\" w przeczeniu to yet, na końcu zdania. Still znaczy „nadal\"."
-        }
-      ],
-      "accept": [
-        "I don't have commercial experience with Selenium yet",
-        "I haven't got commercial Selenium experience yet"
-      ]
+      "id": "rkd05",
+      "en": "Why do you want this job?",
+      "pl": "Dlaczego chce Pani tę pracę?",
+      "chunks": ["Why do you want", "this job?"],
+      "note": "job przez jedno b"
     },
     {
-      "id": "recd06",
-      "en": "I work as a manual tester",
-      "pl": "Pracuję jako testerka manualna",
-      "chunks": ["I work as", "a manual tester"],
-      "lemma": "work",
-      "note": "zawód → I work as a",
-      "traps": [
-        {
-          "input": "I work as manual tester",
-          "why": "Przed zawodem zawsze a: as a tester, as a developer."
-        }
-      ],
-      "accept": ["I work as a QA tester", "I'm a manual tester"]
+      "id": "rkd06",
+      "en": "When can you start?",
+      "pl": "Kiedy może Pani zacząć?",
+      "chunks": ["When can you", "start?"],
+      "note": "start przez ar w środku"
     },
     {
-      "id": "recd07",
-      "en": "I write tests in Playwright",
-      "pl": "Piszę testy w Playwright",
-      "chunks": ["I write tests", "in Playwright"],
-      "lemma": "write",
-      "note": "na co dzień → I write",
-      "traps": [
-        {
-          "input": "I'm writing tests in Playwright",
-          "why": "Gdy to Twoja stała robota: I write. I'm writing znaczy „piszę właśnie teraz\"."
-        }
-      ],
-      "accept": ["I write Playwright tests", "I write tests with Playwright"]
+      "id": "rkd07",
+      "en": "Do you have any questions?",
+      "pl": "Czy ma Pani jakieś pytania?",
+      "chunks": ["Do you have", "any questions?"],
+      "note": "questions przez qu na początku"
     },
     {
-      "id": "recd08",
-      "en": "I send a POST request with a token",
-      "pl": "Wysyłam request POST z tokenem",
-      "chunks": ["I send", "a POST request", "with a token"],
-      "lemma": "send",
-      "note": "wysłać request → send a request",
-      "traps": [
-        {
-          "input": "I send a POST request with token",
-          "why": "Przed token trzeba a albo the: with a token."
-        }
-      ],
-      "accept": ["I send a POST with a token", "I send a POST request with the token"]
-    },
-    {
-      "id": "recd09",
-      "en": "The rollback took five minutes",
-      "pl": "Rollback zajął pięć minut",
-      "chunks": ["The rollback", "took five minutes"],
-      "lemma": "take",
-      "note": "zajęło tyle czasu → took",
-      "traps": [
-        {
-          "input": "The rollback taked five minutes",
-          "why": "Take jest nieregularne: take → took → taken."
-        }
-      ],
-      "accept": ["The rollback took 5 minutes", "Rollback took five minutes"]
-    },
-    {
-      "id": "recd10",
-      "en": "I was in Italy last year",
-      "pl": "W zeszłym roku byłam we Włoszech",
-      "chunks": ["I was", "in Italy", "last year"],
-      "lemma": "be",
-      "note": "byłam gdzieś → I was in",
-      "traps": [
-        {
-          "input": "I have been in Italy last year",
-          "why": "Last year to czas zamknięty — wtedy nigdy have been. Zostaje I was."
-        },
-        {
-          "input": "I was in Italy in last year",
-          "why": "Last year bez in: I was there last year, I was there last week."
-        }
-      ],
-      "accept": [
-        "I went to Italy last year",
-        "Last year I was in Italy",
-        "Last year I went to Italy"
-      ]
-    },
-    {
-      "id": "recd11",
-      "en": "I study English every morning",
-      "pl": "Uczę się angielskiego codziennie rano",
-      "chunks": ["I study English", "every morning"],
-      "lemma": "study",
-      "note": "uczyć się czegoś na serio → study; learn to raczej „nauczyć się\"",
-      "traps": [
-        {
-          "input": "I'm studying English every morning",
-          "why": "Every morning znaczy zawsze, więc I study."
-        }
-      ],
-      "accept": ["I learn English every morning", "Every morning I study English"]
-    },
-    {
-      "id": "recd12",
-      "en": "My notice period is one month",
-      "pl": "Mój okres wypowiedzenia to miesiąc",
-      "chunks": ["My notice period", "is one month"],
-      "lemma": "be",
-      "note": "okres wypowiedzenia JEST miesięczny → is one month",
-      "traps": [
-        {
-          "input": "My notice period have one month",
-          "why": "Okres wypowiedzenia jest miesięczny, nie „ma\": my notice period is one month."
-        }
-      ],
-      "accept": ["My notice period is a month", "I have a one-month notice period"]
+      "id": "rkd08",
+      "en": "I am looking for a new challenge",
+      "pl": "Szukam nowego wyzwania",
+      "chunks": ["I am looking for", "a new challenge"],
+      "note": "challenge przez dwa l i ge na końcu"
     }
   ]
 }

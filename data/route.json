@@ -162,56 +162,171 @@
     { "id": "hair-long", "name": "Długie włosy", "slot": "hair", "price": 0, "source": "start" },
     { "id": "hair-ponytail", "name": "Kucyk", "slot": "hair", "price": 0, "source": "start" },
     { "id": "top-tshirt", "name": "Biała koszulka", "slot": "top", "price": 0, "source": "start" },
-    { "id": "bottom-shorts", "name": "Szare szorty", "slot": "bottom", "price": 0, "source": "start" },
+    {
+      "id": "bottom-shorts",
+      "name": "Szare szorty",
+      "slot": "bottom",
+      "price": 0,
+      "source": "start"
+    },
 
     { "id": "top-navy", "name": "Błękitna góra", "slot": "top", "price": 90, "source": "londyn" },
-    { "id": "bottom-navy", "name": "Błękitna spódnica", "slot": "bottom", "price": 80, "source": "londyn" },
+    {
+      "id": "bottom-navy",
+      "name": "Błękitna spódnica",
+      "slot": "bottom",
+      "price": 80,
+      "source": "londyn"
+    },
     { "id": "top-red", "name": "Różowa bluzka", "slot": "top", "price": 90, "source": "londyn" },
-    { "id": "bottom-red", "name": "Różowa spódnica", "slot": "bottom", "price": 80, "source": "londyn" },
+    {
+      "id": "bottom-red",
+      "name": "Różowa spódnica",
+      "slot": "bottom",
+      "price": 80,
+      "source": "londyn"
+    },
     { "id": "earrings", "name": "Kolczyki", "slot": "ears", "price": 40, "source": "londyn" },
 
     { "id": "glasses", "name": "Okulary", "slot": "eyes", "price": 60, "source": "budka" },
-    { "id": "lipstick", "name": "Czerwona szminka", "slot": "lips", "price": 35, "source": "budka" },
+    {
+      "id": "lipstick",
+      "name": "Czerwona szminka",
+      "slot": "lips",
+      "price": 35,
+      "source": "budka"
+    },
     { "id": "bow", "name": "Kokarda", "slot": "head", "price": 25, "source": "budka" },
 
     { "id": "clips", "name": "Spinki", "slot": "head", "price": 30, "source": "budka-stand" },
 
-    { "id": "top-lilac", "name": "Bluzka z Berlina", "slot": "top", "price": 90, "source": "berlin" },
-    { "id": "bottom-lilac", "name": "Ołówkowa z Berlina", "slot": "bottom", "price": 90, "source": "berlin" },
+    {
+      "id": "top-lilac",
+      "name": "Bluzka z Berlina",
+      "slot": "top",
+      "price": 90,
+      "source": "berlin"
+    },
+    {
+      "id": "bottom-lilac",
+      "name": "Ołówkowa z Berlina",
+      "slot": "bottom",
+      "price": 90,
+      "source": "berlin"
+    },
     { "id": "beanie", "name": "Czapka", "slot": "head", "price": 50, "source": "berlin" },
     { "id": "scarf", "name": "Szalik", "slot": "neck", "price": 55, "source": "berlin" },
 
-    { "id": "studs", "name": "Kolczyki-kropki", "slot": "ears", "price": 28, "source": "budka-bahn" },
+    {
+      "id": "studs",
+      "name": "Kolczyki-kropki",
+      "slot": "ears",
+      "price": 28,
+      "source": "budka-bahn"
+    },
 
     { "id": "top-sun", "name": "Czarna góra", "slot": "top", "price": 100, "source": "paryz" },
-    { "id": "bottom-sun", "name": "Czarna spódnica", "slot": "bottom", "price": 90, "source": "paryz" },
+    {
+      "id": "bottom-sun",
+      "name": "Czarna spódnica",
+      "slot": "bottom",
+      "price": 90,
+      "source": "paryz"
+    },
     { "id": "necklace", "name": "Naszyjnik", "slot": "neck", "price": 70, "source": "paryz" },
 
     { "id": "gloss", "name": "Błyszczyk", "slot": "lips", "price": 32, "source": "budka-metro" },
 
-    { "id": "top-denim", "name": "Kremowy sweter", "slot": "top", "price": 160, "source": "dublin" },
+    {
+      "id": "top-denim",
+      "name": "Kremowy sweter",
+      "slot": "top",
+      "price": 160,
+      "source": "dublin"
+    },
     { "id": "bottom-jeans", "name": "Jeansy", "slot": "bottom", "price": 140, "source": "dublin" },
 
     { "id": "headband", "name": "Opaska", "slot": "head", "price": 35, "source": "budka-rain" },
 
-    { "id": "top-mint", "name": "Bluzka w paski", "slot": "top", "price": 110, "source": "amsterdam" },
-    { "id": "bottom-mint", "name": "Spódnica w paski", "slot": "bottom", "price": 110, "source": "amsterdam" },
+    {
+      "id": "top-mint",
+      "name": "Bluzka w paski",
+      "slot": "top",
+      "price": 110,
+      "source": "amsterdam"
+    },
+    {
+      "id": "bottom-mint",
+      "name": "Spódnica w paski",
+      "slot": "bottom",
+      "price": 110,
+      "source": "amsterdam"
+    },
     { "id": "beret", "name": "Beret", "slot": "head", "price": 55, "source": "amsterdam" },
 
     { "id": "choker", "name": "Choker", "slot": "neck", "price": 40, "source": "budka-canal" },
 
-    { "id": "top-coral", "name": "Bluzka w grochy", "slot": "top", "price": 110, "source": "barcelona" },
-    { "id": "bottom-coral", "name": "Spódnica w grochy", "slot": "bottom", "price": 110, "source": "barcelona" },
-    { "id": "bottom-skirt", "name": "Spódnica w kratę", "slot": "bottom", "price": 130, "source": "edynburg" },
+    {
+      "id": "top-coral",
+      "name": "Bluzka w grochy",
+      "slot": "top",
+      "price": 110,
+      "source": "barcelona"
+    },
+    {
+      "id": "bottom-coral",
+      "name": "Spódnica w grochy",
+      "slot": "bottom",
+      "price": 110,
+      "source": "barcelona"
+    },
+    {
+      "id": "bottom-skirt",
+      "name": "Spódnica w kratę",
+      "slot": "bottom",
+      "price": 130,
+      "source": "edynburg"
+    },
 
-    { "id": "top-coat", "name": "Wełniany płaszcz", "slot": "top", "price": 220, "source": "edynburg" },
+    {
+      "id": "top-coat",
+      "name": "Wełniany płaszcz",
+      "slot": "top",
+      "price": 220,
+      "source": "edynburg"
+    },
 
     { "id": "top-ball", "name": "Góra balowa", "slot": "top", "price": 0, "source": "box" },
-    { "id": "bottom-ball", "name": "Spódnica balowa", "slot": "bottom", "price": 0, "source": "box" },
+    {
+      "id": "bottom-ball",
+      "name": "Spódnica balowa",
+      "slot": "bottom",
+      "price": 0,
+      "source": "box"
+    },
     { "id": "tiara", "name": "Tiara", "slot": "head", "price": 0, "source": "box" },
     { "id": "pearls", "name": "Perły", "slot": "neck", "price": 0, "source": "box" },
     { "id": "hoops", "name": "Koła", "slot": "ears", "price": 0, "source": "box" },
     { "id": "flower", "name": "Kwiatek", "slot": "head", "price": 0, "source": "box" }
   ],
-  "boxPool": ["top-ball", "bottom-ball", "tiara", "pearls", "hoops", "flower", "bow", "lipstick", "glasses", "earrings", "beanie", "scarf", "necklace", "clips", "studs", "gloss", "headband", "choker"]
+  "boxPool": [
+    "top-ball",
+    "bottom-ball",
+    "tiara",
+    "pearls",
+    "hoops",
+    "flower",
+    "bow",
+    "lipstick",
+    "glasses",
+    "earrings",
+    "beanie",
+    "scarf",
+    "necklace",
+    "clips",
+    "studs",
+    "gloss",
+    "headband",
+    "choker"
+  ]
 }

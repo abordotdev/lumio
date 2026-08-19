@@ -413,125 +413,67 @@
   ],
   "dictation": [
     {
-      "id": "smd01",
-      "en": "Nice to meet you",
-      "pl": "Miło Cię poznać",
-      "note": "pierwsze spotkanie",
-      "chunks": ["Nice to meet you"],
-      "traps": [
-        {
-          "input": "Nice to know you",
-          "why": "przy poznawaniu: meet, nie know"
-        }
-      ],
-      "accept": ["It's nice to meet you", "Pleased to meet you", "Nice meeting you"]
+      "id": "std01",
+      "en": "Let us grab a coffee later",
+      "pl": "Skoczmy później na kawę",
+      "chunks": ["Let us grab a coffee", "later"],
+      "note": "grab przez jedno b"
     },
     {
-      "id": "smd02",
-      "en": "Would you like some coffee?",
+      "id": "std02",
+      "en": "Do you want a coffee?",
       "pl": "Chcesz kawę?",
-      "chunks": ["Would you like", "some coffee?"],
-      "note": "uprzejmie: Would you like…",
-      "traps": [
-        {
-          "input": "You want coffee?",
-          "why": "brzmi ostro — lepiej Would you like some coffee?"
-        }
-      ],
-      "accept": ["Would you like a coffee?", "Do you want some coffee?", "Want some coffee?"]
+      "chunks": ["Do you want", "a coffee?"],
+      "note": "coffee przez dwa f i dwa e"
     },
     {
-      "id": "smd03",
-      "en": "Sorry I'm late",
-      "pl": "Przepraszam za spóźnienie",
-      "chunks": ["Sorry I'm late"],
-      "traps": [
-        {
-          "input": "Sorry I late",
-          "why": "brakuje I'm: Sorry I'm late"
-        }
-      ],
-      "accept": ["Sorry for being late", "I'm sorry I'm late"],
-      "note": "krótkie przeprosiny za spóźnienie → Sorry I'm late"
+      "id": "std03",
+      "en": "I am running a bit late",
+      "pl": "Trochę się spóźnię",
+      "chunks": ["I am running", "a bit late"],
+      "note": "a bit — bit przez jedno t"
     },
     {
-      "id": "smd04",
-      "en": "Thanks for coming",
-      "pl": "Dzięki, że przyszłaś",
-      "note": "Thanks for + coming",
-      "chunks": ["Thanks for coming"],
-      "traps": [
-        {
-          "input": "Thanks to come",
-          "why": "po thanks for idzie -ing: coming"
-        }
-      ],
-      "accept": ["Thank you for coming", "Thanks for being here"]
+      "id": "std04",
+      "en": "Let us catch up after lunch",
+      "pl": "Pogadajmy po lunchu",
+      "chunks": ["Let us catch up", "after lunch"],
+      "note": "catch przez tch"
     },
     {
-      "id": "smd05",
-      "en": "See you tomorrow",
-      "pl": "Do zobaczenia jutro",
-      "chunks": ["See you tomorrow"],
-      "accept": ["I'll see you tomorrow"],
-      "note": "do zobaczenia → see you + kiedy"
+      "id": "std05",
+      "en": "Have a nice evening",
+      "pl": "Miłego wieczoru",
+      "chunks": ["Have a nice", "evening"],
+      "note": "evening przez jedno v"
     },
     {
-      "id": "smd06",
-      "en": "Nice to see you again",
-      "pl": "Miło Cię znowu widzieć",
-      "chunks": ["Nice to see you", "again"],
-      "accept": ["Good to see you again", "It's nice to see you again"],
-      "note": "gdy już się znacie → nice to SEE you",
-      "traps": [
-        {
-          "input": "Nice to meet you again",
-          "why": "Meet to pierwsze poznanie. Gdy już się znacie: Nice to see you again."
-        }
-      ]
+      "id": "std06",
+      "en": "Talk to you soon",
+      "pl": "Do usłyszenia wkrótce",
+      "chunks": ["Talk to you", "soon"],
+      "note": "soon przez dwa o"
     },
     {
-      "id": "smd07",
-      "en": "Do you have a minute?",
-      "pl": "Masz chwilę?",
-      "chunks": ["Do you have", "a minute?"],
-      "accept": ["Have you got a minute?", "Got a minute?"],
-      "note": "masz chwilę → Do you have a minute",
-      "traps": [
-        {
-          "input": "Have you a minute?",
-          "why": "Po angielsku w pytaniu trzeba do: Do you have a minute."
-        }
-      ]
+      "id": "std07",
+      "en": "It is really busy today",
+      "pl": "Dziś jest naprawdę dużo pracy",
+      "chunks": ["It is really", "busy today"],
+      "note": "busy czyta się „bizi\", ale pisze busy"
     },
     {
-      "id": "smd08",
-      "en": "Thanks for your help",
-      "pl": "Dzięki za pomoc",
-      "chunks": ["Thanks for", "your help"],
-      "note": "Thanks for + rzeczownik albo -ing",
-      "accept": ["Thank you for your help", "Thanks for helping"],
-      "traps": [
-        {
-          "input": "Thanks for your helping",
-          "why": "Po thanks for idzie rzeczownik: your help."
-        }
-      ]
+      "id": "std08",
+      "en": "I really appreciate it",
+      "pl": "Naprawdę to doceniam",
+      "chunks": ["I really", "appreciate it"],
+      "note": "appreciate przez dwa p i ci w środku"
     },
     {
-      "id": "smd09",
-      "en": "I'm on my way",
-      "pl": "Jestem w drodze",
-      "chunks": ["I'm on my way"],
-      "lemma": "be",
-      "accept": ["I am on my way", "I'm on the way"],
-      "note": "jestem w drodze → I'm on my way",
-      "traps": [
-        {
-          "input": "I'm on my road",
-          "why": "W drodze do kogoś: on my way. Road to droga jako ulica."
-        }
-      ]
+      "id": "std09",
+      "en": "No worries, take your time",
+      "pl": "Spokojnie, nie spiesz się",
+      "chunks": ["No worries,", "take your time"],
+      "note": "worries przez ie przed s"
     }
   ]
 }

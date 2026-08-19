@@ -1110,211 +1110,59 @@
   "dictation": [
     {
       "id": "dokd01",
-      "en": "Click Save to confirm your changes",
-      "pl": "Kliknij Zapisz, żeby potwierdzić zmiany",
-      "chunks": ["Click Save", "to confirm", "your changes"],
-      "lemma": "click",
-      "note": "instrukcja idzie w trybie rozkazującym: Click, nie You click",
-      "accept": ["Click Save to confirm the changes"],
-      "traps": [
-        {
-          "input": "You will click Save to confirm your changes",
-          "why": "W instrukcji piszemy wprost: Click Save. Bez you will."
-        },
-        {
-          "input": "Click on Save to confirm your changes",
-          "why": "Przy nazwie przycisku zwykle bez on: Click Save. Click on the button, gdy mowa ogólnie."
-        }
-      ]
+      "en": "Read the section carefully",
+      "pl": "Przeczytaj sekcję uważnie",
+      "chunks": ["Read the section", "carefully"],
+      "note": "carefully przez dwa l"
     },
     {
       "id": "dokd02",
-      "en": "This field is required in the request",
-      "pl": "To pole jest wymagane w żądaniu",
-      "chunks": ["This field is required", "in the request"],
-      "lemma": "be",
-      "note": "pole wymagane → is required",
-      "accept": ["This field is mandatory in the request"],
-      "traps": [
-        {
-          "input": "This field is require in the request",
-          "why": "Wymagane to required, z -ed. Require bez końcówki to czasownik."
-        }
-      ]
+      "en": "Check the version number",
+      "pl": "Sprawdź numer wersji",
+      "chunks": ["Check the version", "number"],
+      "note": "version przez si w środku"
     },
     {
       "id": "dokd03",
-      "en": "This method is deprecated",
-      "pl": "Ta metoda jest przestarzała",
-      "chunks": ["This method is deprecated"],
-      "lemma": "be",
-      "note": "przestarzałe, wycofane → deprecated",
-      "accept": ["This method is no longer supported"],
-      "traps": [
-        {
-          "input": "This method is depreciated",
-          "why": "W kodzie mówi się deprecated. Depreciated to spadek wartości, co innego."
-        }
-      ]
+      "en": "The example does not work",
+      "pl": "Przykład nie działa",
+      "chunks": ["The example", "does not work"],
+      "note": "example przez x"
     },
     {
       "id": "dokd04",
-      "en": "The configuration depends on your environment",
-      "pl": "Konfiguracja zależy od Twojego środowiska",
-      "chunks": ["The configuration", "depends on", "your environment"],
-      "lemma": "depend",
-      "note": "zależy OD czegoś → depends on",
-      "accept": ["Configuration depends on your environment"],
-      "traps": [
-        {
-          "input": "The configuration depends of your environment",
-          "why": "Zależeć od czegoś to depend ON, nie depend of. Bardzo częsty błąd w dokumentacji."
-        },
-        {
-          "input": "The configuration depend on your environment",
-          "why": "Configuration to ono, więc depends z -s."
-        }
-      ]
+      "en": "This link is broken",
+      "pl": "Ten link jest zepsuty",
+      "chunks": ["This link", "is broken"],
+      "note": "broken przez jedno o na końcu"
     },
     {
       "id": "dokd05",
-      "en": "I found a typo in the documentation",
-      "pl": "Znalazłam literówkę w dokumentacji",
-      "chunks": ["I found a typo", "in the documentation"],
-      "lemma": "find",
-      "note": "znalazłam, sprawa zamknięta → found",
-      "accept": ["I found a typo in the docs"],
-      "traps": [
-        {
-          "input": "I find a typo in the documentation",
-          "why": "Już to znalazłaś, więc found. Find jest nieregularne: find → found."
-        },
-        {
-          "input": "I found a typo in the documentations",
-          "why": "Documentation nie ma liczby mnogiej — zawsze documentation."
-        }
-      ]
+      "en": "Update the screenshot",
+      "pl": "Zaktualizuj zrzut ekranu",
+      "chunks": ["Update", "the screenshot"],
+      "note": "screenshot: screen + shot"
     },
     {
       "id": "dokd06",
-      "en": "The endpoint returns a list of users",
-      "pl": "Ten endpoint zwraca listę użytkowników",
-      "chunks": ["The endpoint returns", "a list of users"],
-      "lemma": "return",
-      "note": "endpoint robi to zawsze → returns z -s",
-      "accept": ["This endpoint returns a list of users"],
-      "traps": [
-        {
-          "input": "The endpoint return a list of users",
-          "why": "Endpoint to ono, więc returns z -s."
-        },
-        {
-          "input": "The endpoint returns a list of user",
-          "why": "Wielu użytkowników → users, w liczbie mnogiej."
-        }
-      ]
+      "en": "The wording is confusing",
+      "pl": "Sformułowanie jest mylące",
+      "chunks": ["The wording", "is confusing"],
+      "note": "confusing przez jedno s"
     },
     {
       "id": "dokd07",
-      "en": "Make sure the server is running",
-      "pl": "Upewnij się, że serwer działa",
-      "chunks": ["Make sure", "the server is running"],
-      "lemma": "be",
-      "note": "coś działa w tej chwili → is running",
-      "accept": ["Make sure that the server is running"],
-      "traps": [
-        {
-          "input": "Make sure the server is run",
-          "why": "Po is idzie forma z -ing: is running."
-        },
-        {
-          "input": "Be sure the server is running",
-          "why": "W instrukcji stały zwrot to make sure, nie be sure."
-        }
-      ]
+      "en": "Add a note about the limit",
+      "pl": "Dodaj notkę o limicie",
+      "chunks": ["Add a note", "about the limit"],
+      "note": "limit przez jedno t"
     },
     {
       "id": "dokd08",
-      "en": "The docs say one thing, the app does another",
-      "pl": "Dokumentacja mówi jedno, apka robi drugie",
-      "chunks": ["The docs say one thing,", "the app does another"],
-      "lemma": "say",
-      "note": "docs to liczba mnoga → say; app to ono → does",
-      "accept": ["The documentation says one thing, the app does another"],
-      "traps": [
-        {
-          "input": "The docs says one thing, the app does another",
-          "why": "Docs to liczba mnoga, więc say bez -s."
-        },
-        {
-          "input": "The docs say one thing, the app do another",
-          "why": "App to ono, więc does z -s."
-        }
-      ]
-    },
-    {
-      "id": "dokd09",
-      "en": "Refer to the table below",
-      "pl": "Zajrzyj do tabeli poniżej",
-      "chunks": ["Refer to", "the table below"],
-      "lemma": "refer",
-      "note": "odsyłanie w dokumentacji → refer to",
-      "accept": ["See the table below"],
-      "traps": [
-        {
-          "input": "Refer the table below",
-          "why": "Refer zawsze z to: refer to the table."
-        },
-        {
-          "input": "Refer to the below table",
-          "why": "Poniższa tabela to the table below — below idzie po rzeczowniku."
-        }
-      ]
-    },
-    {
-      "id": "dokd10",
-      "en": "The maximum file size is ten megabytes",
-      "pl": "Maksymalny rozmiar pliku to dziesięć megabajtów",
-      "chunks": ["The maximum file size", "is", "ten megabytes"],
-      "lemma": "be",
-      "note": "rozmiar to jedna wartość → is",
-      "accept": ["The maximum file size is 10 megabytes"],
-      "traps": [
-        {
-          "input": "The maximum file size are ten megabytes",
-          "why": "size to jedno → is."
-        }
-      ]
-    },
-    {
-      "id": "dokd11",
-      "en": "This field cannot be empty",
-      "pl": "To pole nie może być puste",
-      "chunks": ["This field", "cannot be", "empty"],
-      "lemma": "be",
-      "note": "reguła stała → cannot, bez to po nim",
-      "accept": ["This field must not be empty"],
-      "traps": [
-        {
-          "input": "This field cannot to be empty",
-          "why": "po cannot goły be, bez to."
-        }
-      ]
-    },
-    {
-      "id": "dokd12",
-      "en": "The system sends a confirmation email",
-      "pl": "System wysyła e-mail z potwierdzeniem",
-      "chunks": ["The system", "sends", "a confirmation email"],
-      "lemma": "send",
-      "note": "system to ono → sends",
-      "accept": ["The system sends you a confirmation email"],
-      "traps": [
-        {
-          "input": "The system send a confirmation email",
-          "why": "system to ono → sends."
-        }
-      ]
+      "en": "Remove the outdated part",
+      "pl": "Usuń nieaktualny fragment",
+      "chunks": ["Remove", "the outdated part"],
+      "note": "outdated: out + dated"
     }
   ]
 }

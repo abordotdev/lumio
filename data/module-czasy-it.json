@@ -1100,165 +1100,67 @@
   ],
   "dictation": [
     {
-      "id": "d01",
-      "en": "I've been testing it since this morning",
-      "pl": "Testuję to od rana",
-      "note": "zaczęło się wcześniej i trwa do teraz → I've been + testing (-ing, bo czynność TRWA)",
-      "chunks": ["I've been", "testing it", "since this morning"],
-      "traps": [
-        {
-          "input": "I'm testing it since this morning",
-          "why": "I'm testing to tylko ta chwila — gdy coś trwa OD kiedyś, użyj I've been"
-        }
-      ],
-      "lemma": "test",
-      "accept": [
-        "I have been testing it since this morning",
-        "I've been testing this since this morning",
-        "I've been testing it since the morning"
-      ],
-      "situation": "Koleżanka pyta, co robisz. Zaczęłaś rano i nadal to robisz."
+      "id": "cid01",
+      "en": "The build passed on the first try",
+      "pl": "Build przeszedł za pierwszym razem",
+      "chunks": ["The build passed", "on the first try"],
+      "note": "try przez y, nie „tri\""
     },
     {
-      "id": "d02",
-      "en": "I haven't checked it yet",
-      "pl": "Jeszcze tego nie sprawdziłam",
-      "note": "po haven't zawsze forma z -ed: checked, nie check",
-      "chunks": ["I haven't", "checked it", "yet"],
-      "accept": ["I have not checked it yet", "I haven't checked this yet"],
-      "traps": [
-        {
-          "input": "I haven't check it yet",
-          "why": "po haven't forma z -ed: checked"
-        },
-        {
-          "input": "I have not check it yet",
-          "why": "po have/haven't forma z -ed: checked"
-        }
-      ],
-      "lemma": "check",
-      "situation": "Pytają o wynik. Nie zdążyłaś jeszcze, ale masz to na liście."
+      "id": "cid02",
+      "en": "I pushed the fix an hour ago",
+      "pl": "Wypchnęłam poprawkę godzinę temu",
+      "chunks": ["I pushed the fix", "an hour ago"],
+      "note": "an hour — h nieme, więc an, nie a"
     },
     {
-      "id": "d03",
-      "en": "I'll take a look after lunch",
-      "pl": "Zajmę się tym po lunchu",
-      "note": "obietnica na przyszłość → I'll",
-      "chunks": ["I'll take a look", "after lunch"],
-      "lemma": "take",
-      "traps": [
-        {
-          "input": "I'll take a look after the lunch",
-          "why": "lunch bez the: after lunch"
-        },
-        {
-          "input": "I take a look after lunch",
-          "why": "przy obietnicy → I'll take a look"
-        }
-      ],
-      "accept": [
-        "I will take a look after lunch",
-        "I'll look at it after lunch",
-        "I'll take care of it after lunch",
-        "I'll pick it up after lunch"
-      ],
-      "situation": "Pytają, kiedy się tym zajmiesz. Właśnie postanawiasz: po lunchu."
+      "id": "cid03",
+      "en": "The server is restarting now",
+      "pl": "Serwer właśnie się restartuje",
+      "chunks": ["The server", "is restarting now"],
+      "note": "dzieje się teraz → is restarting"
     },
     {
-      "id": "d04",
-      "en": "She reported it on Friday",
-      "pl": "Zgłosiła to w piątek",
-      "note": "konkretny, zamknięty moment → reported; przy dniu tygodnia: on Friday",
-      "chunks": ["She reported it", "on Friday"],
-      "traps": [
-        {
-          "input": "She reported it in Friday",
-          "why": "przy dniach tygodnia zawsze on: on Friday"
-        }
-      ],
-      "lemma": "report"
+      "id": "cid04",
+      "en": "We deployed it yesterday evening",
+      "pl": "Wdrożyliśmy to wczoraj wieczorem",
+      "chunks": ["We deployed it", "yesterday evening"],
+      "note": "deployed przez dwa e i podwójne… nie, jedno p"
     },
     {
-      "id": "d05",
-      "en": "We're waiting for the deploy",
-      "pl": "Czekamy na deploy",
-      "note": "dzieje się teraz, w tej chwili → we're waiting (-ing, bo czekanie trwa)",
-      "chunks": ["We're waiting", "for the deploy"],
-      "lemma": "wait",
-      "traps": [
-        {
-          "input": "We are waiting the deploy",
-          "why": "Czekać na coś to wait FOR: we are waiting for the deploy."
-        }
-      ]
+      "id": "cid05",
+      "en": "I have already merged the branch",
+      "pl": "Już scaliłam gałąź",
+      "chunks": ["I have already merged", "the branch"],
+      "note": "branch przez ch na końcu"
     },
     {
-      "id": "d06",
-      "en": "I'll let you know when I'm done",
-      "pl": "Dam znać, jak skończę",
-      "chunks": ["I'll let you know", "when I'm done"],
-      "lemma": "let",
-      "note": "obietnica → I’ll let you know",
-      "traps": [
-        {
-          "input": "I let you know when I done",
-          "why": "obietnica: I’ll let you know when I’m done"
-        }
-      ],
-      "accept": ["I will let you know when I am done", "I'll let you know when I finish"],
-      "situation": "Ktoś czeka na Twój wynik. Obiecujesz odezwać się, jak skończysz."
+      "id": "cid06",
+      "en": "The tests are still running",
+      "pl": "Testy wciąż się wykonują",
+      "chunks": ["The tests", "are still running"],
+      "note": "testy mnogie → are"
     },
     {
-      "id": "d07",
-      "en": "I've already done it",
-      "pl": "Już to zrobiłam",
-      "chunks": ["I've already", "done it"],
-      "lemma": "do",
-      "note": "zrobione → I’ve already done",
-      "traps": [
-        {
-          "input": "I already did it already",
-          "why": "wystarczy: I’ve already done it"
-        }
-      ],
-      "accept": ["I have already done it", "I've done it already", "I'm done with it"],
-      "situation": "Ktoś prosi Cię o zadanie, które masz już z głowy."
+      "id": "cid07",
+      "en": "They will release it next week",
+      "pl": "Wypuszczą to w przyszłym tygodniu",
+      "chunks": ["They will release it", "next week"],
+      "note": "release przez jedno l i s-e na końcu"
     },
     {
-      "id": "d08",
-      "en": "I'm going to merge it today",
-      "pl": "Zamierzam to zmergować dziś",
-      "chunks": ["I'm going to", "merge it", "today"],
-      "lemma": "merge",
-      "note": "plan → I’m going to merge",
-      "accept": ["I am going to merge it today", "I'll merge it today"],
-      "traps": [
-        {
-          "input": "I will merge it today",
-          "why": "I'll to decyzja podjęta w tej chwili. Gdy to było zaplanowane wcześniej: I'm going to merge."
-        },
-        {
-          "input": "I'm going merge it today",
-          "why": "Po going zawsze to: I'm going to merge."
-        }
-      ],
-      "situation": "Pytają o Twojego brancha. Masz to w planie na dzisiaj."
+      "id": "cid08",
+      "en": "The pipeline has just finished",
+      "pl": "Pipeline właśnie się skończył",
+      "chunks": ["The pipeline", "has just finished"],
+      "note": "pipeline jak dwa słowa sklejone: pipe + line"
     },
     {
-      "id": "d09",
-      "en": "I never test on production",
-      "pl": "Nigdy nie testuję na produkcji",
-      "chunks": ["I never test", "on production"],
-      "lemma": "test",
-      "note": "zasada → I never test",
-      "traps": [
-        {
-          "input": "I'm never testing on production",
-          "why": "przy zasadzie: I never test"
-        }
-      ],
-      "accept": ["I never test in production", "I never test on prod"],
-      "situation": "Na rozmowie pytają o Twoje zasady. To reguła bez wyjątku."
+      "id": "cid09",
+      "en": "She was fixing it all morning",
+      "pl": "Naprawiała to całe rano",
+      "chunks": ["She was fixing it", "all morning"],
+      "note": "fixing przez jedno x"
     }
   ]
 }

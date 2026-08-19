@@ -546,138 +546,60 @@
   ],
   "dictation": [
     {
-      "id": "wrd01",
-      "en": "I don't have any blockers",
-      "pl": "Nie mam blokerów",
-      "chunks": ["I don't have", "any blockers"],
-      "lemma": "have",
-      "accept": ["I have no blockers", "I don't have blockers"],
-      "note": "w przeczeniu → don't have any",
-      "traps": [
-        {
-          "input": "I don t have some blockers",
-          "why": "W przeczeniu idzie any, nie some: I don't have any blockers."
-        },
-        {
-          "input": "I haven't any blockers",
-          "why": "Samo haven't nie wystarczy. Albo I don't have any, albo I haven't got any."
-        }
-      ]
+      "id": "prd01",
+      "en": "I found a bug in the login",
+      "pl": "Znalazłam błąd w logowaniu",
+      "chunks": ["I found a bug", "in the login"],
+      "note": "found — jak find w czasie minionym"
     },
     {
-      "id": "wrd02",
-      "en": "We were missing acceptance criteria",
-      "pl": "Brakowało nam kryteriów akceptacji",
-      "chunks": ["We were missing", "acceptance criteria"],
-      "lemma": "miss",
-      "accept": ["We missed acceptance criteria", "We didn't have acceptance criteria"],
-      "note": "brakowało nam wtedy → we were missing",
-      "traps": [
-        {
-          "input": "We was missing acceptance criteria",
-          "why": "We zawsze z were: we were, they were."
-        }
-      ]
+      "id": "prd02",
+      "en": "Can you review my pull request?",
+      "pl": "Możesz zrobić review mojego PR-a?",
+      "chunks": ["Can you review", "my pull request?"],
+      "note": "request przez qu"
     },
     {
-      "id": "wrd03",
-      "en": "We're doing a production swap today",
-      "pl": "Dziś robimy podmianę na produkcji",
-      "chunks": ["We're doing", "a production swap", "today"],
-      "lemma": "do",
-      "accept": ["We are doing a production swap today", "Today we're swapping production"],
-      "note": "dziś, ustalone → we're doing",
-      "traps": [
-        {
-          "input": "We do a production swap today",
-          "why": "Gdy chodzi o dzisiejszy, ustalony plan: we're doing."
-        }
-      ]
+      "id": "prd03",
+      "en": "The ticket is ready for testing",
+      "pl": "Zgłoszenie jest gotowe do testów",
+      "chunks": ["The ticket", "is ready for testing"],
+      "note": "ticket przez ck"
     },
     {
-      "id": "wrd04",
-      "en": "I run smoke tests after the deploy",
-      "pl": "Sprawdzam smoke po wrzutce",
-      "chunks": ["I run smoke tests", "after the deploy"],
-      "lemma": "run",
-      "accept": ["I check smoke after the deploy", "I run a smoke test after the deploy"],
-      "note": "po każdej wrzutce, czyli zawsze → I run",
-      "traps": [
-        {
-          "input": "I'm running smoke tests after the deploy",
-          "why": "To robisz po każdej wrzutce, czyli zawsze: I run."
-        },
-        {
-          "input": "I make smoke tests after the deploy",
-          "why": "Testy się run albo do. Make w tym miejscu nie chodzi."
-        }
-      ]
+      "id": "prd04",
+      "en": "I will update the documentation",
+      "pl": "Zaktualizuję dokumentację",
+      "chunks": ["I will update", "the documentation"],
+      "note": "documentation przez ta w środku"
     },
     {
-      "id": "wrd05",
-      "en": "This isn't a blocker, we have a workaround",
-      "pl": "To nie jest blocker, mamy obejście",
-      "chunks": ["This isn't a blocker", "we have a workaround"],
-      "lemma": "be",
-      "accept": [
-        "This is not a blocker, we have a workaround",
-        "It's not a blocker, we have a workaround"
-      ],
-      "note": "to nie jest → this isn't a",
-      "traps": [
-        {
-          "input": "This isn't blocker, we have a workaround",
-          "why": "Przed blocker trzeba a: isn't a blocker."
-        }
-      ]
+      "id": "prd05",
+      "en": "Let me check the logs",
+      "pl": "Zerknę do logów",
+      "chunks": ["Let me check", "the logs"],
+      "note": "check przez ch"
     },
     {
-      "id": "wrd06",
-      "en": "Thanks for the recording, that helps a lot",
-      "pl": "Dziękuję za nagranie, to bardzo pomaga",
-      "chunks": ["Thanks for the recording", "that helps a lot"],
-      "lemma": "help",
-      "accept": [
-        "Thank you for the recording, that helps a lot",
-        "Thanks for the recording, it helps a lot"
-      ],
-      "note": "dziękuję za coś → thanks for the",
-      "traps": [
-        {
-          "input": "Thanks for the recording, that help a lot",
-          "why": "That to ono, więc helps z -s."
-        }
-      ]
+      "id": "prd06",
+      "en": "The issue is reproducible",
+      "pl": "Błąd da się odtworzyć",
+      "chunks": ["The issue", "is reproducible"],
+      "note": "issue przez dwa s"
     },
     {
-      "id": "wrd07",
-      "en": "I'm picking up this ticket from Jira",
-      "pl": "Biorę ten ticket z Jiry",
-      "chunks": ["I'm picking up", "this ticket", "from Jira"],
-      "lemma": "pick",
-      "accept": ["I am picking up this ticket from Jira", "I'll take this ticket from Jira"],
-      "note": "biorę właśnie teraz → I'm picking up",
-      "traps": [
-        {
-          "input": "I pick up this ticket from Jira",
-          "why": "Gdy mówisz, co robisz w tej chwili: I'm picking up."
-        }
-      ]
+      "id": "prd07",
+      "en": "I am blocked on this task",
+      "pl": "Utknęłam na tym zadaniu",
+      "chunks": ["I am blocked", "on this task"],
+      "note": "blocked przez ck"
     },
     {
-      "id": "wrd08",
-      "en": "Ping me when the build goes green",
-      "pl": "Pingnij mnie, jak build przejdzie",
-      "chunks": ["Ping me", "when the build", "goes green"],
-      "lemma": "ping",
-      "accept": ["Ping me when the build passes", "Ping me when the build is green"],
-      "note": "jak build przejdzie → when the build goes green",
-      "traps": [
-        {
-          "input": "Ping me when the build will go green",
-          "why": "Po when nigdy will: when the build goes green."
-        }
-      ]
+      "id": "prd08",
+      "en": "We need to fix this before release",
+      "pl": "Musimy to naprawić przed wydaniem",
+      "chunks": ["We need to fix this", "before release"],
+      "note": "release przez ea w środku"
     }
   ]
 }

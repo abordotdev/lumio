@@ -509,94 +509,46 @@
   ],
   "dictation": [
     {
-      "id": "ztd01",
-      "en": "I'm taking this feature for testing",
-      "pl": "Biorę ten ficzer do testów",
-      "chunks": ["I'm taking", "this feature", "for testing"],
-      "lemma": "take",
-      "accept": ["I am taking this feature for testing", "I'm picking up this feature for testing"],
-      "note": "biorę właśnie teraz → I'm taking",
-      "traps": [
-        {
-          "input": "I take this feature for testing",
-          "why": "I take opisuje nawyk. Gdy mówisz, co robisz w tej chwili: I'm taking."
-        }
-      ]
+      "id": "zdd01",
+      "en": "Add the task to the board",
+      "pl": "Dodaj zadanie na tablicę",
+      "chunks": ["Add the task", "to the board"],
+      "note": "board przez oa"
     },
     {
-      "id": "ztd02",
-      "en": "I found a bug in production",
-      "pl": "Znalazłam buga na produkcji",
-      "chunks": ["I found", "a bug", "in production"],
-      "lemma": "find",
-      "accept": ["I found a bug on production", "I've found a bug in production"],
-      "note": "na produkcji → in production",
-      "traps": [
-        {
-          "input": "I finded a bug in production",
-          "why": "Find jest nieregularne: find → found → found."
-        }
-      ]
+      "id": "zdd02",
+      "en": "Move it to in progress",
+      "pl": "Przenieś je do „w toku\"",
+      "chunks": ["Move it", "to in progress"],
+      "note": "progress przez dwa s"
     },
     {
-      "id": "ztd03",
-      "en": "Can we walk through this together",
-      "pl": "Możemy to przejść razem",
-      "chunks": ["Can we walk through", "this together"],
-      "lemma": "walk",
-      "accept": ["Can we go through this together"],
-      "note": "przejść przez coś razem → walk through",
-      "traps": [
-        {
-          "input": "Can we to walk through this together",
-          "why": "Po can nigdy to: can walk."
-        }
-      ]
+      "id": "zdd03",
+      "en": "This task is done",
+      "pl": "To zadanie jest gotowe",
+      "chunks": ["This task", "is done"],
+      "note": "done czyta się „dan\", pisze done"
     },
     {
-      "id": "ztd04",
-      "en": "I'll check this in the database",
-      "pl": "Sprawdzę to w bazie",
-      "chunks": ["I'll check this", "in the database"],
-      "lemma": "check",
-      "accept": ["I will check this in the database", "I'll check it in the database"],
-      "note": "decyzja podjęta przy rozmowie → I'll check",
-      "traps": [
-        {
-          "input": "I check this in the database",
-          "why": "Gdy właśnie decydujesz, że to zrobisz: I'll check."
-        }
-      ]
+      "id": "zdd04",
+      "en": "Assign it to me",
+      "pl": "Przypisz je do mnie",
+      "chunks": ["Assign it", "to me"],
+      "note": "assign przez dwa s, g nieme"
     },
     {
-      "id": "ztd05",
-      "en": "I'm logging this as a bug",
-      "pl": "Zgłaszam to jako błąd",
-      "chunks": ["I'm logging this", "as a bug"],
-      "lemma": "log",
-      "accept": ["I am logging this as a bug", "I'm reporting this as a bug"],
-      "note": "zgłaszam coś JAKO błąd → as a bug",
-      "traps": [
-        {
-          "input": "I'm logging this like a bug",
-          "why": "Zgłaszasz coś jako błąd: as a bug. Like znaczyłoby „podobne do\"."
-        }
-      ]
+      "id": "zdd05",
+      "en": "The deadline is on Friday",
+      "pl": "Termin jest w piątek",
+      "chunks": ["The deadline", "is on Friday"],
+      "note": "deadline: dead + line"
     },
     {
-      "id": "ztd06",
-      "en": "I'm attaching a screenshot and logs",
-      "pl": "Załączam zrzut ekranu i logi",
-      "chunks": ["I'm attaching", "a screenshot and logs"],
-      "lemma": "attach",
-      "accept": ["I am attaching a screenshot and logs", "I'm attaching a screenshot and the logs"],
-      "note": "załączam właśnie teraz → I'm attaching",
-      "traps": [
-        {
-          "input": "I attach a screenshot and logs",
-          "why": "Gdy robisz to w tej chwili: I'm attaching."
-        }
-      ]
+      "id": "zdd06",
+      "en": "Split it into smaller tasks",
+      "pl": "Podziel je na mniejsze zadania",
+      "chunks": ["Split it", "into smaller tasks"],
+      "note": "smaller przez dwa l"
     }
   ]
 }
