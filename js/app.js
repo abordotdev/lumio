@@ -28,7 +28,7 @@ let MAPA_KM = null;
 
 // Czy lista lekcji w otwartym module jest zwinięta. Trzymane w sesji, żeby raz
 // zwinięta została zwinięta przy przełączaniu modułów.
-let LESSONS_COLLAPSED = false;
+let LESSONS_COLLAPSED = true;
 
 let BASE_MODULES = [];
 let MODULES = [];
@@ -113,6 +113,9 @@ export function go(screen, params = {}) {
   setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
+  // Wchodząc w Moduły z innej zakładki, lista lekcji startuje zwinięta — żeby nie
+  // trzeba było scrollować. Przełączanie modułów w środku zostawia Twój wybór.
+  if (screen === 'modules' && SCREEN !== 'modules') LESSONS_COLLAPSED = true;
   SCREEN = screen;
   markNav(screen);
   odswiezPowloke(danePowloki(screen));
