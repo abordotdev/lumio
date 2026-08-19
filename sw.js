@@ -1,8 +1,9 @@
-// Offline: wszystko do cache przy instalacji, potem cache-first.
-// Wersję stempluje deploy (patrz .github/workflows/pages.yml) — przy każdej wrzutce
-// wpisuje tu skrót commita i datę, więc świeży kod dostaje świeży cache bez ręcznego
-// bumpowania. Lokalnie zostaje 'lumio-dev'.
-const VERSION = 'lumio-dev';
+// Offline-first, ale bez pułapki starej apki. Kod i wejścia na stronę idą
+// „najpierw sieć": online zawsze dostajesz świeżą wersję, offline — z cache.
+// Fonty, ikony i obrazki idą z cache (szybko), odświeżane w tle. Dzięki temu
+// numer wersji niżej służy tylko do nazwania cache — jak go zapomnę podbić,
+// nikt nie utknie na starym kodzie, bo kod i tak leci z sieci.
+const VERSION = 'lumio-v28-2026-08-19';
 const SHELL = [
   './',
   'index.html',
@@ -65,15 +66,38 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Kod apki i dane — najpierw sieć, więc online zawsze świeże.
+const NAJPIERW_SIEC = /\.(?:js|mjs|css|json|webmanifest)$/;
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET' || new URL(request.url).origin !== location.origin) return;
 
+  const sciezka = new URL(request.url).pathname;
+  const najpierwSiec = request.mode === 'navigate' || NAJPIERW_SIEC.test(sciezka);
+
   event.respondWith(
     (async () => {
+      if (najpierwSiec) {
+        // Świeży kod ma pierwszeństwo. Bez sieci — sięgamy do cache.
+        try {
+          const res = await fetch(request);
+          if (res && res.ok) (await caches.open(VERSION)).put(request, res.clone());
+          return res;
+        } catch (err) {
+          const cached = await caches.match(request, { ignoreSearch: true });
+          if (cached) return cached;
+          if (request.mode === 'navigate') {
+            const shell = await caches.match('index.html');
+            if (shell) return shell;
+          }
+          throw err;
+        }
+      }
+
+      // Fonty, ikony, obrazki — z cache od ręki, odświeżane w tle.
       const cached = await caches.match(request, { ignoreSearch: true });
       if (cached) {
-        // Odśwież w tle, ale nie każ na to czekać.
         fetch(request)
           .then(async (res) => {
             if (res && res.ok) (await caches.open(VERSION)).put(request, res.clone());
