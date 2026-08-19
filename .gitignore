@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 *.log
+
+# artefakty przeglądarki z testów
+.playwright-mcp/
