@@ -1410,9 +1410,13 @@ function settings() {
     </div>
     <details>
       <summary style="cursor:pointer;color:var(--primary)">Wczytaj kopię</summary>
-      <p class="tiny" style="margin:.6rem 0">Wklej treść kopii i kliknij Wczytaj. To nadpisze obecny postęp.</p>
+      <p class="tiny" style="margin:.6rem 0">Wskaż plik z kopią (np. <b>lumio-biezaca.json</b>) — nie musisz otwierać go w Notatniku.
+        To nadpisze obecny postęp.</p>
+      <div class="row" style="margin:.4rem 0"><button type="button" id="pick-file">Wybierz plik z kopią…</button></div>
+      <input type="file" id="imp-file" accept=".json,application/json" hidden />
+      <p class="tiny" style="margin:.6rem 0">Albo wklej treść ręcznie:</p>
       <textarea id="imp" rows="4" placeholder="wklej tutaj…"></textarea>
-      <div class="row end" style="margin-top:.6rem"><button type="button" id="do-imp">Wczytaj</button></div>
+      <div class="row end" style="margin-top:.6rem"><button type="button" id="do-imp">Wczytaj z pola</button></div>
     </details>
   </div>`);
   backupCard.querySelector('#dl').addEventListener('click', () => {
@@ -1464,6 +1468,21 @@ function settings() {
       go('home');
     } catch (err) {
       toast(err.message || 'Nie udało się wczytać.');
+    }
+  });
+  const impFile = backupCard.querySelector('#imp-file');
+  backupCard.querySelector('#pick-file').addEventListener('click', () => impFile.click());
+  impFile.addEventListener('change', async () => {
+    const file = impFile.files && impFile.files[0];
+    if (!file) return;
+    try {
+      store.importText(await file.text());
+      toast('Postęp wczytany z pliku.');
+      go('home');
+    } catch (err) {
+      toast(err.message || 'Nie udało się wczytać pliku.');
+    } finally {
+      impFile.value = '';
     }
   });
   wrap.appendChild(backupCard);
