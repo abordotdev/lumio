@@ -71,7 +71,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 26px;
-  padding: 30px 34px;
+  padding: 36px 40px;
   color: #fff;
   background: linear-gradient(135deg, var(--hero-a), var(--hero-b) 74%);
   box-shadow: 0 18px 40px color-mix(in srgb, var(--hero-b) 24%, transparent);
@@ -192,13 +192,13 @@
 .app .liczby {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 .app .liczba {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 16px 18px;
+  padding: 20px 22px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -238,7 +238,7 @@
 .app .wybory {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 20px;
 }
 .app .wybor {
   border: 0;
@@ -339,7 +339,7 @@
   grid-template-columns: 2rem 1fr auto 1.8rem;
   gap: 14px;
   align-items: center;
-  padding: 12px 10px;
+  padding: 14px 14px;
   font: inherit;
   font-size: 14px;
   text-align: left;
@@ -419,7 +419,7 @@
 .app .moduly {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 20px;
 }
 .app .modul {
   border: 1px solid var(--line);
@@ -428,10 +428,10 @@
   text-align: left;
   cursor: pointer;
   border-radius: 20px;
-  padding: 18px 20px;
+  padding: 24px 26px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   transition: 0.18s;
 }
 .app .modul:hover {
@@ -457,7 +457,7 @@
 }
 .app .modul .stopka {
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: 14px;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -508,7 +508,7 @@
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 22px;
-  padding: 22px 24px;
+  padding: 28px 30px;
 }
 .app .panel > .oczko {
   margin-bottom: 10px;
@@ -528,4 +528,28 @@
   .app .lista-lekcji .s {
     display: none;
   }
+}
+
+/* ---------- grupy lekcji ---------- */
+.app .grupy {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.app .grupa h3 {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  font-size: 16.5px;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+.app .grupa.zrobiona h3 {
+  color: var(--muted);
+}
+.app .grupa .lista-lekcji {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 4px 6px;
+}
+.app .grupa .lista-lekcji li {
+  border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }

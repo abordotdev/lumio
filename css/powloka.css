@@ -289,26 +289,28 @@
 
 .app .kolumna {
   width: 100%;
-  max-width: 1180px;
+  /* Limit liczony na sama tresc: 1180 plus wciecia i pas na ludzika. */
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 8px 34px 150px;
+  padding: 14px 40px 170px;
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 34px;
 }
 
 /* Ekrany, ktore maja jeszcze stary uklad kart, dostaja wezsza kolumne -
    szeroka jest dla ekranu startowego i mapy. */
 .app .kolumna.waska {
-  max-width: 48rem;
-  gap: 1.25rem;
+  max-width: 50rem;
+  gap: 1.5rem;
 }
 
-/* Na szerokim ekranie ostatnie 170 px zostaje wolne - tam stoi ludzik.
-   Bez tego karty wchodzily pod niego. */
-@media (min-width: 1200px) {
+/* Ludzik stoi w rogu tylko wtedy, gdy okno jest na tyle szerokie, ze da sie
+   zostawic mu wlasny pas i nie zabrac miejsca tresci. Ponizej 1400 px chowamy go -
+   170 px to za duzo, karty robily sie ciasne. */
+@media (min-width: 1400px) {
   .app .kolumna {
-    padding-right: 170px;
+    padding-right: 240px;
   }
 }
 
@@ -319,8 +321,9 @@
   bottom: 18px;
   z-index: 15;
   display: flex;
+  flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 8px;
   pointer-events: none;
 }
 .app .ludzik-rog svg {
@@ -340,13 +343,12 @@
 .app .ludzik-rog .bubble {
   background: var(--panel);
   color: var(--ink);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 11px 15px;
-  border-radius: 15px;
-  line-height: 1.25;
-  max-width: 15rem;
-  margin-bottom: 46px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.3;
+  max-width: 13rem;
   box-shadow: 0 10px 22px rgba(30, 25, 45, 0.12);
   border: 1px solid var(--line);
   position: relative;
@@ -354,13 +356,13 @@
 .app .ludzik-rog .bubble:after {
   content: '';
   position: absolute;
-  right: -7px;
-  bottom: 14px;
+  right: 34px;
+  bottom: -7px;
   width: 13px;
   height: 13px;
   background: var(--panel);
   border-right: 1px solid var(--line);
-  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   transform: rotate(45deg);
 }
 
@@ -437,11 +439,6 @@
     padding: 8px 6px;
     justify-content: space-between;
     box-shadow: 0 12px 30px rgba(30, 25, 45, 0.16);
-  }
-  /* Na telefonie ludzik nie ma gdzie stanac - unoszac sie nad trescia zaslanialby
-     przyciski w karcie lekcji. Dolem idzie pasek zakladek, wiec go chowamy. */
-  .app .ludzik-rog {
-    display: none;
   }
 }
 
@@ -551,4 +548,11 @@
 }
 .app #tresc .muted {
   color: var(--ink-2);
+}
+
+/* Musi stac na koncu pliku - inaczej przegrywa z bazowym display:flex ludzika. */
+@media (max-width: 1399px) {
+  .app .ludzik-rog {
+    display: none;
+  }
 }

@@ -556,26 +556,50 @@ function home() {
   );
 }
 
-function lessonRowsHtml(outline) {
-  return outline.lessons
-    .map((l) => {
-      // Trzy stany, nie dwa: ptaszek należy się za dobrą odpowiedź, a nie za to,
-      // że zdanie się kiedyś pokazało. Widziane-ale-nieumiane dostaje strzałkę powrotu.
-      const isNow = Boolean(outline.current && l.n === outline.current.n);
-      const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
-      const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
-      const nazwa = l.czesc ? `${l.title} · część ${l.czesc} z ${l.czesci}` : l.title;
-      const podpis = isNow
-        ? 'tutaj jesteś'
-        : l.done
-          ? 'umiesz'
-          : l.seen
-            ? 'do poprawy'
-            : 'jeszcze nie';
-      return `<li class="${kind}"><button type="button" data-ids="${esc((l.ids || []).join(','))}"
-        aria-label="Lekcja ${l.n}: ${esc(nazwa)}, ${podpis}">
-        <span class="n">${l.n}</span><span class="t">${esc(nazwa)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span><span class="m">${mark}</span>
-      </button></li>`;
+/**
+ * Lista lekcji pogrupowana po wzorcu.
+ *
+ * Wzorzec na szesc zdan daje dwie lekcje. Wypisywanie pelnej nazwy przy kazdej
+ * robilo sciane powtorzonego tekstu - nazwa idzie wiec raz, jako naglowek grupy,
+ * a wiersze mowia tylko, ktora to czesc.
+ */
+function lessonGroupsHtml(outline) {
+  const grupy = [];
+  for (const l of outline.lessons) {
+    const ostatnia = grupy[grupy.length - 1];
+    if (ostatnia && ostatnia.pattern === l.pattern) ostatnia.lekcje.push(l);
+    else grupy.push({ pattern: l.pattern, title: l.title, lekcje: [l] });
+  }
+
+  return grupy
+    .map((g) => {
+      const wszystkieUmiem = g.lekcje.every((l) => l.done);
+      const wiersze = g.lekcje
+        .map((l) => {
+          const isNow = Boolean(outline.current && l.n === outline.current.n);
+          const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
+          const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
+          const podpis = isNow
+            ? 'tutaj jesteś'
+            : l.done
+              ? 'umiesz'
+              : l.seen
+                ? 'do poprawy'
+                : 'jeszcze nie';
+          const co = l.czesc ? `Część ${l.czesc} z ${l.czesci}` : 'Cała lekcja';
+          return `<li class="${kind}"><button type="button" data-ids="${esc((l.ids || []).join(','))}"
+            aria-label="Lekcja ${l.n}: ${esc(g.title)}, ${co.toLowerCase()}, ${podpis}">
+            <span class="n">${l.n}</span>
+            <span class="t">${esc(co)}</span>
+            <span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>
+            <span class="m">${mark}</span>
+          </button></li>`;
+        })
+        .join('');
+      return `<div class="grupa ${wszystkieUmiem ? 'zrobiona' : ''}">
+        <h3>${esc(g.title)}</h3>
+        <ol class="lista-lekcji">${wiersze}</ol>
+      </div>`;
     })
     .join('');
 }
@@ -671,7 +695,7 @@ function modules() {
           <p class="podpowiedz">Kliknij dowolną, żeby ją zrobić — nie musisz iść po kolei.</p>
         </div>
       </div>
-      <ol class="lista-lekcji">${lessonRowsHtml(outline)}</ol>
+      <div class="grupy">${lessonGroupsHtml(outline)}</div>
     </div>`);
     panel.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-ids]');
