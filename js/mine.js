@@ -1,4 +1,5 @@
-// Własne zdania: polski wpisujesz ty, angielski tłumaczy apka.
+// Własne zdania: polski wpisujesz ty, angielski dopisuję ja przy najbliższej sesji.
+// Nic stąd nie wychodzi do internetu — wcześniej każde zdanie leciało do obcego tłumacza.
 
 export function chunkEnglish(en) {
   const clean = String(en || '')
@@ -16,58 +17,34 @@ export function chunkEnglish(en) {
   return chunks;
 }
 
-function decodeHtml(s) {
-  return String(s || '')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .trim();
+export function isTranslated(phrase) {
+  return Boolean(String(phrase?.en || '').trim());
 }
 
-async function fromMyMemory(q) {
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(q)}&langpair=pl|en`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('tłumacz nie odpowiedział');
-  const data = await res.json();
-  const en = decodeHtml(data?.responseData?.translatedText || '');
-  if (!en) throw new Error('puste tłumaczenie');
-  return en;
+// Zdania bez angielskiego czekają w poczekalni — do lekcji jeszcze nie wchodzą.
+export function waitingPhrases(phrases = []) {
+  return (phrases || []).filter((p) => !isTranslated(p));
 }
 
-async function fromLocalProxy(q) {
-  const res = await fetch(`/api/translate?q=${encodeURIComponent(q)}`);
-  if (!res.ok) throw new Error('lokalny tłumacz padł');
-  const data = await res.json();
-  const en = decodeHtml(data?.en || '');
-  if (!en) throw new Error('puste tłumaczenie');
-  return en;
-}
-
-export async function plToEn(text) {
-  const q = String(text || '').trim();
-  if (!q) throw new Error('Wpisz zdanie po polsku.');
-  try {
-    return await fromMyMemory(q);
-  } catch {
-    return fromLocalProxy(q);
-  }
+export function translatedPhrases(phrases = []) {
+  return (phrases || []).filter(isTranslated);
 }
 
 export function buildMineModule(phrases = []) {
-  const translations = (phrases || []).map((p) => ({
+  const translations = translatedPhrases(phrases).map((p) => ({
     id: p.id,
     pattern: 'mine',
     pl: p.pl,
     en: p.en,
     accept: p.accept || [],
+    note: p.note || '',
+    traps: p.traps || [],
     chunks: p.chunks && p.chunks.length ? p.chunks : chunkEnglish(p.en),
   }));
   return {
     id: 'moje',
     title: 'Moje zdania',
-    subtitle: 'Wpisujesz po polsku. Apka tłumaczy i czyta na głos.',
+    subtitle: 'Twoje zdania z pracy, przetłumaczone tak jak reszta modułów.',
     patterns: { mine: 'twoje zdania' },
     patternOrder: ['mine'],
     translations,

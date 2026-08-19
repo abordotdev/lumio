@@ -184,7 +184,8 @@ export function setModuleId(id) {
 export function addCustomPhrase(phrase) {
   const pl = String(phrase.pl || '').trim();
   const en = String(phrase.en || '').trim();
-  if (!pl || !en) throw new Error('Brak polskiego albo angielskiego.');
+  // Angielski może być pusty — zdanie czeka wtedy w poczekalni na tłumaczenie.
+  if (!pl) throw new Error('Wpisz zdanie po polsku.');
   const id = phrase.id || `mine-${Date.now().toString(36)}`;
   state.customPhrases = state.customPhrases || [];
   state.customPhrases.push({
@@ -196,6 +197,34 @@ export function addCustomPhrase(phrase) {
   });
   save();
   return id;
+}
+
+// Wklejone tłumaczenia: dopisuje angielski do zdań, które czekały w poczekalni.
+export function applyTranslations(text) {
+  let list;
+  try {
+    list = JSON.parse(text);
+  } catch {
+    throw new Error('To nie wygląda na tłumaczenia — wklej całość, razem z nawiasami.');
+  }
+  if (!Array.isArray(list)) throw new Error('Spodziewałam się listy zdań.');
+  const byId = new Map((state.customPhrases || []).map((p) => [p.id, p]));
+  let filled = 0;
+  for (const item of list) {
+    const target = byId.get(item && item.id);
+    if (!target) continue;
+    const en = String(item.en || '').trim();
+    if (!en) continue;
+    target.en = en;
+    if (Array.isArray(item.chunks) && item.chunks.length) target.chunks = item.chunks;
+    if (Array.isArray(item.accept)) target.accept = item.accept;
+    if (Array.isArray(item.traps)) target.traps = item.traps;
+    if (item.note) target.note = String(item.note);
+    filled += 1;
+  }
+  if (!filled) throw new Error('Żadne zdanie nie pasowało do tych, które czekają.');
+  save();
+  return filled;
 }
 
 export function removeCustomPhrase(id) {
