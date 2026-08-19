@@ -25,6 +25,7 @@ Mów krótko i prosto (skill caveman, poziom lite). Zero żargonu. Jedna myśl n
 - Małe, celowane zmiany. Bez refaktorów „przy okazji”.
 - Nie ruszaj `data/` ani mechaniki lekcji, jeśli zadanie tego nie dotyczy.
 - Wygląd ludzika: najpierw `http://localhost:4173/_doll-preview.html`, czekaj na OK. Nie kasuj `_doll-preview.html`.
+- Pełna garderoba do przerysowania: `http://localhost:4173/_ludzik-przeglad.html` — każdy element osobno, na ludziku i jako ikonka. Nie kasuj.
 
 ## Review przed commitem
 

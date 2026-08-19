@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumio — wszystko, co ludzik ma na sobie</title>
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" href="data:," />
+    <style>
+      main {
+        max-width: 74rem;
+        margin: 1.5rem auto;
+        padding: 0 1rem 4rem;
+      }
+      h2 {
+        margin: 2.4rem 0 0.2rem;
+      }
+      .opis {
+        margin: 0 0 1rem;
+      }
+      .siatka {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+        gap: 0.9rem;
+      }
+      .siatka.szeroka {
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+      }
+      figure {
+        margin: 0;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 0.7rem 0.6rem 0.8rem;
+        text-align: center;
+      }
+      figure .doll {
+        max-width: 100%;
+        height: auto;
+      }
+      figcaption {
+        margin-top: 0.35rem;
+        font-size: 0.86rem;
+        font-weight: 650;
+        color: var(--ink);
+        line-height: 1.25;
+      }
+      figcaption .id {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        font-weight: 400;
+        color: var(--ink-faint);
+        margin-top: 0.15rem;
+        word-break: break-all;
+      }
+      figcaption .cena {
+        display: block;
+        font-size: 0.72rem;
+        color: var(--ink-faint);
+        margin-top: 0.1rem;
+      }
+      .ikonka {
+        display: grid;
+        place-items: center;
+        min-height: 5.5rem;
+      }
+      .duzy {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        align-items: flex-end;
+      }
+      .spis {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        line-height: 1.7;
+        background: var(--card-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1rem 1.1rem;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="label">Materiał dla projektanta</span>
+      <h1>Ludzik i wszystko, co ma na sobie</h1>
+      <p class="muted opis">
+        Ta strona nie jest częścią aplikacji. Pokazuje każdy element garderoby osobno, na ludziku i
+        jako ikonkę ze sklepu, żeby dało się je przerysować bez zaglądania w kod. Wszystko jest
+        rysowane w SVG w
+        <b>js/avatar.js</b> — nie ma tu żadnych plików graficznych.
+      </p>
+
+      <h2>Ludzik bez niczego</h2>
+      <p class="muted opis">Strój startowy: biała koszulka, szare szorty, włosy do ramion.</p>
+      <div class="duzy" id="baza"></div>
+
+      <h2>Włosy — kształt i kolor</h2>
+      <p class="muted opis">
+        Trzy fryzury w czterech kolorach. Kolor wybierasz na starcie i zostaje.
+      </p>
+      <div class="siatka" id="wlosy"></div>
+
+      <h2>Oczy</h2>
+      <p class="muted opis">
+        Trzy kolory. Widać je tylko z bliska, więc pokazuję same głowy w powiększeniu.
+      </p>
+      <div class="siatka" id="oczy"></div>
+
+      <h2>Góra</h2>
+      <p class="muted opis">Każda na tych samych szarych szortach, żeby dało się je porównać.</p>
+      <div class="siatka" id="gora"></div>
+
+      <h2>Dół</h2>
+      <p class="muted opis">Każdy w tej samej białej koszulce.</p>
+      <div class="siatka" id="dol"></div>
+
+      <h2>Na głowę, na szyję, kolczyki, okulary, usta</h2>
+      <p class="muted opis">Drobiazgi. Na ludziku i osobno, tak jak wyglądają w sklepie.</p>
+      <div class="siatka szeroka" id="drobiazgi"></div>
+
+      <h2>Komplety z miast</h2>
+      <p class="muted opis">
+        Góra i dół z jednego miasta noszone razem. Buty dobierają się same do stroju.
+      </p>
+      <div class="siatka szeroka" id="komplety"></div>
+
+      <h2>Ikonki do sklepu i szafy</h2>
+      <p class="muted opis">
+        Ten sam element narysowany w małym kadrze — tak wygląda na półce w sklepie.
+      </p>
+      <div class="siatka" id="ikonki"></div>
+
+      <h2>Spis identyfikatorów</h2>
+      <p class="muted opis">Nazwa w kodzie, nazwa dla użytkownika, cena.</p>
+      <div class="spis" id="spis"></div>
+    </main>
+
+    <script type="module">
+      import {
+        renderAvatar,
+        avatarBody,
+        renderItemIcon,
+        renderOutfitIcon,
+        HAIR_COLORS,
+        EYE_COLORS,
+        HAIR_STYLES,
+        DRESS_PARTS,
+      } from './js/avatar.js';
+
+      const trasa = await (await fetch('./data/route.json')).json();
+      const PRZEDMIOTY = new Map(trasa.items.map((i) => [i.id, i]));
+
+      const NAZWY_KOLOROW = {
+        blonde: 'blond',
+        brunette: 'brąz',
+        black: 'czarne',
+        auburn: 'rude',
+        blue: 'niebieskie',
+        brown: 'piwne',
+        green: 'zielone',
+      };
+
+      const BAZA = { hair: 'hair-bob', top: 'top-tshirt', bottom: 'bottom-shorts' };
+      const LOOK = { hairColor: 'brunette', eyeColor: 'brown' };
+
+      const podpis = (tytul, id, dodatek = '') =>
+        `<figcaption>${tytul}<span class="id">${id}</span>${dodatek}</figcaption>`;
+
+      const cenaZ = (id) => {
+        const it = PRZEDMIOTY.get(id);
+        if (!it) return '';
+        return `<span class="cena">${it.price ? it.price + ' monet' : 'na start'}</span>`;
+      };
+
+      const nazwaZ = (id, zapas) => PRZEDMIOTY.get(id)?.name || zapas || id;
+
+      function kafel(gdzie, tresc, tytul, id, dodatek = '') {
+        const f = document.createElement('figure');
+        f.innerHTML = tresc + podpis(tytul, id, dodatek);
+        document.getElementById(gdzie).appendChild(f);
+      }
+
+      // ---------- ludzik bez niczego ----------
+      for (const size of [260, 150, 90, 54]) {
+        const f = document.createElement('figure');
+        f.style.minWidth = 'auto';
+        f.innerHTML =
+          renderAvatar(BAZA, { size, look: LOOK }) + `<figcaption>${size} px</figcaption>`;
+        document.getElementById('baza').appendChild(f);
+      }
+
+      // ---------- włosy ----------
+      for (const styl of HAIR_STYLES) {
+        for (const kolor of Object.keys(HAIR_COLORS)) {
+          kafel(
+            'wlosy',
+            renderAvatar(
+              { ...BAZA, hair: styl.id },
+              { size: 130, look: { ...LOOK, hairColor: kolor } }
+            ),
+            `${styl.name} — ${NAZWY_KOLOROW[kolor]}`,
+            `${styl.id} / ${kolor}`
+          );
+        }
+      }
+
+      // ---------- oczy ----------
+      // Ten sam rysunek co wyżej, tylko w ciasnym kadrze na twarz — inaczej oczu nie widać.
+      for (const kolor of Object.keys(EYE_COLORS)) {
+        const glowa = `<svg viewBox="48 26 64 58" width="230" height="208" class="doll"
+          role="img" aria-label="oczy ${NAZWY_KOLOROW[kolor]}">${avatarBody(BAZA, {
+            look: { ...LOOK, eyeColor: kolor },
+          })}</svg>`;
+        kafel('oczy', glowa, NAZWY_KOLOROW[kolor], kolor);
+      }
+
+      // ---------- góra ----------
+      const GORY = trasa.items.filter((i) => i.slot === 'top').map((i) => i.id);
+      for (const id of GORY) {
+        kafel(
+          'gora',
+          renderAvatar({ ...BAZA, top: id }, { size: 140, look: LOOK }),
+          nazwaZ(id),
+          id,
+          cenaZ(id)
+        );
+      }
+
+      // ---------- dół ----------
+      const DOLY = trasa.items.filter((i) => i.slot === 'bottom').map((i) => i.id);
+      for (const id of DOLY) {
+        kafel(
+          'dol',
+          renderAvatar({ ...BAZA, bottom: id }, { size: 140, look: LOOK }),
+          nazwaZ(id),
+          id,
+          cenaZ(id)
+        );
+      }
+
+      // ---------- drobiazgi ----------
+      const DROBIAZGI = trasa.items.filter((i) =>
+        ['head', 'neck', 'ears', 'eyes', 'lips'].includes(i.slot)
+      );
+      const NAZWA_SLOTU = {
+        head: 'na głowę',
+        neck: 'na szyję',
+        ears: 'kolczyki',
+        eyes: 'okulary',
+        lips: 'usta',
+      };
+      for (const it of DROBIAZGI) {
+        const naLudziku = renderAvatar({ ...BAZA, [it.slot]: it.id }, { size: 140, look: LOOK });
+        const osobno = `<span class="ikonka">${renderItemIcon(it, { size: 72, look: LOOK })}</span>`;
+        kafel(
+          'drobiazgi',
+          `<div style="display:flex;gap:.5rem;align-items:center;justify-content:center">${naLudziku}${osobno}</div>`,
+          `${it.name} — ${NAZWA_SLOTU[it.slot]}`,
+          it.id,
+          cenaZ(it.id)
+        );
+      }
+
+      // ---------- komplety ----------
+      for (const [nazwa, czesci] of Object.entries(DRESS_PARTS)) {
+        kafel(
+          'komplety',
+          renderAvatar(
+            { ...BAZA, top: czesci.top, bottom: czesci.bottom },
+            { size: 170, look: LOOK }
+          ),
+          `${nazwaZ(czesci.top)} + ${nazwaZ(czesci.bottom)}`,
+          `${czesci.top} + ${czesci.bottom}`
+        );
+      }
+
+      // ---------- ikonki ----------
+      for (const [, czesci] of Object.entries(DRESS_PARTS)) {
+        kafel(
+          'ikonki',
+          `<span class="ikonka">${renderOutfitIcon(czesci.top, czesci.bottom, { size: 88 })}</span>`,
+          'komplet',
+          `${czesci.top} + ${czesci.bottom}`
+        );
+      }
+      for (const it of trasa.items.filter((i) => i.slot !== 'hair')) {
+        kafel(
+          'ikonki',
+          `<span class="ikonka">${renderItemIcon(it, { size: 72, look: LOOK })}</span>`,
+          it.name,
+          it.id
+        );
+      }
+
+      // ---------- spis ----------
+      const poSlotach = {};
+      for (const it of trasa.items) (poSlotach[it.slot] ||= []).push(it);
+      document.getElementById('spis').innerHTML = Object.entries(poSlotach)
+        .map(
+          ([slot, lista]) =>
+            `<b>${slot}</b><br>` +
+            lista
+              .map(
+                (i) =>
+                  `&nbsp;&nbsp;${i.id.padEnd(16, ' ')} ${i.name} — ${i.price ? i.price + ' monet' : 'na start'}`
+              )
+              .join('<br>')
+        )
+        .join('<br><br>');
+    </script>
+  </body>
+</html>
