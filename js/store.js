@@ -167,6 +167,17 @@ export function recordAnswer(id, correct) {
   return it;
 }
 
+// „Umiem" znaczy: odpowiedziałam dobrze, a nie: zdanie mi się kiedyś pokazało.
+// Bez tego lista lekcji stawiała ptaszek za samo obejrzenie zdania.
+export function isDone(id) {
+  const st = itemState(id);
+  return st.introduced && st.box >= 1;
+}
+
+// Zdanie, które przetrwało tydzień odstępu — to jest prawdziwe „umiem to powiedzieć".
+export function isMastered(id) {
+  return itemState(id).box >= 3;
+}
 export function markPatternIntroduced(moduleId, pattern) {
   const key = moduleId && pattern ? `${moduleId}::${pattern}` : pattern;
   if (key && !state.patternsIntroduced.includes(key)) {

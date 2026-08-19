@@ -21,9 +21,10 @@ const KIND_LABEL = {
 const MAX_STEPS = 15;
 const MAX_REQUEUE = 5;
 
-export function startLesson({ module, onFinish, review = false }) {
+export function startLesson({ module, modules, onFinish, review = false }) {
   const state = store.get();
-  const built = review ? buildReview(module) : buildLesson(module, state);
+  const wszystkie = modules && modules.length ? modules : [module];
+  const built = review ? buildReview(wszystkie) : buildLesson(module, state, wszystkie);
   const { steps, focus } = built;
 
   if (!steps.length) {
@@ -199,7 +200,9 @@ function renderDictate(step, card, session, module, onFinish) {
 
 function renderTiles(step, card, session, module, onFinish) {
   const item = step.item;
-  const bankTiles = shuffle(tileBank(item, module), seedFrom(item.id + 'x'));
+  // Zdanie z powtórki może pochodzić z innego modułu — rywalizujące kafelki
+  // muszą przyjść z jego własnego modułu, nie z otwartego.
+  const bankTiles = shuffle(tileBank(item, step.mod || module), seedFrom(item.id + 'x'));
 
   card.appendChild(h(`<p class="prompt-pl">${esc(item.pl)}</p>`));
   if (item.hint) card.appendChild(h(`<span class="prompt-hint">${esc(item.hint)}</span>`));

@@ -784,6 +784,14 @@ button.link {
   font-weight: 650;
   color: var(--primary);
 }
+
+/* Lekcja przerobiona, ale zdania jeszcze nie siedzą. Bez skreślenia — nie jest skończona. */
+.lesson-list .again .t {
+  color: var(--ink-soft);
+}
+.lesson-list .again .m {
+  color: var(--gold);
+}
 .review-line {
   margin-bottom: 0.9rem;
 }

@@ -56,10 +56,14 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
 
 ## Znane dziury w kodzie, do naprawy
 
-- **Powtórki nie wychodzą poza moduł** — [scheduler.js:20](js/scheduler.js#L20) szuka zdań
-  do powtórki tylko w otwartym module. Po przejściu dalej wcześniejsze zdania cichną.
-- **„✓ zrobione" kłamie** — [store.js:153](js/store.js#L153) ustawia `introduced` przy pierwszej
-  odpowiedzi, dobrej albo złej. Lekcja dostaje ptaszka, choć nic z niej nie umiesz.
+- ~~**Powtórki nie wychodzą poza moduł**~~ — naprawione. Kolejka powtórek sięga do wszystkich
+  modułów, a każde zdanie niesie ze sobą swój moduł.
+- ~~**„✓ zrobione" kłamie**~~ — naprawione. Lista lekcji ma teraz trzy stany: `→` bieżąca,
+  `↻` przerobiona ale nieumiana, `✓` dopiero po dobrych odpowiedziach.
+- ~~**To samo zdanie dwa razy w jednej lekcji**~~ — naprawione. Dyktanda powielają zdania
+  z tłumaczeń pod innym id, więc lekcja porównuje też sam tekst, nie tylko id.
+- **Dyktanda to w większości te same zdania co tłumaczenia** — w module czasy-it 7 z 9.
+  Do przerobienia razem z treścią: dyktando ma ćwiczyć słuch na czymś, czego nie widziałaś.
 - **Powrót po przerwie straszy liczbą** — po kilku miesiącach ekran startowy wita napisem
   „186 zdań czeka na powtórkę". To jest ten moment, w którym się zamyka apkę.
 - **`forms.js` działa na 24 zdaniach ze 186** — tabela czasowników kończy się na `t24`,

@@ -1,9 +1,32 @@
 // Składanie lekcji: bloki do opanowania + powtórki z odstępami.
-import { itemState } from './store.js';
+//
+// Powtórki sięgają do WSZYSTKICH modułów naraz. Wcześniej szukały tylko w module,
+// który masz otwarty — więc zdania z modułu, który zamknęłaś, przestawały wracać
+// i po cichu wyparowywały. To jest cała rzecz, po co ta apka istnieje.
+import { itemState, isDone } from './store.js';
 
 export const LESSON_MAX_ITEMS = 15;
 export const LESSON_KM = 20;
 export const LESSON_COINS = 20;
+export const NEW_PER_LESSON = 3;
+
+function asList(modules) {
+  if (!modules) return [];
+  return (Array.isArray(modules) ? modules : [modules]).filter(Boolean);
+}
+
+// Każde zdanie niesie ze sobą swój moduł — inaczej po wciągnięciu do lekcji
+// nie wiadomo, skąd wziąć rywalizujące kafelki.
+function pairsOf(mod) {
+  return [
+    ...(mod.translations || []).map((item) => ({ item, mod })),
+    ...(mod.dictation || []).map((item) => ({ item, mod })),
+  ];
+}
+
+function allPairs(modules) {
+  return asList(modules).flatMap(pairsOf);
+}
 
 function due(id, now) {
   const st = itemState(id);
@@ -17,157 +40,176 @@ function weak(id, now) {
   return st.wrong > 0 && st.streak === 0;
 }
 
-export function reviewQueue(module, now = Date.now()) {
-  const pool = [...(module.translations || []), ...(module.dictation || [])].filter((item) =>
-    weak(item.id, now)
-  );
+export function reviewQueue(modules, now = Date.now()) {
+  const pool = allPairs(modules).filter((p) => weak(p.item.id, now));
   pool.sort((a, b) => {
-    const wa = itemState(b.id).wrong - itemState(a.id).wrong;
-    if (wa !== 0) return wa;
-    return itemState(a.id).due - itemState(b.id).due;
+    const wrongDiff = itemState(b.item.id).wrong - itemState(a.item.id).wrong;
+    if (wrongDiff !== 0) return wrongDiff;
+    return itemState(a.item.id).due - itemState(b.item.id).due;
   });
   return pool;
 }
 
-function reviewKind(item, i) {
-  const canTiles = Boolean(item.pl && item.en && item.chunks);
+export function dueCount(modules, now = Date.now()) {
+  return reviewQueue(modules, now).length;
+}
+
+function overdueSort(a, b) {
+  return itemState(a.item.id).due - itemState(b.item.id).due;
+}
+
+function unseenFirst(a, b) {
+  return itemState(a.item.id).seen - itemState(b.item.id).seen;
+}
+
+// To samo zdanie siedzi czasem i w tłumaczeniach, i w dyktandach, pod innym id
+// (t08 i d01 to oba „Testuję to od rana"). Bez tego trafiały do jednej lekcji dwa razy.
+function textKey(item) {
+  return String(item.en || item.pl || '')
+    .toLowerCase()
+    .replace(/[^\p{Letter}\p{Number} ]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function take(list, n, seen) {
+  const out = [];
+  for (const pair of list) {
+    if (out.length >= n) break;
+    const key = textKey(pair.item);
+    if (seen.has(pair.item.id)) continue;
+    if (key && seen.has('t:' + key)) continue;
+    seen.add(pair.item.id);
+    if (key) seen.add('t:' + key);
+    out.push(pair);
+  }
+  return out;
+}
+
+function step(pair, kind, extra = {}) {
+  return {
+    kind,
+    item: pair.item,
+    mod: pair.mod,
+    pattern: pair.item.pattern,
+    isNew: !itemState(pair.item.id).introduced,
+    ...extra,
+  };
+}
+
+function reviewKind(pair, i) {
+  const { item } = pair;
+  if (!item.pl) return 'dictate';
+  const canTiles = Boolean(item.en && item.chunks);
   const cycle = i % 3;
   if (cycle === 0 && canTiles) return 'tiles';
   if (cycle === 2) return 'dictate';
-  return item.pl ? 'translate' : 'dictate';
+  return 'translate';
 }
 
-export function buildReview(module) {
+export function buildReview(modules) {
   const now = Date.now();
   const used = new Set();
-  let picked = take(reviewQueue(module, now), 8, used);
+  let picked = take(reviewQueue(modules, now), 8, used);
   if (picked.length < 8) {
-    const learned = [...(module.translations || []), ...(module.dictation || [])]
-      .filter((item) => itemState(item.id).introduced)
+    const learned = allPairs(modules)
+      .filter((p) => itemState(p.item.id).introduced)
       .sort(overdueSort);
     picked = [...picked, ...take(learned, 8 - picked.length, used)];
   }
   return {
-    steps: picked.map((item, i) => ({
-      kind: reviewKind(item, i),
-      item,
-      pattern: item.pattern,
-      isNew: false,
-      review: true,
-    })),
+    steps: picked.map((pair, i) => step(pair, reviewKind(pair, i), { isNew: false, review: true })),
     focus: null,
     review: true,
   };
 }
 
-function overdueSort(a, b) {
-  return itemState(a.id).due - itemState(b.id).due;
-}
-
-function unseenFirst(a, b) {
-  return itemState(a.id).seen - itemState(b.id).seen;
-}
-
-function take(list, n, seen) {
-  const out = [];
-  for (const x of list) {
-    if (out.length >= n) break;
-    if (seen.has(x.id)) continue;
-    seen.add(x.id);
-    out.push(x);
-  }
-  return out;
-}
-
 export function nextPattern(module) {
-  for (const p of module.patternOrder) {
-    if (module.translations.some((t) => t.pattern === p && !itemState(t.id).introduced)) return p;
+  for (const p of module.patternOrder || []) {
+    if ((module.translations || []).some((t) => t.pattern === p && !itemState(t.id).introduced)) {
+      return p;
+    }
   }
   return null;
 }
 
-export const NEW_PER_LESSON = 3;
-
 /**
  * Lekcja: 7 kafelków, 4 tłumaczenia, 4 dyktanda — przeplatane.
+ *
+ * Nowy materiał bierzemy tylko z otwartego modułu, żeby nauka szła po kolei.
+ * Powtórki ciągniemy ze wszystkich, żeby nic nie zostało z tyłu.
  */
-export function buildLesson(module, state) {
+export function buildLesson(module, state, modules) {
   const now = Date.now();
   const used = new Set();
-  const translations = module.translations;
-  const focus = nextPattern(module, state);
+  const wszystkie = asList(modules).length ? asList(modules) : [module];
+  const mine = (module.translations || []).map((item) => ({ item, mod: module }));
+  const focus = nextPattern(module);
 
   const newOnes = focus
     ? take(
-        translations.filter((t) => t.pattern === focus && !itemState(t.id).introduced),
+        mine.filter((p) => p.item.pattern === focus && !itemState(p.item.id).introduced),
         NEW_PER_LESSON,
         used
       )
     : [];
-  const extraTiles =
-    newOnes.length < 7
-      ? take(
-          translations.filter((t) => !itemState(t.id).introduced).sort(unseenFirst),
-          7 - newOnes.length,
-          used
-        )
-      : [];
-  const moreTiles =
-    [...newOnes, ...extraTiles].length < 7
-      ? take(translations.slice().sort(unseenFirst), 7 - newOnes.length - extraTiles.length, used)
-      : [];
-  const tileItems = [...newOnes, ...extraTiles, ...moreTiles].slice(0, 7);
-  const tiles = tileItems.map((item) => ({
-    kind: 'tiles',
-    item,
-    pattern: item.pattern,
-    isNew: !itemState(item.id).introduced,
-  }));
 
+  const brakuje = (ile) => Math.max(0, 7 - ile);
+  const extraTiles = take(
+    mine.filter((p) => !itemState(p.item.id).introduced).sort(unseenFirst),
+    brakuje(newOnes.length),
+    used
+  );
+  const moreTiles = take(
+    mine.slice().sort(unseenFirst),
+    brakuje(newOnes.length + extraTiles.length),
+    used
+  );
+  const tiles = [...newOnes, ...extraTiles, ...moreTiles]
+    .slice(0, 7)
+    .map((pair) => step(pair, 'tiles'));
+
+  // Kontrast: zdanie z innego wzorca, już poznane. Może przyjść z dowolnego modułu —
+  // zderzenie „byłam" z „jestem" działa tak samo dobrze w poprzek modułów.
   const contrast = focus
     ? take(
-        translations
-          .filter((t) => t.pattern !== focus && itemState(t.id).introduced)
+        allPairs(wszystkie)
+          .filter((p) => p.item.pl && p.item.pattern !== focus && itemState(p.item.id).introduced)
           .sort(overdueSort),
         1,
         used
       )
     : [];
 
-  const reviews = take(translations.filter((t) => weak(t.id, now)).sort(overdueSort), 4, used);
+  const reviews = take(reviewQueue(wszystkie, now), 4, used);
 
   const filler = take(
-    translations.filter((t) => !itemState(t.id).introduced).sort(unseenFirst),
+    mine.filter((p) => !itemState(p.item.id).introduced).sort(unseenFirst),
     Math.max(0, 4 - (contrast.length + reviews.length)),
     used
   );
 
-  const typed = [...contrast, ...reviews, ...filler].map((item, i) => ({
-    kind: i % 3 === 2 ? 'dictate' : 'translate',
-    item,
-    pattern: item.pattern,
-    isNew: !itemState(item.id).introduced,
-  }));
+  const typed = [...contrast, ...reviews, ...filler].map((pair, i) => {
+    if (!pair.item.pl) return step(pair, 'dictate');
+    return step(pair, i % 3 === 2 ? 'dictate' : 'translate');
+  });
 
   while (typed.length < 4) {
-    const more = take(translations.slice().sort(unseenFirst), 1, used);
+    const more = take(mine.slice().sort(unseenFirst), 1, used);
     if (!more.length) break;
-    typed.push({
-      kind: 'translate',
-      item: more[0],
-      pattern: more[0].pattern,
-      isNew: !itemState(more[0].id).introduced,
-    });
+    typed.push(step(more[0], 'translate'));
   }
 
   const dictations = take(
-    [...module.dictation].sort((a, b) => {
-      const dueDiff = Number(due(b.id, now)) - Number(due(a.id, now));
-      return dueDiff !== 0 ? dueDiff : unseenFirst(a, b);
-    }),
+    (module.dictation || [])
+      .map((item) => ({ item, mod: module }))
+      .sort((a, b) => {
+        const dueDiff = Number(due(b.item.id, now)) - Number(due(a.item.id, now));
+        return dueDiff !== 0 ? dueDiff : unseenFirst(a, b);
+      }),
     4,
     used
-  ).map((item) => ({ kind: 'dictate', item }));
+  ).map((pair) => step(pair, 'dictate'));
 
   const pools = [tiles, typed.slice(0, 4), dictations];
   const order = [0, 1, 0, 2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 1, 2];
@@ -188,7 +230,7 @@ export function focusLabel(module, pattern) {
   return (module.patterns && module.patterns[pattern]) || '';
 }
 
-export function moduleOutline(module) {
+export function moduleOutline(module, modules) {
   const now = Date.now();
   const lessons = [];
   for (const pattern of module.patternOrder || []) {
@@ -199,18 +241,20 @@ export function moduleOutline(module) {
         n: lessons.length + 1,
         pattern,
         title: (module.patterns && module.patterns[pattern]) || pattern,
-        done: chunk.every((t) => itemState(t.id).introduced),
+        // „widziane" pcha lekcje do przodu, „umiem" stawia ptaszek. Rozdzielone,
+        // żeby jedna pomyłka nie cofała wskaźnika bieżącej lekcji o pół modułu.
+        seen: chunk.every((t) => itemState(t.id).introduced),
+        done: chunk.every((t) => isDone(t.id)),
         sentences: chunk.length,
       });
     }
   }
-  const current = lessons.find((l) => !l.done) || null;
-  const dueCount = reviewQueue(module, now).length;
+  const current = lessons.find((l) => !l.seen) || null;
   return {
     total: lessons.length,
     lessons,
     current,
-    dueCount,
+    dueCount: dueCount(asList(modules).length ? modules : [module], now),
     reviewOnly: !current,
   };
 }

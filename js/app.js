@@ -132,6 +132,7 @@ function runLesson({ review = false } = {}) {
   const back = SCREEN === 'modules' ? 'modules' : 'home';
   startLesson({
     module: MODULE,
+    modules: MODULES,
     review,
     onFinish: (res) => {
       disk.writePairQuiet();
@@ -519,7 +520,7 @@ function home() {
   if (d.level === 'blocked') wrap.appendChild(h(voiceBanner()));
 
   const who = state.nick || 'Ty';
-  const outline = MODULE ? moduleOutline(MODULE, state) : null;
+  const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
   const startLabel = emptyMine
     ? 'Dodaj zdanie'
@@ -584,15 +585,18 @@ function home() {
 function lessonRowsHtml(outline) {
   return outline.lessons
     .map((l) => {
-      const kind = l.done ? 'done' : outline.current && l.n === outline.current.n ? 'now' : '';
-      const mark = l.done ? '✓' : outline.current && l.n === outline.current.n ? '→' : '';
+      // Trzy stany, nie dwa: ptaszek należy się za dobrą odpowiedź, a nie za to,
+      // że zdanie się kiedyś pokazało. Widziane-ale-nieumiane dostaje strzałkę powrotu.
+      const isNow = Boolean(outline.current && l.n === outline.current.n);
+      const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
+      const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
       return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(l.title)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
     })
     .join('');
 }
 
 function moduleDetail(module) {
-  const outline = moduleOutline(module);
+  const outline = moduleOutline(module, MODULES);
   const emptyMine = module.id === 'moje' && !(module.translations || []).length;
   const startLabel = emptyMine
     ? 'Dodaj zdanie'
