@@ -18,20 +18,13 @@ import { LESSON_KM, nextStop, moduleOutline } from './scheduler.js';
 import * as disk from './disk.js';
 import { buildMineModule, waitingPhrases, translatedPhrases } from './mine.js';
 import { createTrasaMap } from './mapa-trasy.js';
-import { renderStart } from './ekran-start.js';
+import { trescStartu } from './ekran-start.js';
+import { montujPowloke, odswiezPowloke } from './powloka.js';
 
 // Zywa instancja mapy trasy oraz kilometr, na ktorym ostatnio stanela.
 // Dzieki temu po powrocie z lekcji ludzik przejezdza roznice, zamiast pojawiac sie od razu.
 let MAPA = null;
 let MAPA_KM = null;
-
-// Zywa instancja ekranu startowego - trzeba ja sprzatnac przy zmianie widoku.
-let START = null;
-
-// Kafelek "Seria dni" jest w projekcie ekranu startowego, ale w planie Lumio stoi
-// wprost: bez serii dni, bez ognika, bez kar. Do decyzji Agnieszki.
-// false = drugi kafelek pokazuje, ile zdan juz umiesz.
-const SERIA_DNI = false;
 
 let BASE_MODULES = [];
 let MODULES = [];
@@ -84,6 +77,11 @@ export function boot({ modules, route }) {
   ROUTE = route;
   refreshModules();
   applyPalette(store.get().palette);
+  montujPowloke(document.getElementById('app'), danePowloki(), {
+    onNav: (id) => go(id),
+    onDzwonek: pokazSprawy,
+    maskotka: () => avatarNaPodlodze(store.get().equipped, { look: store.get().look || {} }),
+  });
   bindChrome();
   for (const btn of document.querySelectorAll('[data-go]')) {
     btn.addEventListener('click', () => go(btn.getAttribute('data-go')));
@@ -108,16 +106,12 @@ export function go(screen, params = {}) {
     MAPA.destroy();
     MAPA = null;
   }
-  if (START) {
-    START.destroy();
-    START = null;
-  }
-  document.body.classList.toggle('ekran-start', screen === 'home');
   setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
   SCREEN = screen;
   markNav(screen);
+  odswiezPowloke(danePowloki(screen));
   const screens = {
     onboarding,
     look,
@@ -421,8 +415,9 @@ function umiemZdan() {
 function sprawyDoZalatwienia() {
   const state = store.get();
   const lista = [];
-  if (speech.diagnosis().level === 'blocked')
+  if (speech.diagnosis().level === 'blocked') {
     lista.push('Nie ma głosu — lekcje nie przeczytają zdań.');
+  }
   if (store.backupIsStale()) lista.push('Dawno nie było kopii postępu.');
   const czeka = (state.customPhrases || []).filter((f) => !String(f.en || '').trim()).length;
   if (czeka) {
@@ -435,13 +430,42 @@ function sprawyDoZalatwienia() {
   return lista;
 }
 
-function daneStartu() {
+function pokazSprawy() {
+  const sprawy = sprawyDoZalatwienia();
+  if (!sprawy.length) return toast('Nic nie czeka. Możesz się uczyć.');
+  toast(sprawy[0]);
+  if (sprawy.length > 1) setTimeout(() => toast(sprawy[1]), 2600);
+}
+
+/** Dane dla wspolnej oprawy - pasek boczny, gorny i ludzik w rogu. */
+function danePowloki(screen = SCREEN) {
+  const state = store.get();
+  const umiem = umiemZdan();
+  const powrot = store.isComeback();
+  return {
+    ekran: screen,
+    imie: state.nick || 'Ty',
+    podpis: umiem.ile
+      ? `${umiem.ile} ${plural(umiem.ile, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}`
+      : 'Dopiero zaczynasz',
+    km: state.km,
+    monety: state.coins,
+    uwaga: sprawyDoZalatwienia().length > 0,
+    // Szeroka kolumna tylko tam, gdzie tresc jest na nia pisana.
+    waska: !['home', 'map'].includes(screen),
+    dymek: screen !== 'home' ? '' : powrot ? 'Dobrze Cię widzieć.' : 'Gotowa na angielski?',
+  };
+}
+
+function home() {
+  refreshModules();
   const state = store.get();
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
   const powrot = !emptyMine && store.isComeback();
   const next = nextStop(ROUTE, state.km);
   const umiem = umiemZdan();
+  const meta = (ROUTE.stops || [])[(ROUTE.stops || []).length - 1];
 
   const zrobione = outline ? outline.lessons.filter((l) => l.done).length : 0;
   const postep = outline && outline.total ? Math.round((zrobione / outline.total) * 100) : 0;
@@ -459,22 +483,40 @@ function daneStartu() {
     : powrot
       ? 'Zaczynamy od zdań, które szły Ci najlepiej. Bez pośpiechu.'
       : outline?.dueCount
-        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę. Zajmie Ci to jakieś 10 minut.`
+        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę. Jakieś 10 minut.`
         : 'Piętnaście zdań, jakieś 10 minut.';
 
-  return {
-    aktywnaZakladka: 'start',
-    me: {
-      imie: state.nick || 'Ty',
-      poziom: umiem.ile
-        ? `${umiem.ile} ${plural(umiem.ile, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}`
-        : 'Dopiero zaczynasz',
-      km: state.km,
-      monety: state.coins,
-    },
+  const wybory = [];
+  if (!emptyMine && outline?.dueCount) {
+    wybory.push({
+      id: 'powtorka',
+      oczko: 'Powtórka',
+      tytul: 'Zapamiętaj na dłużej',
+      opis: 'Zdania ze wszystkich modułów, które zaczynają Ci uciekać.',
+    });
+  } else {
+    wybory.push({
+      id: 'zdania',
+      oczko: 'Twoje zdania',
+      tytul: 'Dorzuć swoje',
+      opis: 'Wpisz zdanie z pracy. Angielski dopiszę i wrzucę je do lekcji.',
+    });
+  }
+  wybory.push({
+    id: 'mapa',
+    oczko: 'Nagroda',
+    tytul: 'Zobacz, gdzie jesteś',
+    opis: 'Trasa, przystanki i to, co czeka w następnym mieście.',
+  });
+
+  const sprawy = sprawyDoZalatwienia();
+
+  const dane = {
+    imie: state.nick || 'Ty',
+    oczko: 'Angielski bez regułek',
     podtytul,
-    dymek: powrot ? 'Dobrze Cię widzieć.' : 'Gotowa na angielski?',
     naglowekLekcji: powrot ? 'WRACAMY' : 'DZISIEJSZA LEKCJA',
+    pas: sprawy.length ? { tekst: sprawy[0], przycisk: 'Zobacz' } : null,
     lekcja: {
       tytul: powrot
         ? 'Spokojny powrót'
@@ -482,65 +524,35 @@ function daneStartu() {
           ? `Lekcja ${outline.current.n}: ${outline.current.title}`
           : MODULE?.title || 'Lekcja',
       opis,
+      postep,
       doPowtorki: powrot || emptyMine ? 0 : outline?.dueCount || 0,
-      postepModulu: postep,
-      przyciskStart: emptyMine ? 'Dodaj zdanie' : powrot ? 'Wracamy spokojnie' : 'Zaczynamy',
+      przycisk: emptyMine ? 'Dodaj zdanie' : powrot ? 'Wracamy spokojnie' : 'Zaczynamy',
     },
-    kafle: {
-      lekcjeZrobione: state.lessons.length,
-      lekcjeNota: outline
-        ? `${MODULE.title} · ${outline.total - zrobione} do końca`
-        : 'Wybierz moduł',
-      seria: SERIA_DNI ? store.streakDays() : null,
-      drugiLab: 'Umiem',
-      drugiVal: umiem.ile,
-      drugiJednostka: `z ${umiem.wszystkich} zdań`,
-      drugiNota: umiem.ile
-        ? 'Zdania, które przetrwały tydzień odstępu.'
-        : 'Zdanie liczy się po tygodniu.',
-    },
+    liczby: [
+      { ikona: 'i-book', wartosc: state.lessons.length, opis: 'ukończonych lekcji' },
+      { ikona: 'i-spark', wartosc: umiem.ile, opis: `umiesz z ${umiem.wszystkich} zdań` },
+      { ikona: 'i-route', wartosc: state.km, opis: meta ? `km z ${meta.km}` : 'kilometrów' },
+    ],
+    wybory,
   };
-}
 
-const NAV_NA_EKRAN = {
-  start: 'home',
-  moduly: 'modules',
-  mapa: 'map',
-  szafa: 'wardrobe',
-  sklep: 'shop',
-  ustawienia: 'settings',
-};
-
-function home() {
-  refreshModules();
-  const state = store.get();
-  const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
-  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
-  const powrot = !emptyMine && store.isComeback();
-
-  const wrap = h(`<div></div>`);
-  if (speech.diagnosis().level === 'blocked') wrap.appendChild(h(voiceBanner()));
-  const gniazdo = h(`<div></div>`);
-  wrap.appendChild(gniazdo);
-  mount(wrap);
-
-  START = renderStart(gniazdo, daneStartu(), {
-    maskotka: () => avatarNaPodlodze(state.equipped, { look: state.look || {} }),
-    onLekcja() {
-      if (emptyMine) return go('phrases');
-      if (powrot) return runLesson({ comeback: true });
-      runLesson({ review: Boolean(outline?.reviewOnly) });
-    },
-    onPowtorka: () => runLesson({ review: true }),
-    onZmienLekcje: () => go('modules'),
-    onNav: (id) => go(NAV_NA_EKRAN[id] || 'home'),
-    onDzwonek() {
-      const sprawy = sprawyDoZalatwienia();
-      if (!sprawy.length) return toast('Nic nie czeka. Możesz się uczyć.');
-      toast(sprawy[0]);
-      if (sprawy.length > 1) setTimeout(() => toast(sprawy[1]), 2600);
-    },
-  });
+  mount(
+    trescStartu(dane, {
+      onLekcja() {
+        if (emptyMine) return go('phrases');
+        if (powrot) return runLesson({ comeback: true });
+        runLesson({ review: Boolean(outline?.reviewOnly) });
+      },
+      onPowtorka: () => runLesson({ review: true }),
+      onZmienLekcje: () => go('modules'),
+      onPas: () => go(sprawy[0].includes('kopii') ? 'settings' : 'home'),
+      onWybor(id) {
+        if (id === 'powtorka') return runLesson({ review: true });
+        if (id === 'zdania') return go('phrases');
+        go('map');
+      },
+    })
+  );
 }
 
 function lessonRowsHtml(outline) {

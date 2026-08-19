@@ -1,319 +1,114 @@
-/* ekran-start.css - style ekranu startowego Lumio.
- *
- * Dwa odstepstwa od dokumentu, oba wymuszone przez to, co w Lumio juz jest:
- *
- * 1. Palety siedza pod atrybutem data-palette, a nie data-theme. data-theme trzyma
- *    juz jasny/ciemny motyw i podmiana wywalilaby ciemny. Nazwy zgrane z tymi,
- *    ktore aplikacja ma w Ustawieniach: fiolet = lilac, zielony = forest.
- *
- * 2. Kazdy selektor jest zamkniety w ".app". Bez tego .tile, .dots i .hello z tego
- *    pliku przemalowalyby kafelki w lekcji i ekrany, ktore uzywaja tych samych nazw.
- */
+/* ekran-start.css - zawartosc kolumny na ekranie startowym.
+   Oprawa (pasek boczny, gorny, ludzik w rogu) siedzi w powloka.css. */
 
-/* ================= PALETY ================= */
-.app,
-[data-palette='lilac'] .app {
-  --bg: #f6f4fc;
-  --panel: #ffffff;
-  --ink: #211c33;
-  --ink-2: #5d5677;
-  --muted: #9a93b2;
-  --line: #e8e4f4;
-  --b900: #3a2a72;
-  --b700: #5138a8;
-  --b500: #8a6bf0;
-  --b100: #ede8fe;
-  --hot: #f0567f;
-  --hot100: #ffe4ec;
-  --cool: #3ea8d6;
-  --cool100: #e0f0fa;
-  --hero-a: #6b4bd6;
-  --hero-b: #3a2a72;
-}
-[data-palette='forest'] .app {
-  --bg: #f7f5ef;
-  --panel: #ffffff;
-  --ink: #1b2420;
-  --ink-2: #59665f;
-  --muted: #92a099;
-  --line: #e8e5da;
-  --b900: #0f4c36;
-  --b700: #186b4c;
-  --b500: #2e9c74;
-  --b100: #dff1e8;
-  --hot: #f0567f;
-  --hot100: #ffe4ec;
-  --cool: #3e93c7;
-  --cool100: #e0eff9;
-  --hero-a: #1e7a57;
-  --hero-b: #0f4c36;
-}
-
-/* ================= EKRAN ================= */
-.app * {
-  box-sizing: border-box;
-}
-.app {
-  display: flex;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--ink);
-  font-family:
-    'Nunito',
-    'Segoe UI',
-    -apple-system,
-    BlinkMacSystemFont,
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
-}
-
-/* ---- sidebar ---- */
-.app .side {
-  width: 236px;
-  flex: 0 0 236px;
-  padding: 20px 14px;
-  display: flex;
-  flex-direction: column;
-  background: var(--panel);
-  border-right: 1px solid var(--line);
-}
-.app .brand {
+/* ---------- pasek ostrzezenia u gory ---------- */
+.app .pas {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px 8px 16px;
-}
-.app .brand .mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  background: linear-gradient(140deg, var(--b500), var(--b900));
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--b700) 34%, transparent);
-}
-.app .brand .name {
-  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-.app .brand .tag {
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  color: var(--muted);
-  font-weight: 800;
-  margin-top: 3px;
-}
-.app .usr {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 8px 10px;
-  margin: 0 4px 16px;
-}
-.app .usr .av {
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: var(--b100);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.app .usr .nm {
-  font-weight: 800;
+  gap: 14px;
+  background: var(--warm100);
+  border: 1px solid color-mix(in srgb, var(--warm) 24%, transparent);
+  border-radius: 16px;
+  padding: 14px 16px;
   font-size: 13.5px;
-  line-height: 1.15;
-}
-.app .usr .lv {
-  font-size: 11px;
-  color: var(--muted);
   font-weight: 700;
-}
-.app .nav {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.app .nav a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 12px;
-  border-radius: 13px;
-  text-decoration: none;
   color: var(--ink-2);
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: 0.16s;
 }
-.app .nav a .ic {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
-  opacity: 0.7;
+.app .pas .rosnij {
+  flex: 1;
 }
-.app .nav a:hover {
-  background: var(--b100);
-  color: var(--b900);
-}
-.app .nav a.on {
-  background: linear-gradient(135deg, var(--b500), var(--b700));
+.app .pas button {
+  border: 0;
+  font: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 9px 15px;
+  border-radius: 11px;
+  cursor: pointer;
+  background: var(--b700);
   color: #fff;
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--b700) 28%, transparent);
 }
-.app .nav a.on .ic {
-  opacity: 1;
+
+/* ---------- naglowek sekcji ---------- */
+.app .naglowek {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
 }
-.app .nav a .bdg {
-  margin-left: auto;
+.app .naglowek .rosnij {
+  flex: 1;
+  min-width: 14rem;
+}
+.app .oczko {
+  display: block;
   font-size: 10.5px;
   font-weight: 800;
-  background: var(--b100);
-  color: var(--b700);
-  padding: 3px 7px;
-  border-radius: 7px;
-}
-.app .nav a.on .bdg {
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
-}
-
-/* ---- main ---- */
-.app .main {
-  flex: 1;
-  padding: 20px 34px 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.app .topbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
-.app .chip {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 6px 14px 6px 6px;
-}
-.app .chip .cic {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--b100);
-  color: var(--b700);
-}
-.app .chip.coin .cic {
-  background: var(--hot100);
-  color: var(--hot);
-}
-.app .chip .val {
-  font-weight: 800;
-  font-size: 14.5px;
-}
-.app .chip .un {
-  font-size: 11px;
+  letter-spacing: 0.16em;
   color: var(--muted);
-  font-weight: 700;
-  margin-left: -4px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
 }
-.app .icon-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  display: grid;
-  place-items: center;
-  color: var(--ink-2);
-  cursor: pointer;
-}
-
-.app .hello {
+.app .naglowek h1,
+.app .naglowek h2 {
   font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
-  font-size: 33px;
+  font-size: 31px;
   line-height: 1.1;
-  margin: 4px 0 4px;
+  margin: 0;
   letter-spacing: -0.02em;
 }
-.app .sub {
+.app .naglowek h2 {
+  font-size: 23px;
+}
+.app .naglowek p {
+  margin: 8px 0 0;
   color: var(--ink-2);
   font-size: 14.5px;
-  margin: 0 0 26px;
-  max-width: 420px;
 }
 
-/* ---- hero ---- */
+/* ---------- duza karta lekcji ---------- */
 .app .hero {
   position: relative;
-  border-radius: 26px;
-  padding: 28px 32px 26px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--hero-a), var(--hero-b) 72%);
-  box-shadow: 0 18px 40px color-mix(in srgb, var(--hero-b) 26%, transparent);
-}
-.app .hero .blobs {
-  position: absolute;
-  inset: 0;
   overflow: hidden;
   border-radius: 26px;
-  pointer-events: none;
+  padding: 30px 34px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--hero-a), var(--hero-b) 74%);
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--hero-b) 24%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
-.app .hero .blobs i {
+.app .hero:before {
+  content: '';
   position: absolute;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   background: #fff;
   opacity: 0.06;
+  right: -80px;
+  top: -140px;
 }
-.app .hero .b1 {
-  width: 280px;
-  height: 280px;
-  right: -70px;
-  top: -130px;
-}
-.app .hero .b2 {
-  width: 180px;
-  height: 180px;
-  right: 150px;
-  bottom: -100px;
-  opacity: 0.045;
-}
-.app .hero .inner {
+.app .hero .tresc-hero {
   position: relative;
-  max-width: 600px;
+  flex: 1;
+  min-width: 0;
 }
-.app .eyebrow {
+.app .hero .oczko {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  color: #fff;
   background: rgba(255, 255, 255, 0.18);
   padding: 6px 11px;
   border-radius: 8px;
+  margin-bottom: 12px;
 }
 .app .hero h2 {
   font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
   font-size: 27px;
-  margin: 13px 0 6px;
+  margin: 0 0 6px;
   letter-spacing: -0.02em;
 }
 .app .hero .desc {
@@ -339,7 +134,6 @@
   height: 100%;
   border-radius: 8px;
   background: #fff;
-  width: 34%;
 }
 .app .hero .prog .pc {
   font-size: 11.5px;
@@ -385,291 +179,139 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.app .btn-akcent {
+  background: var(--b700);
+  color: #fff;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--b700) 26%, transparent);
+}
 .app .btn:hover {
   transform: translateY(-1px);
 }
 
-/* ludzik: stoi na dole strony, na linii podlogi */
-.app .footzone {
-  margin-top: auto;
-  position: relative;
-  height: 246px;
-}
-.app .footzone:before {
-  content: '';
-  position: absolute;
-  left: -34px;
-  right: -34px;
-  bottom: 0;
-  height: 118px;
-  border-radius: 26px 26px 0 0;
-  background: color-mix(in srgb, var(--b100) 62%, var(--bg));
-}
-.app .footzone:after {
-  content: '';
-  position: absolute;
-  left: -34px;
-  right: -34px;
-  bottom: 117px;
-  height: 1px;
-  background: color-mix(in srgb, var(--b500) 16%, transparent);
-}
-.app .mascot {
-  position: absolute;
-  right: 74px;
-  bottom: 26px;
-  z-index: 3;
-  line-height: 0;
-}
-.app .mascot svg {
-  display: block;
-}
-.app .mascot .body {
-  animation: bob 3.4s ease-in-out infinite;
-}
-@keyframes bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-.app .bubble {
-  position: absolute;
-  right: calc(100% + 14px);
-  bottom: 82px;
-  background: var(--panel);
-  color: var(--ink);
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 11px 15px;
-  border-radius: 15px;
-  white-space: nowrap;
-  line-height: 1.2;
-  box-shadow: 0 10px 22px rgba(30, 25, 45, 0.12);
-  border: 1px solid var(--line);
-}
-.app .bubble:after {
-  content: '';
-  position: absolute;
-  right: -7px;
-  bottom: 14px;
-  width: 13px;
-  height: 13px;
-  background: var(--panel);
-  border-right: 1px solid var(--line);
-  border-top: 1px solid var(--line);
-  transform: rotate(45deg);
-}
-
-/* ---- kafle ---- */
-.app .tiles {
+/* ---------- trzy liczby ---------- */
+.app .liczby {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 22px;
-  max-width: 720px;
 }
-/* font-family i font-size trzeba nadpisac jawnie: Lumio ma wlasne .tile (kafelki
-   ze slowami w lekcji) rysowane czcionka o stalej szerokosci, i to by tu wciekalo. */
-.app .tile {
+.app .liczba {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 18px;
+  border-radius: 18px;
+  padding: 16px 18px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  transition: 0.18s;
-  font-family: inherit;
-  font-size: 14px;
+  gap: 14px;
 }
-.app .tile:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(30, 25, 45, 0.08);
-}
-.app .tile .tic {
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
-  border-radius: 15px;
+.app .liczba .tic {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 13px;
   display: grid;
   place-items: center;
-}
-.app .tile.les .tic {
   background: var(--cool100);
   color: var(--cool);
 }
-.app .tile.streak .tic {
-  background: var(--hot100);
-  color: var(--hot);
+.app .liczba.b .tic {
+  background: var(--b100);
+  color: var(--b700);
 }
-.app .tile .lab {
-  font-family: inherit;
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  color: var(--muted);
-  text-transform: uppercase;
+.app .liczba.c .tic {
+  background: var(--warm100);
+  color: var(--warm);
 }
-.app .tile .val {
+.app .liczba b {
   font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
-  font-size: 27px;
-  font-weight: 700;
-  line-height: 1.05;
-  margin: 4px 0 3px;
+  font-size: 25px;
+  line-height: 1;
+  display: block;
   letter-spacing: -0.02em;
 }
-.app .tile .val small {
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--muted);
-  margin-left: 5px;
-}
-.app .tile .note {
-  font-family: inherit;
+.app .liczba span {
   font-size: 12.5px;
   color: var(--ink-2);
   font-weight: 700;
 }
-.app .dots {
-  display: flex;
-  gap: 5px;
-  margin-top: 7px;
-}
-.app .dots i {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: var(--line);
-  display: block;
-}
-.app .dots i.on {
-  background: var(--hot);
-}
 
-/* ---- mobile ---- */
-.app .tabbar {
-  display: none;
+/* ---------- dwie karty "co dzisiaj" ---------- */
+.app .wybory {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
-.app .tabbar a {
-  flex: 1;
+.app .wybor {
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 22px;
+  padding: 22px 24px;
+  min-height: 9.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  text-decoration: none;
-  color: var(--muted);
-  font-size: 10.5px;
+  gap: 6px;
+  background: var(--b100);
+  color: var(--ink);
+  transition: 0.18s;
+}
+.app .wybor.cieply {
+  background: var(--warm100);
+}
+.app .wybor:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(30, 25, 45, 0.1);
+}
+.app .wybor h3 {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  font-size: 19px;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.app .wybor p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  font-weight: 600;
+  line-height: 1.45;
+}
+.app .wybor .strzalka {
+  margin-top: auto;
+  align-self: flex-end;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--panel);
+  display: grid;
+  place-items: center;
+  color: var(--b700);
   font-weight: 800;
-  padding: 6px 0;
-  border-radius: 14px;
-}
-.app .tabbar a .ic {
-  width: 22px;
-  height: 22px;
-}
-.app .tabbar a.on {
-  color: #fff;
-  background: linear-gradient(135deg, var(--b500), var(--b700));
 }
 
-@media (max-width: 760px) {
-  .app {
-    display: block;
-    min-height: 100vh;
-  }
-  .app .side {
-    display: none;
-  }
-  .app .main {
-    padding: 24px 16px 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .app .topbar {
-    justify-content: space-between;
-    margin-bottom: 6px;
-  }
-  .app .hello {
+@media (max-width: 900px) {
+  .app .naglowek h1 {
     font-size: 25px;
   }
-  .app .sub {
-    margin-bottom: 22px;
-    font-size: 13.5px;
-    max-width: 280px;
-  }
   .app .hero {
-    padding: 22px 20px 20px;
+    padding: 22px 20px;
     border-radius: 22px;
   }
   .app .hero h2 {
     font-size: 20px;
   }
-  .app .hero .inner {
-    max-width: none;
-  }
-  .app .footzone {
-    height: 214px;
-    margin-bottom: 104px;
-  }
-  .app .footzone:before {
-    left: -16px;
-    right: -16px;
-    height: 104px;
-  }
-  .app .footzone:after {
-    left: -16px;
-    right: -16px;
-    bottom: 103px;
-  }
-  .app .mascot {
-    right: 14px;
-    bottom: 22px;
-    transform: scale(0.92);
-    transform-origin: bottom right;
-  }
-  .app .bubble {
-    display: block;
-    right: calc(100% + 10px);
-    bottom: 74px;
-    font-size: 12.5px;
-    white-space: normal;
-    width: 132px;
-  }
-  .app .btn {
-    padding: 12px 16px;
-    font-size: 13.5px;
-  }
-  .app .tiles {
+  .app .liczby {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  .app .tabbar {
-    display: flex;
-    position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    z-index: 20;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    padding: 8px 6px;
-    justify-content: space-between;
-    box-shadow: 0 12px 30px rgba(30, 25, 45, 0.16);
+  .app .wybory {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app .mascot .body {
-    animation: none;
-  }
   .app .btn:hover,
-  .app .tile:hover {
+  .app .wybor:hover {
     transform: none;
   }
 }

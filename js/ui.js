@@ -20,7 +20,8 @@ export function frag(html) {
   return t.content;
 }
 
-const app = () => document.getElementById('app');
+// Ekrany laduja do kolumny powloki. Zanim powloka powstanie - prosto do #app.
+const app = () => document.getElementById('tresc') || document.getElementById('app');
 
 export function mount(...nodes) {
   const root = app();

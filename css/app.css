@@ -267,13 +267,9 @@ body {
   background: var(--gold-soft);
 }
 
+/* Szerokosc kolumny trzyma teraz powloka (css/powloka.css). #app jest tylko
+   pojemnikiem na cala oprawe. */
 main {
-  max-width: 42rem;
-  margin: 0 auto;
-  padding: 0.4rem 1.5rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
   width: 100%;
 }
 
@@ -1719,24 +1715,4 @@ select:focus-visible {
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--line);
-}
-
-/* Ekran startowy przynosi własną nawigację i własny pasek górny, więc na czas jego
-   pokazania chowamy te z Lumio — inaczej byłyby dwie nawigacje jedna nad drugą.
-   To układ przejściowy: kolejne ekrany dostaną tę samą oprawę. */
-body.ekran-start .sidenav,
-body.ekran-start .stage > .topbar,
-body.ekran-start .nav-scrim {
-  display: none;
-}
-body.ekran-start .shell {
-  display: block;
-}
-body.ekran-start .stage {
-  padding: 0;
-}
-body.ekran-start #app {
-  max-width: none;
-  padding: 0;
-  margin: 0;
 }
