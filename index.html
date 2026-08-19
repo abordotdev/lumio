@@ -12,48 +12,25 @@
     />
     <meta name="theme-color" content="#2C6753" />
     <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/powloka.css" />
+    <link rel="stylesheet" href="css/ekran-start.css" />
+    <link rel="stylesheet" href="css/mapa-trasy.css" />
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232C6753'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23fff' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E"
     />
   </head>
   <body>
-    <div class="nav-scrim" id="nav-scrim" hidden></div>
-    <div class="shell">
-      <aside class="sidenav" id="sidenav">
-        <button class="brand" id="btn-brand" type="button">Lumio <small>prototyp</small></button>
-        <p class="nav-who" id="nav-who">Ty</p>
-        <nav class="nav-links" aria-label="Menu">
-          <button type="button" data-go="home">Start</button>
-          <button type="button" data-go="modules">Moduły</button>
-          <button type="button" data-go="map">Mapa</button>
-          <button type="button" data-go="wardrobe">Szafa</button>
-          <button type="button" data-go="shop">Sklep</button>
-          <button type="button" data-go="settings">Ustawienia</button>
-        </nav>
-      </aside>
-      <div class="stage">
-        <header class="topbar">
-          <button
-            class="nav-toggle"
-            id="nav-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="sidenav"
-          >
-            Menu
-          </button>
-          <div class="topbar-end">
-            <span class="counter km" id="c-km">0 km</span>
-            <span class="counter coin" id="c-coins">0 monet</span>
-          </div>
-        </header>
-        <main id="app">
-          <div class="card"><p class="muted">Wczytuję…</p></div>
-        </main>
-      </div>
-    </div>
+    <main id="app">
+      <div class="card"><p class="muted">Wczytuję…</p></div>
+    </main>
 
     <noscript>
       <div class="card" style="margin: 2rem auto; max-width: 34rem">

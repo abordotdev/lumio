@@ -267,13 +267,9 @@ body {
   background: var(--gold-soft);
 }
 
+/* Szerokosc kolumny trzyma teraz powloka (css/powloka.css). #app jest tylko
+   pojemnikiem na cala oprawe. */
 main {
-  max-width: 42rem;
-  margin: 0 auto;
-  padding: 0.4rem 1.5rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
   width: 100%;
 }
 
@@ -1709,4 +1705,14 @@ select:focus-visible {
   .stat b {
     font-size: 1.1rem;
   }
+}
+
+/* Kontener mapy trasy. Komponent sam sie mierzy, ale szerokosc musi dostac od nas. */
+.trasa-host {
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
 }

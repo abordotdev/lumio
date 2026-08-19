@@ -16,13 +16,20 @@ const KIND_LABEL = {
 const MAX_STEPS = 15;
 const MAX_REQUEUE = 5;
 
-export function startLesson({ module, modules, onFinish, review = false, comeback = false }) {
+export function startLesson({
+  module,
+  modules,
+  onFinish,
+  review = false,
+  comeback = false,
+  ids = null,
+}) {
   const state = store.get();
   const wszystkie = modules && modules.length ? modules : [module];
   let built;
   if (comeback) built = buildComeback(wszystkie);
   else if (review) built = buildReview(wszystkie);
-  else built = buildLesson(module, state, wszystkie);
+  else built = buildLesson(module, state, wszystkie, { ids });
   const { steps, focus } = built;
 
   if (!steps.length) {

@@ -1,0 +1,659 @@
+/* powloka.css - wspolna oprawa wszystkich ekranow Lumio.
+ *
+ * Trzy rzeczy inaczej niz w pierwszym dokumencie ekranu startowego:
+ *  - ludzik unosi sie w prawym dolnym rogu, bez pasa "podlogi". Pas przy szerokim
+ *    oknie robil ogromna zielona plame i strona wygladala na pusta;
+ *  - tresc siedzi w kolumnie o stalej szerokosci, wysrodkowanej, zamiast rozlazic sie
+ *    na caly ekran;
+ *  - palety pod data-palette, bo data-theme trzyma juz jasny/ciemny motyw.
+ */
+
+.app,
+[data-palette='lilac'] .app {
+  --bg: #f6f4fc;
+  --panel: #ffffff;
+  --ink: #211c33;
+  --ink-2: #5d5677;
+  --muted: #9a93b2;
+  --line: #e8e4f4;
+  --b900: #3a2a72;
+  --b700: #5138a8;
+  --b500: #8a6bf0;
+  --b100: #ede8fe;
+  --hot: #f0567f;
+  --hot100: #ffe4ec;
+  --cool: #3ea8d6;
+  --cool100: #e0f0fa;
+  --warm: #e08c3a;
+  --warm100: #fdeedd;
+  --hero-a: #6b4bd6;
+  --hero-b: #3a2a72;
+}
+[data-palette='forest'] .app {
+  --bg: #f7f5ef;
+  --panel: #ffffff;
+  --ink: #1b2420;
+  --ink-2: #59665f;
+  --muted: #92a099;
+  --line: #e8e5da;
+  --b900: #0f4c36;
+  --b700: #186b4c;
+  --b500: #2e9c74;
+  --b100: #dff1e8;
+  --hot: #f0567f;
+  --hot100: #ffe4ec;
+  --cool: #3e93c7;
+  --cool100: #e0eff9;
+  --warm: #b3801f;
+  --warm100: #f7edd8;
+  --hero-a: #1e7a57;
+  --hero-b: #0f4c36;
+}
+
+.app * {
+  box-sizing: border-box;
+}
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family:
+    'Nunito',
+    'Segoe UI',
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+/* ---------- pasek boczny ---------- */
+.app .side {
+  width: 236px;
+  flex: 0 0 236px;
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+}
+.app .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.app .brand .mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(140deg, var(--b500), var(--b900));
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--b700) 34%, transparent);
+}
+.app .brand .name {
+  display: block;
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.app .brand .tag {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  font-weight: 800;
+  margin-top: 3px;
+}
+.app .usr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 8px 10px;
+  margin: 0 4px 16px;
+}
+.app .usr .av {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--b100);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 34px;
+}
+.app .usr .nm {
+  display: block;
+  font-weight: 800;
+  font-size: 13.5px;
+  line-height: 1.15;
+}
+.app .usr .lv {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.app .nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.app .nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 13px;
+  text-decoration: none;
+  color: var(--ink-2);
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: 0.16s;
+}
+.app .nav a .ic {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  opacity: 0.7;
+}
+.app .nav a:hover {
+  background: var(--b100);
+  color: var(--b900);
+}
+.app .nav a.on {
+  background: linear-gradient(135deg, var(--b500), var(--b700));
+  color: #fff;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--b700) 28%, transparent);
+}
+.app .nav a.on .ic {
+  opacity: 1;
+}
+.app .nav a .bdg {
+  margin-left: auto;
+  font-size: 10.5px;
+  font-weight: 800;
+  background: var(--b100);
+  color: var(--b700);
+  padding: 3px 7px;
+  border-radius: 7px;
+}
+.app .nav a.on .bdg {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.app .side-stopka {
+  margin-top: auto;
+  background: var(--warm100);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+.app .side-stopka b {
+  display: block;
+  color: var(--ink);
+}
+
+/* ---------- scena i kolumna ---------- */
+.app .scena {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.app .pasek {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 34px 6px;
+}
+.app .rosnij {
+  flex: 1;
+}
+.app .menu-btn {
+  display: none;
+}
+.app .chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px 6px 6px;
+  font-weight: 800;
+  font-size: 14.5px;
+}
+.app .chip .cic {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--b100);
+  color: var(--b700);
+}
+.app .chip.coin .cic {
+  background: var(--hot100);
+  color: var(--hot);
+}
+.app .chip .un {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.app .icon-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.app .icon-btn .kropka {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hot);
+}
+
+.app .kolumna {
+  width: 100%;
+  /* Limit liczony na sama tresc: 1180 plus wciecia i pas na ludzika. */
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 40px 170px;
+  display: flex;
+  flex-direction: column;
+  --odstep: 34px;
+  gap: var(--odstep);
+}
+
+/* Ekran moze oddac jedna owijke zamiast osobnych sekcji - wtedy odstep z kolumny
+   nie dziala, bo dziecko jest tylko jedno, i sekcje sklejaja sie w scianę.
+   Owijka dostaje wiec ten sam uklad. */
+.app .kolumna > div:only-child:not([style*='flex']) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--odstep);
+}
+
+/* Ekrany, ktore maja jeszcze stary uklad kart, dostaja wezsza kolumne -
+   szeroka jest dla ekranu startowego i mapy. */
+.app .kolumna.waska {
+  max-width: 50rem;
+  --odstep: 1.5rem;
+}
+
+/* Ludzik stoi w rogu tylko wtedy, gdy okno jest na tyle szerokie, ze da sie
+   zostawic mu wlasny pas i nie zabrac miejsca tresci. Ponizej 1400 px chowamy go -
+   170 px to za duzo, karty robily sie ciasne. */
+@media (min-width: 1400px) {
+  .app .kolumna {
+    padding-right: 240px;
+  }
+}
+
+/* ---------- ludzik w rogu ---------- */
+.app .ludzik-rog {
+  position: fixed;
+  right: 26px;
+  bottom: 18px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+.app .ludzik-rog svg {
+  display: block;
+  animation: bujanie 3.4s ease-in-out infinite;
+  filter: drop-shadow(0 12px 14px rgba(20, 30, 25, 0.16));
+}
+@keyframes bujanie {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.app .ludzik-rog .bubble {
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.3;
+  max-width: 13rem;
+  box-shadow: 0 10px 22px rgba(30, 25, 45, 0.12);
+  border: 1px solid var(--line);
+  position: relative;
+}
+.app .ludzik-rog .bubble:after {
+  content: '';
+  position: absolute;
+  right: 34px;
+  bottom: -7px;
+  width: 13px;
+  height: 13px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  transform: rotate(45deg);
+}
+
+/* ---------- dolny pasek na telefonie ---------- */
+.app .tabbar {
+  display: none;
+}
+.app .tabbar a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 6px 0;
+  border-radius: 14px;
+}
+.app .tabbar a .ic {
+  width: 22px;
+  height: 22px;
+}
+.app .tabbar a .bdg {
+  display: none;
+}
+.app .tabbar a.on {
+  color: #fff;
+  background: linear-gradient(135deg, var(--b500), var(--b700));
+}
+
+@media (max-width: 900px) {
+  .app .side {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 30;
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+    box-shadow: 0 0 40px rgba(20, 25, 40, 0.18);
+  }
+  .app.menu-otwarte .side {
+    transform: none;
+  }
+  .app .menu-btn {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .app .pasek {
+    padding: 12px 16px 4px;
+  }
+  .app .kolumna {
+    padding: 6px 16px 190px;
+    gap: 20px;
+  }
+  .app .tabbar {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 20;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 8px 6px;
+    justify-content: space-between;
+    box-shadow: 0 12px 30px rgba(30, 25, 45, 0.16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app .ludzik-rog svg {
+    animation: none;
+  }
+}
+
+/* ---------- stare ekrany w nowym jezyku ----------
+   Moduly, Sklep, Szafa i Ustawienia maja jeszcze uklad z pierwszej wersji Lumio.
+   Zanim przepiszemy je po kolei, przyciski, pola i karty dostaja wyglad nowej apki,
+   zeby nie bylo dwoch stylow obok siebie. Kafelki ze slowami w lekcji zostaja
+   nietkniete - tam wyglad niesie znaczenie. */
+
+.app #tresc .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px 24px;
+  box-shadow: none;
+}
+
+/* .box-lid i .thing maja wlasny wyglad - ogolna regula zmniejszala prezent
+   w skrzynce do 14 px i splaszczala kafelki w szafie. */
+.app #tresc button:not(.tile):not(.box-lid):not(.thing) {
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 18px;
+  border-radius: 13px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  transition: 0.16s;
+}
+.app #tresc button:not(.tile):not(.box-lid):not(.thing):hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--b700) 40%, var(--line));
+  color: var(--b900);
+  transform: translateY(-1px);
+}
+.app #tresc button:not(.tile):not(.box-lid):not(.thing):disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.app #tresc button.primary {
+  background: linear-gradient(135deg, var(--b500), var(--b700));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--b700) 26%, transparent);
+}
+.app #tresc button.primary:hover:not(:disabled) {
+  color: #fff;
+  filter: brightness(1.06);
+}
+.app #tresc button.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-2);
+}
+.app #tresc button.small {
+  font-size: 12.5px;
+  padding: 8px 13px;
+  border-radius: 10px;
+}
+.app #tresc button.link {
+  background: none;
+  border: 0;
+  padding: 6px 2px;
+  color: var(--ink-2);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.app #tresc input[type='text'],
+.app #tresc input[type='password'],
+.app #tresc textarea,
+.app #tresc select {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 11px 14px;
+  border-radius: 13px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  width: 100%;
+}
+.app #tresc input:focus-visible,
+.app #tresc textarea:focus-visible,
+.app #tresc select:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--b500) 60%, transparent);
+  outline-offset: 1px;
+}
+
+.app #tresc .label {
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.app #tresc h1,
+.app #tresc h2,
+.app #tresc h3 {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  letter-spacing: -0.02em;
+}
+.app #tresc .muted {
+  color: var(--ink-2);
+}
+
+/* Musi stac na koncu pliku - inaczej przegrywa z bazowym display:flex ludzika. */
+@media (max-width: 1399px) {
+  .app .ludzik-rog {
+    display: none;
+  }
+}
+
+/* ---------- skrzynka po lekcji ---------- */
+.app #tresc .box-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0 6px;
+}
+.app #tresc .box-lid {
+  font-size: 5.5rem;
+  line-height: 1;
+  width: 11rem;
+  height: 11rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: radial-gradient(circle at 50% 40%, var(--warm100), var(--b100));
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--b700) 18%, transparent);
+  transition: 0.16s;
+}
+.app #tresc .box-lid:hover {
+  transform: scale(1.04);
+}
+/* Tylko iskierka jest wielka - napis z nagroda ma wlasny rozmiar nizej. */
+.app #tresc .box-wrap .reveal:not(.prize) {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+.app #tresc .prize {
+  font-family: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--b900);
+  margin: 0;
+  text-align: center;
+}
+
+/* ---------- kafelki w szafie i sklepie ---------- */
+.app #tresc .thing {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  transition: 0.16s;
+}
+.app #tresc .thing:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(30, 25, 45, 0.09);
+}
+.app #tresc .thing .n {
+  font-weight: 800;
+  font-size: 13.5px;
+  color: var(--ink);
+  text-align: center;
+}
+/* Napis pod przedmiotem niesie stan, wiec ma kolor: zielony gdy na sobie,
+   spokojny gdy tylko do zalozenia. */
+.app #tresc .thing .s {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--b700);
+  background: var(--b100);
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+.app #tresc .thing.on {
+  border-color: var(--b500);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--b500) 30%, transparent);
+}
+.app #tresc .thing.on .s {
+  color: #fff;
+  background: linear-gradient(135deg, var(--b500), var(--b700));
+}
+.app #tresc .thing.drogo .s,
+.app #tresc .thing:disabled .s {
+  color: var(--muted);
+  background: var(--bg);
+}

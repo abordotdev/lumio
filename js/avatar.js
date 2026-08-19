@@ -382,7 +382,12 @@ function lashes() {
     </g>`;
 }
 
-export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
+// Wymiary rysunku ludzika. Mapa stawia go stopami na linii, więc musi wiedzieć,
+// gdzie w rysunku kończą się buty.
+export const DOLL = { w: 160, h: 320, feet: 265 };
+
+// Sam rysunek, bez ramki <svg>. Potrzebny mapie, która wkłada ludzika do własnego SVG.
+export function avatarBody(equipped = {}, { look = {} } = {}) {
   const hairId = equipped.hair || 'hair-bob';
   const palette = HAIR_COLORS[look.hairColor] || HAIR_COLORS.brunette;
   const eyeColor = look.eyeColor || 'brown';
@@ -397,8 +402,6 @@ export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
   const footwear = shoesFor(parts);
 
   return `
-<svg viewBox="0 0 160 320" width="${size}" height="${(size * 320) / 160}" role="img"
-     aria-label="Twój ludzik" class="doll">
   ${hairBack(hairId, palette)}
 
   <path d="M61,102 L54,104 Q44,128 40,152 Q38,168 42,174 L50,176 Q54,168 52,154 Q56,128 66,108 Z" fill="${SKIN}"/>
@@ -424,8 +427,37 @@ export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
   ${neck}
   ${lashes()}
   ${faceBits}
-  ${head}
-</svg>`;
+  ${head}`;
+}
+
+export function renderAvatar(equipped = {}, { size = 220, look = {} } = {}) {
+  return `
+<svg viewBox="0 0 ${DOLL.w} ${DOLL.h}" width="${size}" height="${(size * DOLL.h) / DOLL.w}" role="img"
+     aria-label="Twój ludzik" class="doll">${avatarBody(equipped, { look })}</svg>`;
+}
+
+// Ludzik dla ekranu startowego. Komponent rysuje go w układzie „0 0 100 146"
+// ze stopami na y=146 — inaczej przestaje stać na podłodze. Klasa „body" jest
+// potrzebna, bo to ją komponent kołysze animacją.
+export const PODLOGA = { w: 100, h: 146 };
+
+export function avatarNaPodlodze(equipped = {}, { look = {} } = {}) {
+  const s = PODLOGA.h / DOLL.feet;
+  const x = PODLOGA.w / 2 - (DOLL.w / 2) * s;
+  return `<g class="body"><g transform="translate(${x.toFixed(2)} 0) scale(${s.toFixed(4)})">${avatarBody(
+    equipped,
+    { look }
+  )}</g></g>`;
+}
+
+// Ludzik dla mapy trasy: (0,0) wypada na stopach, rysunek idzie w górę.
+// Taki kontrakt ma komponent mapy — dzięki temu stawia postać na linii bez zgadywania wysokości.
+export function avatarOnLine(equipped = {}, { size = 54, look = {} } = {}) {
+  const s = size / DOLL.feet;
+  return `<g transform="translate(${(-DOLL.w / 2) * s} ${-DOLL.feet * s}) scale(${s})">${avatarBody(
+    equipped,
+    { look }
+  )}</g>`;
 }
 
 const ICON_BOX = {

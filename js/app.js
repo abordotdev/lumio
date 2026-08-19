@@ -4,6 +4,8 @@ import * as store from './store.js';
 import * as speech from './speech.js';
 import {
   renderAvatar,
+  avatarOnLine,
+  avatarNaPodlodze,
   renderItemIcon,
   renderOutfitIcon,
   withItem,
@@ -15,6 +17,14 @@ import { startLesson } from './lesson.js';
 import { LESSON_KM, nextStop, moduleOutline } from './scheduler.js';
 import * as disk from './disk.js';
 import { buildMineModule, waitingPhrases, translatedPhrases } from './mine.js';
+import { createTrasaMap } from './mapa-trasy.js';
+import { trescStartu } from './ekran-start.js';
+import { montujPowloke, odswiezPowloke } from './powloka.js';
+
+// Zywa instancja mapy trasy oraz kilometr, na ktorym ostatnio stanela.
+// Dzieki temu po powrocie z lekcji ludzik przejezdza roznice, zamiast pojawiac sie od razu.
+let MAPA = null;
+let MAPA_KM = null;
 
 let BASE_MODULES = [];
 let MODULES = [];
@@ -67,6 +77,11 @@ export function boot({ modules, route }) {
   ROUTE = route;
   refreshModules();
   applyPalette(store.get().palette);
+  montujPowloke(document.getElementById('app'), danePowloki(), {
+    onNav: (id) => go(id),
+    onDzwonek: pokazSprawy,
+    maskotka: () => avatarNaPodlodze(store.get().equipped, { look: store.get().look || {} }),
+  });
   bindChrome();
   for (const btn of document.querySelectorAll('[data-go]')) {
     btn.addEventListener('click', () => go(btn.getAttribute('data-go')));
@@ -87,11 +102,16 @@ export function boot({ modules, route }) {
 }
 
 export function go(screen, params = {}) {
+  if (MAPA) {
+    MAPA.destroy();
+    MAPA = null;
+  }
   setNavOpen(false);
   speech.cancel();
   refreshCounters(store.get());
   SCREEN = screen;
   markNav(screen);
+  odswiezPowloke(danePowloki(screen));
   const screens = {
     onboarding,
     look,
@@ -132,7 +152,7 @@ function przerwaLabel(dni) {
   return `${t} ${plural(t, 'tydzień', 'tygodnie', 'tygodni')}`;
 }
 
-function runLesson({ review = false, comeback = false } = {}) {
+function runLesson({ review = false, comeback = false, ids = null } = {}) {
   refreshModules();
   if (!MODULE) return toast('Wybierz moduł.');
   if (MODULE.id === 'moje' && !(MODULE.translations || []).length) {
@@ -145,6 +165,7 @@ function runLesson({ review = false, comeback = false } = {}) {
     modules: MODULES,
     review,
     comeback,
+    ids,
     onFinish: (res) => {
       disk.writePairQuiet();
       if (res.aborted) return go(back);
@@ -220,74 +241,6 @@ function mapRaceForm() {
   </div>`);
   bindRaceFields(box, { reload: true });
   return box;
-}
-
-const LANDMARKS = {
-  palace: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="14" y="18" width="20" height="34" fill="#C9D2DC"/>
-    <rect x="6" y="28" width="10" height="24" fill="#B4C0CC"/>
-    <rect x="32" y="28" width="10" height="24" fill="#B4C0CC"/>
-    <rect x="20" y="4" width="8" height="16" fill="#8FA0B0"/>
-    <polygon points="24,0 28,8 20,8" fill="#2C6753"/>
-    <rect x="18" y="24" width="3" height="5" fill="#5B7A9A"/>
-    <rect x="27" y="24" width="3" height="5" fill="#5B7A9A"/>
-  </svg>`,
-  kiosk: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="8" y="26" width="32" height="22" rx="2" fill="#E8C56B"/>
-    <polygon points="4,26 24,12 44,26" fill="#C23A52"/>
-    <rect x="20" y="32" width="8" height="16" fill="#6B3E24"/>
-    <circle cx="24" cy="18" r="3" fill="#FFF4C8"/>
-  </svg>`,
-  bigben: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="16" y="10" width="16" height="42" fill="#C4B089"/>
-    <rect x="14" y="6" width="20" height="8" fill="#A8946A"/>
-    <polygon points="24,0 32,8 16,8" fill="#2C6753"/>
-    <circle cx="24" cy="22" r="5.5" fill="#F4E8CE"/>
-    <circle cx="24" cy="22" r="1" fill="#191F1C"/>
-    <rect x="22" y="36" width="4" height="8" fill="#5B7A9A"/>
-  </svg>`,
-  gate: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="6" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <rect x="34" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <rect x="10" y="22" width="28" height="6" fill="#B4C0CC"/>
-    <rect x="10" y="32" width="28" height="6" fill="#B4C0CC"/>
-    <rect x="22" y="18" width="4" height="34" fill="#8FA0B0"/>
-  </svg>`,
-  tower: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <polygon points="24,2 28,22 20,22" fill="#8A8F7A"/>
-    <rect x="21" y="22" width="6" height="30" fill="#9AA184"/>
-    <polygon points="14,52 24,28 34,52" fill="#C4B089"/>
-  </svg>`,
-  spire: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="22" y="8" width="4" height="44" fill="#8FA0B0"/>
-    <polygon points="24,0 28,10 20,10" fill="#2C6753"/>
-    <rect x="16" y="40" width="16" height="12" fill="#C9D2DC"/>
-  </svg>`,
-  mill: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="20" y="28" width="8" height="24" fill="#C4B089"/>
-    <circle cx="24" cy="26" r="4" fill="#6B3E24"/>
-    <rect x="22" y="8" width="4" height="18" fill="#F4E8CE" transform="rotate(25 24 26)"/>
-    <rect x="22" y="8" width="4" height="18" fill="#E8C56B" transform="rotate(70 24 26)"/>
-    <rect x="22" y="8" width="4" height="18" fill="#F4E8CE" transform="rotate(115 24 26)"/>
-    <rect x="22" y="8" width="4" height="18" fill="#E8C56B" transform="rotate(160 24 26)"/>
-  </svg>`,
-  gaudi: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <path d="M10,52 Q14,20 24,8 Q34,20 38,52 Z" fill="#C4B089"/>
-    <path d="M18,52 Q20,28 24,18 Q28,28 30,52 Z" fill="#E8C56B"/>
-    <circle cx="24" cy="22" r="3" fill="#5B7A9A"/>
-  </svg>`,
-  castle: `<svg class="landmark" viewBox="0 0 48 56" aria-hidden="true">
-    <rect x="8" y="22" width="32" height="30" fill="#8FA0B0"/>
-    <rect x="6" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <rect x="34" y="18" width="8" height="34" fill="#C9D2DC"/>
-    <polygon points="10,18 14,8 18,18" fill="#2C6753"/>
-    <polygon points="38,18 34,8 30,18" fill="#2C6753"/>
-    <rect x="20" y="34" width="8" height="18" fill="#6B3E24"/>
-  </svg>`,
-};
-
-function landmark(stop) {
-  return LANDMARKS[stop.icon] || `<span class="landmark-dot"></span>`;
 }
 
 // ---------- wybór głosu ----------
@@ -446,216 +399,227 @@ function look() {
 
 // ---------- mapa ----------
 
-function stopIndexForKm(km, stops) {
-  let i = 0;
-  while (i < stops.length - 1 && km >= stops[i + 1].km) i += 1;
-  return i;
+// Ile zdan siedzi juz na dobre - pudelko 3 znaczy, ze przetrwalo tydzien odstepu.
+function umiemZdan() {
+  let ile = 0;
+  let wszystkich = 0;
+  for (const m of MODULES) {
+    for (const t of [...(m.translations || []), ...(m.dictation || [])]) {
+      wszystkich += 1;
+      if (store.isMastered(t.id)) ile += 1;
+    }
+  }
+  return { ile, wszystkich };
 }
 
-function routeListHtml(state) {
-  const stops = ROUTE.stops;
-  const youIdx = stopIndexForKm(state.km, stops);
-  const youName = state.nick || 'ty';
-  const rows = stops
-    .map((s, i) => {
-      const here = i === youIdx;
-      const them = (state.rivals || []).filter((r) => stopIndexForKm(r.km, stops) === i);
-      const dolls = [
-        here
-          ? `<div class="route-doll">${renderAvatar(state.equipped, { size: 52, look: state.look || {} })}<span>${esc(youName)}</span></div>`
-          : '',
-        ...them.map(
-          (r) =>
-            `<div class="route-doll them">${renderAvatar(r.eq || {}, { size: 52, look: r.look || {} })}<span>${esc(r.nick || 'ona')}</span></div>`
-        ),
-      ].join('');
-      return `<li class="route-stop ${state.km >= s.km ? 'reached' : ''} ${here ? 'here' : ''}">
-        ${landmark(s)}
-        <div class="route-copy">
-          <div class="name">${esc(s.short || s.name)}</div>
-          <div class="km">${s.km} km</div>
-        </div>
-        <div class="route-people">${dolls}</div>
-      </li>`;
-    })
-    .join('');
-  return `<ol class="route-list">${rows}</ol>`;
+// Co wymaga uwagi - to laduje pod dzwonkiem w prawym gornym rogu.
+function sprawyDoZalatwienia() {
+  const state = store.get();
+  const lista = [];
+  if (speech.diagnosis().level === 'blocked') {
+    lista.push('Nie ma głosu — lekcje nie przeczytają zdań.');
+  }
+  if (store.backupIsStale()) lista.push('Dawno nie było kopii postępu.');
+  const czeka = (state.customPhrases || []).filter((f) => !String(f.en || '').trim()).length;
+  if (czeka) {
+    lista.push(
+      `${czeka} ${plural(czeka, 'Twoje zdanie czeka', 'Twoje zdania czekają', 'Twoich zdań czeka')} na tłumaczenie.`
+    );
+  }
+  const doOdebrania = pendingStops();
+  if (doOdebrania.length) lista.push(`${doOdebrania[0].name} — jest coś do odebrania.`);
+  return lista;
 }
 
-function peopleRow(state, { prompt = false } = {}) {
-  const youName = state.nick || 'Ty';
-  const you = `<div class="map-person">
-    ${renderAvatar(state.equipped, { size: 72, look: state.look || {} })}
-    <b>${esc(youName)}</b>
-    <span>${state.km} km</span>
-  </div>`;
-  const them = (state.rivals || [])
-    .map(
-      (r) => `<div class="map-person them">
-      ${renderAvatar(r.eq || {}, { size: 72, look: r.look || {} })}
-      <b>${esc(r.nick || 'Koleżanka')}</b>
-      <span>${Math.round(r.km)} km</span>
-    </div>`
-    )
-    .join('');
-  const empty =
-    prompt && !them ? `<p class="tiny">Wklej kod niżej, a jej ludzik stanie tu obok.</p>` : '';
-  return `<div class="map-people">${you}${them}${empty}</div>`;
+function pokazSprawy() {
+  const sprawy = sprawyDoZalatwienia();
+  if (!sprawy.length) return toast('Nic nie czeka. Możesz się uczyć.');
+  toast(sprawy[0]);
+  if (sprawy.length > 1) setTimeout(() => toast(sprawy[1]), 2600);
 }
 
-function nextStopInfo(state) {
-  const next = nextStop(ROUTE, state.km);
-  if (!next)
-    return `<p class="muted">Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.</p>`;
-  const left = next.km - state.km;
-  const lessons = Math.ceil(left / LESSON_KM);
-  return `<p class="muted">Zostało <b>${left} km</b> do ${esc(next.name)}
-    — ${lessons} ${plural(lessons, 'lekcja', 'lekcje', 'lekcji')}.</p>`;
+/** Dane dla wspolnej oprawy - pasek boczny, gorny i ludzik w rogu. */
+function danePowloki(screen = SCREEN) {
+  const state = store.get();
+  const umiem = umiemZdan();
+  const powrot = store.isComeback();
+  return {
+    ekran: screen,
+    imie: state.nick || 'Ty',
+    podpis: umiem.ile
+      ? `${umiem.ile} ${plural(umiem.ile, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}`
+      : 'Dopiero zaczynasz',
+    km: state.km,
+    monety: state.coins,
+    uwaga: sprawyDoZalatwienia().length > 0,
+    // Szeroka kolumna tylko tam, gdzie tresc jest na nia pisana.
+    waska: !['home', 'map', 'modules'].includes(screen),
+    dymek: screen !== 'home' ? '' : powrot ? 'Dobrze Cię widzieć.' : 'Gotowa na angielski?',
+  };
 }
 
 function home() {
   refreshModules();
   const state = store.get();
-  const wrap = h(`<div class="home-stack"></div>`);
-
-  if (store.backupIsStale()) {
-    const b = h(`<div class="banner warn">
-      <span class="grow"><b>Dawno nie było kopii.</b> Zapisz postęp, zanim przeglądarka go skasuje.</span>
-      <button class="small primary" type="button">Zapisz kopię</button>
-    </div>`);
-    b.querySelector('button').addEventListener('click', () => go('settings'));
-    wrap.appendChild(b);
-  }
-
-  const d = speech.diagnosis();
-  if (d.level === 'blocked') wrap.appendChild(h(voiceBanner()));
-
-  const who = state.nick || 'Ty';
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
-  const startLabel = emptyMine
-    ? 'Dodaj zdanie'
-    : !outline
-      ? 'Zaczynamy'
-      : outline.reviewOnly
-        ? 'Zaczynamy powtórkę'
-        : 'Zaczynamy';
-  const next = nextStop(ROUTE, state.km);
-
-  // Powrót po przerwie. To jest ten jeden ekran, który decyduje, czy wrócisz drugi raz —
-  // więc nie wita liczbą zaległych zdań, tylko czymś, od czego da się zacząć.
   const powrot = !emptyMine && store.isComeback();
-  const missionHint = emptyMine
+  const next = nextStop(ROUTE, state.km);
+  const umiem = umiemZdan();
+  const meta = (ROUTE.stops || [])[(ROUTE.stops || []).length - 1];
+
+  const zrobione = outline ? outline.lessons.filter((l) => l.done).length : 0;
+  const postep = outline && outline.total ? Math.round((zrobione / outline.total) * 100) : 0;
+
+  const podtytul = emptyMine
     ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
     : powrot
-      ? `Nie było Cię ${przerwaLabel(store.daysSinceLastLesson())}. Zaczynamy spokojnie — od zdań, które szły Ci najlepiej.`
+      ? `Nie było Cię <b>${przerwaLabel(store.daysSinceLastLesson())}</b>. Zaczynamy spokojnie.`
+      : next
+        ? `Do celu zostało <b>${next.km - state.km} km</b> — ${Math.ceil((next.km - state.km) / LESSON_KM)} ${plural(Math.ceil((next.km - state.km) / LESSON_KM), 'lekcja', 'lekcje', 'lekcji')}.`
+        : 'Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.';
+
+  const opis = emptyMine
+    ? 'Najpierw dodaj kilka swoich zdań z pracy.'
+    : powrot
+      ? 'Zaczynamy od zdań, które szły Ci najlepiej. Bez pośpiechu.'
       : outline?.dueCount
-        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
-        : next
-          ? `Zostało ${next.km - state.km} km do ${next.name}.`
-          : 'Koniec narysowanej trasy.';
-  const lessonTitle = powrot
-    ? 'Wracamy'
-    : outline?.current
-      ? `Lekcja ${outline.current.n}: ${outline.current.title}`
-      : MODULE?.title || 'Lekcja';
+        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę. Jakieś 10 minut.`
+        : 'Piętnaście zdań, jakieś 10 minut.';
 
-  wrap.appendChild(
-    h(`<div class="hello">
-    <h1>Cześć, ${esc(who)}!</h1>
-    <p class="muted">Gotowa na angielski?</p>
-  </div>`)
-  );
-
-  const mission = h(`<div class="mission">
-    <div class="mission-copy">
-      <span class="label">Dzisiejsza lekcja</span>
-      <h2>${esc(lessonTitle)}</h2>
-      <p>${esc(missionHint)}</p>
-      <div class="row">
-        <button class="primary" type="button" id="start">${esc(powrot ? 'Wracamy spokojnie' : startLabel)}</button>
-        ${
-          !powrot && outline && outline.dueCount && !outline.reviewOnly
-            ? `<button type="button" id="review">Powtórka (${outline.dueCount})</button>`
-            : ''
-        }
-      </div>
-    </div>
-    <div class="mission-doll">${doll(state.equipped, 132)}</div>
-  </div>`);
-  mission.querySelector('#start').addEventListener('click', () => {
-    if (emptyMine) return go('phrases');
-    if (powrot) return runLesson({ comeback: true });
-    runLesson({ review: Boolean(outline?.reviewOnly) });
+  const wybory = [];
+  if (!emptyMine && outline?.dueCount) {
+    wybory.push({
+      id: 'powtorka',
+      oczko: 'Powtórka',
+      tytul: 'Zapamiętaj na dłużej',
+      opis: 'Zdania ze wszystkich modułów, które zaczynają Ci uciekać.',
+    });
+  } else {
+    wybory.push({
+      id: 'zdania',
+      oczko: 'Twoje zdania',
+      tytul: 'Dorzuć swoje',
+      opis: 'Wpisz zdanie z pracy. Angielski dopiszę i wrzucę je do lekcji.',
+    });
+  }
+  wybory.push({
+    id: 'mapa',
+    oczko: 'Nagroda',
+    tytul: 'Zobacz, gdzie jesteś',
+    opis: 'Trasa, przystanki i to, co czeka w następnym mieście.',
   });
-  mission.querySelector('#review')?.addEventListener('click', () => runLesson({ review: true }));
-  wrap.appendChild(mission);
 
-  wrap.appendChild(
-    h(`<div class="stat-row">
-    <div class="stat"><b>${state.km}</b><span>kilometrów</span></div>
-    <div class="stat"><b>${state.lessons.length}</b><span>lekcji</span></div>
-    <div class="stat"><b>${state.coins}</b><span>monet</span></div>
-  </div>`)
+  const sprawy = sprawyDoZalatwienia();
+
+  const dane = {
+    imie: state.nick || 'Ty',
+    oczko: 'Angielski bez regułek',
+    podtytul,
+    naglowekLekcji: powrot ? 'WRACAMY' : 'DZISIEJSZA LEKCJA',
+    pas: sprawy.length ? { tekst: sprawy[0], przycisk: 'Zobacz' } : null,
+    lekcja: {
+      tytul: powrot
+        ? 'Spokojny powrót'
+        : outline?.current
+          ? `Lekcja ${outline.current.n}: ${outline.current.title}${outline.current.czesc ? ` · część ${outline.current.czesc}` : ''}`
+          : MODULE?.title || 'Lekcja',
+      opis,
+      postep,
+      doPowtorki: powrot || emptyMine ? 0 : outline?.dueCount || 0,
+      przycisk: emptyMine ? 'Dodaj zdanie' : powrot ? 'Wracamy spokojnie' : 'Zaczynamy',
+    },
+    liczby: [
+      { ikona: 'i-book', wartosc: state.lessons.length, opis: 'ukończonych lekcji' },
+      { ikona: 'i-spark', wartosc: umiem.ile, opis: `umiesz z ${umiem.wszystkich} zdań` },
+      { ikona: 'i-route', wartosc: state.km, opis: meta ? `km z ${meta.km}` : 'kilometrów' },
+    ],
+    wybory,
+  };
+
+  mount(
+    trescStartu(dane, {
+      onLekcja() {
+        if (emptyMine) return go('phrases');
+        if (powrot) return runLesson({ comeback: true });
+        runLesson({ review: Boolean(outline?.reviewOnly) });
+      },
+      onPowtorka: () => runLesson({ review: true }),
+      onZmienLekcje: () => go('modules'),
+      onPas: () => go(sprawy[0].includes('kopii') ? 'settings' : 'home'),
+      onWybor(id) {
+        if (id === 'powtorka') return runLesson({ review: true });
+        if (id === 'zdania') return go('phrases');
+        go('map');
+      },
+    })
   );
-
-  mount(wrap);
 }
 
-function lessonRowsHtml(outline) {
-  return outline.lessons
-    .map((l) => {
-      // Trzy stany, nie dwa: ptaszek należy się za dobrą odpowiedź, a nie za to,
-      // że zdanie się kiedyś pokazało. Widziane-ale-nieumiane dostaje strzałkę powrotu.
-      const isNow = Boolean(outline.current && l.n === outline.current.n);
-      const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
-      const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
-      return `<li class="${kind}"><span class="n">${l.n}</span><span class="t">${esc(l.title)}</span><span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>${mark ? `<span class="m">${mark}</span>` : ''}</li>`;
+/**
+ * Lista lekcji pogrupowana po wzorcu.
+ *
+ * Wzorzec na szesc zdan daje dwie lekcje. Wypisywanie pelnej nazwy przy kazdej
+ * robilo sciane powtorzonego tekstu - nazwa idzie wiec raz, jako naglowek grupy,
+ * a wiersze mowia tylko, ktora to czesc.
+ */
+function lessonGroupsHtml(outline) {
+  const grupy = [];
+  for (const l of outline.lessons) {
+    const ostatnia = grupy[grupy.length - 1];
+    if (ostatnia && ostatnia.pattern === l.pattern) ostatnia.lekcje.push(l);
+    else grupy.push({ pattern: l.pattern, title: l.title, lekcje: [l] });
+  }
+
+  return grupy
+    .map((g) => {
+      const wszystkieUmiem = g.lekcje.every((l) => l.done);
+      const wiersze = g.lekcje
+        .map((l) => {
+          const isNow = Boolean(outline.current && l.n === outline.current.n);
+          const kind = isNow ? 'now' : l.done ? 'done' : l.seen ? 'again' : '';
+          const mark = isNow ? '→' : l.done ? '✓' : l.seen ? '↻' : '';
+          const podpis = isNow
+            ? 'tutaj jesteś'
+            : l.done
+              ? 'umiesz'
+              : l.seen
+                ? 'do poprawy'
+                : 'jeszcze nie';
+          const co = l.czesc ? `Część ${l.czesc} z ${l.czesci}` : 'Cała lekcja';
+          return `<li class="${kind}"><button type="button" data-ids="${esc((l.ids || []).join(','))}"
+            aria-label="Lekcja ${l.n}: ${esc(g.title)}, ${co.toLowerCase()}, ${podpis}">
+            <span class="n">${l.n}</span>
+            <span class="t">${esc(co)}</span>
+            <span class="s">${l.sentences} ${plural(l.sentences, 'zdanie', 'zdania', 'zdań')}</span>
+            <span class="m">${mark}</span>
+          </button></li>`;
+        })
+        .join('');
+      return `<div class="grupa ${wszystkieUmiem ? 'zrobiona' : ''}">
+        <h3>${esc(g.title)}</h3>
+        <ol class="lista-lekcji">${wiersze}</ol>
+      </div>`;
     })
     .join('');
 }
 
-function moduleDetail(module) {
-  const outline = moduleOutline(module, MODULES);
-  const emptyMine = module.id === 'moje' && !(module.translations || []).length;
-  const startLabel = emptyMine
-    ? 'Dodaj zdanie'
-    : !outline
-      ? 'Zaczynamy'
-      : outline.reviewOnly
-        ? 'Zaczynamy powtórkę'
-        : 'Zaczynamy';
-  const reviewLine = emptyMine
-    ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
-    : outline?.dueCount
-      ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę.`
-      : outline?.reviewOnly
-        ? 'Wszystkie lekcje zrobione. Zostaje powtórka.'
-        : '';
-  const list =
-    outline && outline.lessons.length && !emptyMine
-      ? `<ol class="lesson-list">${lessonRowsHtml(outline)}</ol>`
-      : '';
-  const reviewBtn =
-    outline && outline.dueCount && !outline.reviewOnly && !emptyMine
-      ? `<button type="button" data-review>Powtórka (${outline.dueCount})</button>`
-      : '';
-  const panel = h(`<div class="mod-panel">
-    ${list}
-    ${reviewLine ? `<p class="muted review-line">${esc(reviewLine)}</p>` : ''}
-    <div class="row">
-      <button class="primary" type="button" data-start>${esc(startLabel)}</button>
-      ${reviewBtn}
-    </div>
-  </div>`);
-  panel.querySelector('[data-start]')?.addEventListener('click', () => {
-    if (emptyMine) return go('phrases');
-    runLesson({ review: Boolean(outline?.reviewOnly) });
-  });
-  panel
-    .querySelector('[data-review]')
-    ?.addEventListener('click', () => runLesson({ review: true }));
-  return panel;
+/** Ile w danym module zrobione, ile umiem, ile czeka. Liczone tylko dla niego. */
+function statModulu(m) {
+  const outline = moduleOutline(m, [m]);
+  const zrobione = outline.lessons.filter((l) => l.done).length;
+  const widziane = outline.lessons.filter((l) => l.seen).length;
+  let umiem = 0;
+  for (const t of [...(m.translations || []), ...(m.dictation || [])]) {
+    if (store.isMastered(t.id)) umiem += 1;
+  }
+  return {
+    outline,
+    zrobione,
+    widziane,
+    umiem,
+    postep: outline.total ? Math.round((zrobione / outline.total) * 100) : 0,
+  };
 }
 
 function pickModule(id) {
@@ -665,59 +629,221 @@ function pickModule(id) {
   MODULE = nextMod;
   store.setModuleId(nextMod.id);
   go('modules');
-  document.querySelector('.mod-block.open')?.scrollIntoView({ block: 'start' });
 }
 
 function modules() {
   refreshModules();
-  const wrap = h(`<div class="home-stack"></div>`);
+  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
+  const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
+  const wlasny = MODULE ? statModulu(MODULE) : null;
+
+  const opisOtwartego = emptyMine
+    ? 'Jeszcze pusto. Wpisz zdanie po polsku, a angielski dopiszę Ci przy najbliższej sesji.'
+    : outline?.reviewOnly
+      ? 'Wszystkie lekcje z tego modułu zrobione. Zostaje powtórka.'
+      : outline?.current
+        ? `Następna: lekcja ${outline.current.n} — ${outline.current.title}${outline.current.czesc ? ` · część ${outline.current.czesc}` : ''}.`
+        : 'Zaczynamy od pierwszej lekcji.';
+
+  const wrap = h(`<div></div>`);
+
   wrap.appendChild(
-    h(`<div>
-    <span class="label">Nauka</span>
-    <h1>Moduły</h1>
-    <p class="muted">Kliknij moduł — rozwinie się lista lekcji. Potem Zaczynamy.</p>
-  </div>`)
+    h(`<div class="naglowek">
+      <div class="rosnij">
+        <span class="oczko">Nauka</span>
+        <h1>Moduły</h1>
+        <p>Czasy to fundament. Reszta to sytuacje — bierz je, gdy czasy zaczną siedzieć.</p>
+      </div>
+    </div>`)
   );
-  const list = h(`<div class="mod-list"></div>`);
+
+  const hero = h(`<section class="hero">
+    <div class="tresc-hero">
+      <span class="oczko">Otwarty moduł</span>
+      <h2>${esc(MODULE?.title || 'Wybierz moduł')}</h2>
+      <p class="desc">${esc(opisOtwartego)}</p>
+      <div class="prog">
+        <div class="track"><div class="fill" style="width:${wlasny?.postep || 0}%"></div></div>
+        <span class="pc">${wlasny?.zrobione || 0} z ${wlasny?.outline.total || 0} lekcji</span>
+      </div>
+      <div class="btns">
+        <button class="btn btn-p" type="button" data-a="start">
+          ${esc(emptyMine ? 'Dodaj zdanie' : outline?.reviewOnly ? 'Zaczynamy powtórkę' : 'Zaczynamy')}
+        </button>
+        ${
+          outline?.dueCount && !outline.reviewOnly && !emptyMine
+            ? `<button class="btn btn-g" type="button" data-a="powtorka">Powtórka (${outline.dueCount})</button>`
+            : ''
+        }
+      </div>
+    </div>
+  </section>`);
+  hero.querySelector('[data-a="start"]').addEventListener('click', () => {
+    if (emptyMine) return go('phrases');
+    runLesson({ review: Boolean(outline?.reviewOnly) });
+  });
+  hero
+    .querySelector('[data-a="powtorka"]')
+    ?.addEventListener('click', () => runLesson({ review: true }));
+  wrap.appendChild(hero);
+
+  if (outline && outline.lessons.length && !emptyMine) {
+    const panel = h(`<div class="panel">
+      <div class="naglowek">
+        <div class="rosnij">
+          <span class="oczko">Lekcje w tym module</span>
+          <p class="podpowiedz">Kliknij dowolną, żeby ją zrobić — nie musisz iść po kolei.</p>
+        </div>
+      </div>
+      <div class="grupy">${lessonGroupsHtml(outline)}</div>
+    </div>`);
+    panel.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-ids]');
+      if (!btn) return;
+      const ids = btn.dataset.ids.split(',').filter(Boolean);
+      if (!ids.length) return;
+      runLesson({ ids });
+    });
+    wrap.appendChild(panel);
+  }
+
+  wrap.appendChild(
+    h(`<div class="naglowek">
+      <div class="rosnij">
+        <span class="oczko">Do wyboru</span>
+        <h2>Wszystkie moduły</h2>
+      </div>
+    </div>`)
+  );
+
+  const siatka = h(`<div class="moduly"></div>`);
   for (const m of MODULES) {
-    const on = MODULE && m.id === MODULE.id;
-    const n = (m.translations || []).length;
-    const count =
-      m.id === 'moje'
-        ? n
-          ? `${n} ${plural(n, 'zdanie', 'zdania', 'zdań')}`
-          : 'jeszcze pusto'
-        : m.subtitle || '';
-    const block = h(`<div class="mod-block ${on ? 'open' : ''}"></div>`);
-    const btn = h(`<button class="mod-card ${on ? 'on' : ''}" type="button">
-      <b>${esc(m.title)}</b>
-      <span>${esc(count)}</span>
+    const otwarty = MODULE && m.id === MODULE.id;
+    const st = statModulu(m);
+    const pusty = m.id === 'moje' && !(m.translations || []).length;
+
+    const stan = pusty
+      ? 'Puste'
+      : otwarty
+        ? 'Otwarty'
+        : st.zrobione && st.zrobione === st.outline.total
+          ? 'Zrobione'
+          : st.widziane
+            ? 'Zaczęty'
+            : 'Nie zaczęty';
+
+    const znaczniki = pusty
+      ? '<span class="znacznik spokoj">czeka na Twoje zdania</span>'
+      : [
+          `<span class="znacznik">${st.umiem} ${plural(st.umiem, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}</span>`,
+          st.outline.dueCount
+            ? `<span class="znacznik czeka">${st.outline.dueCount} do powtórki</span>`
+            : '',
+        ]
+          .filter(Boolean)
+          .join('');
+
+    const karta = h(`<button class="modul ${otwarty ? 'on' : ''}" type="button">
+      <span class="oczko">${esc(stan)}</span>
+      <h3>${esc(m.title)}</h3>
+      <p>${esc(m.subtitle || '')}</p>
+      ${
+        pusty
+          ? ''
+          : `<div class="postep-jasny">
+               <div class="track"><div class="fill" style="width:${st.postep}%"></div></div>
+               <span class="pc">${st.postep}%</span>
+             </div>`
+      }
+      <span class="stopka">${znaczniki}</span>
     </button>`);
-    btn.addEventListener('click', () => {
-      if (on) return;
+    karta.addEventListener('click', () => {
+      if (otwarty)
+        return pusty ? go('phrases') : runLesson({ review: Boolean(outline?.reviewOnly) });
       pickModule(m.id);
     });
-    block.appendChild(btn);
-    if (on) block.appendChild(moduleDetail(m));
-    list.appendChild(block);
+    siatka.appendChild(karta);
   }
-  wrap.appendChild(list);
+  wrap.appendChild(siatka);
+
   mount(wrap);
+}
+// Ikonki miast z ikony.js. Przystanki dostaja domek automatycznie.
+const IKONY_STACJI = {
+  palace: 'pkin',
+  bigben: 'bigben',
+  gate: 'brama',
+  tower: 'eiffel',
+  spire: 'spire',
+  mill: 'wiatrak',
+  gaudi: 'sagrada',
+  castle: 'zamek',
+};
+
+function stacjeZTrasy() {
+  return (ROUTE.stops || []).map((s) => ({
+    id: s.id,
+    n: s.short || s.name,
+    km: s.km,
+    t: s.kind === 'stall' ? 'stop' : 'city',
+    i: IKONY_STACJI[s.icon] || 'pkin',
+  }));
+}
+
+function klikStacji(stacja, stan) {
+  const stop = (ROUTE.stops || []).find((s) => s.id === stacja.id);
+  if (!stop) return;
+  const state = store.get();
+
+  if (stan === 'locked') {
+    // Nazwy miast po polsku sie odmieniaja, a my ich nie odmieniamy - stad szyk
+    // „Nazwa — jeszcze X km” zamiast „do Amsterdam”.
+    return toast(`${stop.short || stop.name} — jeszcze ${stop.km - state.km} km.`);
+  }
+  if (stan === 'next') {
+    const lekcje = Math.ceil((stop.km - state.km) / LESSON_KM);
+    toast(
+      `${stop.short || stop.name} — jeszcze ${lekcje} ${plural(lekcje, 'lekcja', 'lekcje', 'lekcji')}.`
+    );
+    return runLesson();
+  }
+  // dojechana: najpierw odbierz, co tam czeka, potem juz tylko przypomnienie
+  if (!state.visited.includes(stop.id)) return go('arrival', { stopId: stop.id });
+  toast(stop.flavor || 'Tu już byłaś.');
 }
 
 function fullMap() {
   const state = store.get();
+  const rywal = (state.rivals || [])[0] || null;
+
   const wrap = h(`<div class="home-stack"></div>`);
-  const card = h(`<div class="card">
-    <span class="label">Trasa</span>
-    <h1>Mapa</h1>
-    ${peopleRow(state, { prompt: true })}
-  </div>`);
+  const host = h(`<div class="trasa-host"></div>`);
+  wrap.appendChild(host);
+
+  const card = h(`<div class="card"><span class="label">Ściganie</span>
+    <h2>Twój kod i kod koleżanki</h2></div>`);
   card.appendChild(mapRaceForm());
-  card.appendChild(h(routeListHtml(state)));
-  card.appendChild(h(nextStopInfo(state)));
   wrap.appendChild(card);
   mount(wrap);
+
+  // Startujemy tam, gdzie mapa stanela poprzednio, i dojezdzamy animacja do teraz.
+  const doKm = state.km;
+  const odKm = MAPA_KM === null ? doKm : MAPA_KM;
+
+  MAPA = createTrasaMap(host, {
+    stations: stacjeZTrasy(),
+    me: { name: state.nick || 'Ty', km: odKm },
+    friend: rywal ? { name: rywal.nick || 'Koleżanka', km: Math.round(rywal.km) } : null,
+    renderAvatar(who, size) {
+      if (who === 'me') return avatarOnLine(state.equipped, { size, look: state.look || {} });
+      return avatarOnLine((rywal && rywal.eq) || {}, { size, look: (rywal && rywal.look) || {} });
+    },
+    onStation: klikStacji,
+  });
+
+  MAPA.scrollToCurrent('auto');
+  if (odKm !== doKm) MAPA.update({ me: { km: doKm } });
+  MAPA_KM = doKm;
 }
 
 // ---------- podsumowanie lekcji ----------
@@ -1145,7 +1271,7 @@ function wardrobe() {
     dressHead(state, {
       label: 'Szafa',
       title: 'Ubierz się',
-      hint: 'Górę i dół zakładasz osobno. Kliknij coś założonego, żeby to zdjąć.',
+      hint: 'Górę i dół zakładasz osobno. Kliknij to, co masz na sobie, żeby zdjąć.',
     })
   );
 
@@ -1165,7 +1291,7 @@ function wardrobe() {
         h(`<button class="thing ${on ? 'on' : ''}" type="button" data-item="${esc(item.id)}">
         <div class="thing-art">${renderItemIcon(item, { size: 72, look: state.look })}</div>
         <span class="n">${esc(item.name)}</span>
-        <span class="s">${on ? 'na sobie — kliknij, by zdjąć' : 'założ'}</span>
+        <span class="s">${on ? 'na sobie' : 'załóż'}</span>
       </button>`);
       btn.addEventListener('click', () => {
         const wornNow = store.get().equipped[item.slot] === item.id;
@@ -1178,7 +1304,7 @@ function wardrobe() {
           const worn = next.equipped[it.slot] === it.id;
           b.classList.toggle('on', worn);
           const s = b.querySelector('.s');
-          if (s) s.textContent = worn ? 'na sobie — kliknij, by zdjąć' : 'założ';
+          if (s) s.textContent = worn ? 'na sobie' : 'załóż';
         }
       });
       grid.appendChild(btn);

@@ -1,3 +1,9 @@
 node_modules
 lumio-plan.html
 package-lock.json
+
+# Komponent mapy przepisany doslownie z dokumentu - nie przeformatowujemy go,
+# zeby dalo sie go porownac z zrodlem przy kolejnej wersji.
+js/mapa-trasy.js
+js/ikony.js
+css/mapa-trasy.css
