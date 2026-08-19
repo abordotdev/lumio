@@ -29,7 +29,7 @@ export function startLesson({
   let built;
   if (comeback) built = buildComeback(wszystkie);
   else if (review) built = buildReview(wszystkie);
-  else built = buildLesson(module, state, wszystkie, { ids });
+  else built = buildLesson(module, state, { ids });
   const { steps, focus } = built;
 
   if (!steps.length) {

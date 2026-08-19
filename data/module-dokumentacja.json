@@ -9,9 +9,23 @@
     "api": "opis API i pól",
     "notes": "uwagi, ostrzeżenia, statusy",
     "setup": "wymagania i konfiguracja",
-    "review": "co znalazłaś w dokumentacji"
+    "review": "co znalazłaś w dokumentacji",
+    "spec": "specyfikacja i limity",
+    "validation": "walidacja i reguły pól",
+    "behaviour": "jak to działa"
   },
-  "patternOrder": ["overview", "common", "steps", "api", "notes", "setup", "review"],
+  "patternOrder": [
+    "overview",
+    "common",
+    "steps",
+    "api",
+    "spec",
+    "validation",
+    "behaviour",
+    "notes",
+    "setup",
+    "review"
+  ],
   "translations": [
     {
       "id": "dok01",
@@ -788,6 +802,309 @@
         }
       ],
       "lemma": "say"
+    },
+    {
+      "id": "dok43",
+      "pattern": "spec",
+      "pl": "API przyjmuje tylko JSON",
+      "en": "The API accepts JSON only",
+      "accept": ["The API only accepts JSON"],
+      "note": "API to jedna rzecz, więc czasownik z s: accepts",
+      "chunks": ["The API", "accepts", "JSON only"],
+      "lemma": "accept",
+      "traps": [
+        {
+          "input": "The API accept JSON only",
+          "why": "API to ono → accepts, z s na końcu."
+        }
+      ]
+    },
+    {
+      "id": "dok44",
+      "pattern": "spec",
+      "pl": "Maksymalny rozmiar pliku to dziesięć megabajtów",
+      "en": "The maximum file size is ten megabytes",
+      "accept": ["The maximum file size is 10 megabytes"],
+      "note": "rozmiar to jedna wartość → is",
+      "chunks": ["The maximum file size", "is", "ten megabytes"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "The maximum file size are ten megabytes",
+          "why": "size to jedno → is, nie are."
+        }
+      ]
+    },
+    {
+      "id": "dok45",
+      "pattern": "spec",
+      "pl": "Obsługiwane formaty to PDF i PNG",
+      "en": "Supported formats are PDF and PNG",
+      "accept": ["The supported formats are PDF and PNG"],
+      "note": "formaty jest kilka → are",
+      "chunks": ["Supported formats", "are", "PDF and PNG"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "Supported formats is PDF and PNG",
+          "why": "formatów jest kilka → are."
+        }
+      ]
+    },
+    {
+      "id": "dok46",
+      "pattern": "spec",
+      "pl": "Endpoint obsługuje stronicowanie",
+      "en": "The endpoint supports pagination",
+      "accept": ["This endpoint supports pagination"],
+      "note": "endpoint to ono → supports",
+      "chunks": ["The endpoint", "supports", "pagination"],
+      "lemma": "support",
+      "traps": [
+        {
+          "input": "The endpoint support pagination",
+          "why": "endpoint to ono → supports."
+        }
+      ]
+    },
+    {
+      "id": "dok47",
+      "pattern": "spec",
+      "pl": "Żądanie musi zawierać klucz API",
+      "en": "The request must include an API key",
+      "accept": ["Every request must include an API key"],
+      "note": "po must czasownik goły: include, bez s",
+      "chunks": ["The request", "must include", "an API key"],
+      "lemma": "include",
+      "situation": "Opisujesz w spec, czego wymaga każde żądanie do API.",
+      "traps": [
+        {
+          "input": "The request must includes an API key",
+          "why": "po must goły include, bez s."
+        },
+        {
+          "input": "The request must include a API key",
+          "why": "API czyta się „ej-pi-aj\", więc an API key."
+        }
+      ]
+    },
+    {
+      "id": "dok48",
+      "pattern": "spec",
+      "pl": "Domyślny limit czasu to trzydzieści sekund",
+      "en": "The default timeout is thirty seconds",
+      "accept": ["The default timeout is 30 seconds"],
+      "note": "limit to jedna wartość → is",
+      "chunks": ["The default timeout", "is", "thirty seconds"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "The default timeout are thirty seconds",
+          "why": "timeout to jedno → is."
+        }
+      ]
+    },
+    {
+      "id": "dok49",
+      "pattern": "validation",
+      "pl": "E-mail musi być poprawnym adresem",
+      "en": "The email must be a valid address",
+      "accept": ["The email must be a valid email address"],
+      "note": "przy pojedynczym rzeczowniku potrzebne a: a valid address",
+      "chunks": ["The email", "must be", "a valid address"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "The email must be valid address",
+          "why": "brakuje a: a valid address."
+        },
+        {
+          "input": "The email must to be a valid address",
+          "why": "po must nie ma to: must be."
+        }
+      ]
+    },
+    {
+      "id": "dok50",
+      "pattern": "validation",
+      "pl": "Hasło musi mieć co najmniej osiem znaków",
+      "en": "The password must be at least eight characters",
+      "accept": ["The password must have at least eight characters"],
+      "note": "po must czasownik goły: be, bez to",
+      "chunks": ["The password", "must be", "at least eight characters"],
+      "lemma": "be",
+      "situation": "Piszesz regułę pola hasła w specyfikacji formularza.",
+      "traps": [
+        {
+          "input": "The password must to be at least eight characters",
+          "why": "po must bez to: must be."
+        }
+      ]
+    },
+    {
+      "id": "dok51",
+      "pattern": "validation",
+      "pl": "To pole nie może być puste",
+      "en": "This field cannot be empty",
+      "accept": ["This field must not be empty"],
+      "note": "reguła stała → cannot, bez to po nim",
+      "chunks": ["This field", "cannot be", "empty"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "This field cannot to be empty",
+          "why": "po cannot goły be, bez to."
+        },
+        {
+          "input": "This field couldn’t be empty",
+          "why": "to stała reguła, więc cannot, nie couldn’t."
+        }
+      ]
+    },
+    {
+      "id": "dok52",
+      "pattern": "validation",
+      "pl": "Nazwa użytkownika musi być unikalna",
+      "en": "The username must be unique",
+      "accept": ["Each username must be unique"],
+      "note": "unique bez a — to cecha, nie policzalna rzecz",
+      "chunks": ["The username", "must be", "unique"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "The username must be an unique",
+          "why": "unique bez a/an — to cecha."
+        }
+      ]
+    },
+    {
+      "id": "dok53",
+      "pattern": "validation",
+      "pl": "Wartość musi być liczbą dodatnią",
+      "en": "The value must be a positive number",
+      "accept": ["The value has to be a positive number"],
+      "note": "przy pojedynczej liczbie potrzebne a: a positive number",
+      "chunks": ["The value", "must be", "a positive number"],
+      "lemma": "be",
+      "traps": [
+        {
+          "input": "The value must be positive number",
+          "why": "brakuje a: a positive number."
+        }
+      ]
+    },
+    {
+      "id": "dok54",
+      "pattern": "validation",
+      "pl": "Pola wymagane są oznaczone gwiazdką",
+      "en": "Required fields are marked with an asterisk",
+      "accept": ["Required fields are marked by an asterisk"],
+      "note": "przy pojedynczym asterisk potrzebne an: an asterisk",
+      "chunks": ["Required fields", "are marked", "with an asterisk"],
+      "lemma": "mark",
+      "traps": [
+        {
+          "input": "Required fields are marked with asterisk",
+          "why": "brakuje an: with an asterisk."
+        }
+      ]
+    },
+    {
+      "id": "dok55",
+      "pattern": "behaviour",
+      "pl": "System wysyła e-mail z potwierdzeniem",
+      "en": "The system sends a confirmation email",
+      "accept": ["The system sends you a confirmation email"],
+      "note": "system to ono → sends",
+      "chunks": ["The system", "sends", "a confirmation email"],
+      "lemma": "send",
+      "traps": [
+        {
+          "input": "The system send a confirmation email",
+          "why": "system to ono → sends."
+        }
+      ]
+    },
+    {
+      "id": "dok56",
+      "pattern": "behaviour",
+      "pl": "Gdy użytkownik się loguje, tworzy się sesja",
+      "en": "When the user logs in, a session is created",
+      "accept": ["When a user logs in, a session is created"],
+      "note": "the user to ono → logs",
+      "chunks": ["When the user logs in,", "a session", "is created"],
+      "lemma": "log",
+      "situation": "Opisujesz w dokumentacji, co dzieje się po zalogowaniu.",
+      "traps": [
+        {
+          "input": "When the user log in, a session is created",
+          "why": "the user → logs, z s."
+        }
+      ]
+    },
+    {
+      "id": "dok57",
+      "pattern": "behaviour",
+      "pl": "Jeśli żądanie się nie powiedzie, aplikacja ponawia próbę",
+      "en": "If the request fails, the app tries again",
+      "accept": ["If the request fails, the app retries"],
+      "note": "the request to ono → fails",
+      "chunks": ["If the request fails,", "the app", "tries again"],
+      "lemma": "fail",
+      "traps": [
+        {
+          "input": "If the request fail, the app tries again",
+          "why": "the request → fails, z s."
+        }
+      ]
+    },
+    {
+      "id": "dok58",
+      "pattern": "behaviour",
+      "pl": "Aplikacja zapisuje postęp automatycznie",
+      "en": "The app saves your progress automatically",
+      "accept": ["The app saves progress automatically"],
+      "note": "the app to ono → saves",
+      "chunks": ["The app", "saves", "your progress automatically"],
+      "lemma": "save",
+      "traps": [
+        {
+          "input": "The app save your progress automatically",
+          "why": "the app → saves."
+        }
+      ]
+    },
+    {
+      "id": "dok59",
+      "pattern": "behaviour",
+      "pl": "Zmiany działają od razu",
+      "en": "The changes take effect immediately",
+      "accept": ["Changes take effect immediately"],
+      "note": "zmian jest kilka → take, bez s",
+      "chunks": ["The changes", "take effect", "immediately"],
+      "lemma": "take",
+      "traps": [
+        {
+          "input": "The changes takes effect immediately",
+          "why": "zmian jest kilka → take, bez s."
+        }
+      ]
+    },
+    {
+      "id": "dok60",
+      "pattern": "behaviour",
+      "pl": "Token wygasa po godzinie",
+      "en": "The token expires after one hour",
+      "accept": ["The token expires in one hour"],
+      "note": "token to ono → expires",
+      "chunks": ["The token", "expires", "after one hour"],
+      "lemma": "expire",
+      "traps": [
+        {
+          "input": "The token expire after one hour",
+          "why": "token to ono → expires."
+        }
+      ]
     }
   ],
   "dictation": [
@@ -951,6 +1268,51 @@
         {
           "input": "Refer to the below table",
           "why": "Poniższa tabela to the table below — below idzie po rzeczowniku."
+        }
+      ]
+    },
+    {
+      "id": "dokd10",
+      "en": "The maximum file size is ten megabytes",
+      "pl": "Maksymalny rozmiar pliku to dziesięć megabajtów",
+      "chunks": ["The maximum file size", "is", "ten megabytes"],
+      "lemma": "be",
+      "note": "rozmiar to jedna wartość → is",
+      "accept": ["The maximum file size is 10 megabytes"],
+      "traps": [
+        {
+          "input": "The maximum file size are ten megabytes",
+          "why": "size to jedno → is."
+        }
+      ]
+    },
+    {
+      "id": "dokd11",
+      "en": "This field cannot be empty",
+      "pl": "To pole nie może być puste",
+      "chunks": ["This field", "cannot be", "empty"],
+      "lemma": "be",
+      "note": "reguła stała → cannot, bez to po nim",
+      "accept": ["This field must not be empty"],
+      "traps": [
+        {
+          "input": "This field cannot to be empty",
+          "why": "po cannot goły be, bez to."
+        }
+      ]
+    },
+    {
+      "id": "dokd12",
+      "en": "The system sends a confirmation email",
+      "pl": "System wysyła e-mail z potwierdzeniem",
+      "chunks": ["The system", "sends", "a confirmation email"],
+      "lemma": "send",
+      "note": "system to ono → sends",
+      "accept": ["The system sends you a confirmation email"],
+      "traps": [
+        {
+          "input": "The system send a confirmation email",
+          "why": "system to ono → sends."
         }
       ]
     }

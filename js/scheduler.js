@@ -193,13 +193,12 @@ export function nextPattern(module) {
 /**
  * Lekcja: 7 kafelków, 4 tłumaczenia, 4 dyktanda — przeplatane.
  *
- * Nowy materiał bierzemy tylko z otwartego modułu, żeby nauka szła po kolei.
- * Powtórki ciągniemy ze wszystkich, żeby nic nie zostało z tyłu.
+ * Lekcja modułu zawiera tylko zdania tego modułu — nowe, kontrast i powtórki.
+ * Powtórki z innych modułów wracają osobno, w trybie „Powtórka".
  */
-export function buildLesson(module, state, modules, opcje = {}) {
+export function buildLesson(module, state, opcje = {}) {
   const now = Date.now();
   const used = new Set();
-  const wszystkie = asList(modules).length ? asList(modules) : [module];
   const mine = (module.translations || []).map((item) => ({ item, mod: module }));
 
   // Lekcja wybrana z listy: bierzemy dokladnie jej zdania, nawet jesli byly juz widziane.
@@ -231,11 +230,12 @@ export function buildLesson(module, state, modules, opcje = {}) {
     .slice(0, 7)
     .map((pair) => step(pair, 'tiles'));
 
-  // Kontrast: zdanie z innego wzorca, już poznane. Może przyjść z dowolnego modułu —
-  // zderzenie „byłam" z „jestem" działa tak samo dobrze w poprzek modułów.
+  // Kontrast: zdanie z innego wzorca, już poznane. Bierzemy je z TEGO modułu —
+  // lekcja modułu ma zawierać tylko zdania tego modułu. Powtórki z innych modułów
+  // wracają w osobnym trybie „Powtórka", nie mieszają się do świeżej lekcji.
   const contrast = focus
     ? take(
-        allPairs(wszystkie)
+        allPairs([module])
           .filter((p) => p.item.pl && p.item.pattern !== focus && itemState(p.item.id).introduced)
           .sort(overdueSort),
         1,
@@ -243,7 +243,7 @@ export function buildLesson(module, state, modules, opcje = {}) {
       )
     : [];
 
-  const reviews = take(reviewQueue(wszystkie, now), 4, used);
+  const reviews = take(reviewQueue([module], now), 4, used);
 
   const filler = take(
     mine.filter((p) => !itemState(p.item.id).introduced).sort(unseenFirst),

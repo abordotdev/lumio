@@ -39,20 +39,20 @@ test('każde zdanie w kolejce wie, z którego modułu pochodzi', () => {
   assert.equal(wpis.mod.id, 'praca');
 });
 
-test('lekcja bierze nowe zdania z otwartego modułu, a powtórki z każdego', () => {
+test('lekcja modułu zawiera tylko zdania tego modułu — obce powtórki nie wchodzą', () => {
   fresh();
+  // zdanie z innego modułu czeka na powtórkę, ale otwieramy lekcję modułu „czasy"
   store.recordAnswer('praca-daily-0', false);
 
-  const { steps } = buildLesson(czasy, store.get(), wszystkie);
+  const { steps } = buildLesson(czasy, store.get());
   const zPracy = steps.filter((s) => s.mod && s.mod.id === 'praca');
   const noweZCzasow = steps.filter((s) => s.isNew && s.mod.id === 'czasy');
 
-  assert.ok(zPracy.length > 0, 'zdanie z praca ma wrócić w powtórce');
+  assert.equal(zPracy.length, 0, 'obce zdanie z praca nie ma się wpychać do lekcji czasy');
   assert.ok(noweZCzasow.length > 0, 'nowe zdania mają być z otwartego modułu');
-  assert.equal(
-    steps.filter((s) => s.isNew && s.mod.id === 'praca').length,
-    0,
-    'nowych zdań z innego modułu nie bierzemy'
+  assert.ok(
+    steps.every((s) => s.mod.id === 'czasy'),
+    'każde zdanie w lekcji pochodzi z otwartego modułu'
   );
 });
 
@@ -124,7 +124,7 @@ test('to samo zdanie nie wchodzi do lekcji dwa razy pod dwoma id', () => {
       { id: 'd1', pl: 'Testuję to od rana', en: 'I have been testing it', chunks: ['a'] },
     ],
   };
-  const { steps } = buildLesson(bliznaki, store.get(), [bliznaki]);
+  const { steps } = buildLesson(bliznaki, store.get());
   const teksty = steps.map((s) => s.item.en);
   assert.equal(new Set(teksty).size, teksty.length, 'żadne zdanie nie powtarza się w lekcji');
 });
@@ -155,7 +155,7 @@ test('sytuacja pojawia się dopiero przy zdaniu, które już umiem', () => {
   // połowę już umiem, połowy nie widziałam
   for (let i = 0; i < 6; i += 1) store.recordAnswer(`s${i}`, true);
 
-  const { steps } = buildLesson(mod, store.get(), [mod]);
+  const { steps } = buildLesson(mod, store.get());
   const sytuacje = steps.filter((s) => s.kind === 'situation');
 
   assert.ok(sytuacje.length > 0, 'znane zdania mają wracać jako sytuacje');
@@ -175,7 +175,7 @@ test('zdanie bez sytuacji zostaje zwykłym tłumaczeniem', () => {
     dictation: [],
   };
   store.recordAnswer('b1', true);
-  const { steps } = buildLesson(mod, store.get(), [mod]);
+  const { steps } = buildLesson(mod, store.get());
   assert.ok(!steps.some((s) => s.kind === 'situation'));
 });
 
