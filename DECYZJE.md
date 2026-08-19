@@ -79,7 +79,9 @@ Testy jednostkowe pisane wąsko, tuż przed dotknięciem danego pliku. Node ma j
 - **Cztery moduły z pięciu nie tłumaczą błędów** — praca 0 pułapek, zadania 0, rekrutacja 2 na 54,
   small-talk 4 na 30. Wyjaśnienie po błędzie to najlepsza rzecz w tej apce i prawie jej nie ma.
 - ~~**Reakcje są martwe**~~ — naprawione. Jedna reakcja na lekcję wchodzi jako krok „sytuacja".
-- ~~**Wersja w `sw.js` wpisywana ręcznie**~~ — naprawione. Deploy stempluje wersję skrótem commita.
+- ~~**Wersja w `sw.js` wpisywana ręcznie**~~ — naprawione inaczej niż numerem. Service worker
+  bierze kod, dane i wejścia „najpierw sieć": online zawsze świeże, offline z cache. Zapomniany
+  bump wersji nikogo nie zostawia na starym kodzie.
 - ~~**Wczytanie kopii wymaga Notatnika**~~ — naprawione. W ustawieniach jest wybór pliku z kopią.
 
 ## Zrobione poza listą dziur
