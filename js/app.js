@@ -38,6 +38,26 @@ let SCREEN = 'home';
 // Historia zakładek, żeby swipe w prawo na telefonie cofał do poprzedniej.
 let HISTORIA = [];
 
+// Instalacja jako aplikacja. Android/Chrome daje zdarzenie, które łapiemy i
+// odpalamy z przycisku w Ustawieniach. iPhone tego nie ma — tam pokazujemy instrukcję.
+let promptInstalacji = null;
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    promptInstalacji = e;
+    if (SCREEN === 'settings') settings();
+  });
+  window.addEventListener('appinstalled', () => {
+    promptInstalacji = null;
+    if (SCREEN === 'settings') settings();
+  });
+}
+const jabłko = () =>
+  /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const jakoAplikacja = () =>
+  window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
+
 function refreshModules() {
   MODULES = [...BASE_MODULES, buildMineModule(store.get().customPhrases || [])];
   const saved = store.get().moduleId;
@@ -1403,6 +1423,60 @@ function wardrobe() {
 
 // ---------- ustawienia ----------
 
+// Karta „Dodaj do ekranu głównego". Trzy warianty: już zainstalowane, Android
+// (przycisk odpalający instalację) i iPhone/reszta (instrukcja krok po kroku).
+function kartaInstalacji() {
+  if (jakoAplikacja()) {
+    return h(`<div class="card">
+      <span class="label">Na telefonie</span>
+      <h2>Masz już Lumio jak aplikację 🎉</h2>
+      <p class="muted">Otwierasz ją z ikony na ekranie, a nowe wersje łapią się same.</p>
+    </div>`);
+  }
+
+  const karta = h(`<div class="card">
+    <span class="label">Na telefonie</span>
+    <h2>Dodaj Lumio do ekranu głównego</h2>
+    <p class="muted">Będziesz otwierać ją z ikony jak zwykłą apkę — bez wpisywania adresu.</p>
+    <div data-slot></div>
+  </div>`);
+  const slot = karta.querySelector('[data-slot]');
+
+  if (promptInstalacji) {
+    const btn = h(
+      `<div class="row"><button class="primary" type="button">Dodaj do ekranu głównego</button></div>`
+    );
+    btn.querySelector('button').addEventListener('click', async () => {
+      const zdarzenie = promptInstalacji;
+      if (!zdarzenie) return;
+      promptInstalacji = null;
+      zdarzenie.prompt();
+      try {
+        await zdarzenie.userChoice;
+      } catch {
+        /* nieważne, jak wybrała */
+      }
+      go('settings');
+    });
+    slot.appendChild(btn);
+  } else if (jabłko()) {
+    slot.appendChild(
+      h(`<ol class="tiny" style="margin:.4rem 0 0;padding-left:1.1rem;line-height:1.7">
+        <li>Na dole ekranu kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką w górę).</li>
+        <li>Przewiń i wybierz <b>„Do ekranu początkowego"</b>.</li>
+        <li>Kliknij <b>Dodaj</b> w prawym górnym rogu.</li>
+      </ol>
+      <p class="tiny" style="margin:.5rem 0 0">Działa w przeglądarce <b>Safari</b>.</p>`)
+    );
+  } else {
+    slot.appendChild(
+      h(`<p class="tiny" style="margin:.4rem 0 0">W menu przeglądarki (⋮) wybierz
+        <b>„Zainstaluj aplikację"</b> albo <b>„Dodaj do ekranu głównego"</b>.</p>`)
+    );
+  }
+  return karta;
+}
+
 function settings() {
   const state = store.get();
   const wrap = h(`<div class="home-stack"></div>`);
@@ -1417,6 +1491,8 @@ function settings() {
       </div>
     </div>`)
   );
+
+  wrap.appendChild(kartaInstalacji());
 
   const paletteCard = h(`<div class="card">
     <span class="label">Wygląd strony</span>
