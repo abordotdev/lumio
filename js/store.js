@@ -31,7 +31,6 @@ function fresh() {
     patternsIntroduced: [],
     moduleId: 'czasy-it',
     lessons: [],
-    reports: [],
     lastBackupAt: null,
     rivals: [],
     nick: '',
@@ -362,13 +361,6 @@ export function grantMany(ids) {
   for (const id of ids) {
     if (id && !state.owned.includes(id)) state.owned.push(id);
   }
-  save();
-}
-
-// ---------- zgłoszenia od Ciebie ----------
-
-export function report(itemId, kind, answer) {
-  state.reports.push({ itemId, kind, answer, at: new Date().toISOString() });
   save();
 }
 

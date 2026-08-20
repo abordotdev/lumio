@@ -424,35 +424,6 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   });
   card.appendChild(next);
 
-  // Przyciski zgłoszeń — Twoja lista poprawek do korpusu.
-  const reports = h(`<div class="row"></div>`);
-  if (!correct) {
-    const alsoOk = h(`<button class="small" type="button">To też jest poprawne</button>`);
-    alsoOk.addEventListener('click', () => {
-      store.report(item.id, 'also-correct', answer);
-      alsoOk.disabled = true;
-      if (!correct) {
-        correct = true;
-        session.log[session.index] = { id: item.id, correct: true };
-        session.correct += 1;
-        store.recordAnswer(item.id, true);
-        panel.classList.remove('bad');
-        panel.classList.add('good');
-        panel.querySelector('.head').textContent = 'Zapisane jako poprawne';
-      }
-      toast('Zapisane. Wrzucę to do poprawek modułu.');
-    });
-    reports.appendChild(alsoOk);
-  }
-  const weird = h(`<button class="small" type="button">To brzmi dziwnie</button>`);
-  weird.addEventListener('click', () => {
-    store.report(item.id, 'weird', item.en);
-    weird.disabled = true;
-    toast('Zapisane. Sprawdzę to zdanie.');
-  });
-  reports.appendChild(weird);
-  card.appendChild(reports);
-
   // Zapis wyniku.
   session.answered += 1;
   session.log[session.index] = { id: item.id, correct };

@@ -1355,17 +1355,24 @@ select:focus-visible {
 .dress-head {
   transition: padding 0.18s ease;
 }
+/* Zwarty: krótki, równy pasek — tytuł po lewej (wyśrodkowany w pionie),
+   mała figurka po prawej. Bez etykiety i podpisu, żeby nic nie pływało. */
 .dress-head.zwarty {
   padding: 0.5rem 0.9rem;
-  grid-template-columns: minmax(0, 1fr) 4.6rem;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+.dress-head.zwarty .dress-doll {
+  align-items: center;
 }
 .dress-head.zwarty .dress-doll .doll {
-  width: 4.2rem;
+  width: 3rem;
 }
 .dress-head.zwarty h1 {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   margin: 0;
 }
+.dress-head.zwarty .label,
 .dress-head.zwarty .muted {
   display: none;
 }

@@ -231,6 +231,20 @@ function paintDoll(root) {
   if (box) box.innerHTML = doll(store.get().equipped, 148);
 }
 
+// Przyklejony podgląd ludzika (Szafa, Sklep) kurczy się przy przewijaniu, żeby
+// nie zasłaniał kafelków. capture=true łapie scroll z dowolnego kontenera.
+function podepnijZwarty(glowa) {
+  const naScroll = () => {
+    if (!document.body.contains(glowa)) {
+      window.removeEventListener('scroll', naScroll, true);
+      return;
+    }
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    glowa.classList.toggle('zwarty', y > 50);
+  };
+  window.addEventListener('scroll', naScroll, { passive: true, capture: true });
+}
+
 function bindRaceFields(card) {
   card.querySelector('[data-a="cp"]')?.addEventListener('click', async () => {
     try {
@@ -1092,13 +1106,13 @@ function shop() {
   const reached = ROUTE.stops.filter((s) => state.km >= s.km && stockOf(s).length);
   const wrap = h(`<div class="home-stack"></div>`);
 
-  wrap.appendChild(
-    dressHead(state, {
-      label: `Masz ${state.coins} ${plural(state.coins, 'monetę', 'monety', 'monet')}`,
-      title: 'Sklep',
-      hint: 'Stroje kupujesz w komplecie: góra i dół razem. W szafie możesz je rozdzielić.',
-    })
-  );
+  const glowa = dressHead(state, {
+    label: `Masz ${state.coins} ${plural(state.coins, 'monetę', 'monety', 'monet')}`,
+    title: 'Sklep',
+    hint: 'Stroje kupujesz w komplecie: góra i dół razem. W szafie możesz je rozdzielić.',
+  });
+  wrap.appendChild(glowa);
+  podepnijZwarty(glowa);
 
   if (!reached.length) {
     wrap.appendChild(
@@ -1200,17 +1214,7 @@ function wardrobe() {
     hint: 'Górę i dół zakładasz osobno. Kliknij to, co masz na sobie, żeby zdjąć.',
   });
   wrap.appendChild(glowa);
-  // Przyklejony podgląd ludzika kurczy się przy przewijaniu, żeby nie zasłaniał ciuchów.
-  const naScroll = () => {
-    if (!document.body.contains(glowa)) {
-      window.removeEventListener('scroll', naScroll, true);
-      return;
-    }
-    const y = window.scrollY || document.documentElement.scrollTop || 0;
-    glowa.classList.toggle('zwarty', y > 50);
-  };
-  // capture=true łapie przewijanie z dowolnego kontenera, nie tylko okna.
-  window.addEventListener('scroll', naScroll, { passive: true, capture: true });
+  podepnijZwarty(glowa);
 
   // Wygląd ludzika i nick — wszystko o ludziku w jednym miejscu.
   const lookCard = h(`<div class="card">
@@ -1516,31 +1520,11 @@ function settings() {
   });
   wrap.appendChild(backupCard);
 
-  // Zgłoszenia
-  const reports = state.reports || [];
-  const repCard = h(`<div class="card">
-    <span class="label">Twoje zgłoszenia do korpusu</span>
-    <h2>${reports.length} ${plural(reports.length, 'zgłoszenie', 'zgłoszenia', 'zgłoszeń')}</h2>
-    <p class="muted">Wszystko, co oznaczyłaś jako „to też jest poprawne" albo „to brzmi dziwnie".
-      Skopiuj i wyślij mi — wgram poprawki do modułu.</p>
-    <div class="row"><button type="button" id="cp-rep" ${reports.length ? '' : 'disabled'}>Skopiuj zgłoszenia</button></div>
-  </div>`);
-  repCard.querySelector('#cp-rep').addEventListener('click', async () => {
-    const text = reports.map((r) => `${r.kind}\t${r.itemId}\t${r.answer}`).join('\n');
-    try {
-      await navigator.clipboard.writeText(text);
-      toast('Skopiowane.');
-    } catch {
-      toast('Schowek zablokowany.');
-    }
-  });
-  wrap.appendChild(repCard);
-
   // Reset
   const resetCard = h(`<div class="card">
     <span class="label">Prototyp</span>
     <h2>Zacznij od zera</h2>
-    <p class="muted">Kasuje postęp, monety, szafę i zgłoszenia. Przydaje się, gdy testujesz.</p>
+    <p class="muted">Kasuje postęp, monety i szafę. Przydaje się, gdy testujesz.</p>
     <div class="row"><button type="button" id="wipe">Wyczyść wszystko</button></div>
   </div>`);
   resetCard.querySelector('#wipe').addEventListener('click', () => {
