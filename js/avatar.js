@@ -5,6 +5,16 @@ export const HAIR_COLORS = {
   brunette: { main: '#6B3E24', dark: '#3F2416', shine: '#A06A45', brow: '#4A2A18', label: 'brąz' },
   black: { main: '#2A2220', dark: '#141010', shine: '#5A4E4A', brow: '#1A1414', label: 'czerń' },
   auburn: { main: '#A0432A', dark: '#6E2C1C', shine: '#D47A5A', brow: '#7A2E1C', label: 'rudy' },
+  // Kolorowe — dla dziewczyny i chłopaka tak samo.
+  blue: { main: '#4FA3E0', dark: '#2E77B5', shine: '#A8DAF6', brow: '#2E77B5', label: 'niebieski' },
+  pink: { main: '#F28FC2', dark: '#D45C9E', shine: '#FCCBE6', brow: '#D45C9E', label: 'różowy' },
+  purple: {
+    main: '#9E6FD6',
+    dark: '#6F45A9',
+    shine: '#D3B8F2',
+    brow: '#6F45A9',
+    label: 'fioletowy',
+  },
 };
 
 export const EYE_COLORS = {
@@ -42,8 +52,8 @@ function hairBack(id, c) {
       <path d="M50,80 Q44,150 54,210" fill="none" stroke="${c.shine}" stroke-width="2.2" opacity=".35"/>`;
   }
   if (id === 'hair-short') {
-    // Krótkie, chłopięce — sam czepek na czubku, bez pukli po bokach.
-    return `<ellipse cx="80" cy="50" rx="33" ry="29" fill="${c.dark}"/>`;
+    // Krótkie — cienki rąbek na czubku głowy, dopasowany do czaszki.
+    return `<ellipse cx="80" cy="48" rx="29" ry="23" fill="${c.dark}"/>`;
   }
   return `
     <ellipse cx="80" cy="54" rx="34" ry="32" fill="${c.dark}"/>
@@ -69,13 +79,11 @@ function hairFront(id, c) {
       <path d="M64,26 Q80,14 100,34" fill="none" stroke="${c.shine}" stroke-width="2.6" opacity=".5"/>`;
   }
   if (id === 'hair-short') {
-    // Krótka grzywka i przystrzyżone boki — czytelnie „chłopięce".
+    // Schludny krótki cut: sam czepek z króciutką grzywką, bez baków schodzących na twarz.
     return `
-      <path d="M48,54 Q50,20 80,16 Q110,20 112,54 Q104,40 94,38 L66,38 Q56,40 48,54 Z" fill="${c.main}"/>
-      <path d="M62,34 Q80,24 98,34 Q88,44 80,40 Q72,44 62,34 Z" fill="${c.dark}"/>
-      <path d="M48,54 Q50,68 50,80 L56,80 Q55,64 58,50 Z" fill="${c.main}"/>
-      <path d="M112,54 Q110,68 110,80 L104,80 Q105,64 102,50 Z" fill="${c.main}"/>
-      <path d="M64,26 Q80,18 96,30" fill="none" stroke="${c.shine}" stroke-width="2.2" opacity=".45"/>`;
+      <path d="M52,52 Q51,30 80,28 Q109,30 108,52 Q99,41 80,40 Q61,41 52,52 Z" fill="${c.main}"/>
+      <path d="M61,40 Q80,31 99,40 Q88,47 80,44 Q72,47 61,40 Z" fill="${c.dark}"/>
+      <path d="M65,34 Q80,28 95,34" fill="none" stroke="${c.shine}" stroke-width="2" opacity=".4"/>`;
   }
   return `
     <path d="M47,46 Q80,8 113,46 L111,60 Q98,34 80,34 Q62,34 49,60 Z" fill="${c.main}"/>
@@ -186,6 +194,15 @@ const TOPS = {
     ${fittedTop('#6B2A4A')}
     <path d="M70,96 Q76,108 80,104 Q84,108 90,96" fill="none" stroke="#E8C56B" stroke-width="1.8"/>
     <circle cx="80" cy="118" r="2.2" fill="#E8C56B"/>`,
+  // Do kupienia: proste koszulki i bluza. Kroj t-shirtowy, luzniejszy niz sukienki.
+  'top-tee-sky': () => TOPS['top-tshirt']('#8CC7EA'),
+  'top-tee-green': () => TOPS['top-tshirt']('#7FB98A'),
+  'top-hoodie': () => `
+    ${TOPS['top-tshirt']('#9AA1AA')}
+    <path d="M66,95 Q80,104 94,95 Q92,111 80,113 Q68,111 66,95 Z" fill="#828992"/>
+    <path d="M74,101 L73,110" stroke="#5E646D" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M86,101 L87,110" stroke="#5E646D" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M64,140 H96" stroke="#7C838C" stroke-width="1.2" opacity=".55"/>`,
 };
 
 const BOTTOMS = {
@@ -242,7 +259,24 @@ const BOTTOMS = {
     <path d="M62,148 Q80,156 98,148 L120,236 Q80,248 40,236 Z" fill="#6B2A4A"/>
     <path d="M40,236 Q80,248 120,236 L118,228 Q80,238 42,228 Z" fill="#8A3A62"/>
     <rect x="64" y="147" width="32" height="5" rx="1.2" fill="#E8C56B"/>`,
+  // Do kupienia: długie spodnie. Krój nogawek jak dżinsy, w innych kolorach.
+  'bottom-pants-khaki': () => trousers('#B39B62'),
+  'bottom-pants-black': () => trousers('#2B2B30'),
+  'bottom-joggers': () =>
+    trousers(
+      '#8A9099',
+      `<rect x="55" y="242" width="18" height="6" rx="2" fill="#767C85"/>
+       <rect x="87" y="242" width="18" height="6" rx="2" fill="#767C85"/>`
+    ),
 };
+
+// Długie spodnie: dwie nogawki od bioder do stóp. `detail` dokłada np. mankiety.
+function trousers(fill, detail = '') {
+  return `
+    <path d="M62,154 Q80,162 98,154 L104,248 L88,248 L84,190 L80,176 L76,190 L72,248 L56,248 Z" fill="${fill}"/>
+    <path d="M80,162 L80,176" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1.4"/>
+    ${detail}`;
+}
 
 function sneakers(upper = '#F4EFE6', sole = '#2A2826') {
   const shine = 'rgba(255,255,255,.45)';
@@ -283,6 +317,15 @@ const EXTRAS = {
   earrings: `
     <circle cx="50" cy="74" r="3.4" fill="#E8C56B"/>
     <circle cx="110" cy="74" r="3.4" fill="#E8C56B"/>`,
+  sunglasses: `
+    <g fill="#23262C">
+      <path d="M55,58 Q56,69 68,69 Q79,69 80,59 L80,58 Q79,56 68,56 Q57,56 55,58 Z"/>
+      <path d="M105,58 Q104,69 92,69 Q81,69 80,59 L80,58 Q81,56 92,56 Q103,56 105,58 Z"/>
+    </g>
+    <path d="M55,58 L50,60" stroke="#23262C" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M105,58 L110,60" stroke="#23262C" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="63" cy="60" rx="3" ry="1.8" fill="#454C55" opacity=".8"/>
+    <ellipse cx="95" cy="60" rx="3" ry="1.8" fill="#454C55" opacity=".8"/>`,
   bow: `
     <g transform="translate(80 22)">
       <path d="M0,0 L-14,-8 L-14,8 Z" fill="#E35A7A"/>
@@ -292,6 +335,11 @@ const EXTRAS = {
   beanie: `
     <path d="M52,40 Q80,6 108,40 Q102,32 80,30 Q58,32 52,40 Z" fill="#3A6B5A"/>
     <ellipse cx="80" cy="28" rx="7" ry="4" fill="#C44868"/>`,
+  cap: `
+    <path d="M53,47 Q52,19 80,17 Q108,19 107,47 Q80,50 53,47 Z" fill="#2C6753"/>
+    <path d="M51,47 Q80,44 109,47 Q111,53 93,55 Q80,53 67,55 Q49,53 51,47 Z" fill="#1F4C3B"/>
+    <path d="M80,20 L80,44" stroke="#1F4C3B" stroke-width="1" opacity=".5"/>
+    <circle cx="80" cy="20" r="2.2" fill="#1F4C3B"/>`,
   scarf: `
     <path d="M64,98 Q80,112 96,98 L94,138 Q80,128 70,146 Z" fill="#C43B4C"/>
     <path d="M68,98 Q80,108 92,98" fill="none" stroke="#8E2A38" stroke-width="1.4"/>`,
@@ -492,6 +540,8 @@ const ICON_BOX = {
   'hair-long': [40, 4, 80, 160],
   'hair-ponytail': [40, 6, 96, 140],
   'hair-short': [44, 8, 72, 86],
+  cap: [48, 14, 66, 46],
+  sunglasses: [48, 48, 64, 28],
   'bottom-jeans': [48, 152, 64, 100],
   'bottom-ball': [36, 146, 88, 106],
   earrings: [45, 70, 10, 10],
