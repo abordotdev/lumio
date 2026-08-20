@@ -16,7 +16,6 @@ import {
 import { startLesson } from './lesson.js';
 import { LESSON_KM, nextStop, moduleOutline } from './scheduler.js';
 import * as disk from './disk.js';
-import { buildMineModule, waitingPhrases, translatedPhrases } from './mine.js';
 import { createTrasaMap } from './mapa-trasy.js';
 import { trescStartu } from './ekran-start.js';
 import { montujPowloke, odswiezPowloke } from './powloka.js';
@@ -59,7 +58,7 @@ const jakoAplikacja = () =>
   window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
 
 function refreshModules() {
-  MODULES = [...BASE_MODULES, buildMineModule(store.get().customPhrases || [])];
+  MODULES = [...BASE_MODULES];
   const saved = store.get().moduleId;
   MODULE = MODULES.find((m) => m.id === saved) || MODULES[0] || null;
   if (MODULE) store.setModuleId(MODULE.id);
@@ -156,7 +155,6 @@ export function go(screen, params = {}) {
     settings,
     shop,
     wardrobe,
-    phrases,
     summary,
     arrival,
   };
@@ -239,10 +237,6 @@ function przerwaLabel(dni) {
 function runLesson({ review = false, comeback = false, ids = null, wszystkieModuly = false } = {}) {
   refreshModules();
   if (!MODULE) return toast('Wybierz moduł.');
-  if (MODULE.id === 'moje' && !(MODULE.translations || []).length) {
-    toast('Najpierw dodaj zdanie po polsku.');
-    return go('phrases');
-  }
   const back = SCREEN === 'modules' ? 'modules' : 'home';
   startLesson({
     module: MODULE,
@@ -525,18 +519,11 @@ function umiemZdan() {
 
 // Co wymaga uwagi - to laduje pod dzwonkiem w prawym gornym rogu.
 function sprawyDoZalatwienia() {
-  const state = store.get();
   const lista = [];
   if (speech.diagnosis().level === 'blocked') {
     lista.push('Nie ma głosu — lekcje nie przeczytają zdań.');
   }
   if (store.backupIsStale()) lista.push('Dawno nie było kopii postępu.');
-  const czeka = (state.customPhrases || []).filter((f) => !String(f.en || '').trim()).length;
-  if (czeka) {
-    lista.push(
-      `${czeka} ${plural(czeka, 'Twoje zdanie czeka', 'Twoje zdania czekają', 'Twoich zdań czeka')} na tłumaczenie.`
-    );
-  }
   const doOdebrania = pendingStops();
   if (doOdebrania.length) lista.push(`${doOdebrania[0].name} — jest coś do odebrania.`);
   return lista;
@@ -578,7 +565,7 @@ function home() {
   refreshModules();
   const state = store.get();
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
-  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
+  const emptyMine = false; // moduł „Moje zdania" usunięty
   const powrot = !emptyMine && store.isComeback();
   const next = nextStop(ROUTE, state.km);
   const umiem = umiemZdan();
@@ -604,7 +591,7 @@ function home() {
         : 'Piętnaście zdań, jakieś 10 minut.';
 
   const wybory = [];
-  if (!emptyMine && outline?.dueCount) {
+  if (outline?.dueCount) {
     wybory.push({
       id: 'powtorka',
       oczko: 'Powtórka',
@@ -613,10 +600,10 @@ function home() {
     });
   } else {
     wybory.push({
-      id: 'zdania',
-      oczko: 'Twoje zdania',
-      tytul: 'Dorzuć swoje',
-      opis: 'Wpisz zdanie z pracy. Angielski dopiszę i wrzucę je do lekcji.',
+      id: 'szafa',
+      oczko: 'Ludzik',
+      tytul: 'Ubierz się',
+      opis: 'Kup ciuchy za monety i ubierz swojego ludzika.',
     });
   }
   wybory.push({
@@ -656,7 +643,6 @@ function home() {
   mount(
     trescStartu(dane, {
       onLekcja() {
-        if (emptyMine) return go('phrases');
         if (powrot) return runLesson({ comeback: true, wszystkieModuly: true });
         runLesson({ review: Boolean(outline?.reviewOnly) });
       },
@@ -665,13 +651,12 @@ function home() {
       onPas: () => {
         const s = sprawy[0] || '';
         if (s.includes('kopii')) return go('settings');
-        if (s.includes('tłumaczenie')) return go('phrases');
         if (s.includes('odebrania')) return go('map');
         go('home');
       },
       onWybor(id) {
         if (id === 'powtorka') return runLesson({ review: true, wszystkieModuly: true });
-        if (id === 'zdania') return go('phrases');
+        if (id === 'szafa') return go('wardrobe');
         go('map');
       },
     })
@@ -755,7 +740,7 @@ function pickModule(id) {
 
 function modules() {
   refreshModules();
-  const emptyMine = MODULE?.id === 'moje' && !(MODULE.translations || []).length;
+  const emptyMine = false; // moduł „Moje zdania" usunięty
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const wlasny = MODULE ? statModulu(MODULE) : null;
 
@@ -801,7 +786,6 @@ function modules() {
     </div>
   </section>`);
   hero.querySelector('[data-a="start"]').addEventListener('click', () => {
-    if (emptyMine) return go('phrases');
     runLesson({ review: Boolean(outline?.reviewOnly) });
   });
   hero
@@ -850,7 +834,7 @@ function modules() {
   const kartaModulu = (m) => {
     const otwarty = MODULE && m.id === MODULE.id;
     const st = statModulu(m);
-    const pusty = m.id === 'moje' && !(m.translations || []).length;
+    const pusty = false; // moduł „Moje zdania" usunięty
 
     const stan = pusty
       ? 'Puste'
@@ -888,8 +872,7 @@ function modules() {
       <span class="stopka">${znaczniki}</span>
     </button>`);
     karta.addEventListener('click', () => {
-      if (otwarty)
-        return pusty ? go('phrases') : runLesson({ review: Boolean(outline?.reviewOnly) });
+      if (otwarty) return runLesson({ review: Boolean(outline?.reviewOnly) });
       pickModule(m.id);
     });
     return karta;
@@ -1273,136 +1256,6 @@ function shop() {
   }
 
   mount(wrap);
-}
-
-function phrases() {
-  const wrap = h(`<div class="home-stack"></div>`);
-  const all = store.get().customPhrases || [];
-  const waiting = waitingPhrases(all);
-  const ready = translatedPhrases(all);
-
-  wrap.appendChild(
-    h(`<div class="card">
-    <span class="label">Moje zdania</span>
-    <h1>Wpisz po polsku</h1>
-    <p class="muted">Zdanie ląduje na liście i czeka. Angielski dopiszę Ci przy najbliższej sesji —
-      z wariantami i wyjaśnieniem błędów, tak jak w pozostałych modułach.</p>
-    <div class="banner warn"><span class="grow">Bez nazw klientów i szczegółów z projektów.
-      Zdania mają być z Twojej codziennej pracy, nie z dokumentacji.</span></div>
-    <label class="tiny" for="pl-in">Polski</label>
-    <textarea id="pl-in" rows="3" placeholder="np. Nie mam jeszcze komercyjnego Selenium"></textarea>
-    <div class="row end" style="margin-top:.6rem">
-      <button class="primary" type="button" id="add-ph">Dodaj do listy</button>
-    </div>
-  </div>`)
-  );
-
-  wrap.querySelector('#add-ph').addEventListener('click', () => {
-    try {
-      store.addCustomPhrase({ pl: wrap.querySelector('#pl-in').value });
-      toast('Zdanie czeka na tłumaczenie.');
-      go('phrases');
-    } catch (err) {
-      toast(err.message || 'Nie dało się dodać.');
-    }
-  });
-
-  if (waiting.length) {
-    const card = h(`<div class="card">
-      <span class="label">Czeka na tłumaczenie</span>
-      <h2>${waiting.length} ${plural(waiting.length, 'zdanie', 'zdania', 'zdań')}</h2>
-      <p class="muted">Skopiuj listę i wyślij mi ją. Odeślę tłumaczenia, które wklejasz niżej.</p>
-      <div id="wait-list"></div>
-      <div class="row" style="margin-top:.6rem">
-        <button class="primary" type="button" id="cp-wait">Skopiuj listę dla mnie</button>
-      </div>
-      <details style="margin-top:.8rem">
-        <summary style="cursor:pointer;color:var(--primary)">Wklej tłumaczenia</summary>
-        <p class="tiny" style="margin:.6rem 0">Wklej w całości to, co Ci odeślę.</p>
-        <textarea id="tr-in" rows="4" placeholder="wklej tutaj…"></textarea>
-        <div class="row end" style="margin-top:.6rem">
-          <button type="button" id="do-tr">Wczytaj tłumaczenia</button>
-        </div>
-      </details>
-    </div>`);
-
-    const box = card.querySelector('#wait-list');
-    for (const item of waiting.slice().reverse()) {
-      box.appendChild(
-        h(`<div class="phrase-row">
-          <p class="muted" style="margin:0">${esc(item.pl)}</p>
-          <button class="small ghost" type="button" data-del="${esc(item.id)}">Usuń</button>
-        </div>`)
-      );
-    }
-
-    card.querySelector('#cp-wait').addEventListener('click', async () => {
-      const text = JSON.stringify(
-        waiting.map((item) => ({ id: item.id, pl: item.pl })),
-        null,
-        2
-      );
-      try {
-        await navigator.clipboard.writeText(text);
-        toast('Skopiowane. Wyślij mi to.');
-      } catch {
-        toast('Schowek zablokowany.');
-      }
-    });
-
-    card.querySelector('#do-tr').addEventListener('click', () => {
-      try {
-        const n = store.applyTranslations(card.querySelector('#tr-in').value);
-        toast(`Wczytane: ${n} ${plural(n, 'zdanie', 'zdania', 'zdań')}.`);
-        go('phrases');
-      } catch (err) {
-        toast(err.message || 'Nie udało się wczytać.');
-      }
-    });
-
-    wrap.appendChild(card);
-  }
-
-  if (ready.length) {
-    const card = h(`<div class="card">
-      <span class="label">Gotowe do nauki</span>
-      <h2>${ready.length} ${plural(ready.length, 'zdanie', 'zdania', 'zdań')}</h2>
-      <div id="ready-list"></div>
-    </div>`);
-    const box = card.querySelector('#ready-list');
-    for (const item of ready.slice().reverse()) {
-      box.appendChild(
-        h(`<div class="phrase-row">
-          <div>
-            <p class="muted" style="margin:0">${esc(item.pl)}</p>
-            <p style="margin:.2rem 0 0">${esc(item.en)}</p>
-          </div>
-          <div class="row">
-            <button class="small ghost" type="button" data-say="${esc(item.id)}">▶</button>
-            <button class="small ghost" type="button" data-del="${esc(item.id)}">Usuń</button>
-          </div>
-        </div>`)
-      );
-    }
-    card.addEventListener('click', (e) => {
-      const say = e.target.closest('[data-say]');
-      if (!say) return;
-      const found = ready.find((item) => item.id === say.getAttribute('data-say'));
-      if (found) speech.speakOnce(found.en, { rate: 1 });
-    });
-    wrap.appendChild(card);
-  }
-
-  wrap.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-del]');
-    if (!btn) return;
-    store.removeCustomPhrase(btn.getAttribute('data-del'));
-    toast('Usunięte.');
-    go('phrases');
-  });
-
-  mount(wrap);
-  wrap.querySelector('#pl-in').focus();
 }
 
 // ---------- szafa ----------
