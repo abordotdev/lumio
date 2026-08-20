@@ -1,4 +1,5 @@
 // Ocena odpowiedzi. Zasada: akceptuj szeroko, ucz jednego wzorca.
+import { verbForms } from './forms.js';
 
 const CONTRACTIONS = [
   ["i'm", 'i am'],
@@ -100,20 +101,35 @@ function stems(word) {
   return out;
 }
 
-function isFormChange(a, b) {
+// Wszystkie formy czasownika z lematu — łapie też nieregularne (find/found,
+// go/went), których stemowanie po sufiksie nie wychwyci.
+function lemmaFormSet(lemma) {
+  const f = verbForms(lemma);
+  if (!f) return null;
+  const trzecia = /(s|sh|ch|x|z|o)$/.test(f.base) ? `${f.base}es` : `${f.base}s`;
+  const set = new Set([f.base, f.ed, f.pp, f.ing, trzecia].filter(Boolean));
+  if (lemma === 'be')
+    ['am', 'is', 'are', 'was', 'were', 'be', 'been', 'being'].forEach((x) => set.add(x));
+  if (lemma === 'have') ['has', 'had', 'having'].forEach((x) => set.add(x));
+  return set;
+}
+
+function isFormChange(a, b, formy) {
   if (a === b) return false;
+  // Oba słowa to formy tego samego czasownika (np. find ↔ found) → zmiana formy.
+  if (formy && formy.has(a) && formy.has(b)) return true;
   const sa = stems(a);
   const sb = stems(b);
   for (const x of sa) if (sb.has(x)) return true;
   return false;
 }
 
-function hasFormError(mine, want) {
+function hasFormError(mine, want, formy) {
   const mw = mine.split(' ').filter(Boolean);
   const ww = want.split(' ').filter(Boolean);
   const n = Math.min(mw.length, ww.length);
   for (let i = 0; i < n; i += 1) {
-    if (isFormChange(mw[i], ww[i])) return true;
+    if (isFormChange(mw[i], ww[i], formy)) return true;
   }
   return false;
 }
@@ -128,10 +144,10 @@ function typoPairs(mineNorm, wantNorm) {
   return pairs;
 }
 
-function isTypo(mine, want) {
+function isTypo(mine, want, formy) {
   const d = distance(mine, want);
   if (d <= 0 || d > 2 || want.length < 10) return false;
-  if (hasFormError(mine, want)) return false;
+  if (hasFormError(mine, want, formy)) return false;
   return true;
 }
 
@@ -147,6 +163,7 @@ export function grade(item, answer) {
   const target = item.en;
   const mine = normalize(answer);
   const want = normalize(target);
+  const formy = item.lemma ? lemmaFormSet(item.lemma) : null;
 
   if (!mine)
     return { verdict: 'wrong', correct: false, canonical: target, diff: diffWords('', target) };
@@ -171,7 +188,7 @@ export function grade(item, answer) {
     }
   }
 
-  if (isTypo(mine, want)) {
+  if (isTypo(mine, want, formy)) {
     return {
       verdict: 'typo',
       correct: true,
@@ -183,7 +200,7 @@ export function grade(item, answer) {
   }
   for (const alt of item.accept || []) {
     const altNorm = normalize(alt);
-    if (isTypo(mine, altNorm)) {
+    if (isTypo(mine, altNorm, formy)) {
       return {
         verdict: 'typo',
         correct: true,

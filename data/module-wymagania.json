@@ -1,0 +1,122 @@
+{
+  "id": "wymagania",
+  "title": "Wymagania i plany",
+  "subtitle": "Wymagania, plan testów i kryteria akceptacji — jak je opisać.",
+  "sekcja": "IT",
+  "patterns": {
+    "wymagania": "wymagania",
+    "plan": "plan testów",
+    "kryteria": "kryteria"
+  },
+  "patternOrder": ["wymagania", "plan", "kryteria"],
+  "translations": [
+    {
+      "id": "wp01",
+      "pattern": "wymagania",
+      "pl": "To wymaganie jest niejasne",
+      "en": "This requirement is unclear",
+      "chunks": ["This requirement", "is unclear"],
+      "note": "niejasne → unclear",
+      "lemma": "be"
+    },
+    {
+      "id": "wp02",
+      "pattern": "wymagania",
+      "pl": "Potrzebujemy więcej szczegółów",
+      "en": "We need more details",
+      "chunks": ["We need", "more details"],
+      "note": "więcej → more",
+      "lemma": "need"
+    },
+    {
+      "id": "wp03",
+      "pattern": "wymagania",
+      "pl": "Ta funkcja jest poza zakresem",
+      "en": "This feature is out of scope",
+      "chunks": ["This feature", "is out of scope"],
+      "note": "poza zakresem → out of scope",
+      "lemma": "be"
+    },
+    {
+      "id": "wp04",
+      "pattern": "wymagania",
+      "pl": "Kto to zatwierdza?",
+      "en": "Who approves this?",
+      "chunks": ["Who approves", "this?"],
+      "note": "kto zatwierdza → who approves",
+      "lemma": "approve"
+    },
+    {
+      "id": "wp05",
+      "pattern": "plan",
+      "pl": "Napisałam plan testów",
+      "en": "I wrote a test plan",
+      "chunks": ["I wrote", "a test plan"],
+      "note": "napisałam → I wrote",
+      "lemma": "write"
+    },
+    {
+      "id": "wp06",
+      "pattern": "plan",
+      "pl": "Plan obejmuje testy manualne i automatyczne",
+      "en": "The plan covers manual and automated tests",
+      "chunks": ["The plan", "covers", "manual and automated tests"],
+      "note": "obejmuje → covers",
+      "lemma": "cover"
+    },
+    {
+      "id": "wp07",
+      "pattern": "plan",
+      "pl": "Najpierw testujemy najważniejsze ścieżki",
+      "en": "We test the main paths first",
+      "chunks": ["We test", "the main paths", "first"],
+      "note": "najważniejsze ścieżki → main paths",
+      "lemma": "test"
+    },
+    {
+      "id": "wp08",
+      "pattern": "plan",
+      "pl": "Zaktualizuję plan po spotkaniu",
+      "en": "I will update the plan after the meeting",
+      "chunks": ["I will update", "the plan", "after the meeting"],
+      "note": "po spotkaniu → after the meeting",
+      "lemma": "update"
+    },
+    {
+      "id": "wp09",
+      "pattern": "kryteria",
+      "pl": "Zdefiniujmy kryteria akceptacji",
+      "en": "Let us define the acceptance criteria",
+      "chunks": ["Let us define", "the acceptance criteria"],
+      "note": "kryteria akceptacji → acceptance criteria"
+    },
+    {
+      "id": "wp10",
+      "pattern": "kryteria",
+      "pl": "Ten warunek musi być spełniony",
+      "en": "This condition must be met",
+      "chunks": ["This condition", "must be met"],
+      "note": "musi być spełniony → must be met",
+      "lemma": "be"
+    },
+    {
+      "id": "wp11",
+      "pattern": "kryteria",
+      "pl": "Test przechodzi, gdy pole jest wymagane",
+      "en": "The test passes when the field is required",
+      "chunks": ["The test passes", "when the field", "is required"],
+      "note": "gdy → when",
+      "lemma": "pass"
+    },
+    {
+      "id": "wp12",
+      "pattern": "kryteria",
+      "pl": "To jest gotowe do wydania",
+      "en": "This is ready for release",
+      "chunks": ["This is", "ready for release"],
+      "note": "gotowe do → ready for",
+      "lemma": "be"
+    }
+  ],
+  "dictation": []
+}

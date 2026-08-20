@@ -1,0 +1,120 @@
+{
+  "id": "developer",
+  "title": "Rozmowa z deweloperem",
+  "subtitle": "Zgłaszanie błędów, priorytety i wspólna robota z programistą.",
+  "sekcja": "IT",
+  "patterns": {
+    "zgloszenie": "zgłaszam błąd",
+    "priorytety": "priorytety",
+    "wspolnie": "razem nad tym"
+  },
+  "patternOrder": ["zgloszenie", "priorytety", "wspolnie"],
+  "translations": [
+    {
+      "id": "dv01",
+      "pattern": "zgloszenie",
+      "pl": "Da się to odtworzyć za każdym razem",
+      "en": "It is reproducible every time",
+      "chunks": ["It is reproducible", "every time"],
+      "note": "da się odtworzyć → reproducible",
+      "lemma": "be"
+    },
+    {
+      "id": "dv02",
+      "pattern": "zgloszenie",
+      "pl": "Dołączyłam kroki i zrzuty ekranu",
+      "en": "I attached the steps and screenshots",
+      "chunks": ["I attached", "the steps", "and screenshots"],
+      "note": "dołączyłam → I attached",
+      "lemma": "attach"
+    },
+    {
+      "id": "dv03",
+      "pattern": "zgloszenie",
+      "pl": "Błąd pojawia się tylko na produkcji",
+      "en": "The bug only happens in production",
+      "chunks": ["The bug", "only happens", "in production"],
+      "note": "pojawia się → happens",
+      "lemma": "happen"
+    },
+    {
+      "id": "dv04",
+      "pattern": "zgloszenie",
+      "pl": "Zerknij proszę do logów",
+      "en": "Please take a look at the logs",
+      "chunks": ["Please take a look", "at the logs"],
+      "note": "zerknij → take a look"
+    },
+    {
+      "id": "dv05",
+      "pattern": "priorytety",
+      "pl": "To blokuje wydanie",
+      "en": "This blocks the release",
+      "chunks": ["This blocks", "the release"],
+      "note": "blokuje → blocks",
+      "lemma": "block"
+    },
+    {
+      "id": "dv06",
+      "pattern": "priorytety",
+      "pl": "Możemy to naprawić w następnym sprincie",
+      "en": "We can fix this in the next sprint",
+      "chunks": ["We can fix this", "in the next sprint"],
+      "note": "w następnym sprincie → in the next sprint",
+      "lemma": "fix"
+    },
+    {
+      "id": "dv07",
+      "pattern": "priorytety",
+      "pl": "To ma niski priorytet",
+      "en": "This is low priority",
+      "chunks": ["This is", "low priority"],
+      "note": "niski priorytet → low priority",
+      "lemma": "be"
+    },
+    {
+      "id": "dv08",
+      "pattern": "priorytety",
+      "pl": "Naprawmy to najpierw",
+      "en": "Let us fix this first",
+      "chunks": ["Let us fix this", "first"],
+      "note": "najpierw → first",
+      "lemma": "fix"
+    },
+    {
+      "id": "dv09",
+      "pattern": "wspolnie",
+      "pl": "Przetestuję to od razu po poprawce",
+      "en": "I will test it right after the fix",
+      "chunks": ["I will test it", "right after the fix"],
+      "note": "od razu po → right after",
+      "lemma": "test"
+    },
+    {
+      "id": "dv10",
+      "pattern": "wspolnie",
+      "pl": "Nie mogę tego odtworzyć u siebie",
+      "en": "I cannot reproduce it on my side",
+      "chunks": ["I cannot reproduce it", "on my side"],
+      "note": "u siebie → on my side",
+      "lemma": "reproduce"
+    },
+    {
+      "id": "dv11",
+      "pattern": "wspolnie",
+      "pl": "Możesz mi to wyjaśnić?",
+      "en": "Can you explain this to me?",
+      "chunks": ["Can you", "explain this", "to me?"],
+      "note": "wyjaśnić → explain"
+    },
+    {
+      "id": "dv12",
+      "pattern": "wspolnie",
+      "pl": "Dzięki za szybką poprawkę",
+      "en": "Thanks for the quick fix",
+      "chunks": ["Thanks for", "the quick fix"],
+      "note": "szybka poprawka → quick fix"
+    }
+  ],
+  "dictation": []
+}

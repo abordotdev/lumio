@@ -54,3 +54,10 @@ test('puste pole to zawsze błąd, bez wyjątków', () => {
   assert.equal(wynik.verdict, 'wrong');
   assert.equal(wynik.correct, false);
 });
+
+test('nieregularna zła forma czasownika to błąd, nie literówka (find/found)', () => {
+  const item = { en: 'I found a duplicate row', lemma: 'find' };
+  const wynik = grade(item, 'I find a duplicate row');
+  assert.equal(wynik.correct, false, 'find zamiast found to zmiana formy, nie czeski błąd');
+  assert.notEqual(wynik.verdict, 'typo');
+});

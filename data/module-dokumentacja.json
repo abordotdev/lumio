@@ -12,7 +12,7 @@
     "review": "co znalazłaś w dokumentacji",
     "spec": "specyfikacja i limity",
     "validation": "walidacja i reguły pól",
-    "behaviour": "jak to działa"
+    "behaviour": "jak system działa"
   },
   "patternOrder": [
     "overview",

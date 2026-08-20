@@ -1,0 +1,119 @@
+{
+  "id": "klient",
+  "title": "Rozmowa z klientem",
+  "subtitle": "Status, ustalenia i demo — jak testerka rozmawia z klientem.",
+  "sekcja": "IT",
+  "patterns": {
+    "status": "status prac",
+    "ustalenia": "ustalenia",
+    "demo": "demo i pytania"
+  },
+  "patternOrder": ["status", "ustalenia", "demo"],
+  "translations": [
+    {
+      "id": "kl01",
+      "pattern": "status",
+      "pl": "Skończyliśmy testy tego modułu",
+      "en": "We have finished testing this module",
+      "chunks": ["We have finished", "testing this module"],
+      "note": "skończyliśmy → we have finished",
+      "lemma": "finish"
+    },
+    {
+      "id": "kl02",
+      "pattern": "status",
+      "pl": "Znaleźliśmy kilka błędów",
+      "en": "We found a few bugs",
+      "chunks": ["We found", "a few bugs"],
+      "note": "znaleźliśmy → we found",
+      "lemma": "find"
+    },
+    {
+      "id": "kl03",
+      "pattern": "status",
+      "pl": "Jesteśmy na dobrej drodze do terminu",
+      "en": "We are on track for the deadline",
+      "chunks": ["We are on track", "for the deadline"],
+      "note": "na dobrej drodze → on track",
+      "lemma": "be"
+    },
+    {
+      "id": "kl04",
+      "pattern": "status",
+      "pl": "Potrzebujemy jeszcze dwóch dni",
+      "en": "We need two more days",
+      "chunks": ["We need", "two more days"],
+      "note": "potrzebujemy → we need",
+      "lemma": "need"
+    },
+    {
+      "id": "kl05",
+      "pattern": "ustalenia",
+      "pl": "Chciałabym potwierdzić wymagania",
+      "en": "I would like to confirm the requirements",
+      "chunks": ["I would like to", "confirm the requirements"],
+      "note": "chciałabym → I would like to"
+    },
+    {
+      "id": "kl06",
+      "pattern": "ustalenia",
+      "pl": "Czy możemy umówić spotkanie?",
+      "en": "Can we schedule a meeting?",
+      "chunks": ["Can we", "schedule a meeting?"],
+      "note": "umówić → schedule"
+    },
+    {
+      "id": "kl07",
+      "pattern": "ustalenia",
+      "pl": "Odeślę Państwu raport do końca dnia",
+      "en": "I will send you the report by the end of the day",
+      "chunks": ["I will send you", "the report", "by the end of the day"],
+      "note": "do końca dnia → by the end of the day",
+      "lemma": "send"
+    },
+    {
+      "id": "kl08",
+      "pattern": "ustalenia",
+      "pl": "Proszę dać znać, jeśli coś jest niejasne",
+      "en": "Please let me know if anything is unclear",
+      "chunks": ["Please let me know", "if anything", "is unclear"],
+      "note": "dać znać → let me know"
+    },
+    {
+      "id": "kl09",
+      "pattern": "demo",
+      "pl": "Pokażę, jak to działa",
+      "en": "Let me show you how it works",
+      "chunks": ["Let me show you", "how it works"],
+      "note": "pokażę → let me show you"
+    },
+    {
+      "id": "kl10",
+      "pattern": "demo",
+      "pl": "Czy mają Państwo jakieś pytania?",
+      "en": "Do you have any questions?",
+      "chunks": ["Do you have", "any questions?"],
+      "note": "pytania → questions",
+      "lemma": "have"
+    },
+    {
+      "id": "kl11",
+      "pattern": "demo",
+      "pl": "Ta funkcja nie jest jeszcze gotowa",
+      "en": "This feature is not ready yet",
+      "chunks": ["This feature", "is not ready yet"],
+      "note": "jeszcze nie → not yet",
+      "lemma": "be"
+    },
+    {
+      "id": "kl12",
+      "pattern": "demo",
+      "pl": "Zapiszę to jako zgłoszenie",
+      "en": "I will log this as a ticket",
+      "chunks": ["I will log this", "as a ticket"],
+      "note": "zapiszę jako → log as",
+      "lemma": "log"
+    }
+  ],
+  "dictation": []
+}

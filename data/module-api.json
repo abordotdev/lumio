@@ -1,0 +1,137 @@
+{
+  "id": "api",
+  "title": "Testy API",
+  "subtitle": "Żądania, odpowiedzi i kody statusu — słownictwo do testowania API.",
+  "sekcja": "IT",
+  "patterns": {
+    "zapytania": "żądania",
+    "odpowiedzi": "odpowiedzi",
+    "status": "kody i błędy"
+  },
+  "patternOrder": ["zapytania", "odpowiedzi", "status"],
+  "translations": [
+    {
+      "id": "api01",
+      "pattern": "zapytania",
+      "pl": "Wyślij żądanie GET na ten endpoint",
+      "en": "Send a GET request to this endpoint",
+      "chunks": ["Send", "a GET request", "to this endpoint"],
+      "note": "rozkaz → Send, bez you",
+      "lemma": "send"
+    },
+    {
+      "id": "api02",
+      "pattern": "zapytania",
+      "pl": "Żądanie potrzebuje nagłówka autoryzacji",
+      "en": "The request needs an authorization header",
+      "chunks": ["The request", "needs", "an authorization header"],
+      "note": "żądanie to ono → needs",
+      "lemma": "need"
+    },
+    {
+      "id": "api03",
+      "pattern": "zapytania",
+      "pl": "Przekaż id użytkownika jako parametr",
+      "en": "Pass the user id as a parameter",
+      "chunks": ["Pass", "the user id", "as a parameter"],
+      "note": "jako → as a",
+      "lemma": "pass"
+    },
+    {
+      "id": "api04",
+      "pattern": "zapytania",
+      "pl": "Ciało żądania powinno być w formacie JSON",
+      "en": "The request body should be in JSON",
+      "chunks": ["The request body", "should be", "in JSON"],
+      "note": "powinno → should be",
+      "lemma": "be"
+    },
+    {
+      "id": "api05",
+      "pattern": "zapytania",
+      "pl": "Dodaj token do nagłówka",
+      "en": "Add the token to the header",
+      "chunks": ["Add", "the token", "to the header"],
+      "note": "do → to the",
+      "lemma": "add"
+    },
+    {
+      "id": "api06",
+      "pattern": "odpowiedzi",
+      "pl": "Odpowiedź zwraca listę użytkowników",
+      "en": "The response returns a list of users",
+      "chunks": ["The response", "returns", "a list of users"],
+      "note": "odpowiedź to ono → returns",
+      "lemma": "return"
+    },
+    {
+      "id": "api07",
+      "pattern": "odpowiedzi",
+      "pl": "Czas odpowiedzi jest za długi",
+      "en": "The response time is too long",
+      "chunks": ["The response time", "is too long"],
+      "note": "za długi → too long",
+      "lemma": "be"
+    },
+    {
+      "id": "api08",
+      "pattern": "odpowiedzi",
+      "pl": "W odpowiedzi brakuje pola",
+      "en": "A field is missing in the response",
+      "chunks": ["A field", "is missing", "in the response"],
+      "note": "brakuje → is missing"
+    },
+    {
+      "id": "api09",
+      "pattern": "odpowiedzi",
+      "pl": "Odpowiedź zgadza się ze schematem",
+      "en": "The response matches the schema",
+      "chunks": ["The response", "matches", "the schema"],
+      "note": "zgadza się → matches",
+      "lemma": "match"
+    },
+    {
+      "id": "api10",
+      "pattern": "status",
+      "pl": "Serwer zwraca błąd 404",
+      "en": "The server returns a 404 error",
+      "chunks": ["The server", "returns", "a 404 error"],
+      "note": "błąd → error",
+      "lemma": "return"
+    },
+    {
+      "id": "api11",
+      "pattern": "status",
+      "pl": "Spodziewałam się kodu 200",
+      "en": "I expected a 200 status code",
+      "chunks": ["I expected", "a 200 status code"],
+      "note": "spodziewałam się → I expected",
+      "lemma": "expect"
+    },
+    {
+      "id": "api12",
+      "pattern": "status",
+      "pl": "Żądanie zwróciło błąd 500",
+      "en": "The request returned a 500 error",
+      "chunks": ["The request returned", "a 500 error"],
+      "note": "zwróciło → returned",
+      "traps": [
+        {
+          "input": "The request return a 500 error",
+          "why": "żądanie to ono, w przeszłości → returned."
+        }
+      ],
+      "lemma": "return"
+    },
+    {
+      "id": "api13",
+      "pattern": "status",
+      "pl": "Ten endpoint nie jest udokumentowany",
+      "en": "This endpoint is not documented",
+      "chunks": ["This endpoint", "is not documented"],
+      "note": "nieudokumentowany → not documented",
+      "lemma": "be"
+    }
+  ],
+  "dictation": []
+}

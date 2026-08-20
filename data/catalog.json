@@ -35,6 +35,30 @@
     {
       "id": "dom-rodzina",
       "file": "module-dom-rodzina.json"
+    },
+    {
+      "id": "api",
+      "file": "module-api.json"
+    },
+    {
+      "id": "baza",
+      "file": "module-baza.json"
+    },
+    {
+      "id": "klient",
+      "file": "module-klient.json"
+    },
+    {
+      "id": "developer",
+      "file": "module-developer.json"
+    },
+    {
+      "id": "automatyzacja",
+      "file": "module-automatyzacja.json"
+    },
+    {
+      "id": "wymagania",
+      "file": "module-wymagania.json"
     }
   ]
 }

@@ -1,0 +1,123 @@
+{
+  "id": "baza",
+  "title": "Baza danych",
+  "subtitle": "Zapytania, dane i sprawdzanie w bazie — dla testerki.",
+  "sekcja": "IT",
+  "patterns": {
+    "zapytania": "zapytania",
+    "dane": "dane",
+    "sprawdzanie": "sprawdzanie"
+  },
+  "patternOrder": ["zapytania", "dane", "sprawdzanie"],
+  "translations": [
+    {
+      "id": "bd01",
+      "pattern": "zapytania",
+      "pl": "Uruchom to zapytanie na bazie testowej",
+      "en": "Run this query on the test database",
+      "chunks": ["Run", "this query", "on the test database"],
+      "note": "uruchom → run",
+      "lemma": "run"
+    },
+    {
+      "id": "bd02",
+      "pattern": "zapytania",
+      "pl": "To zapytanie zwraca za dużo wierszy",
+      "en": "This query returns too many rows",
+      "chunks": ["This query", "returns", "too many rows"],
+      "note": "zapytanie to ono → returns",
+      "lemma": "return"
+    },
+    {
+      "id": "bd03",
+      "pattern": "zapytania",
+      "pl": "Połącz dwie tabele po id użytkownika",
+      "en": "Join the two tables on the user id",
+      "chunks": ["Join", "the two tables", "on the user id"],
+      "note": "połącz po → join on",
+      "lemma": "join"
+    },
+    {
+      "id": "bd04",
+      "pattern": "zapytania",
+      "pl": "Odfiltruj rekordy z ostatniego tygodnia",
+      "en": "Filter the records from the last week",
+      "chunks": ["Filter", "the records", "from the last week"],
+      "note": "odfiltruj → filter",
+      "lemma": "filter"
+    },
+    {
+      "id": "bd05",
+      "pattern": "dane",
+      "pl": "Tabela jest pusta",
+      "en": "The table is empty",
+      "chunks": ["The table", "is empty"],
+      "note": "pusta → empty",
+      "lemma": "be"
+    },
+    {
+      "id": "bd06",
+      "pattern": "dane",
+      "pl": "To pole nie może być puste",
+      "en": "This column cannot be null",
+      "chunks": ["This column", "cannot be", "null"],
+      "note": "w bazie puste → null",
+      "lemma": "be"
+    },
+    {
+      "id": "bd07",
+      "pattern": "dane",
+      "pl": "Dane nie zgadzają się z interfejsem",
+      "en": "The data does not match the UI",
+      "chunks": ["The data", "does not match", "the UI"],
+      "note": "nie zgadza się → does not match",
+      "lemma": "match"
+    },
+    {
+      "id": "bd08",
+      "pattern": "dane",
+      "pl": "Każdy rekord ma znacznik czasu",
+      "en": "Each record has a timestamp",
+      "chunks": ["Each record", "has", "a timestamp"],
+      "note": "ma → has",
+      "lemma": "have"
+    },
+    {
+      "id": "bd09",
+      "pattern": "sprawdzanie",
+      "pl": "Sprawdź, czy rekord został zapisany",
+      "en": "Check that the record was saved",
+      "chunks": ["Check", "that the record", "was saved"],
+      "note": "sprawdź, czy → check that",
+      "lemma": "save"
+    },
+    {
+      "id": "bd10",
+      "pattern": "sprawdzanie",
+      "pl": "Znalazłam zduplikowany wiersz",
+      "en": "I found a duplicate row",
+      "chunks": ["I found", "a duplicate row"],
+      "note": "znalazłam → I found",
+      "lemma": "find"
+    },
+    {
+      "id": "bd11",
+      "pattern": "sprawdzanie",
+      "pl": "Policz, ile rekordów pasuje",
+      "en": "Count how many records match",
+      "chunks": ["Count", "how many records", "match"],
+      "note": "policz → count",
+      "lemma": "count"
+    },
+    {
+      "id": "bd12",
+      "pattern": "sprawdzanie",
+      "pl": "Zrób kopię przed zmianą danych",
+      "en": "Make a backup before you change the data",
+      "chunks": ["Make a backup", "before you change", "the data"],
+      "note": "przed zmianą → before you change",
+      "lemma": "make"
+    }
+  ],
+  "dictation": []
+}

@@ -1,0 +1,122 @@
+{
+  "id": "automatyzacja",
+  "title": "Automatyzacja testów",
+  "subtitle": "Frameworki, CI i chwiejne testy — słownictwo do automatyzacji.",
+  "sekcja": "IT",
+  "patterns": {
+    "pisanie": "piszę testy",
+    "ci": "testy w CI",
+    "stabilnosc": "chwiejne testy"
+  },
+  "patternOrder": ["pisanie", "ci", "stabilnosc"],
+  "translations": [
+    {
+      "id": "at01",
+      "pattern": "pisanie",
+      "pl": "Napisałam test dla logowania",
+      "en": "I wrote a test for the login",
+      "chunks": ["I wrote", "a test", "for the login"],
+      "note": "napisałam → I wrote",
+      "lemma": "write"
+    },
+    {
+      "id": "at02",
+      "pattern": "pisanie",
+      "pl": "Ten test sprawdza formularz",
+      "en": "This test checks the form",
+      "chunks": ["This test", "checks", "the form"],
+      "note": "test to ono → checks",
+      "lemma": "check"
+    },
+    {
+      "id": "at03",
+      "pattern": "pisanie",
+      "pl": "Selektor nie znajduje przycisku",
+      "en": "The selector does not find the button",
+      "chunks": ["The selector", "does not find", "the button"],
+      "note": "nie znajduje → does not find",
+      "lemma": "find"
+    },
+    {
+      "id": "at04",
+      "pattern": "pisanie",
+      "pl": "Poczekaj, aż element się pojawi",
+      "en": "Wait for the element to appear",
+      "chunks": ["Wait for", "the element", "to appear"],
+      "note": "poczekaj, aż → wait for"
+    },
+    {
+      "id": "at05",
+      "pattern": "ci",
+      "pl": "Testy chodzą przy każdym pushu",
+      "en": "The tests run on every push",
+      "chunks": ["The tests run", "on every push"],
+      "note": "przy każdym → on every",
+      "lemma": "run"
+    },
+    {
+      "id": "at06",
+      "pattern": "ci",
+      "pl": "Build padł na testach",
+      "en": "The build failed on the tests",
+      "chunks": ["The build failed", "on the tests"],
+      "note": "padł → failed",
+      "lemma": "fail"
+    },
+    {
+      "id": "at07",
+      "pattern": "ci",
+      "pl": "Pipeline przeszedł na zielono",
+      "en": "The pipeline passed",
+      "chunks": ["The pipeline", "passed"],
+      "note": "przeszedł → passed",
+      "lemma": "pass"
+    },
+    {
+      "id": "at08",
+      "pattern": "ci",
+      "pl": "Zobacz raport z testów",
+      "en": "Check the test report",
+      "chunks": ["Check", "the test report"],
+      "note": "zobacz → check",
+      "lemma": "check"
+    },
+    {
+      "id": "at09",
+      "pattern": "stabilnosc",
+      "pl": "Ten test jest chwiejny",
+      "en": "This test is flaky",
+      "chunks": ["This test", "is flaky"],
+      "note": "chwiejny → flaky",
+      "lemma": "be"
+    },
+    {
+      "id": "at10",
+      "pattern": "stabilnosc",
+      "pl": "Czasem przechodzi, czasem nie",
+      "en": "It sometimes passes and sometimes fails",
+      "chunks": ["It sometimes passes", "and sometimes fails"],
+      "note": "czasem → sometimes",
+      "lemma": "pass"
+    },
+    {
+      "id": "at11",
+      "pattern": "stabilnosc",
+      "pl": "Test jest zależny od czasu",
+      "en": "The test depends on timing",
+      "chunks": ["The test", "depends on", "timing"],
+      "note": "zależny od → depends on",
+      "lemma": "depend"
+    },
+    {
+      "id": "at12",
+      "pattern": "stabilnosc",
+      "pl": "Musimy ustabilizować te testy",
+      "en": "We need to stabilize these tests",
+      "chunks": ["We need to", "stabilize these tests"],
+      "note": "ustabilizować → stabilize",
+      "lemma": "need"
+    }
+  ],
+  "dictation": []
+}

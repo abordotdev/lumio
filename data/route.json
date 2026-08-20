@@ -164,6 +164,60 @@
       "flavor": "Konferencja na zimno. Płaszcz albo spódnica w kratę.",
       "freeChoice": ["top-coat", "bottom-skirt"],
       "stock": []
+    },
+    {
+      "id": "budka-fiord",
+      "name": "Budka przy przystani",
+      "short": "Budka",
+      "km": 560,
+      "kind": "stall",
+      "icon": "kiosk",
+      "flavor": "Przystanek na krótką powtórkę przed dalszą drogą."
+    },
+    {
+      "id": "kopenhaga",
+      "name": "Kopenhaga",
+      "short": "Kopenhaga",
+      "km": 600,
+      "kind": "city",
+      "icon": "domek",
+      "flavor": "Dotarłaś na północ. Rozglądasz się — stragan z ciuchami dosypię tu później."
+    },
+    {
+      "id": "budka-prom",
+      "name": "Budka na promie",
+      "short": "Budka",
+      "km": 645,
+      "kind": "stall",
+      "icon": "kiosk",
+      "flavor": "Prom kołysze, ale na powtórkę zawsze jest czas."
+    },
+    {
+      "id": "sztokholm",
+      "name": "Sztokholm",
+      "short": "Sztokholm",
+      "km": 690,
+      "kind": "city",
+      "icon": "domek",
+      "flavor": "Kolejne miasto zaliczone. Idziesz dalej."
+    },
+    {
+      "id": "budka-port",
+      "name": "Budka w porcie",
+      "short": "Budka",
+      "km": 735,
+      "kind": "stall",
+      "icon": "kiosk",
+      "flavor": "Zapach morza i krótka powtórka."
+    },
+    {
+      "id": "oslo",
+      "name": "Oslo",
+      "short": "Oslo",
+      "km": 790,
+      "kind": "city",
+      "icon": "domek",
+      "flavor": "Najdalej jak dotąd. Trasa rośnie razem z Tobą."
     }
   ],
   "items": [
