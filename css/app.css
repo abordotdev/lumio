@@ -160,79 +160,6 @@ body {
 
 /* ---------- chrome ---------- */
 
-.shell {
-  display: grid;
-  grid-template-columns: 15.5rem minmax(0, 1fr);
-  grid-template-areas: 'nav stage';
-  min-height: 100%;
-}
-.sidenav {
-  grid-area: nav;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  padding: 1.3rem 1rem 1.5rem;
-  background: var(--card);
-  border-right: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-.nav-who {
-  margin: 0 0.4rem 0.8rem;
-  font-size: 0.88rem;
-  color: var(--ink-faint);
-}
-.nav-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-.nav-links button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  background: transparent;
-  padding: 0.72rem 0.95rem;
-  border-radius: 999px;
-  color: var(--ink-soft);
-  font-weight: 600;
-}
-.nav-links button.on {
-  background: var(--primary-soft);
-  color: var(--primary);
-}
-.stage {
-  grid-area: stage;
-  min-width: 0;
-}
-
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.2rem;
-}
-.topbar-end {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-}
-.nav-toggle {
-  display: none;
-  min-height: 2.6rem;
-  font-weight: 650;
-}
-.nav-scrim {
-  display: none;
-}
-
 .brand {
   font-family: var(--serif);
   font-weight: 700;
@@ -253,23 +180,6 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-faint);
-}
-
-.counter {
-  font-family: var(--mono);
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-  padding: 0.22rem 0.5rem;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-.counter.km {
-  color: var(--primary);
-  background: var(--primary-soft);
-}
-.counter.coin {
-  color: var(--gold);
-  background: var(--gold-soft);
 }
 
 /* Szerokosc kolumny trzyma teraz powloka (css/powloka.css). #app jest tylko
@@ -400,17 +310,6 @@ button.small {
 label.tiny {
   display: block;
   margin: 0.75rem 0 0.25rem;
-}
-.phrase-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.8rem;
-  align-items: flex-start;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--line);
-}
-.phrase-row:last-child {
-  border-bottom: 0;
 }
 button.link {
   background: none;
@@ -619,7 +518,6 @@ button.link {
   padding-top: 0.35rem;
   border-top: 1px solid var(--line-soft);
 }
-.map-race input[type='text'],
 .map-race textarea {
   font-size: 0.95rem;
   padding: 0.5rem 0.7rem;
@@ -1244,6 +1142,10 @@ input[type='password']:focus {
   gap: 0.45rem;
   text-align: center;
   align-items: center;
+  /* Przy przewijaniu do elementu zostaw miejsce na przyklejony podgląd (góra)
+     i dolny pasek — inaczej „Kup"/„Załóż" chowa się pod nimi. */
+  scroll-margin-top: 12rem;
+  scroll-margin-bottom: 6rem;
 }
 .thing-art {
   display: flex;
@@ -1430,6 +1332,9 @@ select:focus-visible {
   position: sticky;
   top: 3.15rem;
   z-index: 5;
+  /* Podgląd nie ma nic klikalnego, więc niech nie przechwytuje dotknięć —
+     kliknięcia w ciuchy, które przewinęły się pod niego, mają przejść. */
+  pointer-events: none;
 }
 .dress-head h1 {
   margin: 0.15rem 0 0.35rem;
@@ -1654,52 +1559,10 @@ select:focus-visible {
 }
 
 @media (max-width: 64rem) {
-  .shell {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'stage';
-  }
-  .nav-toggle {
-    display: inline-flex;
-    align-items: center;
-  }
-  .nav-scrim {
-    position: fixed;
-    inset: 0;
-    z-index: 35;
-    background: rgba(20, 40, 32, 0.4);
-  }
-  body.nav-open .nav-scrim {
-    display: block;
-  }
-  body.nav-open {
-    overflow: hidden;
-  }
-  .sidenav {
-    display: none;
-    position: fixed;
-    inset: 0 auto 0 0;
-    width: min(18rem, 86vw);
-    height: 100%;
-    z-index: 40;
-    overflow: auto;
-    padding-top: max(1.3rem, env(safe-area-inset-top));
-    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
-  }
-  body.nav-open .sidenav {
-    display: flex;
-    box-shadow: var(--shadow);
-  }
-  .nav-links button {
-    min-height: 2.85rem;
-  }
-  .topbar {
-    padding: 0.55rem 0.85rem;
-    padding-top: max(0.55rem, env(safe-area-inset-top));
-  }
   main {
     padding: 0.25rem 0.9rem calc(1.8rem + env(safe-area-inset-bottom));
   }
-  button:not(.nav-links button):not(.brand):not(.small):not(.icon-btn):not(.tile):not(.swatch) {
+  button:not(.brand):not(.small):not(.icon-btn):not(.tile):not(.swatch) {
     min-height: 2.7rem;
   }
   .thing button {

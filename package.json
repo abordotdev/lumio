@@ -4,11 +4,13 @@
   "description": "Prototyp treningu angielskiego — byłam / jestem / będę, na zdaniach z pracy.",
   "scripts": {
     "start": "node serve.js",
-    "lint": "eslint js serve.js sw.js test",
-    "format": "prettier --write \"js/**/*.js\" \"test/**/*.mjs\" serve.js sw.js css/app.css index.html",
-    "format:check": "prettier --check \"js/**/*.js\" \"test/**/*.mjs\" serve.js sw.js css/app.css index.html",
+    "lint": "eslint js serve.js sw.js test e2e playwright.config.js",
+    "format": "prettier --write \"js/**/*.js\" \"test/**/*.mjs\" \"e2e/**/*.js\" serve.js sw.js playwright.config.js \"css/*.css\" index.html",
+    "format:check": "prettier --check \"js/**/*.js\" \"test/**/*.mjs\" \"e2e/**/*.js\" serve.js sw.js playwright.config.js \"css/*.css\" index.html",
     "prepare": "husky",
-    "test": "node --test \"test/**/*.test.mjs\""
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "test:e2e": "playwright test",
+    "test:all": "npm test && npm run test:e2e"
   },
   "lint-staged": {
     "*.css": "prettier --write",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@playwright/test": "^1.62.1",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.3.0",

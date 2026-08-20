@@ -14,12 +14,6 @@ export function h(html) {
   return t.content.firstElementChild;
 }
 
-export function frag(html) {
-  const t = document.createElement('template');
-  t.innerHTML = html;
-  return t.content;
-}
-
 // Ekrany laduja do kolumny powloki. Zanim powloka powstanie - prosto do #app.
 const app = () => document.getElementById('tresc') || document.getElementById('app');
 
@@ -37,31 +31,6 @@ export function applyPalette(id) {
   document.documentElement.dataset.palette = palette;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', PALETTE_THEME[palette]);
-}
-
-export function markNav(screen) {
-  const key = {
-    home: 'home',
-    modules: 'modules',
-    phrases: 'modules',
-    map: 'map',
-    wardrobe: 'wardrobe',
-    shop: 'shop',
-    settings: 'settings',
-    look: 'settings',
-  }[screen];
-  for (const btn of document.querySelectorAll('[data-go]')) {
-    btn.classList.toggle('on', key && btn.getAttribute('data-go') === key);
-  }
-}
-
-export function refreshCounters(state) {
-  const km = document.getElementById('c-km');
-  const coins = document.getElementById('c-coins');
-  if (km) km.textContent = `${state.km} km`;
-  if (coins) coins.textContent = `${state.coins} monet`;
-  const who = document.getElementById('nav-who');
-  if (who) who.textContent = state.nick || 'Ty';
 }
 
 export function plural(n, one, few, many) {

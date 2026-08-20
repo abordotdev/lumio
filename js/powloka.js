@@ -128,7 +128,3 @@ export function odswiezPowloke(dane) {
   el.bubble.hidden = !dane.dymek;
   if (dane.dymek) el.bubble.textContent = dane.dymek;
 }
-
-export function gniazdoTresci() {
-  return el?.tresc || null;
-}

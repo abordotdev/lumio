@@ -34,7 +34,6 @@ function fresh() {
     reports: [],
     lastBackupAt: null,
     rivals: [],
-    customPhrases: [],
     nick: '',
     palette: 'forest',
   };
@@ -97,12 +96,12 @@ function migrate(loaded) {
   merged.look = {
     hairColor: loaded.look?.hairColor || 'brunette',
     eyeColor: loaded.look?.eyeColor || 'brown',
+    postac: loaded.look?.postac === 'chłopak' ? 'chłopak' : 'dziewczyna',
     done: Boolean(loaded.look?.done),
   };
   merged.learnedSeconds = Number(loaded.learnedSeconds) || 0;
   merged.moduleId = loaded.moduleId || 'czasy-it';
   merged.rivals = Array.isArray(loaded.rivals) ? loaded.rivals.slice(0, 3) : [];
-  merged.customPhrases = Array.isArray(loaded.customPhrases) ? loaded.customPhrases : [];
   merged.nick = sanitizeNick(loaded.nick);
   merged.palette = loaded.palette === 'lilac' ? 'lilac' : 'forest';
   if (

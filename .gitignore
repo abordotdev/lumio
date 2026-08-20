@@ -4,3 +4,9 @@ node_modules/
 
 # artefakty przeglądarki z testów
 .playwright-mcp/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/.playwright/

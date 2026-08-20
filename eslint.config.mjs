@@ -23,5 +23,14 @@ export default [
       globals: globals.node,
     },
   },
+  {
+    // Testy E2E (Playwright) chodzą w Node, ES modules; test/expect są importowane.
+    files: ['e2e/**/*.js', 'playwright.config.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: globals.node,
+    },
+  },
   prettier,
 ];

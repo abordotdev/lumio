@@ -306,15 +306,6 @@
   color: var(--ink-2);
   cursor: pointer;
 }
-.app .icon-btn .kropka {
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--hot);
-}
 
 .app .kolumna {
   width: 100%;
@@ -435,8 +426,8 @@
 }
 
 @media (max-width: 900px) {
-  /* Nawigacja idzie dolnym paskiem (tabbar), więc boczny pasek znika, a z nim
-     całe rozwijane menu z hamburgera. W górnym pasku zostaje logo i ustawienia. */
+  /* Nawigacja idzie dolnym paskiem (tabbar), więc boczny pasek znika. W górnym
+     pasku zostaje logo, ustawienia i odświeżanie. */
   .app .side {
     display: none;
   }
@@ -456,7 +447,7 @@
     background: var(--bg);
   }
   /* Na wąskim ekranie odchudzamy plakietki km/monet, żeby zmieściły się jeszcze
-     ustawienia i dzwonek po prawej. Słowa „km"/„monet" znikają — zostaje liczba. */
+     ustawienia i odświeżanie po prawej. Słowa „km"/„monet" znikają — zostaje liczba. */
   .app .pasek .chip {
     padding: 4px 9px 4px 4px;
     gap: 6px;

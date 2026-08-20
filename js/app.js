@@ -1,5 +1,5 @@
 // Ekrany: wybór głosu, mapa, podsumowanie lekcji, skrzynka, przystanki, sklep, szafa, ustawienia.
-import { esc, h, mount, refreshCounters, plural, toast, applyPalette, markNav } from './ui.js';
+import { esc, h, mount, plural, toast, applyPalette } from './ui.js';
 import * as store from './store.js';
 import * as speech from './speech.js';
 import {
@@ -64,39 +64,6 @@ function refreshModules() {
   if (MODULE) store.setModuleId(MODULE.id);
 }
 
-function navIsDrawer() {
-  return window.matchMedia('(max-width: 64rem)').matches;
-}
-
-function setNavOpen(open) {
-  const drawer = navIsDrawer();
-  const show = drawer && open;
-  document.body.classList.toggle('nav-open', show);
-  const toggle = document.getElementById('nav-toggle');
-  const scrim = document.getElementById('nav-scrim');
-  const nav = document.getElementById('sidenav');
-  if (toggle) {
-    toggle.setAttribute('aria-expanded', show ? 'true' : 'false');
-    toggle.textContent = show ? 'Zamknij' : 'Menu';
-  }
-  if (scrim) scrim.hidden = !show;
-  if (nav) {
-    nav.toggleAttribute('inert', drawer && !show);
-    nav.setAttribute('aria-hidden', drawer && !show ? 'true' : 'false');
-  }
-}
-
-function bindChrome() {
-  document.getElementById('nav-toggle')?.addEventListener('click', () => {
-    setNavOpen(!document.body.classList.contains('nav-open'));
-  });
-  document.getElementById('nav-scrim')?.addEventListener('click', () => setNavOpen(false));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setNavOpen(false);
-  });
-  window.matchMedia('(max-width: 64rem)').addEventListener('change', () => setNavOpen(false));
-}
-
 export function boot({ modules, route }) {
   BASE_MODULES = modules || [];
   ROUTE = route;
@@ -107,15 +74,8 @@ export function boot({ modules, route }) {
     onOdswiez: odswiezApke,
     maskotka: () => avatarNaPodlodze(store.get().equipped, { look: store.get().look || {} }),
   });
-  bindChrome();
   wlaczGestCofania();
-  for (const btn of document.querySelectorAll('[data-go]')) {
-    btn.addEventListener('click', () => go(btn.getAttribute('data-go')));
-  }
-  const brand = document.getElementById('btn-brand');
-  if (brand) brand.addEventListener('click', () => go('home'));
   const state = store.get();
-  refreshCounters(state);
   if (!state.voiceName) {
     const rec = speech.currentVoice() || speech.recommended();
     if (rec) {
@@ -132,9 +92,7 @@ export function go(screen, params = {}) {
     MAPA.destroy();
     MAPA = null;
   }
-  setNavOpen(false);
   speech.cancel();
-  refreshCounters(store.get());
   // Wchodząc w Moduły z innej zakładki, lista lekcji startuje zwinięta — żeby nie
   // trzeba było scrollować. Przełączanie modułów w środku zostawia Twój wybór.
   if (screen === 'modules' && SCREEN !== 'modules') LESSONS_COLLAPSED = true;
@@ -144,7 +102,6 @@ export function go(screen, params = {}) {
     if (HISTORIA.length > 20) HISTORIA.shift();
   }
   SCREEN = screen;
-  markNav(screen);
   odswiezPowloke(danePowloki(screen));
   const screens = {
     onboarding,
@@ -274,16 +231,7 @@ function paintDoll(root) {
   if (box) box.innerHTML = doll(store.get().equipped, 148);
 }
 
-function bindRaceFields(card, { reload } = {}) {
-  const nickIn = card.querySelector('[data-a="nick"]');
-  const codeEl = card.querySelector('[data-a="code"]');
-  card.querySelector('[data-a="nick-save"]')?.addEventListener('click', () => {
-    store.setNick(nickIn?.value || '');
-    const nick = store.get().nick;
-    toast(nick ? 'Nick zapisany. Jest w Twoim kodzie.' : 'Nick skasowany.');
-    if (codeEl) codeEl.textContent = store.encodeRace();
-    if (reload) go('map');
-  });
+function bindRaceFields(card) {
   card.querySelector('[data-a="cp"]')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(store.encodeRace());
@@ -315,7 +263,7 @@ function mapRaceForm() {
     <textarea data-a="in" rows="2" placeholder="wklej kod" aria-label="Kod koleżanki"></textarea>
     <div class="row end" style="margin-top:.55rem"><button type="button" data-a="go">Pokaż na mapie</button></div>
   </div>`);
-  bindRaceFields(box, { reload: true });
+  bindRaceFields(box);
   return box;
 }
 
@@ -517,7 +465,7 @@ function umiemZdan() {
   return { ile, wszystkich };
 }
 
-// Co wymaga uwagi - to laduje pod dzwonkiem w prawym gornym rogu.
+// Co wymaga uwagi — pokazuje się jako baner „Zobacz" na ekranie startowym.
 function sprawyDoZalatwienia() {
   const lista = [];
   if (speech.diagnosis().level === 'blocked') {
@@ -554,7 +502,6 @@ function danePowloki(screen = SCREEN) {
       : 'Dopiero zaczynasz',
     km: state.km,
     monety: state.coins,
-    uwaga: sprawyDoZalatwienia().length > 0,
     // Szeroka kolumna tylko tam, gdzie tresc jest na nia pisana.
     waska: !['home', 'map', 'modules'].includes(screen),
     dymek: screen !== 'home' ? '' : powrot ? 'Dobrze Cię widzieć.' : 'Gotowa na angielski?',
@@ -565,8 +512,7 @@ function home() {
   refreshModules();
   const state = store.get();
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
-  const emptyMine = false; // moduł „Moje zdania" usunięty
-  const powrot = !emptyMine && store.isComeback();
+  const powrot = store.isComeback();
   const next = nextStop(ROUTE, state.km);
   const umiem = umiemZdan();
   const meta = (ROUTE.stops || [])[(ROUTE.stops || []).length - 1];
@@ -574,21 +520,17 @@ function home() {
   const zrobione = outline ? outline.lessons.filter((l) => l.done).length : 0;
   const postep = outline && outline.total ? Math.round((zrobione / outline.total) * 100) : 0;
 
-  const podtytul = emptyMine
-    ? 'Wpisz zdania po polsku — angielski dopiszę Ci przy najbliższej sesji.'
-    : powrot
-      ? `Nie było Cię <b>${przerwaLabel(store.daysSinceLastLesson())}</b>. Zaczynamy spokojnie.`
-      : next
-        ? `Do celu zostało <b>${next.km - state.km} km</b> — ${Math.ceil((next.km - state.km) / LESSON_KM)} ${plural(Math.ceil((next.km - state.km) / LESSON_KM), 'lekcja', 'lekcje', 'lekcji')}.`
-        : 'Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.';
+  const podtytul = powrot
+    ? `Nie było Cię <b>${przerwaLabel(store.daysSinceLastLesson())}</b>. Zaczynamy spokojnie.`
+    : next
+      ? `Do celu zostało <b>${next.km - state.km} km</b> — ${Math.ceil((next.km - state.km) / LESSON_KM)} ${plural(Math.ceil((next.km - state.km) / LESSON_KM), 'lekcja', 'lekcje', 'lekcji')}.`
+      : 'Koniec narysowanej trasy. Kolejne miasta dosypię z treścią.';
 
-  const opis = emptyMine
-    ? 'Najpierw dodaj kilka swoich zdań z pracy.'
-    : powrot
-      ? 'Zaczynamy od zdań, które szły Ci najlepiej. Bez pośpiechu.'
-      : outline?.dueCount
-        ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę. Jakieś 10 minut.`
-        : 'Piętnaście zdań, jakieś 10 minut.';
+  const opis = powrot
+    ? 'Zaczynamy od zdań, które szły Ci najlepiej. Bez pośpiechu.'
+    : outline?.dueCount
+      ? `${outline.dueCount} ${plural(outline.dueCount, 'zdanie czeka', 'zdania czekają', 'zdań czeka')} na powtórkę. Jakieś 10 minut.`
+      : 'Piętnaście zdań, jakieś 10 minut.';
 
   const wybory = [];
   if (outline?.dueCount) {
@@ -629,8 +571,8 @@ function home() {
           : MODULE?.title || 'Lekcja',
       opis,
       postep,
-      doPowtorki: powrot || emptyMine ? 0 : outline?.dueCount || 0,
-      przycisk: emptyMine ? 'Dodaj zdanie' : powrot ? 'Wracamy spokojnie' : 'Zaczynamy',
+      doPowtorki: powrot ? 0 : outline?.dueCount || 0,
+      przycisk: powrot ? 'Wracamy spokojnie' : 'Zaczynamy',
     },
     liczby: [
       { ikona: 'i-book', wartosc: state.lessons.length, opis: 'ukończonych lekcji' },
@@ -740,17 +682,14 @@ function pickModule(id) {
 
 function modules() {
   refreshModules();
-  const emptyMine = false; // moduł „Moje zdania" usunięty
   const outline = MODULE ? moduleOutline(MODULE, MODULES) : null;
   const wlasny = MODULE ? statModulu(MODULE) : null;
 
-  const opisOtwartego = emptyMine
-    ? 'Jeszcze pusto. Wpisz zdanie po polsku, a angielski dopiszę Ci przy najbliższej sesji.'
-    : outline?.reviewOnly
-      ? 'Wszystkie lekcje z tego modułu zrobione. Zostaje powtórka.'
-      : outline?.current
-        ? `Następna: lekcja ${outline.current.n} — ${outline.current.title}${outline.current.czesc ? ` · część ${outline.current.czesc}` : ''}.`
-        : 'Zaczynamy od pierwszej lekcji.';
+  const opisOtwartego = outline?.reviewOnly
+    ? 'Wszystkie lekcje z tego modułu zrobione. Zostaje powtórka.'
+    : outline?.current
+      ? `Następna: lekcja ${outline.current.n} — ${outline.current.title}${outline.current.czesc ? ` · część ${outline.current.czesc}` : ''}.`
+      : 'Zaczynamy od pierwszej lekcji.';
 
   const wrap = h(`<div></div>`);
 
@@ -775,10 +714,10 @@ function modules() {
       </div>
       <div class="btns">
         <button class="btn btn-p" type="button" data-a="start">
-          ${esc(emptyMine ? 'Dodaj zdanie' : outline?.reviewOnly ? 'Zaczynamy powtórkę' : 'Zaczynamy')}
+          ${esc(outline?.reviewOnly ? 'Zaczynamy powtórkę' : 'Zaczynamy')}
         </button>
         ${
-          outline?.dueCount && !outline.reviewOnly && !emptyMine
+          outline?.dueCount && !outline.reviewOnly
             ? `<button class="btn btn-g" type="button" data-a="powtorka">Powtórka (${outline.dueCount})</button>`
             : ''
         }
@@ -793,7 +732,7 @@ function modules() {
     ?.addEventListener('click', () => runLesson({ review: true }));
   wrap.appendChild(hero);
 
-  if (outline && outline.lessons.length && !emptyMine) {
+  if (outline && outline.lessons.length) {
     const zwiniety = LESSONS_COLLAPSED;
     const panel = h(`<div class="panel ${zwiniety ? 'zwiniety' : ''}">
       <button class="panel-naglowek" type="button" data-a="zwin" aria-expanded="${zwiniety ? 'false' : 'true'}">
@@ -834,41 +773,32 @@ function modules() {
   const kartaModulu = (m) => {
     const otwarty = MODULE && m.id === MODULE.id;
     const st = statModulu(m);
-    const pusty = false; // moduł „Moje zdania" usunięty
 
-    const stan = pusty
-      ? 'Puste'
-      : otwarty
-        ? 'Otwarty'
-        : st.zrobione && st.zrobione === st.outline.total
-          ? 'Zrobione'
-          : st.widziane
-            ? 'Zaczęty'
-            : 'Nie zaczęty';
+    const stan = otwarty
+      ? 'Otwarty'
+      : st.zrobione && st.zrobione === st.outline.total
+        ? 'Zrobione'
+        : st.widziane
+          ? 'Zaczęty'
+          : 'Nie zaczęty';
 
-    const znaczniki = pusty
-      ? '<span class="znacznik spokoj">czeka na Twoje zdania</span>'
-      : [
-          `<span class="znacznik">${st.umiem} ${plural(st.umiem, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}</span>`,
-          st.outline.dueCount
-            ? `<span class="znacznik czeka">${st.outline.dueCount} do powtórki</span>`
-            : '',
-        ]
-          .filter(Boolean)
-          .join('');
+    const znaczniki = [
+      `<span class="znacznik">${st.umiem} ${plural(st.umiem, 'zdanie w głowie', 'zdania w głowie', 'zdań w głowie')}</span>`,
+      st.outline.dueCount
+        ? `<span class="znacznik czeka">${st.outline.dueCount} do powtórki</span>`
+        : '',
+    ]
+      .filter(Boolean)
+      .join('');
 
     const karta = h(`<button class="modul ${otwarty ? 'on' : ''}" type="button">
       <span class="oczko">${esc(stan)}</span>
       <h3>${esc(m.title)}</h3>
       <p>${esc(m.subtitle || '')}</p>
-      ${
-        pusty
-          ? ''
-          : `<div class="postep-jasny">
-               <div class="track"><div class="fill" style="width:${st.postep}%"></div></div>
-               <span class="pc">${st.postep}%</span>
-             </div>`
-      }
+      <div class="postep-jasny">
+        <div class="track"><div class="fill" style="width:${st.postep}%"></div></div>
+        <span class="pc">${st.postep}%</span>
+      </div>
       <span class="stopka">${znaczniki}</span>
     </button>`);
     karta.addEventListener('click', () => {
@@ -1036,7 +966,7 @@ function openBox(card) {
     prizeText = `+${coins} monet`;
   }
 
-  refreshCounters(store.get());
+  odswiezPowloke(danePowloki());
   wrap.replaceChildren(
     h(`<div class="reveal" style="font-size:3rem;line-height:1">✨</div>`),
     h(`<p class="prize reveal">${esc(prizeText)}</p>`)
@@ -1298,7 +1228,6 @@ function wardrobe() {
   lookCard.querySelector('#nick-save').addEventListener('click', () => {
     store.setNick(lookCard.querySelector('#nick-in').value || '');
     const nick = store.get().nick;
-    refreshCounters(store.get());
     odswiezPowloke(danePowloki());
     toast(nick ? 'Nick zapisany.' : 'Nick skasowany.');
   });
