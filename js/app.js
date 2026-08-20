@@ -1165,6 +1165,16 @@ function shop() {
           go('shop');
         });
         thing.appendChild(buy);
+      } else if (state.equipped.top !== set.top || state.equipped.bottom !== set.bottom) {
+        // Komplet już masz — pozwól go założyć prosto ze sklepu.
+        const wear = h(`<button class="small primary" type="button">Załóż komplet</button>`);
+        wear.addEventListener('click', () => {
+          store.equip(topItem);
+          store.equip(bottomItem);
+          toast(`${set.name} — założone.`);
+          go('shop');
+        });
+        thing.appendChild(wear);
       }
       grid.appendChild(thing);
     }
@@ -1193,6 +1203,18 @@ function shop() {
           go('shop');
         });
         thing.appendChild(buy);
+      } else {
+        // Już masz — załóż albo zdejmij prosto ze sklepu.
+        const worn = state.equipped[item.slot] === item.id;
+        const wear = h(
+          `<button class="small ${worn ? '' : 'primary'}" type="button">${worn ? 'Na sobie' : 'Załóż'}</button>`
+        );
+        wear.addEventListener('click', () => {
+          if (worn) store.unequip(item.slot);
+          else store.equip(item);
+          go('shop');
+        });
+        thing.appendChild(wear);
       }
       grid.appendChild(thing);
     }
