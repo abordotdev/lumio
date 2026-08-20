@@ -1264,13 +1264,23 @@ function wardrobe() {
   const state = store.get();
   const wrap = h(`<div class="home-stack"></div>`);
 
-  wrap.appendChild(
-    dressHead(state, {
-      label: 'Szafa',
-      title: 'Ubierz się',
-      hint: 'Górę i dół zakładasz osobno. Kliknij to, co masz na sobie, żeby zdjąć.',
-    })
-  );
+  const glowa = dressHead(state, {
+    label: 'Szafa',
+    title: 'Ubierz się',
+    hint: 'Górę i dół zakładasz osobno. Kliknij to, co masz na sobie, żeby zdjąć.',
+  });
+  wrap.appendChild(glowa);
+  // Przyklejony podgląd ludzika kurczy się przy przewijaniu, żeby nie zasłaniał ciuchów.
+  const naScroll = () => {
+    if (!document.body.contains(glowa)) {
+      window.removeEventListener('scroll', naScroll, true);
+      return;
+    }
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    glowa.classList.toggle('zwarty', y > 50);
+  };
+  // capture=true łapie przewijanie z dowolnego kontenera, nie tylko okna.
+  window.addEventListener('scroll', naScroll, { passive: true, capture: true });
 
   // Wygląd ludzika i nick — wszystko o ludziku w jednym miejscu.
   const lookCard = h(`<div class="card">
@@ -1278,7 +1288,7 @@ function wardrobe() {
     <h2>Wygląd i imię</h2>
     <p class="muted">Postać, fryzura, kolor włosów i oczu — plus imię, które widzi koleżanka na mapie.</p>
     <div class="row"><button class="primary" type="button" id="edit-look">Zmień wygląd</button></div>
-    <label class="tiny" for="nick-in" style="display:block;margin:.9rem 0 .3rem">Twój nick</label>
+    <label class="pole-etykieta" for="nick-in">Twój nick</label>
     <input id="nick-in" type="text" maxlength="16" placeholder="np. Ania" value="${esc(state.nick || '')}" aria-label="Twój nick" />
     <div class="row" style="margin-top:.5rem"><button type="button" id="nick-save">Zapisz nick</button></div>
   </div>`);

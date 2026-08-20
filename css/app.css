@@ -142,6 +142,11 @@ body {
 html {
   -webkit-text-size-adjust: 100%;
 }
+/* Bez gumowego „pływania" strony przy przewijaniu (iOS). */
+html,
+body {
+  overscroll-behavior: none;
+}
 
 body {
   margin: 0;
@@ -974,11 +979,22 @@ input[type='password']:focus {
 /* ---------- ocena ---------- */
 
 .verdict {
-  border-radius: 8px;
-  padding: 0.85rem 0.95rem;
+  border-radius: 10px;
+  padding: 1.05rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.62rem;
+}
+/* Jak przeczytać po polsku — wyraźniej niż reszta, bo to najczęściej sprawdzasz. */
+.wymowa {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+}
+.wymowa b {
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 1.18rem;
 }
 .verdict.good {
   background: var(--green-soft);
@@ -988,7 +1004,7 @@ input[type='password']:focus {
 }
 .verdict .head {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 700;
@@ -1426,6 +1442,35 @@ select:focus-visible {
 .dress-doll .doll {
   width: 7.6rem;
   height: auto;
+  transition:
+    width 0.18s ease,
+    height 0.18s ease;
+}
+/* Zwarty podgląd w Szafie przy przewijaniu — mniejszy, żeby odsłonić ciuchy. */
+.dress-head {
+  transition: padding 0.18s ease;
+}
+.dress-head.zwarty {
+  padding: 0.5rem 0.9rem;
+  grid-template-columns: minmax(0, 1fr) 4.6rem;
+}
+.dress-head.zwarty .dress-doll .doll {
+  width: 4.2rem;
+}
+.dress-head.zwarty h1 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+.dress-head.zwarty .muted {
+  display: none;
+}
+/* Etykieta pola (np. „Twój nick") — czytelna, nie ledwo widoczna. */
+.pole-etykieta {
+  display: block;
+  margin: 0.9rem 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 .hello h1 {
   margin: 0;

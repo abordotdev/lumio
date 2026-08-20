@@ -402,7 +402,7 @@ function showResult({ step, card, session, module, onFinish, answer }) {
   }
   // Podpowiedź, jak to przeczytać po polsku (np. „I have to" → „aj hew tu").
   if (item.wym) {
-    panel.appendChild(h(`<p class="muted">Czytaj: <b>${esc(item.wym)}</b></p>`));
+    panel.appendChild(h(`<p class="wymowa">Czytaj: <b>${esc(item.wym)}</b></p>`));
   }
 
   card.appendChild(panel);
