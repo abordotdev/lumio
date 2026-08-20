@@ -362,12 +362,16 @@ const SLOT_OF = {
   neck: 'neck',
 };
 
-function face(color, brow) {
+function face(color, brow, meski = false) {
   const e = EYE_COLORS[color] || EYE_COLORS.brown;
+  const brwi = meski
+    ? `<path d="M59,54 Q68,50.5 77,54" fill="none" stroke="${brow}" stroke-width="3.2" stroke-linecap="round"/>
+       <path d="M83,54 Q92,50.5 101,54" fill="none" stroke="${brow}" stroke-width="3.2" stroke-linecap="round"/>`
+    : `<path d="M60,52 Q68,46 76,53" fill="none" stroke="${brow}" stroke-width="2.4" stroke-linecap="round"/>
+       <path d="M84,53 Q92,46 100,52" fill="none" stroke="${brow}" stroke-width="2.4" stroke-linecap="round"/>`;
   return `
     <g>
-      <path d="M60,52 Q68,46 76,53" fill="none" stroke="${brow}" stroke-width="2.4" stroke-linecap="round"/>
-      <path d="M84,53 Q92,46 100,52" fill="none" stroke="${brow}" stroke-width="2.4" stroke-linecap="round"/>
+      ${brwi}
       <ellipse cx="68" cy="62" rx="7.4" ry="8.6" fill="#FFF"/>
       <ellipse cx="92" cy="62" rx="7.4" ry="8.6" fill="#FFF"/>
       <ellipse cx="69" cy="63" rx="4.5" ry="5.4" fill="${e.iris}"/>
@@ -405,6 +409,8 @@ export function avatarBody(equipped = {}, { look = {} } = {}) {
   const hairId = equipped.hair || 'hair-bob';
   const palette = HAIR_COLORS[look.hairColor] || HAIR_COLORS.brunette;
   const eyeColor = look.eyeColor || 'brown';
+  // Chłopak: bez rzęs, mocniejsze brwi, mniej różu na policzkach.
+  const meski = look.postac === 'chłopak';
   const parts = clothesOf(equipped);
 
   const clothes = `${(BOTTOMS[parts.bottom] || BOTTOMS['bottom-shorts'])()}${(TOPS[parts.top] || TOPS['top-tshirt'])()}`;
@@ -431,15 +437,15 @@ export function avatarBody(equipped = {}, { look = {} } = {}) {
   <rect x="73" y="84" width="14" height="18" rx="7" fill="${SKIN_DARK}"/>
 
   <ellipse cx="80" cy="60" rx="27" ry="29" fill="${SKIN}"/>
-  <ellipse cx="68" cy="70" rx="7" ry="4.2" fill="#F2A8A0" opacity=".35"/>
-  <ellipse cx="92" cy="70" rx="7" ry="4.2" fill="#F2A8A0" opacity=".35"/>
+  <ellipse cx="68" cy="70" rx="7" ry="4.2" fill="#F2A8A0" opacity="${meski ? '.16' : '.35'}"/>
+  <ellipse cx="92" cy="70" rx="7" ry="4.2" fill="#F2A8A0" opacity="${meski ? '.16' : '.35'}"/>
 
   ${clothes}
-  ${face(eyeColor, palette.brow)}
+  ${face(eyeColor, palette.brow, meski)}
   ${lips}
   ${hairFront(hairId, palette)}
   ${neck}
-  ${lashes()}
+  ${meski ? '' : lashes()}
   ${faceBits}
   ${head}`;
 }

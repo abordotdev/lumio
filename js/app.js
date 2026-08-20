@@ -404,6 +404,7 @@ function look() {
     hair: state.equipped.hair || 'hair-bob',
     hairColor: state.look?.hairColor || 'brunette',
     eyeColor: state.look?.eyeColor || 'brown',
+    postac: state.look?.postac || 'dziewczyna',
   };
 
   const wrap = h(`<div style="display:flex;flex-direction:column;gap:1.25rem"></div>`);
@@ -412,6 +413,8 @@ function look() {
     <h1>Ułóż wygląd</h1>
     <p class="muted">Fryzura, kolor włosów i oczy. Resztę ubierzesz w szafie.</p>
     <div class="look-preview" id="look-preview"></div>
+    <span class="label">Postać</span>
+    <div class="swatches" id="postac"></div>
     <span class="label">Fryzura</span>
     <div class="swatches" id="hair-styles"></div>
     <span class="label">Kolor włosów</span>
@@ -473,6 +476,31 @@ function look() {
     'eyeColor',
     (it) => EYE_COLORS[it.id].iris
   );
+  const POSTACIE = [
+    { id: 'dziewczyna', name: 'Dziewczyna' },
+    { id: 'chłopak', name: 'Chłopak' },
+  ];
+  const fillPostac = () => {
+    const box = card.querySelector('#postac');
+    box.replaceChildren();
+    for (const p of POSTACIE) {
+      const on = draft.postac === p.id;
+      const btn = h(
+        `<button class="swatch ${on ? 'on' : ''}" type="button"><span>${esc(p.name)}</span></button>`
+      );
+      btn.addEventListener('click', () => {
+        draft.postac = p.id;
+        // Wygodnie: chłopak dostaje krótkie włosy, dziewczyna wraca do „do ramion".
+        if (p.id === 'chłopak' && draft.hair !== 'hair-short') draft.hair = 'hair-short';
+        if (p.id === 'dziewczyna' && draft.hair === 'hair-short') draft.hair = 'hair-bob';
+        fillPostac();
+        fill('#hair-styles', HAIR_STYLES, 'hair');
+        preview();
+      });
+      box.appendChild(btn);
+    }
+  };
+  fillPostac();
   preview();
 
   card.querySelector('#look-ok').addEventListener('click', () => {

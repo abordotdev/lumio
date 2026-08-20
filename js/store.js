@@ -381,6 +381,7 @@ export function setLook(look) {
   state.look = {
     hairColor: look.hairColor,
     eyeColor: look.eyeColor,
+    postac: look.postac === 'chłopak' ? 'chłopak' : 'dziewczyna',
     done: true,
   };
   if (look.hair) {
