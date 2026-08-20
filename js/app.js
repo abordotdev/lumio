@@ -236,7 +236,7 @@ function przerwaLabel(dni) {
   return `${t} ${plural(t, 'tydzień', 'tygodnie', 'tygodni')}`;
 }
 
-function runLesson({ review = false, comeback = false, ids = null } = {}) {
+function runLesson({ review = false, comeback = false, ids = null, wszystkieModuly = false } = {}) {
   refreshModules();
   if (!MODULE) return toast('Wybierz moduł.');
   if (MODULE.id === 'moje' && !(MODULE.translations || []).length) {
@@ -246,7 +246,9 @@ function runLesson({ review = false, comeback = false, ids = null } = {}) {
   const back = SCREEN === 'modules' ? 'modules' : 'home';
   startLesson({
     module: MODULE,
-    modules: MODULES,
+    // Powtórka „ze wszystkich modułów" sięga do całości; powtórka w obrębie
+    // modułu (np. Moje zdania) zostaje przy jego zdaniach.
+    modules: wszystkieModuly ? MODULES : [MODULE],
     review,
     comeback,
     ids,
@@ -308,14 +310,10 @@ function bindRaceFields(card, { reload } = {}) {
 }
 
 function mapRaceForm() {
-  const state = store.get();
   const box = h(`<div class="map-race">
-    <p class="tiny">Twój nick — koleżanka zobaczy go na mapie, jak wklei Twój kod.</p>
-    <input type="text" data-a="nick" maxlength="16" placeholder="np. Ania" value="${esc(state.nick || '')}" aria-label="Twój nick">
-    <div class="row" style="margin-top:.45rem">
-      <button type="button" data-a="nick-save">Zapisz nick</button>
-    </div>
-    <p class="tiny" data-a="code" style="font-family:var(--mono);word-break:break-all;margin-top:.8rem">${esc(store.encodeRace())}</p>
+    <p class="tiny">Twój kod — koleżanka wkleja go u siebie i widzi Cię na mapie.
+      Nick zmienisz w Szafie.</p>
+    <p class="tiny" data-a="code" style="font-family:var(--mono);word-break:break-all;margin-top:.6rem">${esc(store.encodeRace())}</p>
     <div class="row" style="margin-top:.45rem">
       <button class="primary" type="button" data-a="cp">Kopiuj mój kod</button>
     </div>
@@ -398,7 +396,8 @@ function onboarding() {
   });
 }
 
-function look() {
+function look(params = {}) {
+  const wroc = params.from === 'wardrobe' ? 'wardrobe' : 'home';
   const state = store.get();
   const draft = {
     hair: state.equipped.hair || 'hair-bob',
@@ -505,7 +504,7 @@ function look() {
 
   card.querySelector('#look-ok').addEventListener('click', () => {
     store.setLook(draft);
-    go('home');
+    go(wroc);
   });
 }
 
@@ -658,14 +657,20 @@ function home() {
     trescStartu(dane, {
       onLekcja() {
         if (emptyMine) return go('phrases');
-        if (powrot) return runLesson({ comeback: true });
+        if (powrot) return runLesson({ comeback: true, wszystkieModuly: true });
         runLesson({ review: Boolean(outline?.reviewOnly) });
       },
-      onPowtorka: () => runLesson({ review: true }),
+      onPowtorka: () => runLesson({ review: true, wszystkieModuly: true }),
       onZmienLekcje: () => go('modules'),
-      onPas: () => go(sprawy[0].includes('kopii') ? 'settings' : 'home'),
+      onPas: () => {
+        const s = sprawy[0] || '';
+        if (s.includes('kopii')) return go('settings');
+        if (s.includes('tłumaczenie')) return go('phrases');
+        if (s.includes('odebrania')) return go('map');
+        go('home');
+      },
       onWybor(id) {
-        if (id === 'powtorka') return runLesson({ review: true });
+        if (id === 'powtorka') return runLesson({ review: true, wszystkieModuly: true });
         if (id === 'zdania') return go('phrases');
         go('map');
       },
@@ -1100,7 +1105,7 @@ function arrival({ stopId }) {
     </div>`);
     stall.querySelector('#stall-rev').addEventListener('click', () => {
       store.markVisited(stop.id);
-      runLesson({ review: true });
+      runLesson({ review: true, wszystkieModuly: true });
     });
     stall.querySelector('#stall-shop').addEventListener('click', () => {
       store.markVisited(stop.id);
@@ -1414,6 +1419,28 @@ function wardrobe() {
     })
   );
 
+  // Wygląd ludzika i nick — wszystko o ludziku w jednym miejscu.
+  const lookCard = h(`<div class="card">
+    <span class="label">Twój ludzik</span>
+    <h2>Wygląd i imię</h2>
+    <p class="muted">Postać, fryzura, kolor włosów i oczu — plus imię, które widzi koleżanka na mapie.</p>
+    <div class="row"><button class="primary" type="button" id="edit-look">Zmień wygląd</button></div>
+    <label class="tiny" for="nick-in" style="display:block;margin:.9rem 0 .3rem">Twój nick</label>
+    <input id="nick-in" type="text" maxlength="16" placeholder="np. Ania" value="${esc(state.nick || '')}" aria-label="Twój nick" />
+    <div class="row" style="margin-top:.5rem"><button type="button" id="nick-save">Zapisz nick</button></div>
+  </div>`);
+  lookCard
+    .querySelector('#edit-look')
+    .addEventListener('click', () => go('look', { from: 'wardrobe' }));
+  lookCard.querySelector('#nick-save').addEventListener('click', () => {
+    store.setNick(lookCard.querySelector('#nick-in').value || '');
+    const nick = store.get().nick;
+    refreshCounters(store.get());
+    odswiezPowloke(danePowloki());
+    toast(nick ? 'Nick zapisany.' : 'Nick skasowany.');
+  });
+  wrap.appendChild(lookCard);
+
   const owned = state.owned.map(itemById).filter(Boolean);
   const bySlot = new Map();
   for (const item of owned) {
@@ -1601,14 +1628,7 @@ function settings() {
   });
   wrap.appendChild(voiceCard);
 
-  const lookCard = h(`<div class="card">
-    <span class="label">Ludzik</span>
-    <h2>Wygląd</h2>
-    <p class="muted">Fryzura, kolor włosów i oczy.</p>
-    <div class="row"><button type="button" id="edit-look">Zmień wygląd</button></div>
-  </div>`);
-  lookCard.querySelector('#edit-look').addEventListener('click', () => go('look'));
-  wrap.appendChild(lookCard);
+  // Wygląd ludzika i nick przeniesione do Szafy — tam są wszystkie rzeczy o ludziku.
 
   // Kopia zapasowa
   const last = state.lastBackupAt ? new Date(state.lastBackupAt).toLocaleString('pl-PL') : 'nigdy';
