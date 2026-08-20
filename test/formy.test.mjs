@@ -58,12 +58,13 @@ test('zdanie bez czasownika nie udaje, że ma formy', () => {
   assert.equal(usesTenseTiles({ id: 'nic', chunks: ['Nice to meet you'] }), false);
 });
 
-test('bank kafelków nie powtarza kawałka, który już jest w zdaniu', () => {
+test('bank kafelków rozdziela osobę od czasownika i nie dubluje', () => {
   const item = { id: 'a', lemma: 'test', chunks: ['I tested', 'it yesterday'] };
   const bank = tileBank(item, { translations: [] });
   const male = bank.map((b) => b.toLowerCase());
   assert.equal(new Set(male).size, male.length, 'żaden kafelek się nie dubluje');
-  assert.ok(bank.includes('I tested'));
+  assert.ok(bank.includes('I') && bank.includes('tested'), 'osoba i czasownik jako osobne kafelki');
+  assert.ok(!bank.includes('I tested'), 'nie ma sklejonego „I tested"');
 });
 
 test('dłuższe słowa nie podwajają spółgłoski bez powodu', () => {

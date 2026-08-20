@@ -184,8 +184,38 @@ function phraseDistractors(item, module) {
   return unique([...same, ...other]);
 }
 
+// Wszystkie formy czasownika, których szukamy na końcu kawałka.
+function verbFormSet(lemma) {
+  const f = verbForms(lemma);
+  if (!f) return new Set();
+  const trzecia = /(s|sh|ch|x|z|o)$/.test(f.base) ? `${f.base}es` : `${f.base}s`;
+  const formy = [f.base, f.ed, f.pp, f.ing, trzecia];
+  if (lemma === 'be') formy.push('am', 'is', 'are', 'was', 'were', 'be', 'been', 'being');
+  if (lemma === 'have') formy.push('has', 'had', 'having');
+  return new Set(formy.filter(Boolean).map(tileKey));
+}
+
+// Odczep czasownik od osoby: „I am" → „I" + „am", żeby wybór formy był naprawdę
+// wyborem, a nie jedynym kafelkiem z osobą. Kawałki, gdzie czasownik już stoi
+// osobno (np. „sends"), zostają bez zmian.
+function rozdzielCzasownik(chunks, lemma) {
+  const formy = verbFormSet(lemma);
+  const out = [];
+  for (const c of chunks) {
+    const slowa = String(c).split(' ');
+    const ostatnie = slowa[slowa.length - 1];
+    if (slowa.length > 1 && formy.has(tileKey(ostatnie))) {
+      out.push(slowa.slice(0, -1).join(' '), ostatnie);
+    } else {
+      out.push(c);
+    }
+  }
+  return out;
+}
+
 export function tileBank(item, module) {
-  const chunks = item.chunks && item.chunks.length ? [...item.chunks] : [item.en];
+  const baza = item.chunks && item.chunks.length ? [...item.chunks] : [item.en];
+  const chunks = usesTenseTiles(item) ? rozdzielCzasownik(baza, item.lemma) : baza;
   const seen = new Set(chunks.map(tileKey));
   const extras = [];
   const add = (list) => {

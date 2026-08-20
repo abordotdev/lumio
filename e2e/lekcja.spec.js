@@ -13,8 +13,10 @@ test('lekcja z kafelków: ułóż zdanie, sprawdź, zobacz wynik i wymowę', asy
   await expect(bank).toBeVisible();
 
   // Pierwsze zdanie to „Jestem zmęczona" → ułóż „I am tired".
+  // Osoba i czasownik to osobne kafelki, więc formę „am" trzeba wybrać samemu.
   await expect(page.locator('.prompt-pl')).toHaveText('Jestem zmęczona');
-  await bank.locator('.tile', { hasText: /^I am$/ }).click();
+  await bank.locator('.tile', { hasText: /^I$/ }).click();
+  await bank.locator('.tile', { hasText: /^am$/ }).click();
   await bank.locator('.tile', { hasText: /^tired$/ }).click();
   await page.locator('.card button.primary').filter({ hasText: 'Sprawdź' }).click();
 

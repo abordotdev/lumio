@@ -5,7 +5,7 @@
 // i po cichu wyparowywały. To jest cała rzecz, po co ta apka istnieje.
 import { itemState, isDone } from './store.js';
 
-export const LESSON_MAX_ITEMS = 15;
+export const LESSON_MAX_ITEMS = 10;
 export const LESSON_KM = 20;
 export const LESSON_COINS = 20;
 export const NEW_PER_LESSON = 3;
@@ -286,9 +286,10 @@ export function buildLesson(module, state, opcje = {}) {
   const pools = module.kafelkiTylko ? [tiles] : [tiles, typed.slice(0, 4), dictations, reactions];
   const order = module.kafelkiTylko
     ? Array.from({ length: LESSON_MAX_ITEMS }, () => 0)
-    : [0, 1, 0, 2, 0, 3, 0, 1, 0, 2, 0, 1, 0, 2, 3];
+    : [0, 1, 0, 2, 0, 3, 0, 1, 0, 2];
   const steps = [];
   for (const p of order) {
+    if (steps.length >= LESSON_MAX_ITEMS) break;
     if (pools[p].length) steps.push(pools[p].shift());
   }
   while (steps.length < LESSON_MAX_ITEMS && pools.some((p) => p.length)) {

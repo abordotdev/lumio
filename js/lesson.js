@@ -13,7 +13,7 @@ const KIND_LABEL = {
   situation: 'Sytuacja — powiedz to po angielsku',
 };
 
-const MAX_STEPS = 15;
+const MAX_STEPS = 10;
 const MAX_REQUEUE = 5;
 
 export function startLesson({
@@ -407,6 +407,23 @@ function showResult({ step, card, session, module, onFinish, answer }) {
 
   card.appendChild(panel);
 
+  // Echo budujemy teraz, ale pokazujemy niżej — przycisk „Dalej" ma być tuż pod wynikiem.
+  const shadow = buildShadow(item);
+  currentShadow = shadow;
+
+  // „Dalej" zaraz pod wynikiem, żeby nie scrollować na sam dół karty.
+  const next = h(`<div class="row end">
+    <button class="primary" type="button" id="btn-next">Dalej →</button>
+  </div>`);
+  const nextBtn = next.querySelector('#btn-next');
+  nextBtn.addEventListener('click', () => {
+    clearEnterToNext();
+    shadow.stop();
+    session.index += 1;
+    renderStep(session, module, onFinish);
+  });
+  card.appendChild(next);
+
   // Przyciski zgłoszeń — Twoja lista poprawek do korpusu.
   const reports = h(`<div class="row"></div>`);
   if (!correct) {
@@ -453,22 +470,8 @@ function showResult({ step, card, session, module, onFinish, answer }) {
     session.requeued += 1;
   }
 
-  // Shadowing.
-  const shadow = buildShadow(item);
-  currentShadow = shadow;
+  // Echo (powtórz na głos) — pod przyciskami, opcjonalne.
   card.appendChild(shadow.node);
-
-  const next = h(`<div class="row end">
-    <button class="primary" type="button" id="btn-next">Dalej →</button>
-  </div>`);
-  const nextBtn = next.querySelector('#btn-next');
-  nextBtn.addEventListener('click', () => {
-    clearEnterToNext();
-    shadow.stop();
-    session.index += 1;
-    renderStep(session, module, onFinish);
-  });
-  card.appendChild(next);
 
   enterToNext = (e) => {
     if (e.key !== 'Enter' || e.shiftKey) return;
